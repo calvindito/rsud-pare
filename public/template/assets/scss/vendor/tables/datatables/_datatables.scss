@@ -1,0 +1,351 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Datatables library
+ *
+ *  Add advanced interaction controls to any HTML table
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-datatable {
+
+
+	// Base
+	// ------------------------------
+
+	// Wrapper
+	.dataTables_wrapper {
+        --#{$prefix}dt-spacer-y: #{$dt-spacer-y};
+        --#{$prefix}dt-spacer-x: #{$dt-spacer-x};
+        --#{$prefix}dt-filter-width: #{$dt-filter-width};
+
+		position: relative;
+	}
+
+	// Table container
+	.dataTable {
+
+		// Header
+		thead {
+			th,
+			td {
+				position: relative;
+			}
+
+			// Add right space to avoid text overlap over arrow
+			.sorting {
+				cursor: pointer;
+				padding-right: calc(var(--#{$prefix}dt-spacer-y) * 2);
+			}
+
+			// Add sorting icon base
+			.sorting:before,
+			.sorting:after,
+			.sorting_asc_disabled:before,
+			.sorting_desc_disabled:after {
+				content: '';
+				font-family: var(--#{$prefix}icon-font-family);
+				position: absolute;
+				top: 50%;
+				right: var(--#{$prefix}dt-spacer-y);
+				font-size: var(--#{$prefix}body-font-size);
+				transform: translateY(-50%);
+				display: inline-block;
+				line-height: 1;
+				opacity: 0.5;
+				@include ll-font-smoothing();
+			}
+
+			// Sorting arrows
+			.sorting {
+				&:not([class*=sorting_asc]):not([class*=sorting_desc]) {
+					&:before {
+						transform: translateY(-20%);
+					}
+					&:after {
+						transform: translateY(-80%);
+					}
+				}
+				&:not(.sorting_desc):before,
+				&_asc_disabled:before {
+					content: $icon-table-sorting-down;
+				}
+				&:not(.sorting_asc):after,
+				&_desc_disabled:after {
+					content: $icon-table-sorting-up;
+				}
+				&_asc,
+				&_desc {
+					&:before,
+					&:after {
+						opacity: 1;
+					}
+				}
+			}
+		}
+
+		// Body
+		tbody {
+		    th,
+		    td {		    	
+		    	&.active {
+		    		background-color: var(--#{$prefix}table-hover-bg);
+		    	}
+		    }
+		}
+
+		// Center text in empty table
+		.dataTables_empty {
+			text-align: center;
+		}
+	}
+
+	// Processing indicator
+	.dataTables_processing {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		padding: var(--#{$prefix}spacer);
+		transform: translate(-50%, -50%);
+		text-align: center;
+		background-color: var(--#{$prefix}gray-100);
+	}
+
+
+	// Header and footer
+	// ------------------------------
+
+	// Common
+	.datatable-header,
+	.datatable-footer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: var(--#{$prefix}dt-spacer-y);
+		padding-bottom: 0;
+
+		// Remove horizontal spacing if inside card body
+		.card-body & {
+			padding-left: 0;
+			padding-right: 0;
+		}
+
+		// Highlight header of footer with .*-accent class
+		&-accent {
+			background-color: var(--#{$prefix}table-accent-bg);
+		}
+	}
+
+	// Header
+	.datatable-header {
+		border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+	}
+
+	// Footer
+	.datatable-footer {
+		border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+	}
+
+
+	// Controls
+	// ------------------------------
+
+	// Length menu
+	.dataTables_length {
+		margin-bottom: var(--#{$prefix}dt-spacer-y);
+
+		// Text label
+		> label {
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	// Filter
+	.dataTables_filter {
+		margin-bottom: var(--#{$prefix}dt-spacer-y);
+
+		// Text label
+		> label {
+			position: relative;
+			display: flex;
+			align-items: center;
+		}
+	}
+
+	// Info
+	.dataTables_info {
+		margin-bottom: var(--#{$prefix}dt-spacer-y);
+	}
+
+	// Pagination common styles
+	.dataTables_paginate {
+		margin-bottom: var(--#{$prefix}dt-spacer-y);
+	}
+
+
+	// Scrollable table
+	// ------------------------------
+
+	.dataTables_scroll {
+		clear: both;
+
+		// Scrolling header
+		.dataTables_scrollHead {
+			table {
+				border-bottom: 0;
+			}
+
+			th,
+			td {
+				white-space: nowrap;
+			}
+		}
+
+		// Scrolling body
+		.dataTables_scrollBody {
+			-webkit-overflow-scrolling: touch;
+
+			table {
+				border-bottom: 0;
+
+				thead th[class*=sorting] {
+					&:before,
+					&:after {
+						content: none;
+					}
+				}
+
+				tbody tr:first-child > td {
+					border-top: 0;
+				}
+			}
+
+			th,
+			td {
+				white-space: nowrap;
+
+				> .dataTables_sizing {
+					height: 0;
+					overflow: hidden;
+					margin: 0;
+					padding: 0;
+				}
+			}
+		}
+	}
+
+
+	// Table inside cards
+	// ------------------------------
+
+	// Inside card body
+	.card-body {
+		+ .dataTables_wrapper,
+		+ * > .dataTables_wrapper {
+			border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+		}
+
+		> .dataTables_wrapper {
+			.datatable-footer {
+				border-top: 0;
+				
+				.dataTables_length,
+				.dataTables_filter,
+				.dataTables_info,
+				.dataTables_paginate {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+
+	// Bordered table inside card
+	.card > .dataTables_wrapper .table-bordered {
+		> * {
+	        &:first-child {
+	            > * {
+	            	border-top: 0;
+	            }
+	        }
+	        &:last-child {
+	            > * {
+	            	border-bottom: 0;
+	            }
+	        }
+	        > * {
+	            > *:first-child {
+	                border-left: 0;
+	            }
+	            > *:last-child {
+	                border-right: 0;
+	            }
+	        }
+		}
+	}
+
+
+	// Responsive style additions
+	// ------------------------------
+
+	// Simple responsive setup
+	.datatable-scroll-lg,
+	.datatable-scroll,
+	.datatable-scroll-sm {
+		min-height: .01%;
+	}
+
+	// Scroller
+	.datatable-scroll-wrap {
+		width: 100%;
+		min-height: .01%;
+		overflow-x: auto;
+	}
+
+	@include media-breakpoint-down(sm) {
+		.datatable-scroll-sm {
+			width: 100%;
+			overflow-x: scroll;
+
+			th,
+			td {
+				white-space: nowrap;
+			}
+		}
+	}
+	@include media-breakpoint-down(md) {
+		.datatable-scroll {
+			width: 100%;
+			overflow-x: scroll;
+
+			th,
+			td {
+				white-space: nowrap;
+			}
+		}
+	}
+	@include media-breakpoint-down(lg) {
+		.datatable-scroll-lg {
+			width: 100%;
+			overflow-x: scroll;
+
+			th,
+			td {
+				white-space: nowrap;
+			}
+		}
+	}
+
+	// Common media queries
+	@include media-breakpoint-up(sm) {
+		.dataTables_filter .form-control {
+			width: var(--#{$prefix}dt-filter-width);
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		.datatable-header,
+		.datatable-footer {
+			display: block;
+		}
+	}
+}

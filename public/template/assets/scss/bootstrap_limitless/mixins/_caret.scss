@@ -1,0 +1,55 @@
+@mixin caret-down {
+  content: $icon-caret-down;
+}
+
+@mixin caret-up {
+  content: $icon-caret-up;
+}
+
+@mixin caret-end {
+  content: $icon-caret-right;
+}
+
+@mixin caret-start {
+  content: $icon-caret-left;
+}
+
+@mixin caret($direction: down) {
+  @if $enable-caret {
+    &::after {
+      display: inline-block;
+      margin-left: $caret-spacing;
+      vertical-align: $caret-vertical-align;
+      font-family: var(--#{$prefix}icon-font-family);
+      font-size: $caret-width;
+      line-height: 1;
+      @if $direction == down {
+        @include caret-down();
+      } @else if $direction == up {
+        @include caret-up();
+      } @else if $direction == end {
+        @include caret-end();
+      }
+    }
+
+    @if $direction == start {
+      &::after {
+        display: none;
+      }
+
+      &::before {
+        display: inline-block;
+        margin-right: $caret-spacing;
+        vertical-align: $caret-vertical-align;
+        font-family: var(--#{$prefix}icon-font-family);
+        font-size: $caret-width;
+        line-height: 1;
+        @include caret-start();
+      }
+    }
+
+    &:empty::after {
+      margin-left: 0;
+    }
+  }
+}

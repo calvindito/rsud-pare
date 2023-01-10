@@ -1,0 +1,51 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Popover component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Base
+.popover {
+    @include color-scheme(dark) {
+        --#{$prefix}popover-bg: #{$popover-darkmode-bg};
+    }
+}
+
+// Bottom pllacement adjustment
+.bs-popover-auto[data-popper-placement^=bottom] > .popover-arrow::after,
+.bs-popover-bottom > .popover-arrow::after {
+  border-bottom-color: var(--#{$prefix}popover-header-bg);
+}
+
+// Popover with custom theme
+.popover-custom.bs-popover-auto[data-popper-placement^=bottom] .popover-header::before,
+.popover-custom.bs-popover-bottom .popover-header::before {
+  content: none;
+}
+.popover-custom.bs-popover-auto[data-popper-placement^=top]>.popover-arrow::before,
+.popover-custom.bs-popover-auto[data-popper-placement^=top]>.popover-arrow::after,
+.popover-custom.bs-popover-top>.popover-arrow::before,
+.popover-custom.bs-popover-top>.popover-arrow::after {
+  border-top-color: inherit;
+}
+.popover-custom.bs-popover-auto[data-popper-placement^=bottom]>.popover-arrow::before,
+.popover-custom.bs-popover-auto[data-popper-placement^=bottom]>.popover-arrow::after,
+.popover-custom.bs-popover-bottom>.popover-arrow::before,
+.popover-custom.bs-popover-bottom>.popover-arrow::after {
+  border-bottom-color: inherit;
+}
+.popover-custom.bs-popover-auto[data-popper-placement^=left]>.popover-arrow::before,
+.popover-custom.bs-popover-auto[data-popper-placement^=left]>.popover-arrow::after,
+.popover-custom.bs-popover-start>.popover-arrow::before,
+.popover-custom.bs-popover-start>.popover-arrow::after {
+  border-left-color: inherit;
+}
+.popover-custom.bs-popover-auto[data-popper-placement^=right]>.popover-arrow::before,
+.popover-custom.bs-popover-auto[data-popper-placement^=right]>.popover-arrow::after,
+.popover-custom.bs-popover-end>.popover-arrow::before,
+.popover-custom.bs-popover-end>.popover-arrow::after {
+  border-right-color: inherit;
+}
+.popover-custom.bs-popover-bottom>.popover-arrow::after {
+  border-bottom-color: inherit;
+}

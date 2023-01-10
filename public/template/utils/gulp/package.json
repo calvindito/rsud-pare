@@ -1,0 +1,31 @@
+{
+  "name": "limitless",
+  "version": "1.0.0",
+  "description": "Limitless - responsive web application kit",
+  "main": "index.js",
+  "dependencies": {
+    "autoprefixer": "^10.2.5",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-jshint": "^2.1.0",
+    "gulp-postcss": "^9.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-rtlcss": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-dart-sass": "^1.0.2"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "postcss": "^8.2.8",
+    "jshint": "^2.10.3",
+    "node": "16.17.0",
+    "node-sass": "^7.0.1",
+    "sass": "^1.51.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Eugene Kopyov",
+  "license": "ISC"
+}

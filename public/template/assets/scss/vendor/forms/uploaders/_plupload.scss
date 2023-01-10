@@ -1,0 +1,451 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Plupload multiple file uploader
+ *
+ *  Styles for plupload.min.js - multi runtime single and multiple file uploader
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-plupload {
+
+
+	// Layout
+	// ------------------------------
+
+	// Wrapper
+	.plupload_wrapper {
+        --#{$prefix}plu-max-height: #{$plupload-max-height};
+        --#{$prefix}plu-border-width: #{$plupload-border-width};
+        --#{$prefix}plu-border-style: #{$plupload-border-style};
+        --#{$prefix}plu-border-color: #{$plupload-border-color};
+        --#{$prefix}plu-header-bg: #{$plupload-header-bg};
+        --#{$prefix}plu-header-color: #{$plupload-header-color};
+        --#{$prefix}plu-placeholder-color: #{$plupload-placeholder-color};
+
+		border: var(--#{$prefix}plu-border-width) var(--#{$prefix}plu-border-style) var(--#{$prefix}plu-border-color);
+		@include border-radius(var(--#{$prefix}border-radius));
+	}
+
+	// Common icon styles
+	.plupload_header:after,
+	.plupload_filelist:empty:before,
+	.plupload_filelist li.plupload_droptext:before,
+	.plupload_file_action:after,
+	.plupload_delete a:after,
+	.plupload_failed a:after,
+	.plupload_done a:after {
+		font-family: var(--#{$prefix}icon-font-family);
+		display: block;
+		font-size: var(--#{$prefix}icon-font-size);
+		line-height: 1;
+		@include ll-font-smoothing();
+	}
+
+	// Header (hidden by default)
+	.plupload_header {
+		display: none;
+		position: relative;
+		background-color: var(--#{$prefix}plu-header-bg);
+		color: var(--#{$prefix}plu-header-color);
+		margin: calc(var(--#{$prefix}plu-border-width) * -1) calc(var(--#{$prefix}plu-border-width) * -1) 0 calc(var(--#{$prefix}plu-border-width) * -1);
+		@include border-top-radius(var(--#{$prefix}border-radius));
+
+		// Icon
+		&:after {
+			content: $icon-uploader-placeholder;
+			font-size: calc(var(--#{$prefix}icon-font-size) * 2);
+			position: absolute;
+			top: 50%;
+			left: var(--#{$prefix}spacer);
+			margin-top: calc(var(--#{$prefix}icon-font-size) * -1);
+		}
+	}
+	.plupload_header_content {
+		padding: var(--#{$prefix}spacer);
+		padding-left: calc(calc(var(--#{$prefix}spacer) * 2) + calc(var(--#{$prefix}icon-font-size) * 2));
+	}
+	.plupload_header_title {
+		font-size: $h6-font-size;
+		font-weight: $font-weight-semibold;
+	}
+	.plupload_header_text {
+		font-size: var(--#{$prefix}body-font-size-sm);
+		line-height: var(--#{$prefix}body-line-height-sm);
+	}
+
+	// Helpers
+	.plupload_clear,
+	.plupload_clearer {
+		clear: both;
+	}
+	.plupload_clearer,
+	.plupload_progress_bar {
+		display: block;
+		font-size: 0;
+		line-height: 0;
+	}
+
+
+	// Buttons
+	// ------------------------------
+
+	// Buttons base
+	.plupload_button {
+		--#{$prefix}btn-padding-x: #{$btn-padding-x};
+		--#{$prefix}btn-padding-y: #{$btn-padding-y};
+		--#{$prefix}btn-font-family: #{$btn-font-family};
+		@include rfs($btn-font-size, --#{$prefix}btn-font-size);
+		--#{$prefix}btn-font-weight: #{$btn-font-weight};
+		--#{$prefix}btn-line-height: #{$btn-line-height};
+		--#{$prefix}btn-border-width: #{$btn-border-width};
+		--#{$prefix}btn-box-shadow: #{$btn-box-shadow};
+		--#{$prefix}btn-disabled-opacity: #{$btn-disabled-opacity};
+		--#{$prefix}btn-border-radius: #{$btn-border-radius};
+		--#{$prefix}btn-focus-box-shadow: 0 0 0 #{$btn-focus-width} rgba(var(--#{$prefix}btn-focus-shadow-rgb), .25);
+
+		display: inline-block;
+		font-family: var(--#{$prefix}btn-font-family);
+		font-size: var(--#{$prefix}btn-font-size);
+		font-weight: var(--#{$prefix}btn-font-weight);
+		line-height: var(--#{$prefix}btn-line-height);
+		padding: var(--#{$prefix}btn-padding-y) var(--#{$prefix}btn-padding-x);
+		color: var(--#{$prefix}btn-color);
+		border: var(--#{$prefix}btn-border-width) solid var(--#{$prefix}btn-border-color);
+		@include border-radius(var(--#{$prefix}btn-border-radius));
+		@include gradient-bg(var(--#{$prefix}btn-bg));
+		@include box-shadow(var(--#{$prefix}btn-box-shadow));
+		@include transition($btn-transition);
+
+		&:hover {
+			color: var(--#{$prefix}btn-hover-color);
+			text-decoration: if($link-hover-decoration == underline, none, null);
+			background-color: var(--#{$prefix}btn-hover-bg);
+			border-color: var(--#{$prefix}btn-hover-border-color);
+		}
+
+		&:focus {
+			color: var(--#{$prefix}btn-hover-color);
+			@include gradient-bg(var(--#{$prefix}btn-hover-bg));
+			border-color: var(--#{$prefix}btn-hover-border-color);
+			outline: 0;
+			// Avoid using mixin so we can pass custom focus shadow properly
+			@if $enable-shadows {
+				box-shadow: var(--#{$prefix}btn-box-shadow), var(--#{$prefix}btn-focus-box-shadow);
+			} @else {
+				box-shadow: var(--#{$prefix}btn-focus-box-shadow);
+			}
+		}
+
+		// Active state
+		&:active {
+		    color: var(--#{$prefix}btn-active-color);
+		    background-color: var(--#{$prefix}btn-active-bg);
+		    background-image: if($enable-gradients, none, null);
+		    border-color: var(--#{$prefix}btn-active-border-color);
+		    @include box-shadow(var(--#{$prefix}btn-active-shadow));
+
+		    &:focus {
+		      // Avoid using mixin so we can pass custom focus shadow properly
+		      @if $enable-shadows {
+		        box-shadow: var(--#{$prefix}btn-active-shadow), var(--#{$prefix}btn-focus-box-shadow);
+		      } @else {
+		        box-shadow: var(--#{$prefix}btn-focus-box-shadow);
+		      }
+		    }
+		}
+
+		// Button spacer
+		&:not(:last-child) {
+			margin-right: var(--#{$prefix}spacer-2);
+		}
+	}
+
+	// Add files button
+	.plupload_add {
+		@include button-variant($light, $light);
+	}
+
+	// Start upload button
+	.plupload_start {
+		@include button-variant($primary, $primary);
+	}
+
+	// Disabled button
+	a.plupload_disabled {
+		pointer-events: none;
+		opacity: var(--#{$prefix}btn-disabled-opacity);
+	}
+
+
+	// File list
+	// ------------------------------
+
+	// Itself
+	.plupload_filelist {
+		position: relative;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		// Scrollable area
+		.plupload_scroll & {
+			height: var(--#{$prefix}plu-max-height);
+			overflow-y: auto;
+		}
+
+		// List item
+		li {
+			display: flex;
+			align-items: center;
+			padding: var(--#{$prefix}spacer-2) var(--#{$prefix}spacer);
+			@include transition(all ease-in-out var(--#{$prefix}transition-base-timer));
+
+			// Hover state
+			&:hover {
+				background-color: var(--#{$prefix}gray-200);
+			}
+
+			// File info
+			.plupload_file_name {
+				margin-right: auto;
+			}
+
+			// Ordering
+			.plupload_file_action {
+				order: 12;
+			}
+			.plupload_file_status {
+				order: 11;
+			}
+			.plupload_file_size {
+				order: 10;
+			}
+		}
+
+		// Add background icon with text
+		&:empty,
+		li.plupload_droptext {
+			background-color: transparent;
+			font-size: 0;
+			color: var(--#{$prefix}plu-placeholder-color);
+
+			// Icon
+			&:before {
+				content: $icon-uploader-placeholder;
+				font-size: calc(var(--#{$prefix}icon-font-size) * 5);
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: calc(var(--#{$prefix}spacer) * -1);
+				z-index: 2;
+				text-indent: 0;
+				font-weight: normal;
+				transform: translate(-50%, -50%);
+			    @include ll-font-smoothing();
+			}
+
+			// Text label
+			&:after {
+				content: 'Drag files to upload';
+				font-size: $h5-font-size;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: calc(calc(var(--#{$prefix}icon-font-size) * 2.5) + var(--#{$prefix}spacer));
+				text-indent: 0;
+				transform: translate(-50%, -50%);
+			}
+		}
+		&:empty:after {
+			content: 'Add files to upload';
+		}
+
+		// On small screens
+		@include media-breakpoint-down(sm) {
+			padding: calc(var(--#{$prefix}spacer) * .5) 0;
+
+			// File size
+			li {
+				.plupload_file_size {
+					display: none;
+				}
+			}
+		}
+	}
+
+	// Header
+	.plupload_filelist_header {
+		padding: var(--#{$prefix}spacer);
+
+		// File info
+		.plupload_file_name,
+		.plupload_file_size,
+		.plupload_file_status,
+		.plupload_file_action {
+		  font-weight: $font-weight-semibold;
+		}
+
+		// Hide on small screen
+		@include media-breakpoint-down(sm) {
+			display: none;
+		}
+	}
+
+	// Footer
+	.plupload_filelist_footer {
+		padding: var(--#{$prefix}spacer);
+
+		// File info
+		.plupload_file_size,
+		.plupload_file_status,
+		.plupload_upload_status { 
+		  font-weight: $font-weight-semibold;
+		}
+
+		// On small screen
+		@include media-breakpoint-down(sm) {
+			text-align: center;
+
+			// Hide all file info
+			.plupload_file_action, 
+			.plupload_file_status, 
+			.plupload_file_size { 
+				display: none; 
+			}
+
+			// Center progress bar
+			.plupload_progress {
+				margin: auto;
+			}
+		}
+	}
+
+	// Header and footer
+	.plupload_filelist_header,
+	.plupload_filelist_footer {
+		@include media-breakpoint-up(sm) {
+			display: flex;
+			align-items: center;
+
+			// File name
+			.plupload_file_name {
+				margin-right: auto;
+			}
+
+			// File info
+			.plupload_file_action {
+				order: 12;
+			}
+			.plupload_file_status {
+				order: 11;
+			}
+			.plupload_file_size {
+				order: 10;
+			}
+		}
+	}
+
+
+	// Indicators
+	// ------------------------------
+
+	// File action indicator
+	.plupload_file_action {
+		margin-left: var(--#{$prefix}spacer-4);
+		line-height: 1;
+		font-size: 0;
+		text-align: right;
+
+		// Hide all children by default
+		* {
+			display: none;
+		}
+
+		// Add icon to the header and footer
+		&:after {
+			content: $icon-uploader-placeholder-actions;
+		}
+
+		// Remove icons in the file list
+		.plupload_filelist &:after {
+			content: none;
+		}
+
+		// Delete button
+		.plupload_delete & {
+			> a {
+				color: var(--#{$prefix}body-color);
+				line-height: 1;
+				opacity: 0.5;
+				@include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+				// Hover state
+				&:hover {
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	// Uploading indicator
+	.plupload_uploading {
+		background-color: rgba(var(--#{$prefix}success-rgb), 0.1); 
+	}
+
+	// Delete button
+	.plupload_delete a:after {
+		content: $icon-action-cross;
+	}
+
+	// Failed indicator
+	.plupload_failed a {
+		color: var(--#{$prefix}вфтпук);
+		cursor: default;
+
+		// Icon
+		&:after {
+			content: $icon-validation-error;
+		}
+	}
+
+	// Done indicator
+	.plupload_done {
+		color: var(--#{$prefix}gray-600);
+
+		// Link
+		a {
+			color: var(--#{$prefix}success);
+			cursor: default;
+
+			// Icon
+			&:after {
+				content: $icon-validation-success;
+			}
+		}
+	}
+
+	// Progress indicators
+	.plupload_progress,
+	.plupload_upload_status {
+		display: none;
+	}
+	.plupload_progress_container {
+		background-color: rgba(var(--#{$prefix}body-color-rgb), 0.1);
+		@include border-radius(var(--#{$prefix}border-radius));
+	}
+	.plupload_progress_bar {
+		width: 0;
+		height: 0.25rem;
+		background: var(--#{$prefix}success);
+		@include border-radius(var(--#{$prefix}border-radius));
+	}
+
+	// File info
+	.plupload_file_size,
+	.plupload_file_status,
+	.plupload_progress {
+		width: 5rem;
+		text-align: right;
+	}
+}

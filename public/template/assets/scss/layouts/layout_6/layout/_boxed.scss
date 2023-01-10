@@ -1,0 +1,30 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Boxed layout
+ *
+ *  Styles for main structure of content area in boxed layout
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-boxed {
+
+    // Class for body, adds background color/image
+    .layout-boxed-bg {
+        --#{$prefix}layout-boxed-bg: #{$boxed-bg};
+        background: var(--#{$prefix}layout-boxed-bg); // mainly for demo, use whatever you want
+    }
+    
+    // Boxed layout base
+    .layout-boxed {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow: hidden;
+
+        // Page container
+        .page-content {
+            background-color: var(--#{$prefix}body-bg);
+        }
+    }
+}

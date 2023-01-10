@@ -1,0 +1,18 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Badge component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+.badge {
+    min-width: calc(calc(var(--#{$prefix}badge-padding-y) * 2) + var(--#{$prefix}badge-font-size));
+
+    // Linked badges
+    &[href] {
+        &:hover,
+        &:focus {
+            color: var(--#{$prefix}badge-color);
+            box-shadow: 0 0 0 20rem rgba(var(--#{$prefix}black-rgb), .1) inset;
+        }
+    }
+}

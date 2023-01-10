@@ -1,0 +1,45 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Key Table extension
+ *
+ *  KeyTable provides Excel like cell navigation on any table. Events (focus, blur,
+ *  action etc) can be assigned to individual cells, columns, rows or all cells.
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-datatable-keytable {
+
+    // Focus colors
+    .dataTable {
+        th,
+        td {
+
+            // Default
+            &.focus {
+                outline: calc(var(--#{$prefix}border-width) * 2) solid var(--#{$prefix}primary);
+                outline-offset: calc(var(--#{$prefix}border-width) * -1);
+            }
+
+            // Success
+            &.focus-success {
+                outline-color: var(--#{$prefix}success);
+            }
+
+            // Info
+            &.focus-info {
+                outline-color: var(--#{$prefix}info);
+            }
+
+            // Warning
+            &.focus-warning {
+                outline-color: var(--#{$prefix}warning);
+            }
+
+            // Danger
+            &.focus-danger {
+                outline-color: var(--#{$prefix}danger);
+            }
+        }
+    }
+}

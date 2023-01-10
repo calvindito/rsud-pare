@@ -1,0 +1,169 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Buttons extension
+ *
+ *  The Buttons extension for DataTables provides a common set of options, API
+ *  methods and styling to display buttons that will interact with a DataTable
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-datatable-buttons {
+
+    // Full width buttons
+    .dt-buttons-full {
+        .dt-buttons {
+            float: none;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+            border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+            padding: var(--#{$prefix}spacer);
+            padding-bottom: calc(var(--#{$prefix}spacer) * .5);
+
+            // Button
+            > .btn {
+                margin-bottom: calc(var(--#{$prefix}spacer) * .5);
+                float: none;
+            }
+        }
+    }
+
+    // Buttons. Default alignment is right
+    .dt-buttons {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: var(--#{$prefix}dt-spacer-y);
+
+        // Default buttons
+        > .btn {
+            border-radius: 0;
+
+            // First button
+            &:first-child {
+                @include border-start-radius(var(--#{$prefix}btn-border-radius));
+            }
+
+            // Last button
+            &:last-of-type {
+                @include border-end-radius(var(--#{$prefix}btn-border-radius));
+            }
+
+            // Add 1px spacing between buttons
+            & + .btn {
+                margin-left: calc(var(--#{$prefix}btn-border-width) * -1);
+            }
+        }
+
+        // Mobile view
+        @include media-breakpoint-down(sm) {
+            float: none;
+            text-align: center;
+            display: block;
+
+            .btn {
+                float: none;
+            }
+        }
+    }
+
+    // Overlay
+    .dt-button-background {
+        --#{$prefix}dt-backdrop-zindex: #{$zindex-modal-backdrop};
+        --#{$prefix}dt-backdrop-bg: #{$modal-backdrop-bg};
+        --#{$prefix}dt-backdrop-opacity: #{$modal-backdrop-opacity};
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: var(--#{$prefix}dt-backdrop-bg);
+        z-index: var(--#{$prefix}dt-backdrop-zindex);
+        opacity: var(--#{$prefix}dt-backdrop-opacity);
+    }
+
+    // Button collection
+    .dt-button-collection {
+        position: relative;
+        opacity: 1 !important;
+
+        // Force collection dropdown to be right aligned
+        &:not(.fixed) {
+            .dropdown-menu {
+                top: 100%!important;
+                left: auto!important;
+                right: 0!important;
+            }
+        }
+
+        // Menu
+        .dropdown-menu {
+            display: block;
+            z-index: $zindex-modal-backdrop + 1;
+        }
+
+        // Fixed centered layout
+        &.fixed {
+            .dropdown-menu {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                padding: var(--#{$prefix}spacer-2);
+                column-gap: var(--#{$prefix}spacer-1);
+                transform: translate(-50%);
+            }
+            .dropdown-item {
+                @include border-radius(var(--#{$prefix}border-radius));
+            }
+        }
+
+        // Inner content
+        > * {
+            -webkit-column-break-inside: avoid;
+            break-inside: avoid;
+        }
+
+        // Two columns
+        &.two-column .dropdown-menu {
+            width: $dt-button-collection-2col-width;
+            column-count: 2;
+        }
+
+        // Three columns
+        &.three-column .dropdown-menu {
+            width: $dt-button-collection-3col-width;
+            column-count: 3;
+        }
+
+        // Four columns
+        &.four-column .dropdown-menu {
+            width: $dt-button-collection-4col-width;
+            column-count: 4;
+        }
+    }
+
+    // Confirmation message
+    .dt-button-info {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%);
+        background-color: var(--#{$prefix}white);
+        padding: var(--#{$prefix}spacer);
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+        z-index: $zindex-tooltip;
+        @include border-radius(var(--#{$prefix}border-radius));
+        @include box-shadow(var(--#{$prefix}box-shadow-lg));
+        @include color-scheme(dark) {
+            background-color: var(--#{$prefix}black);
+        }
+
+        // Title
+        h2 {
+            font-size: $h6-font-size;
+            margin-bottom: var(--#{$prefix}spacer-1);
+        }
+    }
+}

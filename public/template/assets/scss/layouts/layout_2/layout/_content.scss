@@ -1,0 +1,100 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Main content layout
+ *
+ *  Styles for main structure of content area
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Make sure document has 100% height
+html {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+}
+
+// Document body
+body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+}
+
+// Main container
+.page-content {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+// Content wrapper
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    position: relative;
+    min-width: 0;
+}
+
+// Main content container
+.content {
+    padding: $content-container-padding-y $content-container-padding-x;
+    flex-grow: 1;
+    @include clearfix;
+}
+
+// Scrollable container
+.content-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    // Smooth scrolling to anchors
+    @media (prefers-reduced-motion: no-preference) {
+        scroll-behavior: smooth;
+    }
+}
+
+
+//
+// Static layout
+//
+
+// Add this class to <html> tag
+.layout-static {
+    &,
+    body,
+    .page-content {
+        overflow: visible;
+    }
+}
+
+
+//
+// Scroll to top
+//
+
+.btn-to-top {
+    position: absolute;
+    bottom: $content-container-padding-y;
+    right: $content-container-padding-x;
+    align-self: flex-end;
+    opacity: 0;
+    visibility: hidden;
+    z-index: $zindex-dropdown - 1;
+    @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer), visibility ease-in-out var(--#{$prefix}transition-base-timer), bottom ease-in-out var(--#{$prefix}transition-base-timer));
+
+    // Show
+    &-visible {
+        visibility: visible;
+        opacity: 1;
+    }
+}

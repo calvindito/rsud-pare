@@ -1,0 +1,66 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Page header
+ *
+ *  Page header components and color options
+ *
+ * ---------------------------------------------------------------------------- */
+
+
+// Page header colors
+.page-header {
+    --#{$prefix}page-header-padding-y: #{$page-header-padding-y};
+    --#{$prefix}page-header-padding-x: #{$page-header-padding-x};
+    --#{$prefix}page-header-bg: transparent;
+
+    background-color: var(--#{$prefix}page-header-bg);
+}
+
+// Page title
+.page-title {
+    padding: var(--#{$prefix}page-header-padding-y) 0;
+    position: relative;
+}
+
+// Page subtitle
+.page-subtitle {
+    margin-left: var(--#{$prefix}spacer-2);
+
+    // Divider
+    &:before {
+        content: '/';
+        margin-right: calc(var(--#{$prefix}spacer-2) + 0.25rem);
+    }
+}
+
+// Page header content
+.page-header-content {
+    position: relative;
+    padding: 0 var(--#{$prefix}page-header-padding-x);
+}
+
+// Light
+.page-header-light {
+    --#{$prefix}page-header-bg: #{$page-header-light-bg};
+    @include color-scheme(dark) {
+        --#{$prefix}page-header-bg: #{$page-header-light-darkmode-bg};
+    }
+}
+
+// Dark
+.page-header-dark {
+    --#{$prefix}page-header-bg: #{$page-header-dark-bg};
+    @include color-scheme(dark) {
+        --#{$prefix}page-header-bg: #{$page-header-dark-darkmode-bg};
+    }
+}
+
+
+//
+// Misc
+//
+
+// Fixed page header
+.page-header-static {
+    z-index: $zindex-sticky + 1;
+}

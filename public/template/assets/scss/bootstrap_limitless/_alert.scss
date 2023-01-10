@@ -1,0 +1,83 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Alert component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+
+//
+// Dismissible alerts
+//
+
+.alert-dismissible {
+    .btn-close {
+        @include color-scheme(dark) {
+            filter: $btn-close-white-filter;
+        }
+    }
+}
+
+//
+// Alert with block icon
+//
+
+// Icon container
+.alert-icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    padding: var(--#{$prefix}alert-padding-y);
+    line-height: 1;
+}
+
+// Icons
+.alert {
+    .alert-icon i,
+    i.float-start,
+    i.float-end {
+        margin: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+    }
+}
+
+// Left aligned
+.alert-icon-start {
+    padding-left: calc(calc(var(--#{$prefix}alert-padding-y) * 2) + var(--#{$prefix}alert-padding-x) + var(--#{$prefix}icon-font-size));
+
+    .alert-icon {
+        left: 0;
+        @include border-start-radius(calc(var(--#{$prefix}alert-border-radius) - var(--#{$prefix}alert-border-width)));
+    }
+}
+
+// Right aligned
+.alert-icon-end {
+    padding-right: calc(calc(var(--#{$prefix}alert-padding-y) * 2) + var(--#{$prefix}alert-padding-x) + var(--#{$prefix}icon-font-size));
+
+    .alert-icon {
+        right: 0;
+        @include border-end-radius(calc(var(--#{$prefix}alert-border-radius) - var(--#{$prefix}alert-border-width)));
+    }
+
+    &.alert-dismissible .btn-close {
+        right: calc(calc(var(--#{$prefix}alert-padding-y) * 2) + var(--#{$prefix}icon-font-size));
+    }
+}
+
+
+//
+// Generate contextual modifier classes for colorizing the alert in dark theme
+//
+
+@each $state, $value in $dark-theme-colors {
+    $alert-background: shift-color($value, $alert-darkmode-bg-scale);
+    $alert-border: shift-color($value, $alert-darkmode-border-scale);
+    $alert-color: shift-color($value, $alert-darkmode-color-scale);
+    @if (contrast-ratio($alert-background, $alert-color) < $min-contrast-ratio) {
+        $alert-color: mix($value, color-contrast($alert-background), abs($alert-darkmode-color-scale));
+    }
+    .alert-#{$state} {
+        @include color-scheme(dark) {
+            @include alert-variant(rgba($alert-background, 0.25), $alert-border, $alert-color);
+        }
+    }
+}

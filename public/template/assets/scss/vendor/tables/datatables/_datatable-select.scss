@@ -1,0 +1,86 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Select extension
+ *
+ *  Adds item selection capabilities to a DataTable
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-datatable-select {
+
+    // Highlight selected row
+    .dataTable {
+        tbody > tr {
+            &.selected,
+            > .selected {
+                background-color: var(--#{$prefix}table-active-bg);
+            }
+
+        }
+    }
+
+    // Item select
+    .dataTables_wrapper {
+        .select-info,
+        .select-item {
+            margin-left: var(--#{$prefix}spacer-2);
+
+            // On mobile
+            @include media-breakpoint-down(sm) {
+                margin-left: 0;
+                display: block;
+            }
+        }
+    }
+
+    // Checkbox
+    .dataTable tbody {
+
+        // Chcckbox base
+        .select-checkbox {
+            --#{$prefix}dt-check-width: #{$form-check-input-width};
+            --#{$prefix}dt-check-height: #{$form-check-input-height};
+            --#{$prefix}dt-check-bg: #{$form-check-input-bg};
+            --#{$prefix}dt-check-border: #{$form-check-input-border};
+            --#{$prefix}dt-check-border-radius: #{$form-check-input-border-radius};
+            --#{$prefix}dt-checked-bg-color: #{$form-check-input-checked-bg-color};
+            --#{$prefix}dt-checked-border-color: #{$form-check-input-checked-border-color};
+            @include color-scheme(dark) {
+                --#{$prefix}dt-check-bg: #{$form-check-input-darkmode-bg};
+            }
+
+            position: relative;
+
+            // Checkbox base
+            &:after {
+                display: inline-block;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                cursor: pointer;
+                width: var(--#{$prefix}dt-check-width);
+                height: var(--#{$prefix}dt-check-height);
+                transform: translate(-50%, -50%);
+                @include border-radius(var(--#{$prefix}dt-check-border-radius));
+                @include transition($form-check-transition);
+            }
+
+            // Box
+            &:after {
+                content: '';
+                background-color: var(--#{$prefix}dt-check-bg);
+                border: var(--#{$prefix}dt-check-border);
+            }
+        }
+
+        // Checked state
+        .selected .select-checkbox {
+            &:after {
+                background-color: var(--#{$prefix}dt-checked-bg-color);
+                border-color: var(--#{$prefix}dt-checked-border-color);
+                background-image: escape-svg($form-check-input-checked-bg-image);
+            }
+        }
+    }
+}

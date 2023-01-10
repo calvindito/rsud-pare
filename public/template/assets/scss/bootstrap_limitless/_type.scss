@@ -1,0 +1,257 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Typography overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+//
+// Lists
+//
+
+// Custom list
+.list {
+    > li {
+        &:not(:first-child),
+        .list > li {
+            margin-top: var(--#{$prefix}spacer-1);
+        }
+    }
+}
+
+// List item styling
+ul {
+    &.list-square {
+        list-style-type: square;
+    }
+
+    &.list-circle {
+        list-style-type: circle;
+    }
+}
+
+// Bullet list
+.list-inline-bullet {
+    --#{$prefix}list-inline-bullet-size: .3125rem;
+
+    // List item
+    .list-inline-item {
+        position: relative;
+
+        &:not(:last-child) {
+            margin-right: var(--#{$prefix}spacer-2);
+            padding-right: calc(var(--#{$prefix}spacer-2) + var(--#{$prefix}list-inline-bullet-size));
+
+            // Dot
+            &:after {
+                content: "";
+                width: var(--#{$prefix}list-inline-bullet-size);
+                height: var(--#{$prefix}list-inline-bullet-size);
+                background-color: currentColor;
+                opacity: .65;
+                position: absolute;
+                left: 100%;
+                top: 0;
+                margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}list-inline-bullet-size)) * .5);
+                transform: translateX(-50%);
+                @include border-radius(var(--#{$prefix}border-radius-pill));
+            }
+        }
+    }
+}
+
+
+//
+// Misc
+//
+
+// Blockquote
+.blockquote-footer {
+    margin-top: 0;
+
+    // Add more horizontal spacing
+    &::before {
+        content: "\2014 \00A0 \00A0 \00A0";
+    }
+}
+
+// Text links with dark color
+a.text-body {
+    transition: color ease-in-out var(--#{$prefix}transition-base-timer);
+
+    &:hover,
+    &:focus,
+    &:active,
+    &.active,
+    &[aria-expanded="true"],
+    &[data-bs-toggle="collapse"]:not(.collapsed) {
+        color: var(--#{$prefix}link-color) !important;
+    }
+}
+
+
+
+//
+// Feed list
+//
+
+// Base
+.list-feed {
+    --#{$prefix}feed-item-padding-y: #{$list-feed-item-padding-y};
+    --#{$prefix}feed-item-padding-x: #{$list-feed-item-padding-x};
+    --#{$prefix}feed-circle-bg: #{$card-bg};
+    --#{$prefix}feed-circle-radius: #{$list-feed-circle-radius};
+    --#{$prefix}feed-circle-position: #{$list-feed-circle-position};
+    --#{$prefix}feed-circle-border-width: #{$list-feed-circle-border-width};
+    --#{$prefix}feed-circle-border-color: #{$list-feed-circle-border-color};
+    @include color-scheme(dark) {
+        --#{$prefix}feed-circle-bg: #{$card-darkmode-bg};
+    }
+}
+
+// Feed item
+.list-feed-item {
+    position: relative;
+    padding-bottom: var(--#{$prefix}feed-item-padding-y);
+    padding-left: var(--#{$prefix}feed-item-padding-x);
+
+    // Circle
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: var(--#{$prefix}feed-circle-position);
+        background-color: var(--#{$prefix}feed-circle-bg);
+        display: inline-block;
+        border: var(--#{$prefix}feed-circle-border-width) solid var(--#{$prefix}feed-circle-border-color);
+        z-index: 3;
+        width: var(--#{$prefix}feed-circle-radius);
+        height: var(--#{$prefix}feed-circle-radius);
+        @include border-radius(var(--#{$prefix}border-radius-pill));
+    }
+
+    // Line
+    &:after {
+        content: '';
+        position: absolute;
+        top: var(--#{$prefix}feed-circle-position);
+        left: calc(calc(var(--#{$prefix}feed-circle-radius) * .5) - calc(var(--#{$prefix}feed-circle-border-width) * .5));
+        bottom: calc(calc(var(--#{$prefix}feed-circle-position) + var(--#{$prefix}feed-circle-border-width)) * -1);
+        width: 0;
+        border-left: calc(var(--#{$prefix}feed-circle-border-width) * .5) solid var(--#{$prefix}feed-circle-border-color);
+        border-right: calc(var(--#{$prefix}feed-circle-border-width) * .5) solid var(--#{$prefix}feed-circle-border-color);
+        z-index: 2;
+    }
+
+    // First item
+    &:first-child {
+        &:after {
+            top: var(--#{$prefix}feed-circle-radius);
+        }
+    }
+
+    // Last item
+    &:last-child {
+        padding-bottom: 0;
+
+        &:after {
+            content: none;
+        }
+    }
+
+    // Setup color inheritance
+    &[class*=border-] {
+        &:before,
+        &:after {
+            border-color: inherit;
+        }
+    }
+}
+
+// Filled symbols
+.list-feed-solid {
+    .list-feed-item:before {
+        content: '';
+        border-width: calc(var(--#{$prefix}feed-circle-radius) * .5);
+        width: 0;
+        height: 0;
+    }
+}
+
+// Square
+.list-feed-square {
+    .list-feed-item:before {
+        content: '';
+        @include border-radius(0);
+    }
+}
+
+// Rhombus
+.list-feed-rhombus {
+    .list-feed-item:before {
+        content: '';
+        transform: rotate(45deg);
+        @include border-radius(0);
+    }
+}
+
+// Time stamp
+.list-feed-time {
+    .list-feed-item {
+        margin-left: calc(calc(var(--#{$prefix}feed-item-padding-x) * 2) - calc(var(--#{$prefix}feed-circle-radius) * .5));
+
+        .feed-time {
+            position: absolute;
+            left: calc(calc(calc(var(--#{$prefix}feed-item-padding-x) * 2) - calc(var(--#{$prefix}feed-circle-radius) * .5)) * -1);
+            top: 0;
+        }
+    }
+}
+
+
+//
+// Misc
+//
+
+// Content text divider
+.content-divider {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+
+    // Text container
+    > span {
+        background-color: var(--#{$prefix}body-bg);
+        display: inline-block;
+
+        // Change bg color if inside other containers
+        .card & {
+            background-color: var(--#{$prefix}card-bg);
+        }
+        .modal & {
+            background-color: var(--#{$prefix}modal-bg);
+        }
+
+        // Add line
+        &:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: var(--#{$prefix}border-width);
+            background-color: var(--#{$prefix}border-color);
+            width: 100%;
+            z-index: -1;
+        }
+    }
+}
+
+// Large circle icon
+.letter-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--#{$prefix}body-line-height-computed);
+    height: var(--#{$prefix}body-line-height-computed);
+    font-weight: $font-weight-medium;
+    line-height: 1;
+}

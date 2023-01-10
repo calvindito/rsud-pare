@@ -1,0 +1,18 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Phosphor mixins
+ *
+ *  Custom mixins for Phosphor icon set only.
+ *
+ * ---------------------------------------------------------------------------- */
+
+
+// Rotate icon
+@mixin ph-icon-rotate($degrees, $rotation) {
+    transform: rotate($degrees);
+}
+
+// Flip icon
+@mixin ph-icon-flip($horiz, $vert, $rotation) {
+    transform: scale($horiz, $vert);
+}

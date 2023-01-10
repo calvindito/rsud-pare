@@ -1,0 +1,77 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Pagination component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+
+// Base
+.pagination {
+    @include color-scheme(dark) {
+        --#{$prefix}pagination-bg: #{$pagination-darkmode-bg};
+        --#{$prefix}pagination-disabled-bg: #{$pagination-darkmode-disabled-bg};
+    }
+    margin-bottom: 0;
+}
+
+// Link
+.page-link {
+    min-width: calc(calc(var(--#{$prefix}pagination-font-size) * var(--#{$prefix}body-line-height)) + calc(var(--#{$prefix}pagination-border-width) * 2) + calc(var(--#{$prefix}pagination-padding-y) * 2));
+    text-align: center;
+}
+
+
+//
+// Sizing
+//
+
+// Large
+.pagination-lg {
+    .page-link {
+        --#{$prefix}body-line-height: var(--#{$prefix}body-line-height-lg);
+        line-height: var(--#{$prefix}body-line-height-lg);
+    }
+}
+
+// Small
+.pagination-sm {
+    .page-link {
+        --#{$prefix}body-line-height: var(--#{$prefix}body-line-height-sm);
+        line-height: var(--#{$prefix}body-line-height-sm);
+    }
+}
+
+
+//
+// Optional styles
+//
+
+// Flat style
+.pagination-flat {
+    --#{$prefix}pagination-bg: transparent;
+    --#{$prefix}pagination-border-color: transparent;
+    --#{$prefix}pagination-hover-border-color: #{$pagination-border-color};
+    --#{$prefix}pagination-margin-start: #{$pagination-flat-spacing};
+    --#{$prefix}pagination-disabled-bg: transparent;
+    --#{$prefix}pagination-disabled-border-color: transparent;
+}
+
+// Separated style
+.pagination-spaced {
+    --#{$prefix}pagination-margin-start: #{$pagination-spaced-spacing};
+}
+
+// Linked style
+.pagination-linked {
+    --#{$prefix}pagination-color: var(--#{$prefix}link-color);
+    --#{$prefix}pagination-bg: transparent;
+    --#{$prefix}pagination-border-color: transparent;
+    --#{$prefix}pagination-hover-color: #{$pagination-active-color};
+    --#{$prefix}pagination-hover-bg: #{$pagination-active-bg};
+    --#{$prefix}pagination-hover-border-color: #{$pagination-active-border-color};
+    --#{$prefix}pagination-focus-color: #{$pagination-active-color};
+    --#{$prefix}pagination-focus-bg: #{$pagination-active-bg};
+    --#{$prefix}pagination-focus-border-color: #{$pagination-active-border-color};
+    --#{$prefix}pagination-disabled-bg: transparent;
+    --#{$prefix}pagination-disabled-border-color: transparent;
+}

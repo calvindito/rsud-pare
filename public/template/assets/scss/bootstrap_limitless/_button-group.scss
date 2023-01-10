@@ -1,0 +1,22 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Button group component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Horizontal button group with spacing between buttons
+.btn-group-spaced {
+    > .btn:not(:first-of-type),
+    > .btn-group:not(:first-of-type) {
+        margin-left: 1px;
+    }
+}
+
+// Vertical button group with spacing between buttons
+.btn-group-vertical-spaced {
+    > .btn:not(:first-of-type),
+    > .btn-group:not(:first-of-type) {
+        margin-top: 1px;
+    }
+}
+

@@ -1,0 +1,555 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Additional variables
+ *
+ *  Mainly 3rd party libraries and additional variables for default
+ *  Bootstrap components.
+ *
+ * ---------------------------------------------------------------------------- */
+
+//
+// Content styling
+//
+// Various custom variables for text, icons, elements, blocks etc
+
+// Custom scrollbars on Windows
+$cs-size:                                 .5rem;
+$cs-thumb-color:                          var(--#{$prefix}gray-600);
+$cs-track-color:                          var(--#{$prefix}gray-300);
+
+// Images
+$img-path:                                '../../../../../../assets/images' !default;
+$img-preview-max-height:                  4rem !default;
+
+// Icons
+$icon-caret-up:                           '\f31d' !default;
+$icon-caret-down:                         '\f31a' !default;
+$icon-caret-left:                         '\f31b' !default;
+$icon-caret-right:                        '\f31c' !default;
+
+$icon-validation-error:                   '\f62d' !default;
+$icon-validation-success:                 '\f33f' !default;
+
+$icon-table-row-expand:                   '\f263' !default;
+$icon-table-row-collapse:                 '\f25f' !default;
+$icon-table-sorting-up:                   '\f31d' !default;
+$icon-table-sorting-down:                 '\f31a' !default;
+
+$icon-uploader-placeholder:               '\f358' !default;
+$icon-uploader-placeholder-actions:       '\f3ab' !default;
+
+$icon-action-cross:                       '\f642' !default;
+
+$icon-fancytree-file:                     '\f3eb' !default;
+$icon-fancytree-sub-collapse:             '\f3e6' !default;
+$icon-fancytree-sub-expand:               '\f3e4' !default;
+$icon-fancytree-folder:                   '\f40c' !default;
+$icon-fancytree-folder-collapse:          '\f415' !default;
+$icon-fancytree-folder-expand:            '\f40f' !default;
+
+$icon-wizard-step-current:                '\f510' !default;
+$icon-wizard-step-complete:               '\f33e' !default;
+$icon-wizard-step-error:                  '\f642' !default;
+
+$icon-picker-color-clear:                 '\f267' !default;
+$icon-checkbox-tick:                      '\f0e7' !default;
+$icon-search-magnifier:                   '\f4a8' !default;
+$icon-loading-spinner:                    '\f5a7' !default;
+
+// Charts
+$chart-container-height:                  400px !default;
+$chart-min-width:                         37.5rem !default;
+$chart-pie-min-width:                     31.25rem !default;
+
+$chart-text-size:                         var(--#{$prefix}body-font-size-sm) !default;
+$chart-text-color:                        var(--#{$prefix}body-color) !default;
+$chart-line-color:                        var(--#{$prefix}gray-400) !default;
+$chart-axis-line-color:                   var(--#{$prefix}gray-500) !default;
+$chart-axis-text-color:                   rgba(var(--#{$prefix}body-color-rgb), .75) !default;
+$chart-empty-bg:                          var(--#{$prefix}gray-300) !default;
+
+$c3-region-bg:                            var(--#{$prefix}gray-500) !default;
+
+// Maps
+$map-container-height:                    500px !default;
+
+// ECharts maps
+$echarts-map-bg:                          '#f6fbff' !default;
+$echarts-map-darkmode-bg:                 '#343840' !default;
+$echarts-map-placeholder-color:           '#2283e2' !default;
+$echarts-map-darkmode-placeholder-color:  '#404a59' !default;
+$echarts-map-hover-color:                 '#D53E60' !default;
+$echarts-map-border-color:                'rgba(255,255,255,0.5)' !default;
+$echarts-map-darkmode-border-color:       'rgba(0,0,0,0.25)' !default;
+
+
+//
+// Page header
+//
+// Includes page header base, colors and page title
+
+$page-header-padding-y:            1.5rem !default;
+$page-header-padding-x:            $grid-gutter-width !default;
+
+$page-header-light-bg:             var(--#{$prefix}white) !default;
+$page-header-light-darkmode-bg:    lighten($body-darkmode-bg, 5%) !default;
+
+$page-header-dark-bg:              #273246 !default;
+$page-header-dark-darkmode-bg:     darken($body-darkmode-bg, 2.5%) !default;
+
+
+//
+// Content area
+//
+// Area below page header, Also includes boxed layout
+
+$content-container-padding-y:      var(--#{$prefix}spacer) !default;
+$content-container-padding-x:      $grid-gutter-width !default;
+
+$boxed-bg:                         url(#{$img-path}/backgrounds/boxed_bg.png) repeat !default;
+
+
+//
+// Sidebar
+//
+// Includes sidebar sizes, colors and user areas
+
+// Base
+$sidebar-base-width:                          18.75rem !default;
+$sidebar-component-width:                     21rem !default;
+$sidebar-mini-width:                          calc(calc(var(--#{$prefix}spacer) * 2) + var(--#{$prefix}icon-font-size)) !default;
+$sidebar-bg:                                  $white !default;
+$sidebar-color:                               var(--#{$prefix}body-color) !default;
+$sidebar-border-width:                        var(--#{$prefix}border-width) !default;
+$sidebar-border-color:                        var(--#{$prefix}border-color) !default;
+
+// Section body
+$sidebar-section-body-padding-x:		      1.25rem !default;
+$sidebar-section-body-padding-y:		      1.25rem !default;
+
+// Section header
+$sidebar-section-header-padding-y:		      0.75rem !default;
+
+// Expand button
+$sidebar-btn-expand-bg:                       $sidebar-bg;
+$sidebar-btn-expand-hover-bg:                 darken($sidebar-bg, 2.5%);
+$sidebar-btn-expand-active-bg:                darken($sidebar-bg, 5%);
+
+// Dark mode for light sidebar
+$sidebar-darkmode-bg:                         lighten($body-darkmode-bg, 5%) !default;
+$sidebar-darkmode-btn-expand-bg:              $sidebar-darkmode-bg;
+$sidebar-darkmode-btn-expand-hover-bg:        darken($sidebar-darkmode-bg, 5%);
+$sidebar-darkmode-btn-expand-active-bg:       darken($sidebar-darkmode-bg, 7.5%);
+
+// Dark sidebar
+$sidebar-dark-bg:                             $dark !default;
+$sidebar-dark-color:                          $white !default;
+$sidebar-dark-border-color:                   transparent !default;
+$sidebar-dark-btn-expand-bg:                  $sidebar-dark-bg;
+$sidebar-dark-btn-expand-hover-bg:            lighten($sidebar-dark-bg, 5%);
+$sidebar-dark-btn-expand-active-bg:           lighten($sidebar-dark-bg, 7.5%);
+
+$sidebar-dark-darkmode-bg:                    darken($body-darkmode-bg, 5%) !default;
+$sidebar-dark-darkmode-btn-expand-bg:         $sidebar-dark-darkmode-bg;
+$sidebar-dark-darkmode-btn-expand-hover-bg:   lighten($sidebar-dark-darkmode-bg, 5%);
+$sidebar-dark-darkmode-btn-expand-active-bg:  lighten($sidebar-dark-darkmode-bg, 7.5%);
+
+// Shadows
+$sidebar-start-desktop-box-shadow:            none !default;
+$sidebar-darkmode-start-desktop-box-shadow:   none !default;
+$sidebar-start-mobile-box-shadow:             .25rem 0 1rem rgba(var(--#{$prefix}black-rgb), .35) !default;
+
+$sidebar-end-desktop-box-shadow:              none !default;
+$sidebar-darkmode-end-desktop-box-shadow:     none !default;
+$sidebar-end-mobile-box-shadow:               -.25rem 0 1rem rgba(var(--#{$prefix}black-rgb), .35) !default;
+
+// Z-indexes
+$sidebar-zindex-mobile:                       ($zindex-fixed + 10) !default;
+$sidebar-zindex-desktop:                      ($zindex-sticky + 2) !default;
+$sidebar-zindex-main:                         99 !default;
+$sidebar-zindex-secondary:                    ($sidebar-zindex-main - 1) !default;
+$sidebar-zindex-end:                          ($sidebar-zindex-main - 2) !default;
+
+
+//
+// Main vertical navigation
+//
+// Includes base styles, levels and colors
+
+$nav-sidebar-padding-y:                      .5rem !default;
+$nav-sidebar-sub-padding-y:                  .625rem !default;
+$nav-sidebar-sub-link-font-weight:           $font-weight-normal !default;
+
+$nav-sidebar-link-padding-y:                 .625rem !default;
+$nav-sidebar-link-padding-x:                 1.25rem !default;
+$nav-sidebar-link-spacer-y:                  1px !default;
+$nav-sidebar-link-font-weight:               $font-weight-medium !default;
+
+// Light sidebar navigation styles
+$nav-sidebar-link-color:                     $sidebar-color !default;
+$nav-sidebar-link-hover-bg:                  var(--#{$prefix}gray-200) !default;
+$nav-sidebar-link-hover-active-bg:           var(--#{$prefix}gray-300) !default;
+$nav-sidebar-link-hover-color:               $sidebar-color !default;
+$nav-sidebar-link-active-bg:                 rgba(var(--#{$prefix}primary-rgb), .1) !default;
+$nav-sidebar-link-active-color:              var(--#{$prefix}link-color) !default;
+$nav-sidebar-divider-color:                  var(--#{$prefix}border-color) !default;
+
+// Dark sidebar navigation styles
+$nav-sidebar-dark-link-color:                rgba($sidebar-dark-color, 0.85) !default;
+$nav-sidebar-dark-link-hover-bg:             rgba(var(--#{$prefix}white-rgb), 0.1) !default;
+$nav-sidebar-dark-link-hover-active-bg:      rgba(var(--#{$prefix}white-rgb), 0.15) !default;
+$nav-sidebar-dark-link-hover-color:          $sidebar-dark-color !default;
+$nav-sidebar-dark-link-active-bg:            rgba(var(--#{$prefix}white-rgb), 0.15) !default;
+$nav-sidebar-dark-link-active-color:         var(--#{$prefix}white) !default;
+$nav-sidebar-dark-link-disabled-color:       rgba(var(--#{$prefix}white-rgb), .5) !default;
+$nav-sidebar-dark-divider-color:             $border-darkmode-color-translucent !default;
+
+
+//
+// Form components
+//
+// Form checks, switches, selects, tags etc.
+
+// Select2 selects
+$select2-max-height:                 280px !default;
+$select2-disabled-opacity:           0.6 !default;
+
+$select2-pills-spacer:               0.25rem !default;
+$select2-pills-bg:                   var(--#{$prefix}gray-300) !default;
+$select2-pills-color:                var(--#{$prefix}body-color) !default;
+$select2-pills-hover-bg:             var(--#{$prefix}component-active-bg) !default;
+$select2-pills-hover-color:          var(--#{$prefix}component-active-color) !default;
+$select2-pills-border-radius:        subtract($input-border-radius, $input-border-width) !default;
+
+// Multiselect
+$multiselect-max-height:             280px !default;
+
+// Tag inputs
+$tag-color:                          var(--#{$prefix}body-color) !default;
+$tag-hover-color:                    var(--#{$prefix}component-active-color) !default;
+$tag-bg:                             var(--#{$prefix}gray-300) !default;
+$tag-hover-bg:                       var(--#{$prefix}component-active-bg) !default;
+
+// Form wizard
+$wizard-step-line-size:              2px !default;
+$wizard-step-line-color:             var(--#{$prefix}gray-400) !default;
+$wizard-step-inactive-color:         var(--#{$prefix}gray-600) !default;
+
+$wizard-step-number-size:            2.375rem !default;
+$wizard-step-number-bg:              $card-bg !default;
+$wizard-darkmode-step-number-bg:     $card-darkmode-bg !default;
+$wizard-step-number-color:           var(--#{$prefix}gray-600) !default;
+$wizard-step-number-active-bg:       var(--#{$prefix}component-active-bg) !default;
+$wizard-step-number-active-color:    var(--#{$prefix}white) !default;
+$wizard-step-number-error-bg:        var(--#{$prefix}danger) !default;
+$wizard-step-number-error-color:     var(--#{$prefix}white) !default;
+
+
+//
+// Text editors
+//
+// Trumbowyg, ace code editor
+
+// Trumbowyg editor
+$trumbowyg-min-height:               350px !default;
+$trumbowyg-toolbar-height:           calc(calc(var(--#{$prefix}spacer-1) * 2) + calc(var(--#{$prefix}spacer) * 2) + var(--#{$prefix}icon-font-size) + var(--#{$prefix}border-width)) !default;
+
+// CKEditor
+$cke-toolbar-bg:					 $card-bg !default;
+$cke-float-toolbar-bg:				 $cke-toolbar-bg !default;
+$cke-resizer-size:					 ($border-width * 8) !default;
+
+// Quill
+$ql-tooltip-bg:                      var(--#{$prefix}white) !default;
+$ql-darkmode-tooltip-bg:             lighten($body-darkmode-bg, 7.5%) !default;
+$ql-tooltip-color:                   var(--#{$prefix}body-color) !default;
+
+// Ace code editor
+$ace-height:                         450px !default;
+
+
+//
+// Pickers
+//
+// Date, time and color pickers
+
+// Common styles for date pickers
+$datepicker-padding:                 0.9375rem !default;
+
+$datepicker-item-padding:            $input-btn-padding-y !default;
+$datepicker-item-border-radius:      var(--#{$prefix}border-radius) !default;
+$datepicker-item-week-color:         var(--#{$prefix}gray-700) !default;
+$datepicker-item-weekday-color:      var(--#{$prefix}gray-600) !default;
+$datepicker-item-focusout-color:     var(--#{$prefix}gray-500) !default;
+$datepicker-item-hover-color:        var(--#{$prefix}body-color) !default;
+$datepicker-item-hover-bg:           var(--#{$prefix}gray-300) !default;
+$datepicker-item-active-color:       var(--#{$prefix}white) !default;
+$datepicker-item-active-bg:          var(--#{$prefix}primary) !default;
+$datepicker-item-disabled-opacity:   .25 !default;
+
+// Spectrum color picker
+$spectrum-padding:                   .625rem !default;
+$spectrum-width:                     13.75rem !default;
+
+
+//
+// File uploaders
+//
+// Plupload, Bootstrap file input and dropzone
+
+// Plupload uploader
+$plupload-max-height:                       250px !default;
+$plupload-border-width:                     calc(var(--#{$prefix}border-width) * 2) !default;
+$plupload-border-style:                     dashed !default;
+$plupload-border-color:                     var(--#{$prefix}border-color) !default;
+$plupload-header-bg:                        var(--#{$prefix}dark) !default;
+$plupload-header-color:                     var(--#{$prefix}white) !default;
+$plupload-placeholder-color:                var(--#{$prefix}gray-500) !default;
+$plupload-btn-start-bg:                     var(--#{$prefix}primary) !default;
+$plupload-btn-start-border-color:           $plupload-btn-start-bg !default;
+$plupload-btn-start-color:                  var(--#{$prefix}white) !default;
+
+// Bootstrap file input
+$fileinput-preview-spacer:                  0.5rem !default;
+$fileinput-preview-thumb-width:             10rem !default;
+$fileinput-preview-thumb-height:            10rem !default;
+$fileinput-preview-thumb-caption-spacer:    0.75rem !default;
+$fileinput-placeholder-color:               var(--#{$prefix}gray-500) !default;
+$fileinput-preview-progress-height:         0.375rem !default;
+
+// Dropzone
+$dropzone-min-height:                       18rem !default;
+$dropzone-spacer:                           0.3125rem !default;
+$dropzone-border-width:                     calc(var(--#{$prefix}border-width) * 2) !default;
+$dropzone-border-style:                     dashed !default;
+$dropzone-border-color:                     var(--#{$prefix}border-color) !default;
+$dropzone-placeholder-color:                var(--#{$prefix}gray-500) !default;
+$dropzone-drag-bg:                          var(--#{$prefix}gray-200) !default;
+$dropzone-drag-color:                       var(--#{$prefix}gray-400) !default;
+$dropzone-drag-border-color:                var(--#{$prefix}gray-600) !default;
+$dropzone-preview-spacer:                   0.5rem !default;
+$dropzone-preview-width:                    10rem !default;
+
+
+//
+// Notifications
+//
+// Sweet alert and noty.js notification libraries
+
+// Noty.js
+$noty-spacer-y:            .25rem !default;
+$noty-width:               20rem !default;
+$noty-gutter-y:            var(--#{$prefix}spacer) !default;
+$noty-gutter-x:            var(--#{$prefix}spacer) !default;
+$noty-padding-y:           calc(var(--#{$prefix}spacer) * .8) !default;
+$noty-padding-x:           var(--#{$prefix}spacer) !default;
+$noty-border-width:        var(--#{$prefix}border-width) !default;
+$noty-border-color:        transparent !default;
+$noty-bg:                  var(--#{$prefix}black) !default;
+$noty-darkmode-bg:         lighten($body-darkmode-bg, 17.5%) !default;
+$noty-color:               var(--#{$prefix}white) !default;
+$noty-warning-bg:          var(--#{$prefix}warning) !default;
+$noty-error-bg:            var(--#{$prefix}danger) !default;
+$noty-info-bg:             var(--#{$prefix}primary) !default;
+$noty-success-bg:          var(--#{$prefix}success) !default;
+$noty-progress-height:     .1875rem !default;
+$noty-progress-bg:         rgba(var(--#{$prefix}black-rgb), .25) !default;
+$noty-box-shadow:          var(--#{$prefix}box-shadow-lg) !default;
+$noty-border-radius:       var(--#{$prefix}border-radius) !default;
+
+// Sweet alert 2
+$swal-gutter-y:                   var(--#{$prefix}spacer) !default;
+$swal-gutter-x:                   var(--#{$prefix}spacer) !default;
+$swal-bg:                         $modal-content-bg !default;
+$swal-darkmode-bg:                $modal-content-darkmode-bg !default;
+$swal-padding:                    1.25rem !default;
+$swal-width:                      31.25rem !default;
+$swal-max-width:                  $toast-max-width !default;
+$swal-margin-x:                   $content-container-padding-x !default;
+$swal-content-margin:             var(--#{$prefix}spacer-1) var(--#{$prefix}spacer-2) 0 var(--#{$prefix}spacer-2) !default;
+$swal-box-shadow:                 $modal-content-box-shadow-xs !default;
+
+$swal-icon-size:                  5rem !default;
+$swal-icon-border-width:          0.25rem !default;
+$swal-icon-spacer:                1rem !default;
+
+$swal-progress-height:            .25rem !default;
+$swal-progress-color:             rgba(var(--#{$prefix}black-rgb), .25) !default;
+$swal-darkmode-progress-color:    rgba(var(--#{$prefix}white-rgb), .25) !default;
+
+$swal-toast-bg:                   $toast-background-color !default;
+$swal-darkmode-toast-bg:          $toast-darkmode-background-color !default;
+$swal-toast-padding:              $toast-padding-y $toast-padding-x !default;
+$swal-toast-icon-size:            1.75rem !default;
+$swal-toast-icon-border-width:    0.125rem !default;
+$swal-toast-icon-spacer:          0.5rem !default;
+$swal-toast-content-margin:       var(--#{$prefix}spacer-1) 0 var(--#{$prefix}spacer-1) var(--#{$prefix}spacer-2) !default;
+
+$swal-error-color:                var(--#{$prefix}danger) !default;
+$swal-warning-color:              var(--#{$prefix}warning) !default;
+$swal-info-color:                 var(--#{$prefix}primary) !default;
+$swal-question-color:             var(--#{$prefix}secondary) !default;
+$swal-success-color:              var(--#{$prefix}success) !default;
+
+$swal-step-distance:              2.5em !default;
+$swal-step-line-size:             calc(var(--#{$prefix}border-width) * 2) !default;
+$swal-step-line-color:            var(--#{$prefix}gray-300) !default;
+$swal-step-padding-y:             $btn-padding-y !default;
+$swal-step-padding-x:             $btn-padding-x !default;
+$swal-active-step-bg:             var(--#{$prefix}component-active-bg) !default;
+$swal-active-step-color:          var(--#{$prefix}component-active-color) !default;
+
+
+//
+// Datatables
+//
+
+$dt-spacer-y:                      var(--#{$prefix}spacer) !default;
+$dt-spacer-x:                      var(--#{$prefix}spacer) !default;
+$dt-filter-width:                  15rem !default;
+
+$dt-button-collection-2col-width:  18.75rem !default;
+$dt-button-collection-3col-width:  28.13rem !default;
+$dt-button-collection-4col-width:  37.5rem !default;
+
+
+//
+// Misc components
+//
+// Other custom 3rd party extensions and libraries
+
+// FAB (floating action button)
+$fab-main-btn-size:                 calc(var(--#{$prefix}spacer-2) + calc(var(--#{$prefix}icon-font-size) * .5)) !default;
+$fab-inner-btn-size:                calc(calc(calc(var(--#{$prefix}spacer-2) - var(--#{$prefix}fab-btn-gap)) * 2) + var(--#{$prefix}icon-font-size)) !default;
+$fab-inner-btn-spacing:             var(--#{$prefix}spacer-2) !default;
+
+
+// Fullcalendar
+$fc-bg:                      $card-bg !default;
+$fc-darkmode-bg:             $card-darkmode-bg !default;
+
+$fc-event-bg:                var(--#{$prefix}primary) !default;
+$fc-event-color:             var(--#{$prefix}white) !default;
+$fc-event-font-size:         var(--#{$prefix}body-font-size-sm) !default;
+$fc-event-border-width:      var(--#{$prefix}border-width) !default;
+$fc-event-border-color:      var(--#{$prefix}primary) !default;
+$fc-event-spacer-y:          0.1875rem !default;
+$fc-event-spacer-x:          0.5rem !default;
+$fc-event-padding-y:         0.1875rem !default;
+$fc-event-padding-x:         0.5rem !default;
+$fc-event-more-bg:           var(--#{$prefix}gray-200) !default;
+$fc-event-more-hover-bg:	 var(--#{$prefix}gray-300) !default;
+$fc-event-resizer-size:      0.5rem !default;
+
+$fc-today-bg:                rgba(var(--#{$prefix}yellow-rgb), .1) !default;
+$fc-bgevent-bg:              rgba(var(--#{$prefix}success-rgb), .4) !default;
+$fc-nonbusiness-bg:          rgba(var(--#{$prefix}body-color-rgb), 0.05) !default;
+$fc-highlight-bg:            rgba(var(--#{$prefix}primary-rgb), 0.1) !default;
+$fc-weekday-color:           rgba(var(--#{$prefix}body-color-rgb), .5) !default;
+
+
+// Sliders (shared styles)
+$slider-bg:                        var(--#{$prefix}gray-300) !default;
+$slider-connect-bg:                var(--#{$prefix}primary) !default;
+$slider-box-shadow:                inset 0 1px 1px rgba(var(--#{$prefix}black-rgb), .1) !default;
+
+$slider-height:                    0.375rem !default;
+$slider-height-lg:                 ($slider-height + 0.125rem) !default;
+$slider-height-sm:                 ($slider-height - 0.125rem) !default;
+$slider-vertical-height:           10rem !default;
+
+$slider-handle-size:               calc(#{$slider-height} * 3.5) !default;
+$slider-handle-bg:                 var(--#{$prefix}white) !default;
+$slider-handle-inner-bg:           var(--#{$prefix}black) !default;
+$slider-handle-border-width:       var(--#{$prefix}border-width) !default;
+$slider-handle-border-color:       rgba(var(--#{$prefix}black-rgb), .25) !default;
+$slider-handle-inner-hover-bg:     var(--#{$prefix}primary) !default;
+
+$slider-pips-color:                var(--#{$prefix}gray-700) !default;
+$slider-pips-spacer-y:             1rem !default;
+$slider-pips-spacer-x:             1rem !default;
+$slider-pips-marker-width:         .0625rem !default;
+$slider-pips-marker-height:        .1875rem !default;
+$slider-pips-font-size:            var(--#{$prefix}body-font-size-sm) !default;
+
+
+// Image cropper
+$cropper-grid-size:                var(--#{$prefix}border-width) !default;
+$cropper-grid-color:               var(--#{$prefix}gray-300) !default;
+$cropper-grid-center-size:         calc(var(--#{$prefix}border-width) * 9) !default;
+
+$cropper-resizer-color:            var(--#{$prefix}primary) !default;
+$cropper-resizer-size:             .375rem !default;
+$cropper-resizer-size-lg:          1.25rem !default;
+
+
+// Fancytree
+$fancytree-check-border-width:     calc(#{$input-border-width} * 2) !default;
+$fancytree-check-border-color:     $input-border-color !default;
+
+$fancytree-node-padding-y:         .25rem !default;
+$fancytree-node-padding-x:         .5rem !default;
+
+$fancytree-node-selected-bg:       var(--#{$prefix}gray-300) !default;
+$fancytree-node-selected-color:    var(--#{$prefix}body-color) !default;
+
+$fancytree-node-active-bg:         var(--#{$prefix}component-active-bg) !default;
+$fancytree-node-active-color:      var(--#{$prefix}component-active-color) !default;
+
+
+
+//
+// Page kits
+//
+// Feeds, timelines, profiles, chats, inbox, ecommerce etc
+//
+
+// Timelines
+$timeline-icon-size:            3rem !default;
+$timeline-line-width:           calc(var(--#{$prefix}border-width) * 2) !default;
+$timeline-line-color:           var(--#{$prefix}gray-400) !default;
+$timeline-icon-bg:              $card-bg !default;
+$timeline-icon-border-width:    calc(var(--#{$prefix}timeline-line-width) * 2) !default;
+$timeline-content-padding-x:    calc(#{$content-container-padding-x} * 2) !default;
+
+
+// Feeds
+$list-feed-circle-radius:          .5rem !default; // must be equal to even px value
+$list-feed-circle-border-width:    calc(var(--#{$prefix}border-width) * 2) !default;
+$list-feed-circle-border-color:    var(--#{$prefix}secondary) !default;
+$list-feed-circle-position:        calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}feed-circle-radius)) * .5) !default;
+
+$list-feed-item-padding-y:         1.25rem !default;
+$list-feed-item-padding-x:         calc(var(--#{$prefix}spacer) + var(--#{$prefix}feed-circle-radius)) !default;
+
+
+// Blog
+$blog-horizontal-img-max-width:       25rem !default;
+$blog-horizontal-img-max-width-lg:    31.25rem !default;
+$blog-horizontal-img-max-width-sm:    18.75rem !default;
+$blog-horizontal-img-max-width-xs:    12.5rem !default;
+
+
+// Login page
+$login-form-width:                    25rem !default;
+
+
+// Profile pages
+$profile-cover-text-shadow:           0 0 0.1875rem rgba(var(--#{$prefix}black-rgb), 0.5) !default;
+$profile-cover-height:                21.88rem !default;
+
+
+// Inbox
+$inbox-read-row-bg:                   var(--#{$prefix}gray-100) !default;
+$inbox-unread-row-bg:                 var(--#{$prefix}card-bg) !default;
+$inbox-img-size:                      2rem !default;
+
+
+// Chats
+$chat-list-max-height:                32.5rem !default;
+$chat-message-padding-y:              .625rem !default;
+$chat-message-padding-x:              1rem !default;
+$chat-message-bg:                     var(--#{$prefix}gray-300) !default;
+$chat-message-color:                  var(--#{$prefix}body-color) !default;
+$chat-message-reversed-bg:            var(--#{$prefix}primary) !default;
+$chat-message-reversed-color:         var(--#{$prefix}white) !default;

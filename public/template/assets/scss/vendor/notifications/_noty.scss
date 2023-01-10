@@ -1,0 +1,377 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Noty notifications
+*
+*  Styles for noty.min.js - A dependency-free notification library
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-noty {
+
+    // Main container
+    .noty_layout {
+        --#{$prefix}noty-spacer-y: #{$noty-spacer-y};
+        --#{$prefix}noty-gutter-y: #{$noty-gutter-y};
+        --#{$prefix}noty-gutter-x: #{$noty-gutter-x};
+        --#{$prefix}noty-padding-y: #{$noty-padding-y};
+        --#{$prefix}noty-padding-x: #{$noty-padding-x};
+        --#{$prefix}noty-width: #{$noty-width};
+        --#{$prefix}noty-bg: #{$noty-bg};
+        --#{$prefix}noty-color: #{$noty-color};
+        --#{$prefix}noty-border-width: #{$noty-border-width};
+        --#{$prefix}noty-border-color: #{$noty-border-color};
+        --#{$prefix}noty-progress-height: #{$noty-progress-height};
+        --#{$prefix}noty-progress-bg: #{$noty-progress-bg};
+        --#{$prefix}noty-shadow: #{$noty-box-shadow};
+        --#{$prefix}noty-border-radius: #{$noty-border-radius};
+
+        @include color-scheme(dark) {
+            --#{$prefix}noty-bg: #{$noty-darkmode-bg};
+        }
+    }
+
+    // Base
+    .noty_bar {
+        position: relative;
+        border: var(--#{$prefix}noty-border-width) solid var(--#{$prefix}noty-border-color);
+        -webkit-backface-visibility: hidden;
+        background-color: var(--#{$prefix}noty-bg);
+        color: var(--#{$prefix}noty-color);
+        transform: translate(0, 0) scale(1.0, 1.0);
+        -webkit-font-smoothing: subpixel-antialiased;
+        @include box-shadow(var(--#{$prefix}noty-shadow));
+        @include border-radius(var(--#{$prefix}noty-border-radius));
+    }
+
+    // Body
+    .noty_body {
+        padding: var(--#{$prefix}noty-padding-y) var(--#{$prefix}noty-padding-x);
+
+        // Increase right padding if alert has close button
+        .noty_close_with_button & {
+            padding-right: calc(var(--#{$prefix}noty-padding-x) * 2);
+        }
+    }
+
+    // Buttons area
+    .noty_buttons {
+        padding: var(--#{$prefix}noty-padding-y) var(--#{$prefix}noty-padding-x);
+        padding-top: 0;
+        text-align: right;
+    }
+
+    // Positioning mixin
+    .noty_layout_mixin {
+        position: fixed;
+        margin: 0;
+        padding: 0;
+        z-index: $zindex-modal;
+        transform: translateZ(0) scale(1.0, 1.0);
+        filter: blur(0);
+        backface-visibility: hidden;
+        -webkit-font-smoothing: subpixel-antialiased;
+        max-width: 90%;
+    }
+
+
+    //
+    // Top position
+    //
+
+    // Full width
+    #noty_layout__top {
+        @extend .noty_layout_mixin;
+        top: 0;
+        left: 5%;
+        width: 90%;
+
+        // Add more spacing to the first notification
+        .noty_bar:first-child {
+            margin-top: var(--#{$prefix}noty-gutter-y);
+        }
+    }
+
+    // Left
+    #noty_layout__topLeft {
+        @extend .noty_layout_mixin;
+        top: var(--#{$prefix}noty-gutter-y);
+        left: var(--#{$prefix}noty-gutter-x);
+        width: var(--#{$prefix}noty-width);
+    }
+
+    // Center
+    #noty_layout__topCenter {
+        @extend .noty_layout_mixin;
+        top: 5%;
+        left: 50%;
+        width: var(--#{$prefix}noty-width);
+        transform: translate(-50%) translateZ(0) scale(1.0, 1.0);
+    }
+
+    // Right
+    #noty_layout__topRight {
+        @extend .noty_layout_mixin;
+        top: var(--#{$prefix}noty-gutter-y);
+        right: var(--#{$prefix}noty-gutter-x);
+        width: var(--#{$prefix}noty-width);
+    }
+
+
+    //
+    // Middle position
+    //
+
+    // Center
+    #noty_layout__center {
+        @extend .noty_layout_mixin;
+        top: 50%;
+        left: 50%;
+        width: var(--#{$prefix}noty-width);
+        transform: translate(-50%, -50%) translateZ(0) scale(1.0, 1.0);
+    }
+
+    // Left
+    #noty_layout__centerLeft {
+        @extend .noty_layout_mixin;
+        top: 50%;
+        left: var(--#{$prefix}noty-gutter-x);
+        width: var(--#{$prefix}noty-width);
+        transform: translate(0, -50%) translateZ(0) scale(1.0, 1.0);
+    }
+
+    // Right
+    #noty_layout__centerRight {
+        @extend .noty_layout_mixin;
+        top: 50%;
+        right: var(--#{$prefix}noty-gutter-x);
+        width: var(--#{$prefix}noty-width);
+        transform: translate(0, -50%) translateZ(0) scale(1, 1);
+    }
+
+
+    //
+    // Bottom position
+    //
+
+    // Full width
+    #noty_layout__bottom {
+        @extend .noty_layout_mixin;
+        bottom: 0;
+        left: 5%;
+        width: 90%;
+
+        // Add more spacing to the last notification
+        .noty_bar:last-child {
+            margin-bottom: var(--#{$prefix}noty-gutter-y);
+        }
+    }
+
+    // Left
+    #noty_layout__bottomLeft {
+        @extend .noty_layout_mixin;
+        bottom: var(--#{$prefix}noty-gutter-y);
+        left: var(--#{$prefix}noty-gutter-x);
+        width: var(--#{$prefix}noty-width);
+    }
+
+    // Center
+    #noty_layout__bottomCenter {
+        @extend .noty_layout_mixin;
+        bottom: 5%;
+        left: 50%;
+        width: var(--#{$prefix}noty-width);
+        transform: translate(calc(-50% - var(--#{$prefix}noty-border-width))) translateZ(0) scale(1.0, 1.0);
+    }
+
+    // Right
+    #noty_layout__bottomRight {
+        @extend .noty_layout_mixin;
+        bottom: var(--#{$prefix}noty-gutter-y);
+        right: var(--#{$prefix}noty-gutter-x);
+        width: var(--#{$prefix}noty-width);
+    }
+
+
+    //
+    // Progress bar
+    //
+
+    .noty_progressbar {
+        display: none;
+
+        // Show only if notification has timeout
+        .noty_has_timeout.noty_has_progressbar & {
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: var(--#{$prefix}noty-progress-height);
+            width: 100%;
+            background-color: var(--#{$prefix}noty-progress-bg);
+        }
+    }
+
+
+    //
+    // Animation effects
+    //
+
+    // Open
+    .noty_effects_open {
+        opacity: 0;
+        transform: translate(50%);
+        animation: noty_anim_in .5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        animation-fill-mode: forwards;
+    }
+
+    // Close
+    .noty_effects_close {
+        animation: noty_anim_out .5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        animation-fill-mode: forwards;
+    }
+
+    // Height
+    .noty_fix_effects_height {
+        animation: noty_anim_height 75ms ease-out;
+    }
+
+
+    //
+    // Close button
+    //
+
+    // On notification click
+    .noty_close_with_click {
+        cursor: pointer;
+    }
+
+    // Button
+    .noty_close_button {
+        position: absolute;
+        top: var(--#{$prefix}noty-padding-y);
+        right: var(--#{$prefix}noty-padding-x);
+        font-size: var(--#{$prefix}icon-font-size);
+        background-color: transparent;
+        color: inherit;
+        text-align: center;
+        line-height: 1;
+        cursor: pointer;
+        opacity: 0.75;
+        @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+        // Animate on hover
+        &:hover {
+            opacity: 1;
+        }
+    }
+
+
+    //
+    // Modal
+    //
+
+    .noty_modal {
+        --#{$prefix}noty-backdrop-bg: #{$modal-backdrop-bg};
+        --#{$prefix}noty-backdrop-opacity: #{$modal-backdrop-opacity};
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: var(--#{$prefix}noty-backdrop-bg);
+        z-index: $zindex-modal-backdrop;
+        opacity: var(--#{$prefix}noty-backdrop-opacity);
+        left: 0;
+        top: 0;
+
+        // Open
+        &.noty_modal_open {
+            opacity: 0;
+            animation: noty_modal_in .3s ease-out;
+        }
+
+        // Close
+        &.noty_modal_close {
+            animation: noty_modal_out .3s ease-out;
+            animation-fill-mode: forwards;
+        }
+    }
+
+
+    //
+    // Animations
+    //
+
+    @keyframes noty_modal_in {
+        100% {
+            opacity: var(--#{$prefix}noty-backdrop-opacity);
+        }
+    }
+    @keyframes noty_modal_out {
+        100% {
+            opacity: 0;
+        }
+    }
+    @keyframes noty_anim_in {
+        100% {
+            transform: translate(0);
+            opacity: 1;
+        }
+    }
+    @keyframes noty_anim_out {
+        100% {
+            transform: translate(50%);
+            opacity: 0;
+        }
+    }
+    @keyframes noty_anim_height {
+        100% {
+            height: 0;
+        }
+    }
+
+
+    //
+    // Default limitless theme
+    //
+
+    .noty_theme__limitless {
+
+        // Base
+        &.noty_bar {
+            margin: var(--#{$prefix}noty-spacer-y) 0;
+            position: relative;
+        }
+
+        // Warning type
+        &.noty_type__warning {
+            --#{$prefix}noty-bg: #{$noty-warning-bg};
+        }
+
+        // Error type
+        &.noty_type__error {
+            --#{$prefix}noty-bg: #{$noty-error-bg};
+        }
+
+        // Info type
+        &.noty_type__info {
+            --#{$prefix}noty-bg: #{$noty-info-bg};
+        }
+
+        // Success type
+        &.noty_type__success {
+            --#{$prefix}noty-bg: #{$noty-success-bg};
+        }
+
+        // Confirmation type
+        &.noty_type__confirm {
+            --#{$prefix}noty-bg: #{$modal-content-bg};
+            --#{$prefix}noty-border-color: #{$modal-content-border-color};
+            --#{$prefix}noty-shadow: #{$modal-content-box-shadow-xs};
+            background-clip: padding-box;
+
+            @include color-scheme(dark) {
+                --#{$prefix}noty-bg: #{$modal-content-darkmode-bg};
+            }
+        }
+    }
+}

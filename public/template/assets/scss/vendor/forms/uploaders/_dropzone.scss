@@ -1,0 +1,325 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Dropzone file uploader
+ *
+ *  Styles for dropzone.min.js - open source library that provides drag’n’drop file uploads with image previews
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-dropzone {
+
+	// Base
+	.dropzone {
+        --#{$prefix}dz-min-height: #{$dropzone-min-height};
+        --#{$prefix}dz-border-width: #{$dropzone-border-width};
+        --#{$prefix}dz-border-style: #{$dropzone-border-style};
+        --#{$prefix}dz-border-color: #{$dropzone-border-color};
+        --#{$prefix}dz-placeholder-color: #{$dropzone-placeholder-color};
+        --#{$prefix}dz-spacer: #{$dropzone-spacer};
+        --#{$prefix}dz-drag-bg: #{$dropzone-drag-bg};
+        --#{$prefix}dz-drag-color: #{$dropzone-drag-color};
+        --#{$prefix}dz-drag-border-color: #{$dropzone-drag-border-color};
+        --#{$prefix}dz-preview-spacer: #{$dropzone-preview-spacer};
+        --#{$prefix}dz-preview-width: #{$dropzone-preview-width};
+
+		display: flex;
+		flex-wrap: wrap;
+		position: relative;
+		border: var(--#{$prefix}dz-border-width) var(--#{$prefix}dz-border-style) var(--#{$prefix}dz-border-color);
+		min-height: var(--#{$prefix}dz-min-height);
+		padding: var(--#{$prefix}dz-spacer);
+		@include border-radius(var(--#{$prefix}border-radius));
+
+		// Clickable area
+		&.dz-clickable {
+			* {
+				cursor: default;
+			}
+
+			&,
+			.dz-message,
+			.dz-message * {
+				cursor: pointer;
+			}
+		}
+
+		// Message
+		.dz-message {
+			opacity: 1;
+
+			// Button
+			.dz-button {
+				background: none;
+				color: inherit;
+				border: none;
+				padding: 0;
+				font: inherit;
+				cursor: pointer;
+				outline: inherit;
+			}
+		}
+		&.dz-started .dz-message {
+			display: none;
+		}
+
+		// Drag hover border and bg color
+		&.dz-drag-hover {
+			border-color: var(--#{$prefix}dz-drag-border-color);
+			background-color: var(--#{$prefix}dz-drag-bg);
+			color: var(--#{$prefix}dz-drag-color);
+		}
+	}
+
+
+	//
+	// Messages
+	//
+
+	.dropzone {
+
+		// Default styles
+		.dz-default {
+			&.dz-message {
+				width: 100%;
+				align-self: center;
+				text-align: center;
+				opacity: 1;
+				color: var(--#{$prefix}dz-placeholder-color);
+				@include border-radius(var(--#{$prefix}border-radius));
+				@include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+				// Icon
+				&:before {
+					content: $icon-uploader-placeholder;
+					font-family: var(--#{$prefix}icon-font-family);
+					font-size: calc(var(--#{$prefix}icon-font-size) * 4);
+					display: block;
+					margin-bottom: var(--#{$prefix}spacer-2);
+					line-height: 1;
+					@include ll-font-smoothing();
+				}
+			}
+		}
+
+		// On files drag
+		&.dz-drag-hover .dz-message {
+			opacity: 0.75;
+		}
+	}
+
+
+	//
+	// Preview
+	//
+
+	.dropzone {
+		.dz-preview {
+			position: relative;
+			align-self: flex-start;
+			display: inline-block;
+			margin: var(--#{$prefix}dz-preview-spacer);
+			padding: var(--#{$prefix}dz-preview-spacer);
+			border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+			@include border-radius(var(--#{$prefix}border-radius));
+
+			// Details
+			.dz-details {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				text-align: center;
+				position: absolute;
+				top: 0;
+				left: 0;
+				opacity: 0;
+				width: 100%;
+				height: 100%;
+				padding: var(--#{$prefix}dz-preview-spacer);
+				@include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+			}
+
+			// Hover state
+			&:hover {
+				.dz-details {
+					opacity: 1;
+				}
+
+				.dz-image img {
+					filter: blur(8px);
+					opacity: 0.5;
+				}
+			}
+
+			// Hide file details if error message exists
+			&.dz-error:hover .dz-details {
+				display: none;
+			}
+
+			// Marks
+			.dz-error-mark,
+			.dz-success-mark {
+				display: none;
+				position: absolute;
+				z-index: 9;
+				top: calc(calc(var(--#{$prefix}icon-font-size) * .5) * -1);
+				right: calc(calc(var(--#{$prefix}icon-font-size) * .5) * -1);
+				padding: calc(var(--#{$prefix}spacer-1) * .5);
+				background-color: $card-bg;
+				@include border-radius(var(--#{$prefix}border-radius-pill));
+			    @include color-scheme(dark) {
+					background-color: $card-darkmode-bg;
+			    }
+
+				// Icon base
+				&:after {
+					font-family: var(--#{$prefix}icon-font-family);
+					display: block;
+					font-size: var(--#{$prefix}icon-font-size);
+					line-height: 1;
+					@include ll-font-smoothing();
+				}
+
+				// Hide default things
+				span,
+				svg {
+					display: none;
+				}
+			}
+			.dz-error-mark {
+				color: var(--#{$prefix}danger);
+
+				&:after {
+					content: $icon-validation-error;
+				}
+			}
+			.dz-success-mark {
+				color: var(--#{$prefix}success);
+
+				&:after {
+					content: $icon-validation-success;
+				}
+			}
+
+			// Error and success marks
+			&.dz-error .dz-error-mark,
+			&.dz-success .dz-success-mark {
+				display: block;
+				opacity: 1;
+			}
+
+			// Uploading progress
+			.dz-progress {
+				position: absolute;
+				bottom: var(--#{$prefix}dz-preview-spacer);
+				left: var(--#{$prefix}dz-preview-spacer);
+				right: var(--#{$prefix}dz-preview-spacer);
+				height: calc(var(--#{$prefix}dz-preview-spacer) * .5);
+				display: none;
+
+				// Upload progress
+				.dz-upload {
+					display: block;
+					position: absolute;
+					top: 0;
+					bottom: 0;
+					left: 0;
+					width: 0%;
+					height: 100%;
+					background-color: var(--#{$prefix}success);
+					@include transition(width ease-in-out var(--#{$prefix}transition-base-timer));
+					@include border-radius(var(--#{$prefix}border-radius));
+				}
+			}
+			&.dz-processing .dz-progress {
+				display: block;
+			}
+			&.dz-success {
+				.dz-progress {
+					display: block;
+					opacity: 0;
+					@include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+				}
+			}
+
+			// Error message
+			.dz-error-message {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				text-align: center;
+				position: absolute;
+				top: 0;
+				left: 0;
+				padding: var(--#{$prefix}dz-preview-spacer);
+				width: 100%;
+				height: 100%;
+				opacity: 0;
+				@include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+			}
+			&.dz-error {
+				&:hover {
+					.dz-error-message {
+						opacity: 1;
+					}
+				}
+
+				.dz-progress .dz-upload {
+					background-color: var(--#{$prefix}danger);
+				}
+			}
+
+			// Image preview
+			&.dz-image-preview:hover {
+				.dz-details img {
+					display: block;
+					opacity: 0.1;
+				}
+			}
+
+			// Image thumb
+			.dz-image {
+				width: var(--#{$prefix}dz-preview-width);
+				height: var(--#{$prefix}dz-preview-width);
+				overflow: hidden;
+				@include border-radius(calc(var(--#{$prefix}border-radius) - var(--#{$prefix}border-width)));
+
+				img {
+					width: 100%;
+					@include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer), filter ease-in-out var(--#{$prefix}transition-base-timer));
+				}
+			}
+
+			// Remove button
+			a.dz-remove {
+				position: relative;
+				margin-top: var(--#{$prefix}dz-preview-spacer);
+				color: $btn-light-color;
+				background-color: $btn-light-bg;
+				border: $btn-border-width solid $btn-light-border-color;
+				display: block;
+				text-align: center;
+				padding: var(--#{$prefix}spacer-1) var(--#{$prefix}spacer-2);
+				cursor: pointer;
+				z-index: 21;
+				@include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+				@include border-radius(var(--#{$prefix}border-radius));
+
+				// Hover state
+				&:hover,
+				&:focus {
+					color: $btn-light-hover-color;
+					border-color: $btn-light-hover-border-color;
+					background-color: $btn-light-hover-bg;
+				}
+
+				// Active state
+				&:active {
+					color: $btn-light-active-color;
+					border-color: $btn-light-active-border-color;
+					background-color: $btn-light-active-bg;
+				}
+			}
+		}
+	}
+}

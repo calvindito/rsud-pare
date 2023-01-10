@@ -1,0 +1,37 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Form labels overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Remove top padding in labels on certain breakpoints
+// to match vertical form spacings
+.col-form-label,
+.col-form-label-sm,
+.col-form-label-lg {
+    @include media-breakpoint-down(sm) {
+        &[class*="col-sm-"] {
+            padding-top: 0;
+        }
+    }
+    @include media-breakpoint-down(md) {
+        &[class*="col-md-"] {
+            padding-top: 0;
+        }
+    }
+    @include media-breakpoint-down(lg) {
+        &[class*="col-lg-"] {
+            padding-top: 0;
+        }
+    }
+    @include media-breakpoint-down(xl) {
+        &[class*="col-xl-"] {
+            padding-top: 0;
+        }
+    }
+    @include media-breakpoint-down(xxl) {
+        &[class*="col-xxl-"] {
+            padding-top: 0;
+        }
+    }
+}

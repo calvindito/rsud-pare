@@ -1,0 +1,704 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Select2 selects
+*
+*  Styles for select2.js - custom select plugin
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-select2 {
+
+
+    // Select base
+    // ------------------------------
+
+    .select2-container {
+        --#{$prefix}s2-bg: #{$form-select-bg};
+        --#{$prefix}s2-color: #{$form-select-color};
+        --#{$prefix}s2-padding-y: #{$form-select-padding-y};
+        --#{$prefix}s2-padding-x: #{$form-select-padding-x};
+        --#{$prefix}s2-placeholder-color: #{$input-placeholder-color};
+        --#{$prefix}s2-border-width: #{$form-select-border-width};
+        --#{$prefix}s2-border-color: #{$form-select-border-color};
+        --#{$prefix}s2-border-radius: #{$form-select-border-radius};
+        --#{$prefix}s2-focus-border-color: #{$form-select-focus-border-color};
+        --#{$prefix}s2-focus-box-shadow: #{$form-select-focus-box-shadow};
+        --#{$prefix}s2-disabled-color: #{$form-select-disabled-color};
+        --#{$prefix}s2-disabled-bg: #{$form-select-disabled-bg};
+        --#{$prefix}s2-disabled-border-color: #{$form-select-disabled-border-color};
+        --#{$prefix}s2-disabled-opacity: #{$select2-disabled-opacity};
+        --#{$prefix}s2-font-size: #{$form-select-font-size};
+        --#{$prefix}s2-line-height: #{$form-select-line-height};
+        --#{$prefix}s2-indicator-padding: #{$form-select-indicator-padding};
+
+        --#{$prefix}s2-menu-padding-y: #{$dropdown-padding-y};
+        --#{$prefix}s2-menu-max-height: #{$dropdown-scrollable-max-height};
+        --#{$prefix}s2-menu-bg: #{$dropdown-bg};
+        --#{$prefix}s2-menu-border-width: #{$dropdown-border-width};
+        --#{$prefix}s2-menu-border-color: #{$dropdown-border-color};
+        --#{$prefix}s2-menu-border-radius: #{$dropdown-border-radius};
+        --#{$prefix}s2-menu-box-shadow: #{$dropdown-box-shadow};
+        --#{$prefix}s2-menu-item-spacer-y: #{$dropdown-item-spacer-y};
+        --#{$prefix}s2-menu-item-padding-x: #{$dropdown-item-padding-x};
+        --#{$prefix}s2-menu-item-padding-y: #{$dropdown-item-padding-y};
+        --#{$prefix}s2-menu-link-color: #{$dropdown-link-color};
+        --#{$prefix}s2-menu-link-disabled-color: #{$dropdown-link-disabled-color};
+        --#{$prefix}s2-menu-link-hover-color: #{$dropdown-link-hover-color};
+        --#{$prefix}s2-menu-link-hover-bg: #{$dropdown-link-hover-bg};
+        --#{$prefix}s2-menu-link-active-color: #{$dropdown-link-active-color};
+        --#{$prefix}s2-menu-link-active-bg: #{$dropdown-link-active-bg};
+
+        --#{$prefix}s2-search-bg: #{$input-bg};
+        --#{$prefix}s2-search-padding-y: #{$input-padding-y};
+        --#{$prefix}s2-search-padding-x: #{$input-padding-x};
+        --#{$prefix}s2-search-color: #{$input-color};
+        --#{$prefix}s2-search-border-width: #{$input-border-width};
+        --#{$prefix}s2-search-border-color: #{$input-border-color};
+        --#{$prefix}s2-search-border-radius: #{$input-border-radius};
+        --#{$prefix}s2-search-focus-bg: #{$input-focus-bg};
+        --#{$prefix}s2-search-focus-border-color: #{$input-focus-border-color};
+        --#{$prefix}s2-search-focus-box-shadow: #{$input-focus-box-shadow};
+
+        --#{$prefix}s2-pills-bg: #{$select2-pills-bg};
+        --#{$prefix}s2-pills-color: #{$select2-pills-color};
+        --#{$prefix}s2-pills-hover-bg: #{$select2-pills-hover-bg};
+        --#{$prefix}s2-pills-hover-color: #{$select2-pills-hover-color};
+        --#{$prefix}s2-pills-border-radius: #{$select2-pills-border-radius};
+        --#{$prefix}s2-pills-spacer: #{$select2-pills-spacer};
+
+        // Dark theme
+        @include color-scheme(dark) {
+            --#{$prefix}s2-bg: #{$form-select-darkmode-bg};
+            --#{$prefix}s2-menu-bg: #{$dropdown-darkmode-bg};
+            --#{$prefix}s2-menu-border-color: #{$dropdown-darkmode-border-color};
+
+            --#{$prefix}s2-search-bg: #{$input-darkmode-bg};
+            --#{$prefix}s2-search-focus-bg: #{$input-darkmode-focus-bg};
+        }
+
+        outline: 0;
+        position: relative;
+        display: inline-block;
+        vertical-align: middle;
+        text-align: left;
+    }
+
+
+    // Single select
+    // ------------------------------
+
+    .select2-selection--single {
+        outline: 0;
+        display: block;
+        position: relative;
+        padding: var(--#{$prefix}s2-padding-y) 0;
+        font-size: var(--#{$prefix}s2-font-size);
+        line-height: var(--#{$prefix}s2-line-height);
+        color: var(--#{$prefix}s2-color);
+        background-color: var(--#{$prefix}s2-bg);
+        border: var(--#{$prefix}s2-border-width) solid var(--#{$prefix}s2-border-color);
+        white-space: nowrap;
+        user-select: none;
+        @include transition($form-select-transition);
+        @include border-radius(var(--#{$prefix}s2-border-radius));
+
+        // Focus state
+        .select2-container--focus:not(.select2-container--disabled) &,
+        .select2-container--open & {
+            border-color: var(--#{$prefix}s2-focus-border-color);
+            box-shadow: var(--#{$prefix}s2-focus-box-shadow)
+        }
+
+        // Result text
+        .select2-selection__rendered {
+            display: block;
+            padding-left: var(--#{$prefix}s2-padding-x);
+            padding-right: var(--#{$prefix}s2-indicator-padding);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            // Icons
+            > i {
+                margin-right: var(--#{$prefix}spacer-2);
+            }
+        }
+
+        // Clear selection button
+        .select2-selection__clear {
+            position: relative;
+            cursor: pointer;
+            float: right;
+            font-size: 0;
+            line-height: 1;
+            margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+            margin-left: var(--#{$prefix}spacer-2);
+            opacity: 0.75;
+            @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+            // Add hover state effect
+            &:hover {
+                opacity: 1;
+            }
+
+            // Cross icon
+            &:after {
+                content: $icon-action-cross;
+                font-family: var(--#{$prefix}icon-font-family);
+                display: inline-block;
+                font-size: var(--#{$prefix}icon-font-size);
+                @include ll-font-smoothing();
+            }
+        }
+
+        // Placeholder
+        .select2-selection__placeholder {
+            color: var(--#{$prefix}s2-placeholder-color);
+        }
+
+        // Dropdown arrow
+        .select2-selection__arrow {
+            display: inline-block;
+            position: absolute;
+            right: var(--#{$prefix}s2-padding-x);
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1em;
+            height: 1em;
+            background-image: escape-svg($form-select-indicator);
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-size: $form-select-bg-size;
+
+            // Dark theme
+            @include color-scheme(dark) {
+                background-image: escape-svg($form-select-indicator-dark);
+            }
+        }
+
+        // Disabled menu
+        .select2-container--disabled & {
+            color: var(--#{$prefix}s2-disabled-color);
+            background-color: var(--#{$prefix}s2-disabled-bg);
+            border-color: var(--#{$prefix}s2-border-color);
+
+            // Hide clear button
+            .select2-selection__clear {
+                display: none;
+            }
+        }
+    }
+
+
+    // Multiple select
+    // ------------------------------
+
+    .select2-selection--multiple {
+        outline: 0;
+        display: block;
+        border: var(--#{$prefix}s2-border-width) solid var(--#{$prefix}s2-border-color);
+        cursor: text;
+        background-color: var(--#{$prefix}s2-bg);
+        user-select: none;
+        @include transition($form-select-transition);
+        @include border-radius(var(--#{$prefix}s2-border-radius));
+
+        // Focus state
+        .select2-container--focus:not(.select2-container--disabled) &,
+        .select2-container--open & {
+            border-color: var(--#{$prefix}s2-focus-border-color);
+            box-shadow: var(--#{$prefix}s2-focus-box-shadow);
+        }
+
+        // Result text
+        .select2-selection__rendered {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            list-style: none;
+            margin: 0;
+            padding: 0 var(--#{$prefix}s2-pills-spacer) var(--#{$prefix}s2-pills-spacer) var(--#{$prefix}s2-pills-spacer);
+            width: 100%;
+        }
+
+        // Placeholder
+        .select2-selection__placeholder {
+            color: var(--#{$prefix}s2-placeholder-color);
+        }
+
+        // Disabled multiselect
+        .select2-container--disabled & {
+            background-color: var(--#{$prefix}s2-disabled-bg);
+            border-color: var(--#{$prefix}s2-border-color);
+        }
+
+        // Choices
+        .select2-selection__choice {
+            background-color: var(--#{$prefix}s2-pills-bg);
+            color: var(--#{$prefix}s2-pills-color);
+            cursor: default;
+            float: left;
+            margin-right: var(--#{$prefix}s2-pills-spacer);
+            margin-top: var(--#{$prefix}s2-pills-spacer);
+            padding: calc(var(--#{$prefix}s2-padding-y) - var(--#{$prefix}s2-pills-spacer)) var(--#{$prefix}s2-padding-x);
+            white-space: normal;
+            word-break: break-all;
+            @include border-radius(var(--#{$prefix}s2-pills-border-radius));
+            @include transition(color ease-in-out var(--#{$prefix}transition-base-timer), background-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+            // Hover state
+            &:hover,
+            &:focus {
+                background-color: var(--#{$prefix}s2-pills-hover-bg);
+                color: var(--#{$prefix}s2-pills-hover-color);
+            }
+
+            // Icons
+            > i {
+                margin-right: var(--#{$prefix}spacer-2);
+            }
+
+            // Remover
+            .select2-selection__choice__remove {
+                cursor: pointer;
+                float: right;
+                font-size: var(--#{$prefix}icon-font-size);
+                line-height: 1;
+                margin-left: var(--#{$prefix}spacer-2);
+                opacity: 0.75;
+                @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+                // Highlight on hover
+                &:hover {
+                    opacity: 1;
+                }
+            }
+
+            // Disable choice
+            .select2-container--disabled & {
+                opacity: var(--#{$prefix}s2-disabled-opacity);
+
+                // Hover state
+                &:hover,
+                &:focus {
+                    background-color: var(--#{$prefix}s2-pills-bg);
+                    color: var(--#{$prefix}s2-pills-color);
+                }
+
+                // Hide remover
+                .select2-selection__choice__remove {
+                    display: none;
+                }
+            }
+        }
+
+        // Search
+        .select2-search--inline {
+            float: left;
+
+            // Search field
+            .select2-search__field {
+                font-size: 100%;
+                margin-top: var(--#{$prefix}s2-pills-spacer);
+                padding: calc(var(--#{$prefix}s2-search-padding-y) - var(--#{$prefix}s2-pills-spacer)) 0;
+                background-color: transparent;
+                border-width: 0;
+                outline: 0;
+                color: inherit;
+                margin-left: calc(var(--#{$prefix}s2-pills-spacer) * 2);
+                -webkit-appearance: textfield;
+
+                // Cancel button
+                &::-webkit-search-cancel-button {
+                    -webkit-appearance: none;
+                }
+
+                // Placeholder color
+                &::placeholder {
+                    color: var(--#{$prefix}s2-placeholder-color);
+                }
+            }
+
+            // Remove left spacing if no pills
+            &:first-child .select2-search__field {
+                margin-left: 0;
+                padding-left: calc(var(--#{$prefix}s2-search-padding-x) - var(--#{$prefix}s2-pills-spacer));
+            }
+        }
+    }
+
+
+    // Select results
+    // ------------------------------
+
+    // Dropdown
+    .select2-dropdown {
+        background-color: var(--#{$prefix}s2-menu-bg);
+        color: var(--#{$prefix}s2-menu-link-color);
+        border: var(--#{$prefix}s2-menu-border-width) solid var(--#{$prefix}s2-menu-border-color);
+        display: block;
+        position: absolute;
+        /*rtl:ignore*/
+        left: -100000px;
+        width: 100%;
+        z-index: $zindex-tooltip;
+        @include border-radius(var(--#{$prefix}s2-menu-border-radius));
+        @include box-shadow(var(--#{$prefix}s2-menu-box-shadow));
+    }
+
+    // Results container
+    .select2-results {
+        display: block;
+    }
+
+    // Options list
+    .select2-results__options {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        // Add scrollbar to first level list
+        .select2-results > & {
+            padding-bottom: var(--#{$prefix}s2-menu-padding-y);
+            max-height: var(--#{$prefix}s2-menu-max-height);
+            overflow-y: auto;
+
+            // Add top spacing if search is hidden
+            .select2-search--hide + & {
+                padding-top: var(--#{$prefix}s2-menu-padding-y);
+            }
+        }
+
+        // First one
+        .select2-results:first-child > & {
+            padding-top: var(--#{$prefix}s2-menu-padding-y);
+        }
+    }
+
+    // Option
+    .select2-results__option {
+        padding: var(--#{$prefix}s2-menu-item-padding-y) var(--#{$prefix}s2-menu-item-padding-x);
+        user-select: none;
+        @include transition($dropdown-link-transition);
+
+        // Add 1px gap between options
+        & + & {
+            margin-top: var(--#{$prefix}s2-menu-item-spacer-y);
+        }
+
+        // Icons
+        i {
+            margin-right: var(--#{$prefix}spacer-2);
+
+            // Do not display empty icon
+            &.icon-undefined {
+                display: none;
+            }
+        }
+
+        // Option group
+        &[role=group] {
+            padding: 0;
+        }
+
+        // Highlighted option (hover state)
+        &.select2-results__option--highlighted {
+            background-color: var(--#{$prefix}s2-menu-link-hover-bg);
+            color: var(--#{$prefix}s2-menu-link-hover-color);
+        }
+
+        // Disabled option
+        &[aria-disabled=true] {
+            color: var(--#{$prefix}s2-menu-link-disabled-color);
+        }
+
+        // Selected option
+        &.select2-results__option--highlighted:active,
+        &[aria-selected=true] {
+            color: var(--#{$prefix}s2-menu-link-active-color);
+            background-color: var(--#{$prefix}s2-menu-link-active-bg);
+        }
+
+        // Add double horizontal spacing for nested options
+        .select2-results__options--nested > & {
+            padding-left: calc(var(--#{$prefix}s2-menu-item-padding-x) * 2);
+            padding-right: calc(var(--#{$prefix}s2-menu-item-padding-x) * 2);
+        }
+    }
+
+    // Option group title
+    .select2-results__group {
+        display: block;
+        padding: var(--#{$prefix}s2-menu-item-padding-y) var(--#{$prefix}s2-menu-item-padding-x);
+        cursor: default;
+        font-weight: $font-weight-semibold;
+        margin-top: var(--#{$prefix}s2-menu-padding-y);
+        margin-bottom: var(--#{$prefix}s2-menu-padding-y);
+
+        // Remove top spacing from the first group title
+        .select2-results__option:first-child > & {
+            margin-top: 0;
+        }
+    }
+
+
+    //
+    // Messages
+    //
+
+    // Results
+    .select2-results__message {
+        color: rgba(var(--#{$prefix}body-color-rgb), .75);
+        cursor: default;
+    }
+
+    // Loading
+    .select2-results__option.loading-results {
+        padding-top: 0;
+
+        // Add extra top spacing
+        + .select2-results__option {
+            margin-top: var(--#{$prefix}s2-menu-padding-y);
+        }
+    }
+
+    // Load more for infinite scroll
+    .select2-results__option--load-more {
+        text-align: center;
+        margin-top: var(--#{$prefix}s2-menu-padding-y);
+        cursor: default;
+    }
+
+
+    //
+    // Opened dropdown
+    //
+
+    .select2-container--open {
+
+        // Dropdown
+        .select2-dropdown {
+            /*rtl:ignore*/
+            left: 0;
+        }
+
+        // If opened above
+        .select2-dropdown--above {
+            border-bottom: 0;
+            @include border-bottom-radius(0);
+        }
+        &.select2-container--above {
+            .select2-selection--single,
+            .select2-selection--multiple {
+                @include border-top-radius(0);
+            }
+        }
+
+        // If opened below
+        .select2-dropdown--below {
+            border-top: none;
+            @include border-top-radius(0);
+        }
+        &.select2-container--below {
+            .select2-selection--single,
+            .select2-selection--multiple {
+                @include border-bottom-radius(0);
+            }
+        }
+    }
+
+
+    //
+    // Search inside dropdown
+    //
+
+    .select2-search--dropdown {
+        display: block;
+        position: relative;
+        padding: var(--#{$prefix}s2-menu-item-padding-x);
+
+        // Add search icon
+        &:after {
+            content: $icon-search-magnifier;
+            font-family: var(--#{$prefix}icon-font-family);
+            position: absolute;
+            top: 50%;
+            left: calc(var(--#{$prefix}s2-menu-item-padding-x) + var(--#{$prefix}s2-search-padding-x));
+            color: var(--#{$prefix}gray-600);
+            display: block;
+            font-size: var(--#{$prefix}icon-font-size);
+            transform: translateY(-50%);
+            line-height: 1;
+            @include ll-font-smoothing();
+        }
+
+        // Remove top spacing from the results message
+        + .select2-results .select2-results__message:first-child {
+            padding-top: 0;
+        }
+
+        // Search field
+        .select2-search__field {
+            padding: var(--#{$prefix}s2-search-padding-y) var(--#{$prefix}s2-search-padding-x);
+            padding-left: calc(calc(var(--#{$prefix}s2-search-padding-x) * 2) + var(--#{$prefix}icon-font-size));
+            background-color: var(--#{$prefix}s2-search-bg);
+            color: var(--#{$prefix}s2-search-color);
+            border: var(--#{$prefix}s2-search-border-width) solid var(--#{$prefix}s2-search-border-color);
+            outline: 0;
+            width: 100%;
+            @include transition($input-transition);
+            @include border-radius(var(--#{$prefix}s2-search-border-radius));
+
+            &:focus {
+                border-color: var(--#{$prefix}s2-search-focus-border-color);
+                box-shadow: var(--#{$prefix}s2-search-focus-box-shadow);
+            }
+
+            // Cancel button
+            &::-webkit-search-cancel-button {
+                -webkit-appearance: none;
+            }
+        }
+
+        // Hidden search field
+        &.select2-search--hide {
+            display: none;
+        }
+    }
+
+
+    // Optional sizing
+    // ------------------------------
+
+    // Large
+    .select-lg {
+        --#{$prefix}s2-padding-y: #{$form-select-padding-y-lg};
+        --#{$prefix}s2-padding-x: #{$form-select-padding-x-lg};
+        --#{$prefix}s2-font-size: #{$form-select-font-size-lg};
+        --#{$prefix}s2-line-height: var(--#{$prefix}body-line-height-lg);
+        --#{$prefix}s2-search-padding-y: #{$input-padding-y-lg};
+        --#{$prefix}s2-search-padding-x: #{$input-padding-x-lg};
+    }
+
+    // Small
+    .select-sm {
+        --#{$prefix}s2-padding-y: #{$form-select-padding-y-sm};
+        --#{$prefix}s2-padding-x: #{$form-select-padding-x-sm};
+        --#{$prefix}s2-font-size: #{$form-select-font-size-sm};
+        --#{$prefix}s2-line-height: var(--#{$prefix}body-line-height-sm);
+        --#{$prefix}s2-search-padding-y: #{$input-padding-y-sm};
+        --#{$prefix}s2-search-padding-x: #{$input-padding-x-sm};
+    }
+
+
+    // Misc
+    // ------------------------------
+
+    // Mask
+    .select2-close-mask {
+        border: 0;
+        margin: 0;
+        padding: 0;
+        display: block;
+        position: fixed;
+        left: 0;
+        top: 0;
+        min-height: 100%;
+        min-width: 100%;
+        height: auto;
+        width: auto;
+        z-index: 99;
+        background-color: var(--#{$prefix}white);
+        opacity: 0;
+    }
+
+    // Accessible
+    .select2-hidden-accessible {
+        border: 0 !important;
+        clip: rect(0 0 0 0) !important;
+        height: 1px !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+        position: fixed !important;
+        width: 1px !important;
+    }
+
+    // Inside input group
+    .input-group > :not(:nth-child(2)):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+        .select2-selection {
+            @include border-start-radius(0);
+        }
+    }
+    .input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3),
+    .input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+        .select2-selection {
+            @include border-end-radius(0);
+        }
+    }
+    .input-group > .select2-container {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .input-group > .select2-container--focus {
+        z-index: 3;
+    }
+    .input-group > .select2-hidden-accessible.flex-grow-0 + .select2-container {
+        flex-grow: 0;
+    }
+
+
+    // Loading remote data example demo
+    // ------------------------------
+
+    // Results
+    .select2-result-repository {
+        padding-top: var(--#{$prefix}s2-search-padding-y);
+        padding-bottom: var(--#{$prefix}s2-search-padding-y);
+    }
+
+    // Avatar
+    .select2-result-repository__avatar {
+        float: left;
+        width: 60px;
+        margin-right: 0.9375rem;
+
+        img {
+            width: 100%;
+            height: auto;
+            @include border-radius(var(--#{$prefix}border-radius-pill));
+        }
+    }
+
+    // Meta
+    .select2-result-repository__meta {
+        margin-left: 70px;
+    }
+
+    // Title
+    .select2-result-repository__title {
+        font-weight: 500;
+        word-wrap: break-word;
+        margin-bottom: 2px;
+    }
+
+    // Data
+    .select2-result-repository__forks,
+    .select2-result-repository__stargazers,
+    .select2-result-repository__watchers {
+        display: inline-block;
+        font-size: var(--#{$prefix}body-font-size-sm);
+    }
+
+    // Description
+    .select2-result-repository__description {
+        font-size: var(--#{$prefix}body-font-size-sm);
+    }
+
+    // Add spacing for data
+    .select2-result-repository__forks,
+    .select2-result-repository__stargazers {
+        margin-right: 0.9375rem;
+    }
+}

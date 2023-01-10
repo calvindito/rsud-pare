@@ -1,0 +1,29 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Fixed columns
+ *
+ *  Extension that "freezes" in place the left most columns in a scrolling DataTable
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-datatable-fixed-columns {
+
+    // Base
+    .dtfc-fixed-left,
+    .dtfc-fixed-right {
+        --#{$prefix}dtfc-bg: #{$card-bg};
+
+        // Dark theme
+        @include color-scheme(dark) {
+            --#{$prefix}dtfc-bg: #{$card-darkmode-bg};
+        }
+    }
+
+    // Set background color
+    .dataTable tr > .dtfc-fixed-left,
+    .dataTable tr > .dtfc-fixed-right {
+        z-index: 1;
+        background-color: var(--#{$prefix}dtfc-bg);
+    }
+}

@@ -1,0 +1,220 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Card component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Base styles
+.card {
+    @include color-scheme(dark) {
+        --#{$prefix}card-bg: #{$card-darkmode-bg};
+    }
+
+    border: 0;
+    margin-bottom: var(--#{$prefix}spacer);
+}
+
+// Footer
+.card-footer {
+    --#{$prefix}card-cap-bg: rgba(var(--#{$prefix}black-rgb), .015);
+}
+
+
+//
+// Card groups
+//
+
+.card-group-vertical {
+    > .card {
+        margin-bottom: 0;
+
+        + .card {
+            border-top: 0 !important;
+        }
+
+        // Handle rounded corners
+        @if $enable-rounded {
+            &:not(:last-child) {
+                @include border-bottom-radius(0);
+
+                .card-img-top,
+                .card-header {
+                    border-bottom-left-radius: 0;
+                }
+                .card-img-bottom,
+                .card-footer {
+                    border-bottom-right-radius: 0;
+                }
+            }
+
+            &:not(:first-child) {
+                @include border-top-radius(0);
+
+                .card-img-top,
+                .card-header {
+                    border-top-left-radius: 0;
+                }
+                .card-img-bottom,
+                .card-footer {
+                    border-top-right-radius: 0;
+                }
+            }
+        }
+    }
+
+    .card-header {
+        border-bottom: 0;
+    }
+
+    .card-body {
+        border-top: var(--#{$prefix}card-border-width) solid var(--#{$prefix}card-border-color);
+    }
+}
+
+
+//
+// Image controls
+//
+
+// Card image
+.card-img {
+    .card-body & {
+        @include border-radius(var(--#{$prefix}card-border-radius));
+    }
+}
+
+// Img actions
+.card-img-actions {
+    position: relative;
+
+    // Hover state
+    &:hover,
+    &:focus {
+        .card-img-actions-overlay {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
+
+// Img actions overlay
+.card-img-actions-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(var(--#{$prefix}black-rgb), 0.75);
+    opacity: 0;
+    visibility: hidden;
+    @include transition(all ease-in-out var(--#{$prefix}transition-base-timer));
+}
+
+
+
+//
+// Card actions
+//
+
+// Link base
+[data-card-action] {
+    cursor: pointer;
+    line-height: 1;
+}
+
+// Collapse icon
+[data-card-action="collapse"] {
+    i {
+        @include transition(transform ease-in-out var(--#{$prefix}transition-collapse-timer));
+
+        .card-collapsed & {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+
+//
+// Header navs
+//
+
+.card-header-tabs {
+    --#{$prefix}nav-link-padding-y: 1rem;
+
+    // Link
+    .nav-link {
+        border-top-width: 0;
+    }
+}
+
+
+//
+// Full screen
+//
+
+.card-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    border-radius: 0;
+    z-index: $zindex-modal;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+//
+// Card overlays
+//
+
+// Base
+.card-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(var(--#{$prefix}white-rgb), 0.75);
+    z-index: $zindex-dropdown + 1;
+    animation: cardOverlayEnter var(--#{$prefix}transition-base-timer) ease;
+    @include border-radius(var(--#{$prefix}border-radius));
+
+    @include color-scheme(dark) {
+      background-color: rgba(var(--#{$prefix}black-rgb), 0.5);
+    }
+
+    // Exit animation
+    &-fadeout {
+        animation: cardOverlayExit var(--#{$prefix}transition-base-timer) ease;
+    }
+}
+
+// Overlay animation
+@keyframes cardOverlayEnter {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes cardOverlayExit {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

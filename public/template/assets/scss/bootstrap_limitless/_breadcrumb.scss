@@ -1,0 +1,67 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Breadcrumb component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Base
+.breadcrumb {
+    --#{$prefix}breadcrumb-item-color: #{$breadcrumb-item-color};
+    --#{$prefix}breadcrumb-item-hover-color: #{$breadcrumb-item-hover-color};
+}
+
+// Breadcrumb item
+.breadcrumb-item {
+    display: inline-flex;
+    align-items: center;
+    @include transition(color ease-in-out var(--#{$prefix}transition-base-timer));
+
+    // Reset text color in certain cases
+    &.text-white,
+    &.text-reset {
+        &:before {
+            color: inherit;
+        }
+    }
+}
+
+// Breadcrumb link
+a.breadcrumb-item {
+    color: var(--#{$prefix}breadcrumb-item-color);
+
+    &:hover,
+    &:focus,
+    &[aria-expanded="true"] {
+        color: var(--#{$prefix}breadcrumb-item-hover-color);
+    }
+}
+
+
+//
+// Divider styles
+//
+
+// Dash
+.breadcrumb-dash .breadcrumb-item + .breadcrumb-item:before  {
+    --#{$prefix}breadcrumb-divider: "\2013";
+}
+
+// Arrow
+.breadcrumb-arrow .breadcrumb-item + .breadcrumb-item:before  {
+    --#{$prefix}breadcrumb-divider: "\2192";
+
+    // RTL
+    [dir=rtl] & {
+        --#{$prefix}breadcrumb-divider: "\2190";
+    }
+}
+
+// Arrows
+.breadcrumb-arrows .breadcrumb-item + .breadcrumb-item:before  {
+    --#{$prefix}breadcrumb-divider: "\00bb";
+}
+
+// Caret
+.breadcrumb-caret .breadcrumb-item + .breadcrumb-item:before  {
+    --#{$prefix}breadcrumb-divider: "\203A";
+}

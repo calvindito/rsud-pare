@@ -1,0 +1,24 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Toast component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Base
+.toast {
+    @include color-scheme(dark) {
+        --#{$prefix}toast-bg: #{$toast-darkmode-background-color};
+    }
+}
+
+// Close button
+.toast-header,
+.toast-body {
+    .btn-close {
+        margin-right: calc(var(--#{$prefix}btn-close-padding-x) * -1);
+
+        @include color-scheme(dark) {
+            filter: $btn-close-white-filter;
+        }
+    }
+}

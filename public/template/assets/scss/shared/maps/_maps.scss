@@ -1,0 +1,16 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Maps
+*
+*  Common styles for all maps
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-maps {
+
+	// Container
+	.map-container {
+		height: $map-container-height;
+	}
+}

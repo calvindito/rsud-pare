@@ -1,0 +1,54 @@
+// Re-assigned maps
+//
+// Placed here so that others can override the default Sass maps and see automatic updates to utilities and more.
+
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$dark-theme-colors-rgb: map-loop($dark-theme-colors, to-rgb, "$value") !default;
+
+
+// Utilities maps
+//
+// Extends the default `$theme-colors` maps to help create our utilities.
+
+// Come v6, we'll de-dupe these variables. Until then, for backward compatibility, we keep them to reassign.
+$utilities-colors: $theme-colors-rgb;
+$utilities-dark-colors: $dark-theme-colors-rgb !default;
+
+
+// Text color
+$utilities-text: map-merge(
+  $utilities-colors,
+  (
+    "black": to-rgb($black),
+    "white": to-rgb($white),
+    "body": to-rgb($body-color)
+  )
+);
+$utilities-text-colors: map-loop($utilities-text, rgba-css-var, "$key", "text");
+
+
+// Background color
+$utilities-bg: map-merge(
+  $utilities-colors,
+  (
+    "black": to-rgb($black),
+    "white": to-rgb($white),
+    "body": to-rgb($body-bg)
+  )
+);
+$utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
+
+
+// Border colors
+$utilities-border: map-merge(
+  $utilities-colors,
+  (
+    "white": to-rgb($white)
+  )
+);
+$utilities-border-colors: map-loop($utilities-border, rgba-css-var, "$key", "border");
+
+
+// Misc
+$negative-spacers: if($enable-negative-margins, negativify-map($spacers), null);
+$gutters: $spacers;

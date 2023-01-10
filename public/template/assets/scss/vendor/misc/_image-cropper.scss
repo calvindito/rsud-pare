@@ -1,0 +1,404 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Image cropper
+ *
+ *  Styles for cropper.min.js - a simple jQuery image cropping plugin
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-image-cropper {
+
+
+	//
+	// Demo
+	//
+	@if $enable-demo {
+
+		// Grey demo container
+		.image-cropper-container {
+			/*rtl:ignore*/
+			direction: ltr;
+			height: 400px;
+			width: 100%;
+			overflow: hidden;
+			background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC");
+		}
+
+		// Demo previews
+		.eg-preview {
+
+			// Preview container
+			.preview {
+				/*rtl:ignore*/
+				direction: ltr;
+			}
+
+			// Large
+			.preview-lg {
+				width: 150px;
+				height: 150px;
+			}
+
+			// Base
+			.preview-md {
+				width: 120px;
+				height: 120px;
+			}
+
+			// Small
+			.preview-sm {
+				width: 90px;
+				height: 90px;
+			}
+
+			// Mini
+			.preview-xs {
+				width: 60px;
+				height: 60px;
+			}
+
+			// Micro
+			.preview-xxs {
+				width: 40px;
+				height: 40px;
+			}
+		}
+	}
+
+
+	//
+	// Core
+	//
+
+	// Main container
+	.cropper-container {
+        --#{$prefix}cropper-grid-center-size: #{$cropper-grid-center-size};
+        --#{$prefix}cropper-grid-size: #{$cropper-grid-size};
+        --#{$prefix}cropper-grid-color: #{$cropper-grid-color};
+        --#{$prefix}cropper-resizer-size: #{$cropper-resizer-size};
+        --#{$prefix}cropper-resizer-color: #{$cropper-resizer-color};
+
+		/*rtl:ignore*/
+		direction: ltr !important;
+		font-size: 0;
+		line-height: 0;
+		position: relative;
+		touch-action: none;
+		-webkit-tap-highlight-color: transparent;
+		-webkit-touch-callout: none;
+		user-select: none;
+
+		// Image
+		img {
+			display: block;
+			width: 100%;
+			min-width: 0 !important;
+			max-width: none !important;
+			height: 100%;
+			min-height: 0 !important;
+			max-height: none !important;
+			image-orientation: 0deg !important;
+		}
+	}
+
+	// Containers
+	.cropper-wrap-box,
+	.cropper-canvas,
+	.cropper-drag-box,
+	.cropper-crop-box,
+	.cropper-modal {
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+	}
+
+	// Wrap box
+	.cropper-wrap-box {
+		overflow: hidden;
+	}
+
+	// Drag box
+	.cropper-drag-box {
+		background-color: var(--#{$prefix}white);
+		opacity: 0;
+	}
+
+	// Modal
+	.cropper-modal {
+		background-color: $modal-backdrop-bg;
+		opacity: $modal-backdrop-opacity;
+	}
+
+	// View box
+	.cropper-view-box {
+		display: block;
+		overflow: hidden;
+		width: 100%;
+		height: 100%;
+	}
+
+	// Dashed cropper
+	.cropper-dashed {
+		position: absolute;
+		display: block;
+		border: 0 dashed var(--#{$prefix}cropper-grid-color);
+		opacity: 0.5;
+
+		// Horizontal
+		&.dashed-h {
+			top: 33.33333%;
+			/*rtl:ignore*/
+			left: 0;
+			left: 0;
+			width: 100%;
+			height: 33.33333%;
+			border-top-width: var(--#{$prefix}cropper-grid-size);
+			border-bottom-width: var(--#{$prefix}cropper-grid-size);
+		}
+
+		// Vertical
+		&.dashed-v {
+			top: 0;
+			/*rtl:ignore*/
+			left: 33.33333%;
+			width: 33.33333%;
+			height: 100%;
+			border-right-width: var(--#{$prefix}cropper-grid-size);
+			border-left-width: var(--#{$prefix}cropper-grid-size);
+		}
+	}
+
+	// Center cropper
+	.cropper-center {
+		position: absolute;
+		top: 50%;
+		/*rtl:ignore*/
+		left: 50%;
+		display: block;
+		width: 0;
+		height: 0;
+		opacity: 0.75;
+		transform: translate(-50%, -50%);
+
+		// Lines
+		&:before,
+		&:after {
+			content: ' ';
+			position: absolute;
+			display: block;
+			background-color: var(--#{$prefix}cropper-grid-color);
+		}
+		&:before {
+			top: 0;
+			/*rtl:ignore*/
+			left: calc(calc(calc(var(--#{$prefix}cropper-grid-center-size) - var(--#{$prefix}cropper-grid-size)) * .5) * -1);
+			width: var(--#{$prefix}cropper-grid-center-size);
+			height: var(--#{$prefix}cropper-grid-size);
+		}
+		&:after {
+			top: calc(calc(calc(var(--#{$prefix}cropper-grid-center-size) - var(--#{$prefix}cropper-grid-size)) * .5) * -1);
+			/*rtl:ignore*/
+			left: 0;
+			width: var(--#{$prefix}cropper-grid-size);
+			height: var(--#{$prefix}cropper-grid-center-size);
+		}
+	}
+
+
+	//
+	// Cropper area
+	//
+
+	// Common
+	.cropper-face,
+	.cropper-line,
+	.cropper-point {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 100%;
+		opacity: 0.1;
+	}
+
+	// Main area
+	.cropper-face {
+		top: 0;
+		/*rtl:ignore*/
+		left: 0;
+		background-color: var(--#{$prefix}white);
+	}
+
+	// Lines
+	.cropper-line {
+		background-color: var(--#{$prefix}cropper-resizer-color);
+
+		// Right
+		&.line-e {
+			top: 0;
+			/*rtl:ignore*/
+			right: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			width: var(--#{$prefix}cropper-resizer-size);
+			cursor: e-resize;
+		}
+
+		// Top
+		&.line-n {
+			top: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			/*rtl:ignore*/
+			left: 0;
+			height: var(--#{$prefix}cropper-resizer-size);
+			cursor: n-resize;
+		}
+
+		// Left
+		&.line-w {
+			top: 0;
+			/*rtl:ignore*/
+			left: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			width: var(--#{$prefix}cropper-resizer-size);
+			cursor: w-resize;
+		}
+
+		// Bottom
+		&.line-s {
+			bottom: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			/*rtl:ignore*/
+			left: 0;
+			height: var(--#{$prefix}cropper-resizer-size);
+			cursor: s-resize;
+		}
+	}
+
+	// Points
+	.cropper-point {
+		background-color: var(--#{$prefix}cropper-resizer-color);
+		opacity: 0.75;
+		width: var(--#{$prefix}cropper-resizer-size);
+		height: var(--#{$prefix}cropper-resizer-size);
+
+		&.point-e {
+			top: 50%;
+			/*rtl:ignore*/
+			right: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			margin-top: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			cursor: e-resize;
+		}
+
+		&.point-n {
+			top: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			/*rtl:ignore*/
+			left: 50%;
+			margin-left: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			cursor: n-resize;
+		}
+
+		&.point-w {
+			top: 50%;
+			/*rtl:ignore*/
+			left: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			margin-top: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			cursor: w-resize;
+		}
+
+		&.point-s {
+			bottom: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			/*rtl:ignore*/
+			left: 50%;
+			margin-left: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			cursor: s-resize;
+		}
+
+		&.point-ne {
+			top: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			/*rtl:ignore*/
+			right: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			cursor: ne-resize;
+		}
+
+		&.point-nw {
+			top: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			/*rtl:ignore*/
+			left: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			cursor: nw-resize;
+		}
+
+		&.point-sw {
+			bottom: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			/*rtl:ignore*/
+			left: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			cursor: sw-resize;
+		}
+
+		&.point-se {
+			/*rtl:ignore*/
+			right: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			bottom: calc(calc(var(--#{$prefix}cropper-resizer-size) * .5) * -1);
+			cursor: se-resize;
+			opacity: 1;
+			width: var(--#{$prefix}cropper-resizer-size);
+			height: var(--#{$prefix}cropper-resizer-size);
+
+			&:before {
+				content: ' ';
+				position: absolute;
+				/*rtl:ignore*/
+				right: -50%;
+				bottom: -50%;
+				display: block;
+				background-color: var(--#{$prefix}cropper-resizer-color);
+				opacity: 0;
+				width: 200%;
+				height: 200%;
+			}
+		}
+	}
+
+
+	//
+	// Misc
+	//
+
+	// Background
+	.cropper-bg {
+		background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC');
+
+		// Dark theme
+		@include color-scheme(dark) {
+			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAEKADAAQAAAABAAAAEAAAAAA0VXHyAAAAM0lEQVQ4EWPU0TX6z4AH+Pj44JFlYGDCK0uE5KgBgyEQWQjF85YtW/BG5mg0DoZopDgWANQBBZDyunGoAAAAAElFTkSuQmCC');
+		}
+	}
+
+	// Invisible elements
+	.cropper-invisible {
+		opacity: 0;
+	}
+
+	// Hidden elements
+	.cropper-hide {
+		position: absolute;
+		display: block;
+		width: 0;
+		height: 0;
+	}
+	.cropper-hidden {
+		display: none !important;
+	}
+
+
+	//
+	// Cursors
+	//
+
+	// Move
+	.cropper-move {
+		cursor: move;
+	}
+
+	// Crop
+	.cropper-crop {
+	  cursor: crosshair;
+	}
+}

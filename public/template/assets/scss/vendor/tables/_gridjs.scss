@@ -1,0 +1,399 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Datatables library
+ *
+ *  Add advanced interaction controls to any HTML table
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-datatable {
+
+
+	// Base
+	// ------------------------------
+
+	// Base container
+	.gridjs-container {
+		position: relative;
+	}
+
+	// Loading container
+	.gridjs-temp {
+		position: relative;
+	}
+
+	// Header container
+	.gridjs-head {
+		width: 100%;
+		padding: var(--#{$prefix}spacer);
+		border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+	}
+
+	// Footer container
+	.gridjs-footer {
+		position: relative;
+		padding: var(--#{$prefix}spacer);
+		border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+	}
+
+	// Header and footer
+	.gridjs-head,
+	.gridjs-footer {
+		&:empty {
+			padding: 0;
+			border: 0;
+		}
+
+		// Button reset
+		button {
+			cursor: pointer;
+			background-color: transparent;
+			background-image: none;
+			padding: 0;
+			margin: 0;
+			border: none;
+			outline: none;
+		}
+	}
+
+	// Body wrapper
+	.gridjs-wrapper {
+		position: relative;
+		overflow: auto;
+		width: 100%;
+	}
+
+
+	//
+	// Search
+	//
+
+	// Base container
+	.gridjs-search {
+		position: relative;
+		display: block;
+		max-width: 20rem;
+
+		&:after {
+			content: $icon-search-magnifier;
+			font-family: var(--#{$prefix}icon-font-family);
+			position: absolute;
+			top: 50%;
+			right: calc(var(--#{$prefix}spacer) * .75);
+			font-size: var(--#{$prefix}icon-font-size);
+			transform: translateY(-50%);
+			display: inline-block;
+			line-height: 1;
+			opacity: 0.75;
+			@include ll-font-smoothing();
+		}
+	}
+
+	// Input base
+	.gridjs-input {
+		--#{$prefix}gridjs-input-padding-y: #{$input-padding-y};
+		--#{$prefix}gridjs-input-padding-x: #{$input-padding-x};
+		--#{$prefix}gridjs-input-bg: #{$input-bg};
+		--#{$prefix}gridjs-input-color: #{$input-color};
+		@include rfs($input-font-size, --#{$prefix}gridjs-input-font-size);
+		--#{$prefix}gridjs-input-line-height: #{$input-line-height};
+		--#{$prefix}gridjs-input-border-width: #{$input-border-width};
+		--#{$prefix}gridjs-input-border-color: #{$input-border-color};
+		--#{$prefix}gridjs-input-border-radius: #{$input-border-radius};
+		--#{$prefix}gridjs-input-focus-bg: #{$input-focus-bg};
+		--#{$prefix}gridjs-input-focus-border-color: #{$input-focus-border-color};
+		--#{$prefix}gridjs-input-focus-box-shadow: #{$input-focus-box-shadow};
+		@include color-scheme(dark) {
+			--#{$prefix}gridjs-input-bg: #{$input-darkmode-bg};
+			--#{$prefix}gridjs-input-focus-bg: #{$input-darkmode-focus-bg};
+		}
+
+		outline: none;
+		display: block;
+		width: 100%;
+		color: var(--#{$prefix}gridjs-input-color);
+		background-color: var(--#{$prefix}gridjs-input-bg);
+		border: var(--#{$prefix}gridjs-input-border-width) solid var(--#{$prefix}gridjs-input-border-color);
+		padding: var(--#{$prefix}gridjs-input-padding-y) calc(var(--#{$prefix}gridjs-input-padding-x) + var(--#{$prefix}icon-font-size) + var(--#{$prefix}spacer-2)) var(--#{$prefix}gridjs-input-padding-y) var(--#{$prefix}gridjs-input-padding-x);
+		font-size: var(--#{$prefix}gridjs-input-font-size);
+		line-height: var(--#{$prefix}gridjs-input-line-height);
+		appearance: none;
+		background-clip: padding-box;
+		@include border-radius(var(--#{$prefix}gridjs-input-border-radius));
+		@include transition($input-transition);
+
+		// Focus state
+		&:focus {
+			background-color: var(--#{$prefix}gridjs-input-focus-bg);
+			border-color: var(--#{$prefix}gridjs-input-focus-border-color);
+			outline: 0;
+			@if $enable-shadows {
+				@include box-shadow($input-box-shadow, var(--#{$prefix}gridjs-input-focus-box-shadow));
+			} @else {
+				box-shadow: var(--#{$prefix}gridjs-input-focus-box-shadow);
+			}
+		}
+	}
+
+
+	//
+	// Pagination container
+	//
+
+	.gridjs-pagination {
+
+		// On mobile
+		@include media-breakpoint-down(md) {
+			.gridjs-summary {
+				margin-bottom: var(--#{$prefix}spacer-2);
+			}
+		}
+
+		// On desktop
+		@include media-breakpoint-up(md) {
+			display: flex;
+			align-items: center;
+		}
+
+		// Pagination
+		.gridjs-pages {
+			--#{$prefix}pagination-padding-x: #{$pagination-padding-x};
+			--#{$prefix}pagination-padding-y: #{$pagination-padding-y};
+			@include rfs($pagination-font-size, --#{$prefix}pagination-font-size);
+			--#{$prefix}pagination-margin-start: #{$pagination-flat-spacing};
+			--#{$prefix}pagination-color: #{$pagination-color};
+			--#{$prefix}pagination-bg: transparent;
+			--#{$prefix}pagination-border-width: #{$pagination-border-width};
+			--#{$prefix}pagination-border-color: transparent;
+			--#{$prefix}pagination-border-radius: #{$pagination-border-radius};
+			--#{$prefix}pagination-hover-color: #{$pagination-hover-color};
+			--#{$prefix}pagination-hover-bg: #{$pagination-hover-bg};
+			--#{$prefix}pagination-hover-border-color: #{$pagination-border-color};
+			--#{$prefix}pagination-focus-color: #{$pagination-focus-color};
+			--#{$prefix}pagination-focus-bg: #{$pagination-focus-bg};
+			--#{$prefix}pagination-focus-box-shadow: #{$pagination-focus-box-shadow};
+			--#{$prefix}pagination-active-color: #{$pagination-active-color};
+			--#{$prefix}pagination-active-bg: #{$pagination-active-bg};
+			--#{$prefix}pagination-active-border-color: #{$pagination-active-border-color};
+			--#{$prefix}pagination-disabled-color: #{$pagination-disabled-color};
+			--#{$prefix}pagination-disabled-bg: transparent;
+			--#{$prefix}pagination-disabled-border-color: transparent;
+
+			margin-left: auto;
+			display: inline-flex;
+			flex-wrap: wrap;
+
+	    	button {
+				position: relative;
+				display: block;
+				padding: var(--#{$prefix}pagination-padding-y) var(--#{$prefix}pagination-padding-x);
+				@include font-size(var(--#{$prefix}pagination-font-size));
+				color: var(--#{$prefix}pagination-color);
+				text-decoration: if($link-decoration == none, null, none);
+				min-width: calc(calc(var(--#{$prefix}pagination-font-size) * var(--#{$prefix}body-line-height)) + calc(var(--#{$prefix}pagination-border-width) * 2) + calc(var(--#{$prefix}pagination-padding-y) * 2));
+				text-align: center;
+				background-color: var(--#{$prefix}pagination-bg);
+				border: var(--#{$prefix}pagination-border-width) solid var(--#{$prefix}pagination-border-color);
+				@include transition($pagination-transition);
+				@include border-radius(var(--#{$prefix}pagination-border-radius));
+
+				// Hover state
+				&:hover {
+					z-index: 2;
+					color: var(--#{$prefix}pagination-hover-color);
+					text-decoration: if($link-hover-decoration == underline, none, null);
+					background-color: var(--#{$prefix}pagination-hover-bg);
+					border-color: var(--#{$prefix}pagination-hover-border-color);
+				}
+
+				// Focus state
+				&:focus {
+					z-index: 3;
+					color: var(--#{$prefix}pagination-focus-color);
+					background-color: var(--#{$prefix}pagination-focus-bg);
+					outline: $pagination-focus-outline;
+					box-shadow: var(--#{$prefix}pagination-focus-box-shadow);
+				}
+
+				// Disabled state
+				&:disabled,
+				&[disabled],
+				&:hover:disabled {
+					color: var(--#{$prefix}pagination-disabled-color);
+					pointer-events: none;
+					background-color: var(--#{$prefix}pagination-disabled-bg);
+					border-color: var(--#{$prefix}pagination-disabled-border-color);
+				}
+
+				// Spread button
+				&.gridjs-spread {
+					cursor: default;
+					pointer-events: none;
+				}
+
+				// Current page
+				&.gridjs-currentPage {
+					z-index: 3;
+					color: var(--#{$prefix}pagination-active-color);
+					@include gradient-bg(var(--#{$prefix}pagination-active-bg));
+					border-color: var(--#{$prefix}pagination-active-border-color);
+				}
+
+				// Spacing between buttons
+				&:not(:first-child) {
+					margin-left: var(--#{$prefix}pagination-margin-start);
+				}
+			}
+	    }
+	}
+
+
+	//
+	// Sorting
+	//
+
+	.gridjs-sort {
+		float: right;
+		height: var(--#{$prefix}icon-font-size);
+		width: calc(var(--#{$prefix}icon-font-size) * .5);
+		margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+		background-size: 100%;
+		background-color: transparent;
+		background-repeat: no-repeat;
+		background-position-x: center;
+		cursor: pointer;
+		padding: 0;
+		border: none;
+		outline: none;
+		background-size: contain;
+
+		// Dark theme
+		@include color-scheme(dark) {
+			filter: invert(1) grayscale(100%) brightness(200%);
+		}
+
+		// Icons
+		&-neutral {
+			opacity: 0.25;
+			background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHdpZHRoPSI0MDEuOTk4cHgiIGhlaWdodD0iNDAxLjk5OHB4IiB2aWV3Qm94PSIwIDAgNDAxLjk5OCA0MDEuOTk4IiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCA0MDEuOTk4IDQwMS45OTg7IgoJIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxnPgoJCTxwYXRoIGQ9Ik03My4wOTIsMTY0LjQ1MmgyNTUuODEzYzQuOTQ5LDAsOS4yMzMtMS44MDcsMTIuODQ4LTUuNDI0YzMuNjEzLTMuNjE2LDUuNDI3LTcuODk4LDUuNDI3LTEyLjg0NwoJCQljMC00Ljk0OS0xLjgxMy05LjIyOS01LjQyNy0xMi44NUwyMTMuODQ2LDUuNDI0QzIxMC4yMzIsMS44MTIsMjA1Ljk1MSwwLDIwMC45OTksMHMtOS4yMzMsMS44MTItMTIuODUsNS40MjRMNjAuMjQyLDEzMy4zMzEKCQkJYy0zLjYxNywzLjYxNy01LjQyNCw3LjkwMS01LjQyNCwxMi44NWMwLDQuOTQ4LDEuODA3LDkuMjMxLDUuNDI0LDEyLjg0N0M2My44NjMsMTYyLjY0NSw2OC4xNDQsMTY0LjQ1Miw3My4wOTIsMTY0LjQ1MnoiLz4KCQk8cGF0aCBkPSJNMzI4LjkwNSwyMzcuNTQ5SDczLjA5MmMtNC45NTIsMC05LjIzMywxLjgwOC0xMi44NSw1LjQyMWMtMy42MTcsMy42MTctNS40MjQsNy44OTgtNS40MjQsMTIuODQ3CgkJCWMwLDQuOTQ5LDEuODA3LDkuMjMzLDUuNDI0LDEyLjg0OEwxODguMTQ5LDM5Ni41N2MzLjYyMSwzLjYxNyw3LjkwMiw1LjQyOCwxMi44NSw1LjQyOHM5LjIzMy0xLjgxMSwxMi44NDctNS40MjhsMTI3LjkwNy0xMjcuOTA2CgkJCWMzLjYxMy0zLjYxNCw1LjQyNy03Ljg5OCw1LjQyNy0xMi44NDhjMC00Ljk0OC0xLjgxMy05LjIyOS01LjQyNy0xMi44NDdDMzM4LjEzOSwyMzkuMzUzLDMzMy44NTQsMjM3LjU0OSwzMjguOTA1LDIzNy41NDl6Ii8+Cgk8L2c+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+");
+			background-position-y: center;
+		}
+		&-asc {
+			background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHdpZHRoPSIyOTIuMzYycHgiIGhlaWdodD0iMjkyLjM2MXB4IiB2aWV3Qm94PSIwIDAgMjkyLjM2MiAyOTIuMzYxIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyOTIuMzYyIDI5Mi4zNjE7IgoJIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxwYXRoIGQ9Ik0yODYuOTM1LDE5Ny4yODdMMTU5LjAyOCw2OS4zODFjLTMuNjEzLTMuNjE3LTcuODk1LTUuNDI0LTEyLjg0Ny01LjQyNHMtOS4yMzMsMS44MDctMTIuODUsNS40MjRMNS40MjQsMTk3LjI4NwoJCUMxLjgwNywyMDAuOTA0LDAsMjA1LjE4NiwwLDIxMC4xMzRzMS44MDcsOS4yMzMsNS40MjQsMTIuODQ3YzMuNjIxLDMuNjE3LDcuOTAyLDUuNDI1LDEyLjg1LDUuNDI1aDI1NS44MTMKCQljNC45NDksMCw5LjIzMy0xLjgwOCwxMi44NDgtNS40MjVjMy42MTMtMy42MTMsNS40MjctNy44OTgsNS40MjctMTIuODQ3UzI5MC41NDgsMjAwLjkwNCwyODYuOTM1LDE5Ny4yODd6Ii8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+");
+			background-position-y: 35%;
+		}
+		&-desc {
+			background-image: url("data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIGlkPSJDYXBhXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHdpZHRoPSIyOTIuMzYycHgiIGhlaWdodD0iMjkyLjM2MnB4IiB2aWV3Qm94PSIwIDAgMjkyLjM2MiAyOTIuMzYyIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAyOTIuMzYyIDI5Mi4zNjI7IgoJIHhtbDpzcGFjZT0icHJlc2VydmUiPgo8Zz4KCTxwYXRoIGQ9Ik0yODYuOTM1LDY5LjM3N2MtMy42MTQtMy42MTctNy44OTgtNS40MjQtMTIuODQ4LTUuNDI0SDE4LjI3NGMtNC45NTIsMC05LjIzMywxLjgwNy0xMi44NSw1LjQyNAoJCUMxLjgwNyw3Mi45OTgsMCw3Ny4yNzksMCw4Mi4yMjhjMCw0Ljk0OCwxLjgwNyw5LjIyOSw1LjQyNCwxMi44NDdsMTI3LjkwNywxMjcuOTA3YzMuNjIxLDMuNjE3LDcuOTAyLDUuNDI4LDEyLjg1LDUuNDI4CgkJczkuMjMzLTEuODExLDEyLjg0Ny01LjQyOEwyODYuOTM1LDk1LjA3NGMzLjYxMy0zLjYxNyw1LjQyNy03Ljg5OCw1LjQyNy0xMi44NDdDMjkyLjM2Miw3Ny4yNzksMjkwLjU0OCw3Mi45OTgsMjg2LjkzNSw2OS4zNzd6Ii8+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPGc+CjwvZz4KPC9zdmc+");
+			background-position-y: 65%;
+		}
+	}
+
+
+	//
+	// Table elements
+	//
+
+	// Table element
+	.gridjs-table {
+		max-width: 100%;
+		overflow: auto;
+
+		// Bordered table
+	    &.table-bordered {
+	        > :not(caption) > * {
+	            border-bottom-width: 0;
+
+	            .gridjs-head ~ .gridjs-wrapper & {
+	            	border-top-width: 0;
+	            }
+
+	            > *:first-child {
+	                border-left: 0;
+	            }
+	            > *:last-child {
+	                border-right: 0;
+	            }
+	        }
+	    }
+	}
+
+	// Thead text content
+	.gridjs-th {
+		position: relative;
+
+		.gridjs-th-content {
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			width: 100%;
+			float: left;
+		}
+	}
+
+	// Sort 
+	.gridjs-th-sort {
+	    cursor: pointer;
+
+	    // Text label
+		.gridjs-th-content {
+			width: calc(100% - var(--#{$prefix}icon-font-size));
+		}
+	}
+
+	// Fixed header
+	.gridjs-table .gridjs-th-fixed {
+		--#{$prefix}gridjs-header-bg: #{$card-bg};
+		@include color-scheme(dark) {
+			--#{$prefix}gridjs-header-bg: #{$card-darkmode-bg};
+		}
+		position: sticky;
+		background-color: var(--#{$prefix}gridjs-header-bg);
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: calc(var(--#{$prefix}table-border-width) * -1);
+			border-bottom: var(--#{$prefix}table-border-width) solid var(--#{$prefix}table-group-separator-color);
+		}
+	}
+
+    // Active row
+	.gridjs-tr-selected td {
+		background-color: var(--#{$prefix}table-active-bg);
+	}
+
+
+	//
+	// Misc
+	//
+
+	// Text message within empty grid
+	.gridjs-message {
+		text-align: center;
+	}
+
+	// Checkbox
+	.gridjs-td .gridjs-checkbox {
+		display: block;
+		margin: auto;
+		cursor: pointer;
+	}
+
+	// Resizable handle
+	.gridjs-resizable {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		width: var(--#{$prefix}spacer-1);
+
+		// Hover state
+		&:hover {
+			cursor: ew-resize;
+			background-color: var(--#{$prefix}primary);
+		}
+	}
+}

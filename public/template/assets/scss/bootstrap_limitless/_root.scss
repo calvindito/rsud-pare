@@ -1,0 +1,53 @@
+// Dark theme
+@include color-scheme(dark, root) {
+    color-scheme: dark;
+
+    // Text and link colors
+    @each $state, $value in $utilities-dark-colors {
+        .text-#{$state} {
+            --#{$prefix}#{$state}-rgb: #{$value};
+        }
+        .link-#{$state} {
+            --#{$prefix}#{$state}-rgb: #{$value};
+        }
+    }
+
+    // Grayscale
+    --#{$prefix}gray-100: #{mix($body-darkmode-bg, $white, 89%)};
+    --#{$prefix}gray-200: #{mix($body-darkmode-bg, $white, 86%)};
+    --#{$prefix}gray-300: #{mix($body-darkmode-bg, $white, 83%)};
+    --#{$prefix}gray-400: #{mix($body-darkmode-bg, $white, 80%)};
+    --#{$prefix}gray-500: #{mix($body-darkmode-bg, $white, 65%)};
+    --#{$prefix}gray-600: #{mix($body-darkmode-bg, $white, 50%)};
+    --#{$prefix}gray-700: #{mix($body-darkmode-bg, $white, 35%)};
+    --#{$prefix}gray-800: #{mix($body-darkmode-bg, $white, 20%)};
+    --#{$prefix}gray-900: #{mix($body-darkmode-bg, $white, 5%)};
+
+    // Dark color
+    --#{$prefix}dark: #{darken($body-darkmode-bg, 10%)};
+    --#{$prefix}dark-rgb: #{to-rgb(darken($body-darkmode-bg, 10%))};
+
+    // Light color
+    --#{$prefix}light: #{lighten($body-darkmode-bg, 10%)};
+    --#{$prefix}light-rgb: #{to-rgb(lighten($body-darkmode-bg, 10%))};
+
+    // Body background and text color
+    --#{$prefix}body-bg: #{$body-darkmode-bg};
+    --#{$prefix}body-color: #{$body-darkmode-color};
+    --#{$prefix}body-color-rgb: #{to-rgb($body-darkmode-color)};
+
+    // Border color
+    --#{$prefix}border-color: #{$border-darkmode-color};
+    --#{$prefix}border-color-translucent: #{$border-darkmode-color-translucent};
+
+    --#{$prefix}box-shadow: #{$box-shadow-darkmode};
+
+    // Link color
+    --#{$prefix}link-color: #{$link-darkmode-color};
+    --#{$prefix}link-rgb-color: #{to-rgb($link-darkmode-color)};
+    --#{$prefix}link-hover-color: #{$link-darkmode-hover-color};
+
+    // Misc
+    --#{$prefix}highlight-bg: #{$mark-darkmode-bg};
+    --#{$prefix}code-color: #{$code-darkmode-color};
+}

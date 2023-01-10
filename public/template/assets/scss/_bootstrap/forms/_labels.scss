@@ -1,0 +1,37 @@
+//
+// Labels
+//
+
+.form-label {
+  --#{$prefix}form-label-margin-bottom: #{$form-label-margin-bottom};
+  margin-bottom: var(--#{$prefix}form-label-margin-bottom);
+  @include font-size($form-label-font-size);
+  font-style: $form-label-font-style;
+  font-weight: $form-label-font-weight;
+  color: $form-label-color;
+}
+
+// For use with horizontal and inline forms, when you need the label (or legend)
+// text to align with the form controls.
+.col-form-label {
+  --#{$prefix}form-label-padding-y: #{$input-padding-y};
+  @include rfs(inherit, --#{$prefix}form-label-font-size);
+  padding-top: add(var(--#{$prefix}form-label-padding-y), var(--#{$prefix}border-width));
+  padding-bottom: add(var(--#{$prefix}form-label-padding-y), var(--#{$prefix}border-width));
+  margin-bottom: 0; // Override the `<legend>` default
+  font-size: var(--#{$prefix}form-label-font-size); // Override the `<legend>` default
+  font-style: $form-label-font-style;
+  font-weight: $form-label-font-weight;
+  line-height: $input-line-height;
+  color: $form-label-color;
+}
+
+.col-form-label-lg {
+  --#{$prefix}form-label-padding-y: #{$input-padding-y-lg};
+  @include rfs($input-font-size-lg, --#{$prefix}form-label-font-size);
+}
+
+.col-form-label-sm {
+  --#{$prefix}form-label-padding-y: #{$input-padding-y-sm};
+  @include rfs($input-font-size-sm, --#{$prefix}form-label-font-size);
+}

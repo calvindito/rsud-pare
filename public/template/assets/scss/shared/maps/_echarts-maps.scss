@@ -1,0 +1,24 @@
+/* ------------------------------------------------------------------------------
+*
+*  # ECharts maps
+*
+*  Custom styles for ECharts maps
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-echarts-maps {
+
+	// ECharts maps
+	.map-echarts {
+        --#{$prefix}map-bg: #{$echarts-map-bg};
+        --#{$prefix}map-placeholder-color: #{$echarts-map-placeholder-color};
+        --#{$prefix}map-hover-color: #{$echarts-map-hover-color};
+        --#{$prefix}map-border-color: #{$echarts-map-border-color};
+
+        @include color-scheme(dark) {
+			--#{$prefix}map-bg: #{$echarts-map-darkmode-bg};
+			--#{$prefix}map-border-color: #{$echarts-map-darkmode-border-color};
+        }
+	}
+}

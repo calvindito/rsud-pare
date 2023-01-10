@@ -1,0 +1,31 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Material icons base
+ *
+ *  Main file to compile. Do not change file order. Default output file: styles.min.css
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Import custom template config
+@import "../../../../config";
+@import "../../../../utils/ll-functions";
+@import "../../../../utils/ll-mixins";
+
+// Configuration
+@import "../../../../_bootstrap/functions";
+@import "../../../../_bootstrap/variables";
+@import "../../../../_bootstrap/mixins";
+
+// Import template's variables
+@import "../../../../layouts/layout_1/variables/variables-core";
+@import "../../../../layouts/layout_1/variables/variables-custom";
+@import "../../../../bootstrap_limitless/maps";
+@import "../../../../bootstrap_limitless/mixins";
+@import "../../../../bootstrap_limitless/utilities";
+
+// Import icon set
+@import '../variables';
+@import '../mixins';
+
+@import '../base';
+@import '../icons';

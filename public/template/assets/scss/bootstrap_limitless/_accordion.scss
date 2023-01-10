@@ -1,0 +1,33 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Accordion component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Button
+.accordion-button {
+
+    // Active icon in Dark theme
+    &:not(.collapsed) {
+        box-shadow: none;
+
+        @include color-scheme(dark) {
+            &::after {
+                background-image: escape-svg($accordion-darkmode-button-active-icon);
+            }
+        }
+    }
+
+    // Accordion icon in Dark theme
+    @include color-scheme(dark) {
+        &::after {
+            background-image: escape-svg($accordion-darkmode-button-icon);
+        }
+    }
+}
+
+// Setup correct borders in collapsible container
+.accordion-collapse {
+    box-shadow: inset 0 var(--#{$prefix}accordion-border-width) 0 var(--#{$prefix}accordion-border-color);
+}
+

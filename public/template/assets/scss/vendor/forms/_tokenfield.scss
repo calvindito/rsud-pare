@@ -1,0 +1,242 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Tokenfield component
+*
+*  Styles for tokenfield.min.js - Input field with tagging/token/chip capabilities
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-tokenfield {
+
+    // Configure theme
+    .tokenfield {
+        --#{$prefix}tf-bg: #{$input-bg};
+        --#{$prefix}tf-disabled-bg: #{$input-disabled-bg};
+        --#{$prefix}tf-disabled-border-color: #{$input-disabled-border-color};
+        --#{$prefix}tf-color: #{$input-color};
+        --#{$prefix}tf-border-width: #{$input-border-width};
+        --#{$prefix}tf-border-color: #{$input-border-color};
+        --#{$prefix}tf-border-radius: #{$input-border-radius};
+        --#{$prefix}tf-placeholder-color: #{$input-placeholder-color};
+        --#{$prefix}tf-focus-border-color: #{$input-focus-border-color};
+        --#{$prefix}tf-focus-box-shadow: #{$input-focus-box-shadow};
+
+        --#{$prefix}tf-input-padding-y: #{$input-padding-y};
+        --#{$prefix}tf-input-padding-x: #{$input-padding-x};
+        --#{$prefix}tf-input-font-size: #{$input-font-size};
+        --#{$prefix}tf-input-line-height: #{$input-line-height};
+
+        --#{$prefix}tf-menu-bg: #{$dropdown-bg};
+        --#{$prefix}tf-menu-max-height: #{$dropdown-scrollable-max-height};
+        --#{$prefix}tf-menu-spacer: #{$dropdown-spacer};
+        --#{$prefix}tf-menu-padding-y: #{$dropdown-padding-y};
+        --#{$prefix}tf-menu-padding-x: #{$dropdown-padding-x};
+        --#{$prefix}tf-menu-border-width: #{$dropdown-border-width};
+        --#{$prefix}tf-menu-border-color: #{$dropdown-border-color};
+        --#{$prefix}tf-menu-border-radius: #{$dropdown-border-radius};
+        --#{$prefix}tf-menu-box-shadow: #{$dropdown-box-shadow};
+        --#{$prefix}tf-menu-item-padding-y: #{$dropdown-item-padding-y};
+        --#{$prefix}tf-menu-item-padding-x: #{$dropdown-item-padding-x};
+        --#{$prefix}tf-menu-link-color: #{$dropdown-link-color};
+        --#{$prefix}tf-menu-link-hover-color: #{$dropdown-link-hover-color};
+        --#{$prefix}tf-menu-link-hover-bg: #{$dropdown-link-hover-bg};
+        --#{$prefix}tf-menu-link-active-color: #{$dropdown-link-active-color};
+        --#{$prefix}tf-menu-link-active-bg: #{$dropdown-link-active-bg};
+
+        --#{$prefix}tf-tag-color: #{$tag-color};
+        --#{$prefix}tf-tag-bg: #{$tag-bg};
+        --#{$prefix}tf-tag-hover-color: #{$tag-hover-color};
+        --#{$prefix}tf-tag-hover-bg: #{$tag-hover-bg};
+
+        // Dark theme
+        @include color-scheme(dark) {
+            --#{$prefix}tf-bg: #{$input-darkmode-bg};
+            --#{$prefix}tf-focus-bg: #{$input-darkmode-focus-bg};
+            --#{$prefix}tf-menu-bg: #{$dropdown-darkmode-bg};
+            --#{$prefix}tf-menu-border-color: #{$dropdown-darkmode-border-color};
+        }
+    }
+
+    // Base
+    .tokenfield {
+        position: relative;
+
+        &:before,
+        &:after {
+            content: " ";
+            display: table;
+        }
+        &:after {
+            clear: both;
+        }
+    }
+
+    // Tokens input
+    .tokenfield-mode-tokens {
+        display: block;
+        width: 100%;
+        padding: calc(var(--#{$prefix}tf-input-padding-y) * .5);
+        padding-bottom: 0;
+        @include font-size(var(--#{$prefix}tf-input-font-size));
+        line-height: var(--#{$prefix}tf-input-line-height);
+        color: var(--#{$prefix}tf-color);
+        background-color: var(--#{$prefix}tf-bg);
+        background-clip: padding-box;
+        border: var(--#{$prefix}tf-border-width) solid var(--#{$prefix}tf-border-color);
+        appearance: none;
+        @include border-radius(var(--#{$prefix}tf-border-radius), 0);
+        @include transition($input-transition);
+
+        // Focus state
+        &.focused {
+            border-color: var(--#{$prefix}tf-focus-border-color);
+            outline: 0;
+            box-shadow: var(--#{$prefix}tf-focus-box-shadow);
+        }
+
+        // Placeholder
+        &::placeholder {
+            color: var(--#{$prefix}tf-placeholder-color);
+            opacity: 1;
+        }
+
+        // Disabled state
+        &[disabled],
+        &[readonly],
+        fieldset[disabled] & {
+            background-color: var(--#{$prefix}tf-disabled-bg);
+            border-color: var(--#{$prefix}tf-disabled-border-color);
+            opacity: 1;
+        }
+
+        // Inside input group
+        .input-group > & {
+            flex: 1 1 auto;
+            width: 1%;
+            min-width: 0;
+
+            // Focus state
+            &.focused {
+                z-index: 3;
+            }
+        }
+    }
+
+
+    //
+    // Tags list
+    //
+
+    // List base
+    .tokenfield-set {
+        > ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+    }
+
+    // List item
+    .tokenfield-set-item {
+        float: left;
+        margin-right: calc(var(--#{$prefix}tf-input-padding-y) * .5);
+        margin-bottom: calc(var(--#{$prefix}tf-input-padding-y) * .5);
+        padding: calc(var(--#{$prefix}tf-input-padding-y) * .5) calc(var(--#{$prefix}tf-input-padding-x) - calc(var(--#{$prefix}tf-input-padding-y) * .5));
+        color: var(--#{$prefix}tf-tag-color);
+        background-color: var(--#{$prefix}tf-tag-bg);
+        @include border-radius(calc(var(--#{$prefix}tf-border-radius) - var(--#{$prefix}tf-border-width)));
+        @include transition(color ease-in-out var(--#{$prefix}transition-base-timer), background-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+        // Hover state
+        &:hover {
+            color: var(--#{$prefix}tf-tag-hover-color);
+            background-color: var(--#{$prefix}tf-tag-hover-bg);
+        }
+
+        // Remove button
+        .item-remove {
+            display: inline-block;
+            margin-left: calc(var(--#{$prefix}tf-input-padding-y) * .5);
+            color: inherit;
+            cursor: pointer;
+            opacity: .75;
+            @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+            // Hover state
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+    // Search input
+    .tokenfield-input {
+        padding: calc(var(--#{$prefix}tf-input-padding-y) * .5) calc(var(--#{$prefix}tf-input-padding-x) - calc(var(--#{$prefix}tf-input-padding-y) * .5));
+        margin-bottom: calc(var(--#{$prefix}tf-input-padding-y) * .5);
+        color: var(--#{$prefix}tf-color);
+        background-color: transparent;
+        border: 0;
+        outline: 0;
+        float: left;
+
+        // Placeholder
+        &::placeholder {
+            color: var(--#{$prefix}tf-placeholder-color);
+            opacity: 1;
+        }
+    }
+
+
+    //
+    // List of suggestions
+    //
+
+    // List container
+    .tokenfield-suggest {
+        position: absolute;
+        left: calc(var(--#{$prefix}tf-menu-border-width) * -1);
+        top: 100%;
+        margin-top: var(--#{$prefix}tf-menu-spacer);
+        width: 100%;
+        z-index: 10;
+        overflow: auto;
+        background-color: var(--#{$prefix}tf-menu-bg);
+        border: var(--#{$prefix}tf-menu-border-width) solid var(--#{$prefix}tf-menu-border-color);
+        box-sizing: content-box;
+        @include border-radius(var(--#{$prefix}tf-menu-border-radius));
+        @include box-shadow(var(--#{$prefix}tf-menu-box-shadow));
+    }
+
+    // List base
+    .tokenfield-suggest-list {
+        margin: 0;
+        padding: var(--#{$prefix}tf-menu-padding-y) var(--#{$prefix}tf-menu-padding-x);
+        list-style: none;
+        background-clip: padding-box;
+        z-index: $zindex-dropdown;
+        max-height: var(--#{$prefix}tf-menu-max-height);
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    // List item
+    .tokenfield-suggest-item {
+        padding: var(--#{$prefix}tf-menu-item-padding-y) var(--#{$prefix}tf-menu-item-padding-x);
+        color: var(--#{$prefix}tf-menu-link-color);
+        cursor: pointer;
+        @include transition($dropdown-link-transition);
+
+        // Hover state
+        &.selected {
+            color: var(--#{$prefix}tf-menu-link-hover-color);
+            background-color: var(--#{$prefix}tf-menu-link-hover-bg);
+        }
+
+        // Active state
+        &:active {
+            color: var(--#{$prefix}tf-menu-link-active-color);
+            background-color: var(--#{$prefix}tf-menu-link-active-bg);        
+        }
+    }
+}

@@ -1,0 +1,511 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Bootstrap file input
+ *
+ *  Styles for fileinput.min.js - an enhanced HTML 5 file input for Bootstrap
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-fileinput {
+
+	// Base
+	.file-input {
+        --#{$prefix}fi-preview-border: calc(var(--#{$prefix}border-width) * 2) dashed var(--#{$prefix}border-color);
+        --#{$prefix}fi-preview-spacer: #{$fileinput-preview-spacer};
+        --#{$prefix}fi-preview-thumb-width: #{$fileinput-preview-thumb-width};
+        --#{$prefix}fi-preview-thumb-height: #{$fileinput-preview-thumb-height};
+        --#{$prefix}fi-preview-progress-height: #{$fileinput-preview-progress-height};
+        --#{$prefix}fi-placeholder-color: #{$fileinput-placeholder-color};
+	}
+
+
+	// File input styling
+	// ------------------------------
+
+	// Browse button
+	.btn-file {
+	    position: relative;
+	    overflow: hidden;
+
+	    // Hide original input
+		input[type=file] {
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    min-width: 100%;
+		    min-height: 100%;
+		    text-align: right;
+		    opacity: 0;
+		    background: none repeat scroll 0 0 transparent;
+		    cursor: inherit;
+		    display: block;
+		    visibility: visible;
+		}
+	}
+
+	// Error message
+	.file-error-message {
+		position: relative;
+	    background-color: rgba(var(--#{$prefix}danger-rgb), .1);
+	    color: var(--#{$prefix}danger);
+	    text-align: center;
+	    padding: calc(var(--#{$prefix}spacer) * .8) var(--#{$prefix}spacer);
+	    margin: var(--#{$prefix}fi-preview-spacer);
+	    margin-top: 0;
+	    @include border-radius(var(--#{$prefix}border-radius));
+
+	    // Top spacing correction if inside drop zone
+	    .file-drop-zone & {
+	    	margin-top: var(--#{$prefix}spacer-2);
+	    }
+
+		// List of errors
+		pre {
+		    margin-top: var(--#{$prefix}spacer-2);
+		    text-align: left;
+		}
+
+		// List
+		ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+	}
+
+	// Disabled caption
+	.file-caption-disabled {
+	    pointer-events: none;
+	}
+
+
+	//
+	// Preview
+	//
+
+	// Preview modal
+	.file-preview-detail-modal {
+	    text-align: left;
+	}
+
+	// File preview container
+	.file-preview {
+		border: var(--#{$prefix}fi-preview-border);
+		width: 100%;
+		margin-bottom: var(--#{$prefix}spacer);
+		position: relative;
+		text-align: center;
+		@include border-radius(var(--#{$prefix}border-radius));
+
+		// Close button
+		.btn-close {
+		    position: absolute;
+		    top: var(--#{$prefix}fi-preview-spacer);
+		    right: var(--#{$prefix}fi-preview-spacer);
+			z-index: 2;
+
+			@include color-scheme(dark) {
+				filter: $btn-close-white-filter;
+			}
+		}
+
+		// Hide cached content
+		.kv-zoom-cache {
+			display: none;
+		}
+	}
+
+	// Thumbnails
+	.file-preview-thumbnails {
+		display: flex;
+		flex-wrap: wrap;
+		position: relative;
+
+		// Center thumbs on mobile
+		@include media-breakpoint-down(sm) {
+			justify-content: center;
+		}
+	}
+
+	// Thumbnail frame
+	.file-preview-frame {
+	    margin: var(--#{$prefix}fi-preview-spacer);
+	    margin-right: 0;
+	    border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+	    @include border-radius(var(--#{$prefix}border-radius));
+
+	    // Thumb
+		.kv-file-content {
+		    position: relative;
+		    height: var(--#{$prefix}fi-preview-thumb-height);
+		}
+	}
+
+	// Thumbnail image
+	.file-preview-image {
+		.kv-file-content & {
+		    @include border-top-radius(calc(var(--#{$prefix}border-radius) - var(--#{$prefix}border-width)));
+		}
+	}
+
+	// Thumbnail footer
+	.file-thumbnail-footer {
+		position: relative;
+		background-color: var(--#{$prefix}gray-100);
+		border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+		@include border-bottom-radius(calc(var(--#{$prefix}border-radius) - var(--#{$prefix}border-width)));
+	}
+
+	// Preview text
+	.file-preview-text {
+	    color: var(--#{$prefix}link-color);
+	    border: 0;
+	    overflow-x: hidden;
+	}
+
+	// Other files preview
+	.file-preview-other {
+	    width: var(--#{$prefix}fi-preview-thumb-width);
+
+	    // Override for preview icon, use Icomoon instead
+	    &:after {
+			content: $icon-uploader-placeholder;
+			font-family: var(--#{$prefix}icon-font-family);
+			line-height: 1;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			font-size: calc(var(--#{$prefix}icon-font-size) * 4);
+			transform: translate(-50%, -50%);
+			@include ll-font-smoothing();
+	    }
+	}
+
+	// Status
+	.file-preview-status {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		background-color: var(--#{$prefix}gray-100);
+		border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+		padding: var(--#{$prefix}spacer-2) var(--#{$prefix}spacer);
+		z-index: $zindex-tooltip;
+		@include border-bottom-radius(var(--#{$prefix}border-radius));
+
+		// Collapse if empty
+		&:empty {
+			padding: 0;
+			background-color: transparent;
+			border: 0;
+		}
+	}
+
+
+	//
+	// Loading indicator
+	//
+
+	// Give it minimum height
+	.file-thumb-loading {
+		position: relative;
+	}
+
+	// Loading icon
+	.file-thumb-loading,
+	.file-uploading {
+		&:after {
+			content: $icon-loading-spinner;
+			font-family: var(--#{$prefix}icon-font-family);
+			display: inline-block;
+			position: absolute;
+			top: var(--#{$prefix}fi-preview-spacer);
+			right: calc(var(--#{$prefix}spacer-4) + var(--#{$prefix}fi-preview-spacer));
+			transform: translateX(-50%);
+			font-size: var(--#{$prefix}icon-font-size);
+			line-height: 1;
+			z-index: $zindex-tooltip;
+			animation: rotation 1s linear infinite;
+			@include ll-font-smoothing();
+		}
+	}
+	.file-thumb-loading:after {
+		top: var(--#{$prefix}spacer);
+		right: var(--#{$prefix}spacer);
+	}
+
+	// Indicator
+	.file-upload-indicator {
+	    cursor: default;
+	    float: left;
+	    padding: var(--#{$prefix}spacer-2);
+	    line-height: 1;
+	}
+
+
+	//
+	// Default elements visibility
+	//
+
+	// Standard upload
+	.file-input-new {
+		.file-preview,
+		.close,
+		.glyphicon-file,
+		.fileinput-remove-button,
+		.fileinput-upload-button {
+			display: none;
+		}
+	}
+
+	// Ajax upload
+	.file-input-ajax-new {
+		.fileinput-remove-button,
+		.fileinput-upload-button,
+		.close {
+			display: none;
+		}
+	}
+
+	// Other
+	.kv-hidden,
+	.file-caption-icon,
+	.file-zoom-dialog .modal-header:before,
+	.file-zoom-dialog .modal-header:after,
+	.hide-content .kv-file-content {
+	    display: none;
+	}
+
+
+
+	// AJAX upload styling
+	// ------------------------------
+
+	// Buttons position
+	.file-footer-buttons {
+	    float: right;
+
+	    // Button base
+	    button {
+	    	padding: var(--#{$prefix}spacer-2);
+	    	background-color: transparent;
+	    	color: var(--#{$prefix}body-color);
+	    	border: 0;
+	    	line-height: 1;
+	    	cursor: pointer;
+	    	opacity: 0.8;
+	    	outline: 0;
+		    @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+		    // Hover state
+		    &:hover {
+		    	opacity: 1;
+		    }
+	    }
+	}
+
+	// Caption
+	.file-footer-caption {
+	    display: block;
+	    white-space: nowrap;
+	    overflow: hidden;
+	    text-overflow: ellipsis;
+	    padding: var(--#{$prefix}spacer-2);
+	    border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+	}
+
+	// Size information
+	.file-size-info {
+		samp {
+			font-size: var(--#{$prefix}body-font-size-sm);
+		}
+	}
+
+
+	//
+	// Dropzone
+	//
+
+	// Base
+	.file-drop-zone {
+	    height: 100%;
+	    vertical-align: middle;
+	    padding: var(--#{$prefix}fi-preview-spacer);
+	    @include border-radius(var(--#{$prefix}border-radius));
+	}
+
+	// Text title
+	.file-drop-zone-title {
+	    font-size: $h4-font-size;
+	    font-weight: $font-weight-light;
+	    color: var(--#{$prefix}fi-placeholder-color);
+	    padding: 5rem;
+
+	    // Clickable drop area
+	    .clickable & {
+	    	cursor: pointer;
+
+	    	&:hover,
+	    	&:focus {
+			    opacity: 1;
+			    background-color: var(--#{$prefix}gray-100);
+	    	}
+	    }
+	}
+
+	// Progress bar
+	.kv-upload-progress {
+		margin-bottom: var(--#{$prefix}spacer);
+	}
+
+
+	//
+	// Progress
+	//
+
+	// Thumbnail progress
+	.file-thumb-progress {
+	    position: absolute;
+	    top: calc(var(--#{$prefix}fi-preview-progress-height) * -1);
+	    left: 0;
+	    right: 0;
+
+	    // Progress bars
+		.progress,
+		.progress-bar {
+		    height: var(--#{$prefix}fi-preview-progress-height);
+		    border-radius: 0;
+		    font-size: 0;
+		}
+	}
+
+	// IE 10 fix
+	.btn-file ::-ms-browse {
+	    width: 100%;
+	    height: 100%;
+	}
+
+
+	//
+	// Fullscreen modal
+	//
+
+	.file-zoom-fullscreen {
+
+		// Base
+		.modal-dialog {
+		    position: fixed;
+		    margin: 0;
+		    width: 100%;
+		    height: 100%;
+		    padding: 0;
+		    max-width: 100%;
+		}
+
+		// Content
+		.modal-content {
+		    @include border-radius(0);
+		}
+
+		// Body
+		.modal-body {
+		    overflow-y: auto;
+		}
+	}
+
+
+	//
+	// Zoom
+	//
+
+	// Dialog
+	.file-zoom-dialog {
+
+		// Navigate buttons
+		.btn-navigate {
+		    position: absolute;
+		    top: 50%;
+		    padding: 0;
+		    border: 0;
+		    background-color: transparent;
+		    outline: none;
+		    color: var(--#{$prefix}white);
+		    opacity: 0.7;
+		    transform: translateY(-50%);
+		    @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+		    // Icons
+		    > i {
+		    	display: block;
+		    	font-size: calc(var(--#{$prefix}icon-font-size) * 2);
+		    }
+
+		    // Hover state
+			&:not([disabled]):hover,
+			&:not([disabled]):focus {
+			    outline: none;
+			    box-shadow: none!important;
+			    opacity: 1;
+			}
+
+			// Disabled state
+			&[disabled] {
+			    opacity: 0.3;
+			}
+		}
+
+		// Left button
+		.btn-kv-prev {
+		    left: calc(calc(calc(var(--#{$prefix}icon-font-size) * 2) + var(--#{$prefix}spacer)) * -1);
+		}
+
+		// Right button
+		.btn-kv-next {
+		    right: calc(calc(calc(var(--#{$prefix}icon-font-size) * 2) + var(--#{$prefix}spacer)) * -1);
+		}
+
+		// Floating buttons
+		.floating-buttons {
+		    position: absolute;
+		    top: var(--#{$prefix}spacer);
+		    right: var(--#{$prefix}spacer);
+		}
+
+		// Buttons container
+		.kv-zoom-actions,
+		.floating-buttons {
+			.btn + .btn {
+				margin-left: var(--#{$prefix}spacer-2);
+			}
+		}
+	}
+
+	// Content
+	.file-zoom-content {
+	    text-align: center;
+	}
+
+
+	//
+	// Drag
+	//
+
+	.file-drag-handle {
+	    cursor: move;
+	    float: left;
+	    line-height: 1;
+	    opacity: 0.6;
+	    @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+	    // Hover state
+	    &:hover {
+	    	opacity: 1;
+	    }
+
+	    // Center icon vertically
+	    i {
+	    	top: 0;
+	    }
+	}
+}

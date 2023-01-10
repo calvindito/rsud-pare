@@ -1,0 +1,530 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # NoUI slider
+ *
+ *  Styles for nouislider.min.js - range slider plugin
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-noui {
+
+
+    // Functional styling
+    // ------------------------------
+
+    // Container
+    .noUi-target {
+        --#{$prefix}noui-bg: #{$slider-bg};
+        --#{$prefix}noui-box-shadow: #{$slider-box-shadow};
+        --#{$prefix}noui-connect-bg: #{$slider-connect-bg};
+        --#{$prefix}noui-height: #{$slider-height};
+        --#{$prefix}noui-vertical-height: #{$slider-vertical-height};
+
+        --#{$prefix}noui-handle-size: #{$slider-handle-size};
+        --#{$prefix}noui-handle-bg: #{$slider-handle-bg};
+        --#{$prefix}noui-handle-inner-bg: #{$slider-handle-inner-bg};
+        --#{$prefix}noui-handle-inner-hover-bg: #{$slider-handle-inner-hover-bg};
+        --#{$prefix}noui-handle-border-width: #{$slider-handle-border-width};
+        --#{$prefix}noui-handle-border-color: #{$slider-handle-border-color};
+
+        --#{$prefix}noui-pips-spacer-y: #{$slider-pips-spacer-y};
+        --#{$prefix}noui-pips-spacer-x: #{$slider-pips-spacer-x};
+        --#{$prefix}noui-pips-color: #{$slider-pips-color};
+        --#{$prefix}noui-pips-font-size: #{$slider-pips-font-size};
+        --#{$prefix}noui-pips-marker-width: #{$slider-pips-marker-width};
+        --#{$prefix}noui-pips-marker-height: #{$slider-pips-marker-height};
+
+        position: relative;
+        background-color: var(--#{$prefix}noui-bg);
+        @include border-radius(var(--#{$prefix}border-radius-pill));
+        @include box-shadow(var(--#{$prefix}noui-box-shadow));
+
+        // Disable user select
+        &,
+        & * {
+            user-select: none;
+        }
+    }
+
+    // Base
+    .noUi-base,
+    .noUi-connects {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+    }
+
+    // Wrapper for all connect elements
+    .noUi-connects {
+        overflow: hidden;
+        z-index: 0;
+        @include border-radius(var(--#{$prefix}border-radius-pill));
+    }
+
+    // Main wrappers
+    .noUi-connect,
+    .noUi-origin {
+        will-change: transform;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        /*rtl:begin:ignore*/
+        left: 0;
+        transform-origin: 0 0;
+        /*rtl:end:ignore*/
+    }
+
+    // Inherit cursor
+    .noUi-state-drag * {
+        cursor: inherit !important;
+    }
+
+    // Connector
+    .noUi-connect {
+        background-color: var(--#{$prefix}noui-connect-bg);
+        width: 100%;
+        height: 100%;
+    }
+
+    // Origin
+    .noUi-origin {
+        width: 100%;
+        height: 100%;
+    }
+
+    // Disabled state
+    [disabled] {
+        .noUi-target {
+            opacity: .65;
+        }
+    }
+
+
+    //
+    // Orientations
+    //
+
+    // Horizontal orientation
+    .noUi-horizontal {
+        height: var(--#{$prefix}noui-height);
+
+        // Handle
+        .noUi-handle {
+            top: calc(calc(calc(var(--#{$prefix}noui-handle-size) * .5) * -1) + calc(var(--#{$prefix}noui-height) * .5));
+            right: calc(calc(var(--#{$prefix}noui-handle-size) * .5) * -1);
+        }
+
+        // Give origins 0 height so they don't interfere with clicking the connect elements
+        .noUi-origin {
+            height: 0;
+            left: auto;
+            right: 0;
+        }
+
+        // If has pips
+        &.has-pips {
+            margin-bottom: calc(var(--#{$prefix}noui-pips-spacer-y) + var(--#{$prefix}body-line-height-computed));
+        }
+    }
+
+    // Vertical orientation
+    .noUi-vertical {
+        display: inline-block;
+        width: var(--#{$prefix}noui-height);
+        height: var(--#{$prefix}noui-vertical-height);
+
+        // Spacing between sliders
+        & + & {
+            margin-left: calc(var(--#{$prefix}spacer) * 1.5);
+        }
+
+        // Handle
+        .noUi-handle {
+            top: calc(calc(var(--#{$prefix}noui-handle-size) * .5) * -1);
+            /*rtl:ignore*/
+            left: calc(calc(calc(var(--#{$prefix}noui-handle-size) * .5) * -1) + calc(var(--#{$prefix}noui-height) * .5));
+        }
+
+        // Give origins 0 width so they don't interfere with clicking the connect elements
+        .noUi-origin {
+            width: 0;
+        }
+
+        // If has pips
+        &.has-pips {
+            margin-right: calc(var(--#{$prefix}noui-pips-spacer-y) + var(--#{$prefix}body-line-height-computed));
+        }
+    }
+
+
+    //
+    // Handles and cursors
+    //
+
+    // Draggable
+    .noUi-draggable {
+        cursor: w-resize;
+
+        // Vertical
+        .noUi-vertical & {
+            cursor: n-resize;
+        }
+    }
+
+    // Touch area
+    .noUi-touch-area {
+        width: 100%;
+        height: 100%;
+    }
+
+    // Handle
+    .noUi-handle {
+        background-color: var(--#{$prefix}noui-handle-bg);
+        cursor: pointer;
+        top: calc(var(--#{$prefix}noui-height) * -1);
+        position: absolute;
+        z-index: 1;
+        border: var(--#{$prefix}noui-handle-border-width) solid var(--#{$prefix}noui-handle-border-color);
+        outline: 0;
+        width: var(--#{$prefix}noui-handle-size);
+        height: var(--#{$prefix}noui-handle-size);
+        background-clip: content-box;
+        @include border-radius(var(--#{$prefix}border-radius-pill));
+        
+        // Animate handle
+        &,
+        &:after {
+            @include transition(all ease-in-out var(--#{$prefix}transition-base-timer));
+        }
+
+        // Inner circle
+        &:after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: calc(calc(var(--#{$prefix}noui-height) * .5) * -1);
+            margin-left: calc(calc(var(--#{$prefix}noui-height) * .5) * -1);
+            background-color: var(--#{$prefix}noui-handle-inner-bg);
+            width: var(--#{$prefix}noui-height);
+            height: var(--#{$prefix}noui-height);
+            @include border-radius(var(--#{$prefix}border-radius-pill));
+        }
+
+        // Hover state
+        &:hover,
+        &:focus {
+            &:after {
+                background-color: var(--#{$prefix}noui-handle-inner-hover-bg);
+            }
+        }
+    }
+
+    // White handle
+    .noui-slider-white .noUi-handle:after {
+        content: none;
+    }
+
+
+    //
+    // Tap state
+    //
+
+    .noUi-state-tap {
+        .noUi-connect,
+        .noUi-origin {
+            @include transition(transform var(--#{$prefix}transition-base-timer));
+        }
+    }
+
+
+    //
+    // Sizing
+    //
+
+    // Large
+    .noui-slider-lg {
+        --#{$prefix}noui-height: #{$slider-height-lg};
+    }
+
+    // Small
+    .noui-slider-sm {
+        --#{$prefix}noui-height: #{$slider-height-sm};
+    }
+
+
+    //
+    // Solid slider handle
+    //
+
+    .noui-slider-solid {
+        --#{$prefix}noui-handle-bg: var(--#{$prefix}primary);
+        --#{$prefix}noui-handle-border-color: var(--#{$prefix}primary);
+
+        // Handle
+        .noUi-handle {
+
+            // Inner circle
+            &:after {
+                background-color: var(--#{$prefix}white);
+            }
+
+            // Change circle opacity on hover
+            &:hover,
+            &:focus {
+                &:after {
+                    opacity: 0.75;
+                }
+            }
+        }
+
+        // Handle colors
+        &.noui-slider-secondary {
+            --#{$prefix}noui-handle-bg: var(--#{$prefix}secondary);
+            --#{$prefix}noui-handle-border-color: var(--#{$prefix}secondary);
+        }
+
+        &.noui-slider-danger {
+            --#{$prefix}noui-handle-bg: var(--#{$prefix}danger);
+            --#{$prefix}noui-handle-border-color: var(--#{$prefix}danger);
+        }
+
+        &.noui-slider-success {
+            --#{$prefix}noui-handle-bg: var(--#{$prefix}success);
+            --#{$prefix}noui-handle-border-color: var(--#{$prefix}success);
+        }
+
+        &.noui-slider-warning {
+            --#{$prefix}noui-handle-bg: var(--#{$prefix}warning);
+            --#{$prefix}noui-handle-border-color: var(--#{$prefix}warning);
+        }
+
+        &.noui-slider-info {
+            --#{$prefix}noui-handle-bg: var(--#{$prefix}info);
+            --#{$prefix}noui-handle-border-color: var(--#{$prefix}info);
+        }
+    }
+
+
+    //
+    // Contextual colors
+    //
+
+    // Primary
+    .noui-slider-secondary {
+        --#{$prefix}noui-handle-inner-hover-bg: var(--#{$prefix}secondary);        
+        --#{$prefix}noui-connect-bg: var(--#{$prefix}secondary);
+    }
+
+    // Danger
+    .noui-slider-danger {
+        --#{$prefix}noui-handle-inner-hover-bg: var(--#{$prefix}danger);        
+        --#{$prefix}noui-connect-bg: var(--#{$prefix}danger);
+    }
+
+    // Success
+    .noui-slider-success {
+        --#{$prefix}noui-handle-inner-hover-bg: var(--#{$prefix}success);        
+        --#{$prefix}noui-connect-bg: var(--#{$prefix}success);
+    }
+
+    // Warning
+    .noui-slider-warning {
+        --#{$prefix}noui-handle-inner-hover-bg: var(--#{$prefix}warning);        
+        --#{$prefix}noui-connect-bg: var(--#{$prefix}warning);
+    }
+
+    // Info
+    .noui-slider-info {
+        --#{$prefix}noui-handle-inner-hover-bg: var(--#{$prefix}info);        
+        --#{$prefix}noui-connect-bg: var(--#{$prefix}info);
+    }
+
+
+    //
+    // Tooltip
+    //
+
+    .noUi-tooltip {
+        --#{$prefix}noui-tooltip-bg: #{$tooltip-bg};
+        --#{$prefix}noui-tooltip-color: #{$tooltip-color};
+        --#{$prefix}noui-tooltip-padding-y: #{$tooltip-padding-y};
+        --#{$prefix}noui-tooltip-padding-x: #{$tooltip-padding-x};
+        --#{$prefix}noui-tooltip-arrow-height: #{$tooltip-arrow-height};
+
+        // Dark theme
+        @include color-scheme(dark) {
+            --#{$prefix}noui-tooltip-color: #{$tooltip-darkmode-color};
+            --#{$prefix}noui-tooltip-bg: #{$tooltip-darkmode-bg};
+        }
+
+        position: absolute;
+        background-color: var(--#{$prefix}noui-tooltip-bg);
+        color: var(--#{$prefix}noui-tooltip-color);
+        padding: var(--#{$prefix}noui-tooltip-padding-y) var(--#{$prefix}noui-tooltip-padding-x);
+        bottom: var(--#{$prefix}noui-tooltip-arrow-height);
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+        opacity: 0;
+        visibility: hidden;
+        @include border-radius(var(--#{$prefix}border-radius));
+        @include transition(all ease-in-out var(--#{$prefix}transition-base-timer));
+
+        // Arrow
+        &:after {
+            content: '';
+            border: var(--#{$prefix}noui-tooltip-arrow-height) solid transparent;
+            border-top-color: var(--#{$prefix}noui-tooltip-bg);
+            position: absolute;
+            left: 50%;
+            bottom: calc(calc(var(--#{$prefix}noui-tooltip-arrow-height) * 2) * -1);
+            transform: translate3d(-50%, 0, 0);
+            width: 0;
+            height: 0;
+        }
+
+        // Show tooltip on hover
+        .noUi-handle:hover & {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+
+    // Pips
+    // ------------------------------
+
+    // Base
+    .noUi-pips {
+        position: absolute;
+        color: var(--#{$prefix}noui-pips-color);
+        font-size: var(--#{$prefix}noui-pips-font-size);
+    }
+
+
+    //
+    // Values base
+    //
+
+    // Default
+    .noUi-value {
+        position: absolute;
+        text-align: center;
+    }
+
+    // Sub
+    .noUi-value-sub {
+        opacity: .75;
+    }
+
+
+    //
+    // Markings base
+    //
+
+    .noUi-marker {
+        position: absolute;
+        background-color: var(--#{$prefix}noui-pips-color);
+    }
+
+
+    //
+    // Horizontal layout
+    //
+
+    // Pips
+    .noUi-pips-horizontal {
+        padding-top: calc(var(--#{$prefix}noui-pips-spacer-y) * .5);
+        height: calc(var(--#{$prefix}noui-pips-spacer-y) + var(--#{$prefix}body-line-height-computed));
+        top: 100%;
+        left: 0;
+        width: 100%;
+    }
+
+    // Values
+    .noUi-value-horizontal {
+        padding-top: var(--#{$prefix}noui-pips-spacer-y);
+        transform: translateX(-50%);
+
+        // Sub values
+        &.noUi-value-sub {
+            padding-top: calc(var(--#{$prefix}noui-pips-spacer-y) * .5);
+        }
+
+        // Reverse direction
+        .noUi-rtl & {
+            /*rtl:begin:ignore*/
+            transform: translateX(50%);
+            /*rtl:end:ignore*/
+        }
+    }
+
+    // Markers
+    .noUi-marker-horizontal {
+
+        // Default marker
+        &.noUi-marker {
+            width: var(--#{$prefix}noui-pips-marker-width);
+            height: var(--#{$prefix}noui-pips-marker-height);
+        }
+
+        // Sub marker
+        &.noUi-marker-sub {
+            height: calc(var(--#{$prefix}noui-pips-marker-height) * 2);
+        }
+
+        // Large marker
+        &.noUi-marker-large {
+            height: calc(var(--#{$prefix}noui-pips-marker-height) * 3);
+        }
+    }
+
+
+    //
+    // Vertical layout
+    //
+
+    // Pips
+    .noUi-pips-vertical {
+        padding-left: calc(var(--#{$prefix}noui-pips-spacer-x) * .5);
+        height: 100%;
+        top: 0;
+        left: 100%;
+    }
+
+    // Values
+    .noUi-value-vertical {
+        padding-left: var(--#{$prefix}noui-pips-spacer-x);
+        transform: translateY(-50%);
+
+        // Reverse direction
+        .noUi-rtl & {
+            /*rtl:begin:ignore*/
+            transform: translateY(50%);
+            /*rtl:end:ignore*/
+        }
+    }
+
+    // Markers
+    .noUi-marker-vertical {
+
+        // Default marker
+        &.noUi-marker {
+            width: var(--#{$prefix}noui-pips-marker-height);
+            height: var(--#{$prefix}noui-pips-marker-width);
+        }
+
+        // Sub marker
+        &.noUi-marker-sub {
+            width: calc(var(--#{$prefix}noui-pips-marker-height) * 2);
+        }
+
+        // Large marker
+        &.noUi-marker-large {
+            width: calc(var(--#{$prefix}noui-pips-marker-height) * 3);
+        }
+    }
+}

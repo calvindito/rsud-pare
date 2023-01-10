@@ -1,0 +1,16 @@
+//
+// Form text
+//
+
+.form-text {
+  --#{$prefix}form-text-color: #{$form-text-color};
+  --#{$prefix}form-text-margin-top: #{$form-text-margin-top};
+  @include rfs($form-text-font-size, --#{$prefix}form-text-font-size);
+  --#{$prefix}form-text-font-style: #{$form-text-font-style};
+  --#{$prefix}form-text-font-weight: #{$form-text-font-weight};
+  margin-top: var(--#{$prefix}form-text-margin-top);
+  font-size: var(--#{$prefix}form-text-font-size);
+  font-style: var(--#{$prefix}form-text-font-style);
+  font-weight: var(--#{$prefix}form-text-font-weight);
+  color: var(--#{$prefix}form-text-color);
+}

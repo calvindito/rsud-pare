@@ -1,0 +1,244 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Dropdown menu component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Base
+.dropdown-menu {
+    --#{$prefix}dropdown-scrollable-max-height: #{$dropdown-scrollable-max-height};
+    --#{$prefix}dropdown-item-spacer-y: #{$dropdown-item-spacer-y};
+    @include color-scheme(dark) {
+        --#{$prefix}dropdown-bg: #{$dropdown-darkmode-bg};
+        --#{$prefix}dropdown-border-color: #{$dropdown-darkmode-border-color};
+    }
+}
+
+// Links, buttons, and more within the dropdown menu
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    @include transition($dropdown-link-transition);
+
+    // Item as form control
+    .btn-check:checked + & {
+        color: var(--#{$prefix}dropdown-link-active-color);
+        text-decoration: none;
+        @include gradient-bg(var(--#{$prefix}dropdown-link-active-bg));
+    }
+
+    // Add spacing between items
+    & + &,
+    .btn-check + &,
+    & + .btn-check,
+    .dropdown-submenu + &,
+    & + .dropdown-submenu {
+        margin-top: var(--#{$prefix}dropdown-item-spacer-y);
+    }
+}
+
+// Dropdown section headers
+.dropdown-header {
+    @include font-size(var(--#{$prefix}body-font-size));
+}
+
+// Images
+.dropdown-image {
+    max-height: var(--#{$prefix}body-line-height-computed);
+}
+
+// Scrollable dropdown
+.dropdown-menu-scrollable {
+    @each $breakpoint in map-keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+
+        &#{$infix} {
+            @include media-breakpoint-down($next) {
+                max-height: var(--#{$prefix}dropdown-scrollable-max-height);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+    }
+}
+
+
+//
+// Dark dropdowns
+//
+
+.dropdown-menu-dark {
+    @include color-scheme(dark) {
+        --#{$prefix}dropdown-bg: #{$dropdown-dark-darkmode-bg};
+        --#{$prefix}dropdown-border-color: #{$dropdown-dark-darkmode-border-color};
+    }
+}
+
+
+//
+// Dropdown submenu
+//
+
+.dropdown-menu {
+    > .dropdown-submenu {
+        position: relative;
+
+        // Link
+        > .dropdown-item {
+            padding-right: calc(var(--#{$prefix}dropdown-item-padding-x) + calc(var(--#{$prefix}body-font-size) * 1.5));
+
+            // Arrow icon
+            &:after {
+                content: $icon-caret-right;
+                font-family: var(--#{$prefix}icon-font-family);
+                position: absolute;
+                top: 50%;
+                right: calc(var(--#{$prefix}dropdown-item-padding-x) * .75);
+                font-size: var(--#{$prefix}body-font-size);
+                line-height: 1;
+                transform: translateY(-50%);
+                @include ll-font-smoothing();
+
+                // RTL
+                [dir=rtl] & {
+                    content: $icon-caret-left;
+                }
+            }
+        }
+
+        // Hover and open states
+        &:hover {
+            > .dropdown-item:not(.dropdown-toggle) {
+                color: var(--#{$prefix}dropdown-link-hover-color);
+                background-color: var(--#{$prefix}dropdown-link-hover-bg);
+            }
+        }
+        &.show {
+            > .dropdown-item {
+                color: var(--#{$prefix}dropdown-link-active-color);
+                background-color: var(--#{$prefix}dropdown-link-active-bg);
+            }
+        }
+
+        // Display submenu on hover
+        &:hover > .dropdown-item:not(.dropdown-toggle) ~ .dropdown-menu,
+        &:focus > .dropdown-item:not(.dropdown-toggle) ~ .dropdown-menu {
+            display: block;
+        }
+
+        // Hide submenu if parent is disabled
+        &.disabled {
+          pointer-events: none;
+
+            > .dropdown-item {
+                color: var(--#{$prefix}dropdown-link-disabled-color);
+            }
+        }
+
+        // Submenu position
+        > .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: calc(calc(var(--#{$prefix}dropdown-padding-y) + var(--#{$prefix}dropdown-border-width)) * -1);
+        }
+
+        // Left submenu position
+        &.dropdown-submenu-start > .dropdown-menu {
+            left: auto;
+            right: 100%;
+        }
+
+        // Make submenu levels stacked on mobile
+        @include media-breakpoint-down(lg) {
+            
+            // Change arrow icon direction
+            .dropdown-toggle:after {
+                content: $icon-caret-down;
+            }
+
+            // Make them stacked
+            &,
+            &.dropdown-submenu-start {
+                .dropdown-menu {
+                    position: static;
+                    margin: 0!important;
+                    border-width: 0;
+                    width: 100%;
+                    box-shadow: none;
+                    @include border-radius(0);
+                }
+            }
+
+            // Third level
+            > .dropdown-menu > .dropdown-item,
+            > .dropdown-menu > .dropdown-submenu > .dropdown-item {
+                padding-left: calc(var(--#{$prefix}dropdown-item-padding-x) * 2);
+            }
+
+            // Third level
+            > .dropdown-menu > .dropdown-submenu > .dropdown-menu > .dropdown-item,
+            > .dropdown-menu > .dropdown-submenu > .dropdown-menu > .dropdown-submenu > .dropdown-item {
+                padding-left: calc(var(--#{$prefix}dropdown-item-padding-x) * 3);
+            }
+        }
+    }
+
+    // Reverse in dropdown and bottom navbars
+    .dropup > .dropdown-menu {
+        top: auto;
+        bottom: 0;
+        margin-top: 0;
+        margin-bottom: calc(calc(var(--#{$prefix}dropdown-padding-y) + var(--#{$prefix}dropdown-border-width)) * -1);
+    }
+
+    // Spacing between submenus
+    .dropdown-submenu + .dropdown-submenu {
+        margin-top: var(--#{$prefix}dropdown-item-spacer-y);
+    }
+}
+
+
+//
+// Optional sizing
+//
+
+// Large
+.dropdown-menu-lg {
+    --#{$prefix}dropdown-item-padding: #{$dropdown-item-padding-y-lg $dropdown-item-padding-x-lg};
+    --#{$prefix}dropdown-font-size: #{$font-size-lg};
+}
+
+// Small
+.dropdown-menu-sm {
+    --#{$prefix}dropdown-item-padding: #{$dropdown-item-padding-y-sm $dropdown-item-padding-x-sm};
+    --#{$prefix}dropdown-font-size: #{$font-size-sm};
+}
+
+
+//
+// RTL alignment
+//
+
+// Base alignment
+.dropdown-menu {
+    [dir=rtl] .navbar-nav > .nav-item:not([class*=mega-menu]) > &,
+    [dir=rtl] .nav-item:not([class*=mega-menu]) .navbar-nav-link ~ & {
+        /*rtl:begin:ignore*/
+        left: auto;
+        right: 0;
+        /*rtl:end:ignore*/
+    }
+}
+
+// Reverse
+.dropdown-menu-end {
+    [dir=rtl] .navbar-nav > .nav-item:not([class*=mega-menu]) > &,
+    [dir=rtl] .nav-item:not([class*=mega-menu]) .navbar-nav-link ~ & {
+        /*rtl:begin:ignore*/
+        right: auto;
+        left: 0;
+        /*rtl:end:ignore*/
+    }
+}

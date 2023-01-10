@@ -1,0 +1,92 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Chat layouts
+ *
+ *  Conversation chat styles - layouts, chat elements, colors, options
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-chat {
+
+    // Set scrollbar to the long chat list
+    .media-chat-scrollable {
+        max-height: $chat-list-max-height;
+        display: flex;
+        flex-direction: column-reverse;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    // Container
+    .media-chat {
+        --#{$prefix}chat-message-padding-y: #{$chat-message-padding-y};
+        --#{$prefix}chat-message-padding-x: #{$chat-message-padding-x};
+        --#{$prefix}chat-message-bg: #{$chat-message-bg};
+        --#{$prefix}chat-message-color: #{$chat-message-color};
+    }
+
+    // Message list item
+    .media-chat-item {
+        @include media-breakpoint-up(sm) {
+            width: 75%;
+        }
+    }
+
+    // Message body
+    .media-chat-message {
+        position: relative;
+        padding: var(--#{$prefix}chat-message-padding-y) var(--#{$prefix}chat-message-padding-x);
+        display: inline-block;
+        align-items: flex-start;
+        color: var(--#{$prefix}chat-message-color);
+        @include border-radius(var(--#{$prefix}border-radius));
+
+        // Set default bg color
+        &:not([class*=bg-]) {
+            background-color: var(--#{$prefix}chat-message-bg);
+        }
+    }
+
+    // Reversed message body
+    .media-chat-item-reverse {
+        --#{$prefix}chat-message-bg: #{$chat-message-reversed-bg};
+        --#{$prefix}chat-message-color: #{$chat-message-reversed-color};
+        text-align: right;
+        flex-direction: row-reverse;
+        align-self: flex-end;
+
+        // Message
+        .media-chat-message {
+            text-align: left;
+        }
+    }
+
+    // Typing indicator animation
+    .typing-indicator {
+        display: inline-flex;
+
+        // Dots
+        span {
+            height: .125rem;
+            width: .125rem;
+            margin: 0 .0625rem;
+            background-color: var(--#{$prefix}body-color);
+            display: block;
+            border-radius: var(--#{$prefix}border-radius-pill);
+            opacity: 0.4;
+
+            @for $i from 1 through 3 {
+                &:nth-of-type(#{$i}) {
+                    animation: 1.2s blink infinite ($i * .2s);
+                }
+            }
+
+            @keyframes blink {
+                50% {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}

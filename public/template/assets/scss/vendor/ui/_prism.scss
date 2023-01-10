@@ -1,0 +1,409 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Prism
+ *
+ *  Styles for prism.min.js - lightweight, extensible syntax highlighter
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-prism {
+	.code-toolbar {
+		// --mono-1: hsl(230, 8%, 24%);
+		--#{$prefix}syntax-padding: var(--#{$prefix}spacer);
+		--#{$prefix}syntax-bg: var(--#{$prefix}gray-100);
+		--#{$prefix}syntax-fg: var(--#{$prefix}gray-900);
+		--#{$prefix}syntax-gutter: var(--#{$prefix}gray-500);
+		--#{$prefix}syntax-color-selection: #e5e5e6;
+		--#{$prefix}syntax-color-punctuation: #a0a1a7;
+		--#{$prefix}syntax-color-line: rgba(56, 58, 66, 0.05);
+		--#{$prefix}syntax-color-1: #0184bc;
+		--#{$prefix}syntax-color-2: #4078f2;
+		--#{$prefix}syntax-color-3: #a626a4;
+		--#{$prefix}syntax-color-4: #50a14f;
+		--#{$prefix}syntax-color-5: #e45649;
+		--#{$prefix}syntax-color-6: #ca1243;
+		--#{$prefix}syntax-color-7: #b76b01;
+
+		@include color-scheme(dark) {
+			--#{$prefix}syntax-bg: rgba(var(--#{$prefix}black-rgb), 0.25);
+			--#{$prefix}syntax-color-selection: #3e4451;
+			--#{$prefix}syntax-color-punctuation: #5c6370;
+			--#{$prefix}syntax-color-line: rgba(153, 187, 255, 0.05);
+			--#{$prefix}syntax-color-1: #56b6c2;
+			--#{$prefix}syntax-color-2: #61afef;
+			--#{$prefix}syntax-color-3: #c678dd;
+			--#{$prefix}syntax-color-4: #98c379;
+			--#{$prefix}syntax-color-5: #e06c75;
+			--#{$prefix}syntax-color-6: #be5046;
+			--#{$prefix}syntax-color-7: #d19a66;
+		}
+
+		position: relative;
+
+		.toolbar {
+			display: inline-block;
+			position: absolute;
+			top: var(--#{$prefix}spacer);
+			text-shadow: none;
+			/*rtl:ignore*/
+			right: var(--#{$prefix}spacer);
+
+			// Items
+			span,
+			.toolbar-item {
+				display: inline-block;
+			}
+
+			// Links
+			a {
+				cursor: pointer;
+			}
+
+			// Buttons
+			button {
+				background: none;
+				border: 0;
+				color: inherit;
+				font-family: var(--#{$prefix}body-font-family);
+				line-height: normal;
+				overflow: visible;
+				user-select: none;
+				background-color: transparent;
+				color: var(--#{$prefix}link-color);
+				border: var(--#{$prefix}border-width) solid var(--#{$prefix}link-color);
+				background-color: var(--#{$prefix}syntax-bg);
+				@include border-radius(var(--#{$prefix}border-radius));
+				@include transition(color ease-in-out var(--#{$prefix}transition-base-timer), border-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+				&:hover,
+				&:focus {
+					color: var(--#{$prefix}link-hover-color);
+					border-color: var(--#{$prefix}link-hover-color);
+				}
+			}
+
+			// Basic styles
+			a,
+			button,
+			span {
+				padding: calc(var(--#{$prefix}spacer-1) * 1.5) var(--#{$prefix}spacer-2);
+				font-size: var(--#{$prefix}body-font-size-sm);
+				outline: 0;
+
+				&:hover,
+				&:focus {
+					text-decoration: none;
+				}
+			}
+		}
+	}
+
+	// Code blocks
+	code[class*="language-"],
+	pre[class*="language-"] {
+		background: var(--#{$prefix}syntax-bg);
+		color: var(--#{$prefix}syntax-fg);
+		/*rtl:ignore*/
+		direction: ltr;
+		white-space: pre;
+		word-spacing: normal;
+		word-break: break-all;
+		line-height: 1.5;
+		tab-size: 4;
+		hyphens: none;
+		@include border-radius(var(--#{$prefix}border-radius));
+
+		// Selection
+		&::-moz-selection,
+		&::selection,
+		*::-moz-selection,
+		*::selection {
+			background: var(--#{$prefix}syntax-color-selection);
+			color: inherit;
+		}
+	}
+
+	pre {
+		&[class*="language-"] {
+			overflow: auto;
+			position: relative;
+		    padding: var(--#{$prefix}syntax-padding);
+		    margin-bottom: 0;
+
+			code {
+				background-color: transparent;
+			}
+		}
+
+		&[data-line] {
+			position: relative;
+			/*rtl:ignore*/
+			padding-left: 3rem;
+		}
+
+		code {
+			padding: 0;
+		}
+	}
+
+
+	// Tags highlight
+	.token {
+		&.bold {
+			font-weight: bold;
+		}
+
+		&.comment,
+		&.italic {
+			font-style: italic;
+		}
+
+		&.entity {
+			cursor: help;
+		}
+
+		&.namespace {
+			opacity: 0.8;
+		}
+
+		&.comment,
+		&.prolog,
+		&.cdata {
+			color: var(--#{$prefix}syntax-color-punctuation);
+		}
+
+		&.doctype,
+		&.punctuation,
+		&.entity {
+			color: var(--#{$prefix}syntax-fg);
+		}
+
+		&.attr-name,
+		&.class-name,
+		&.boolean,
+		&.constant,
+		&.number,
+		&.atrule {
+			color: var(--#{$prefix}syntax-color-7);
+		}
+
+		&.keyword {
+			color: var(--#{$prefix}syntax-color-3);
+		}
+
+		&.property,
+		&.tag,
+		&.symbol,
+		&.deleted,
+		&.important {
+			color: var(--#{$prefix}syntax-color-5);
+		}
+
+		&.selector,
+		&.string,
+		&.char,
+		&.builtin,
+		&.inserted,
+		&.regex,
+		&.attr-value,
+		&.attr-value > .token.punctuation {
+			color: var(--#{$prefix}syntax-color-4);
+		}
+
+		&.variable,
+		&.operator,
+		&.function {
+			color: var(--#{$prefix}syntax-color-2);
+		}
+
+		&.url {
+			color: var(--#{$prefix}syntax-color-1);
+		}
+	}
+
+
+	// HTML overrides
+	.token.attr-value > .token.punctuation.attr-equals,
+	.token.special-attr > .token.attr-value > .token.value.css {
+		color: var(--#{$prefix}syntax-fg);
+	}
+
+	// CSS overrides
+	.language-css {
+		.token {
+			&.selector {
+				color: var(--#{$prefix}syntax-color-5);
+			}
+
+			&.property {
+				color: var(--#{$prefix}syntax-fg);
+			}
+
+			&.function,
+			&.url > .token.function {
+				color: var(--#{$prefix}syntax-color-1);
+			}
+
+			&.url > .token.string.url {
+				color: var(--#{$prefix}syntax-color-4);
+			}
+
+			&.important,
+			&.atrule .token.rule {
+				color: var(--#{$prefix}syntax-color-3);
+			}
+		}
+	}
+
+	// JS overrides
+	.language-javascript {
+		.token {
+			&.operator {
+				color: var(--#{$prefix}syntax-color-3);
+			}
+
+			&.template-string > .token.interpolation > .token.interpolation-punctuation.punctuation {
+				color: var(--#{$prefix}syntax-color-6);
+			}
+		}
+	}
+
+	// JSON overrides
+	.language-json {
+		.token {
+			&.operator {
+				color: var(--#{$prefix}syntax-fg);
+			}
+
+			&.null.keyword {
+				color: var(--#{$prefix}syntax-color-7);
+			}
+		}
+	}
+
+	// MD overrides
+	.language-markdown {
+		.token {
+			&.url,
+			&.url > .token.operator,
+			&.url-reference.url > .token.string {
+				color: var(--#{$prefix}syntax-fg);
+			}
+
+			&.url > .token.content {
+				color: var(--#{$prefix}syntax-color-2);
+			}
+
+			&.url > .token.url,
+			&.url-reference.url {
+				color: var(--#{$prefix}syntax-color-1);
+			}
+
+			&.blockquote.punctuation,
+			&.hr.punctuation {
+				color: var(--#{$prefix}syntax-color-punctuation);
+				font-style: italic;
+			}
+
+			&.code-snippet {
+				color: var(--#{$prefix}syntax-color-4);
+			}
+
+			&.bold .token.content {
+				color: var(--#{$prefix}syntax-color-7);
+			}
+
+			&.italic .token.content {
+				color: var(--#{$prefix}syntax-color-3);
+			}
+
+			&.strike .token.content,
+			&.strike .token.punctuation,
+			&.list.punctuation,
+			&.title.important > .token.punctuation {
+				color: var(--#{$prefix}syntax-color-5);
+			}
+		}
+	}
+
+
+	//
+	// Plugins
+	//
+
+	// Line highlight
+	.line-highlight {
+		position: absolute;
+		left: 0;
+		right: 0;
+		margin-top: var(--#{$prefix}spacer);
+		background: var(--#{$prefix}syntax-color-line);
+		pointer-events: none;
+		white-space: pre;
+		line-height: inherit;
+
+		&:before,
+		&:after {
+			content: attr(data-start);
+			position: absolute;
+			top: 0;
+			/*rtl:ignore*/
+			left: calc(var(--#{$prefix}spacer) * .5);
+			text-align: center;
+			font-size: var(--#{$prefix}body-font-size-xs);
+			background: var(--#{$prefix}syntax-color-selection);
+			color: var(--#{$prefix}syntax-fg);
+			padding: 0.1em 0.6em;
+			border-radius: var(--#{$prefix}border-radius-sm);
+		}
+
+		&[data-end]:after {
+			content: attr(data-end);
+			top: auto;
+			bottom: 0;
+		}
+	}
+
+	// Line numbers
+	.line-numbers {
+		.line-numbers-rows {
+			position: absolute;
+			pointer-events: none;
+			top: 0;
+			font-size: 100%;
+			width: 3rem;
+			/*rtl:begin:ignore*/
+			left: -4rem;
+			border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+			/*rtl:end:ignore*/
+			user-select: none;
+
+			> span {
+				pointer-events: none;
+				display: block;
+				counter-increment: linenumber;
+
+				&:before {
+					content: counter(linenumber);
+					color: var(--#{$prefix}syntax-gutter);
+					display: block;
+					/*rtl:begin:ignore*/
+					padding-right: var(--#{$prefix}spacer-2);
+					text-align: right;
+					/*rtl:end:ignore*/
+				}
+			}
+		}
+	}
+	pre.line-numbers {
+		position: relative;
+		/*rtl:ignore*/
+		padding-left: 4rem;
+		counter-reset: linenumber;
+
+		> code {
+			position: relative;
+		}
+	}
+}

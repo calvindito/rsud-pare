@@ -1,0 +1,264 @@
+//
+// Basic Bootstrap table
+//
+
+// Base
+.table {
+    @include color-scheme(dark) {
+        --#{$prefix}table-striped-bg: #{$table-darkmode-striped-bg};
+        --#{$prefix}table-striped-bg: #{$table-darkmode-striped-bg};
+        --#{$prefix}table-hover-bg: #{$table-darkmode-hover-bg};
+    }
+
+    margin-bottom: 0;
+
+    // Target th & td
+    // We need the child combinator to prevent styles leaking to nested tables which doesn't have a `.table` class.
+    // We use the universal selectors here to simplify the selector (else we would need 6 different selectors).
+    // Another advantage is that this generates less code and makes the selector less specific making it easier to override.
+    // stylelint-disable-next-line selector-max-universal
+    > :not(caption) > * > * {
+        border-bottom-width: 0;
+        border-top-width: var(--#{$prefix}table-border-width);
+    }
+
+    // Avoid double border
+    > :not(caption):first-child > *:first-child > * {
+        border-top-width: 0;
+    }
+
+    // Header
+    > thead {
+        vertical-align: middle;
+
+        // Cells
+        > * > * {
+            border-bottom: var(--#{$prefix}table-border-width) solid var(--#{$prefix}table-group-separator-color);
+        }
+    }
+
+    // Footer
+    > tfoot {
+        > * > * {
+            border-top-color: var(--#{$prefix}table-group-separator-color);
+        }
+    }
+}
+
+// Tables with custom background color
+.table[class*=bg-] {
+    > :not(caption) > * > * {
+        background-color: inherit;
+        border-color: rgba(var(--#{$prefix}white-rgb), .15);
+    }
+
+    &.table-striped {
+        tbody > tr:nth-of-type(#{$table-striped-order}) > * {
+            --#{$prefix}table-striped-bg: rgba(var(--#{$prefix}black-rgb), .05);
+        }
+    }
+
+    &.table-hover {
+        tbody > tr:hover > * {
+            --#{$prefix}table-accent-bg: rgba(var(--#{$prefix}black-rgb), .075);
+        }
+    }
+}
+
+
+// Border versions
+//
+// Add or remove borders all around the table and between all the columns.
+//
+// When borders are added on all sides of the cells, the corners can render odd when
+// these borders do not have the same color or if they are semi-transparent.
+// Therefor we add top and border bottoms to the `tr`s and left and right borders
+// to the `td`s or `th`s
+
+.table-borderless {
+    // stylelint-disable-next-line selector-max-universal
+    > :not(caption) > * > * {
+        border-top-width: 0;
+    }
+}
+
+
+// Hover effect
+//
+// Placed here since it has to come after the potential zebra striping
+
+.table-hover {
+    > tbody > tr > * {
+        @include transition(box-shadow ease-in-out var(--#{$prefix}transition-base-timer));
+    }
+}
+
+
+//
+// Optional styles
+//
+
+// Scrollable table
+.table-scrollable {
+    max-height: $table-scrollable-max-height;
+    overflow: auto;
+}
+
+// Columned table
+.table-columned {
+    > :not(caption) > * > * {
+        border-top-width: 0;
+        border-left-width: var(--#{$prefix}table-border-width);
+
+        &:first-child {
+            border-left: 0;
+        }
+    }
+}
+
+
+//
+// Optional table cell sizes
+//
+
+// Extra large
+.table-xl {
+    --#{$prefix}table-cell-padding-y: #{$table-cell-padding-y-xl};
+    --#{$prefix}table-cell-padding-x: #{$table-cell-padding-x-xl};
+}
+
+// Large
+.table-lg {
+    --#{$prefix}table-cell-padding-y: #{$table-cell-padding-y-lg};
+    --#{$prefix}table-cell-padding-x: #{$table-cell-padding-x-lg};
+}
+
+// Mini
+.table-xs {
+    --#{$prefix}table-cell-padding-y: #{$table-cell-padding-y-xs};
+    --#{$prefix}table-cell-padding-x: #{$table-cell-padding-x-xs};
+}
+
+
+//
+// Table borders
+//
+
+// Solid border
+.table-border-solid {
+    thead > & > * {
+        border-bottom-width: calc(var(--#{$prefix}table-border-width) * 2);
+    }
+
+    tbody > & > *,
+    tfoot > & > * {
+        border-top-width: calc(var(--#{$prefix}table-border-width) * 2);
+    }
+}
+
+// Double border
+.table-border-double {
+    thead > & > * {
+        border-bottom-width: calc(var(--#{$prefix}table-border-width) * 3);
+        border-bottom-style: double;
+    }
+
+    tbody > & > *,
+    tfoot > & > * {
+        border-top-width: calc(var(--#{$prefix}table-border-width) * 3);
+        border-top-style: double;
+    }
+}
+
+// Dashed border
+.table-border-dashed {
+     > * {
+        border-top-style: dashed;
+    }
+}
+
+
+//
+// Card table
+//
+
+// Inside card
+.card {
+
+    // Remove unnecessary borders
+    > .table-bordered,
+    > [class*=table-responsive] > .table-bordered {
+        > :not(caption) > * {
+            border-width: 0;
+
+            > *:first-child {
+                border-left: 0;
+            }
+            > *:last-child {
+                border-right: 0;
+            }
+        }
+    }
+
+    // Add border top radius for first table
+    > .table:first-child,
+    > [class*=table-responsive]:first-child > .table:first-child {
+        @include border-top-radius(var(--#{$prefix}card-inner-border-radius));
+
+        thead:first-child,
+        tbody:first-child {
+            tr:first-child {
+                @include border-top-radius(var(--#{$prefix}card-inner-border-radius));
+
+                td:first-child,
+                th:first-child {
+                    @include border-top-start-radius(var(--#{$prefix}card-inner-border-radius));
+                }
+                td:last-child,
+                th:last-child {
+                    @include border-top-end-radius(var(--#{$prefix}card-inner-border-radius));
+                }
+            }
+        }
+    }
+
+    // Add border bottom radius for last table
+    > .table:last-child,
+    > [class*=table-responsive]:last-child > .table:last-child {
+        @include border-bottom-radius(var(--#{$prefix}card-inner-border-radius));
+
+        tbody:last-child,
+        tfoot:last-child {
+            tr:last-child {
+                @include border-bottom-radius(var(--#{$prefix}card-inner-border-radius));
+
+                td:first-child,
+                th:first-child {
+                    @include border-bottom-start-radius(var(--#{$prefix}card-inner-border-radius));
+                }
+                td:last-child,
+                th:last-child {
+                    @include border-bottom-end-radius(var(--#{$prefix}card-inner-border-radius));
+                }
+            }
+        }
+    }
+}
+
+// After card body
+.card-body {
+    + [class*=table-responsive],
+    + .table {
+        border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+    }
+}
+
+
+// Table variants
+//
+// Table variants set the table cell backgrounds, border colors
+// and the colors of the striped, hovered & active tables
+
+@each $color, $value in $table-dark-variants {
+    @include table-dark-variant($color, $value);
+}

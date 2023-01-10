@@ -1,0 +1,54 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Helper classes
+ *
+ *  Custom helper classes used in the template.
+ *
+ * ---------------------------------------------------------------------------- */
+
+//
+// Spinner animation
+//
+
+// Default
+.spinner {
+    display: inline-block;
+    animation: rotation 1s linear infinite;
+}
+
+// Reversed
+.spinner-reverse {
+    display: inline-block;
+    animation: rotation_reverse 1s linear infinite;
+}
+
+// Default rotation
+@keyframes rotation {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
+
+// Inversed rotation
+@keyframes rotation_reverse {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(-360deg);}
+}
+
+
+//
+// Misc
+//
+
+// Color inversion in dark mode
+.invert-dark {
+    @include color-scheme(dark) {
+        filter: invert(1) grayscale(100);
+    }
+}
+
+// Hide scrollbar
+.scrollbar-hidden {
+    &::-webkit-scrollbar {
+        display: none !important;
+    }
+}

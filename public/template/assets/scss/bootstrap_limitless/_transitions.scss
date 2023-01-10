@@ -1,0 +1,23 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Transitions overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Disable all transitions
+.no-transitions * {
+    &,
+    &:before,
+    &:after {
+        transition: none !important;
+    }
+}
+
+// Collapsible indicator transition
+.collapsible-indicator {
+    @include transition(transform ease-in-out var(--#{$prefix}transition-collapse-timer));
+
+    .collapsed & {
+        transform: rotate(-90deg);
+    }
+}

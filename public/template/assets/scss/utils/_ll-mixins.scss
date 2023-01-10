@@ -1,0 +1,13 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Custom template mixins
+ *
+ *  All custom mixins are prefixed with "ll-" to avoid conflicts
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Font smoothing
+@mixin ll-font-smoothing() {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

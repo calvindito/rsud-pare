@@ -1,0 +1,176 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Bootstrap multiselect
+*
+*  Styles for multiselect.js - custom multiple select plugin
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-multiselect {
+
+
+    // Base
+    // ------------------------------
+
+    // Wrapper
+    .multiselect-native-select {
+        --#{$prefix}multiselect-padding-x: #{$form-select-padding-x};
+        --#{$prefix}multiselect-max-height: #{$multiselect-max-height};
+        --#{$prefix}multiselect-bg: #{$form-select-bg};
+        --#{$prefix}multiselect-color: #{$form-select-color};
+        --#{$prefix}multiselect-border-color: #{$form-select-border-color};
+        --#{$prefix}multiselect-border-radius: #{$form-select-border-radius};
+        --#{$prefix}multiselect-focus-border-color: #{$form-select-focus-border-color};
+        --#{$prefix}multiselect-focus-box-shadow: #{$form-select-focus-box-shadow};
+        --#{$prefix}multiselect-disabled-color: #{$form-select-disabled-color};
+        --#{$prefix}multiselect-disabled-bg: #{$form-select-disabled-bg};
+        --#{$prefix}multiselect-disabled-border-color: #{$form-select-disabled-border-color};
+
+        @include color-scheme(dark) {
+            --#{$prefix}multiselect-bg: #{$form-select-darkmode-bg};
+        }
+
+        position: relative;
+        display: block;
+
+        // Hide original select
+        select {
+            border: 0 !important;
+            clip: rect(0 0 0 0) !important;
+            height: 0 !important;
+            margin: 0 !important;
+            overflow: hidden !important;
+            padding: 0 !important;
+            position: absolute !important;
+            width: 0 !important;
+            left: 0;
+            top: 0;
+            display: none;
+        }
+    }
+
+    // Main button
+    .multiselect {
+        display: flex;
+        text-align: left;
+        justify-content: flex-start;
+        padding-left: var(--#{$prefix}multiselect-padding-x);
+        padding-right: var(--#{$prefix}multiselect-padding-x);
+        color: var(--#{$prefix}multiselect-color);
+        background-color: var(--#{$prefix}multiselect-bg);
+        border-color: var(--#{$prefix}multiselect-border-color);
+        @include transition($input-transition);
+        @include border-radius(var(--#{$prefix}multiselect-border-radius));
+
+        // Reset cursor
+        &.btn {
+            cursor: default;
+        }
+
+        // Selected text
+        .multiselect-selected-text {
+            flex: 1;
+            @include text-truncate();
+        }
+
+        // Hover state
+        &:hover {
+            background-color: var(--#{$prefix}multiselect-bg);
+            border-color: var(--#{$prefix}multiselect-border-color);
+        }
+
+        // Focus state
+        &:active,
+        &:active:focus,
+        &:focus,
+        &.show,
+        &.show:focus {
+            background-color: var(--#{$prefix}multiselect-bg);
+            border-color: var(--#{$prefix}multiselect-focus-border-color);
+            box-shadow: var(--#{$prefix}multiselect-focus-box-shadow);
+        }
+
+        // Disabled state
+        &.disabled {
+            color: var(--#{$prefix}multiselect-disabled-color);
+            background-color: var(--#{$prefix}multiselect-disabled-bg);
+            border-color: var(--#{$prefix}multiselect-disabled-border-color);
+        }
+
+
+        //
+        // Make it as an input instead of button
+        //
+
+        // Large
+        &.btn-lg {
+            --#{$prefix}multiselect-padding-x: #{$form-select-padding-x-lg};
+        }
+
+        // Small
+        &.btn-sm {
+            --#{$prefix}multiselect-padding-x: #{$form-select-padding-x-sm};
+        }
+    }
+
+    // Container
+    .multiselect-container {
+        max-height: var(--#{$prefix}multiselect-max-height);
+        overflow-y: auto;
+        width: 100%;
+    }
+
+    // Item group
+    .multiselect-group {
+        font-weight: $font-weight-semibold;
+    }
+
+    // Select All option
+    .multiselect-all {
+        font-weight: $font-weight-semibold;
+    }
+
+    // Filter
+    .multiselect-filter {
+        position: relative;
+        padding: var(--#{$prefix}dropdown-padding-y) var(--#{$prefix}dropdown-item-padding-x);
+        margin-bottom: var(--#{$prefix}dropdown-padding-y);
+    }
+
+    // Items in option groups
+    .multiselect-group-option-indented {
+        padding-left: calc(var(--#{$prefix}dropdown-item-padding-x) * 2);
+    }
+
+    // Misc
+    // ------------------------------
+
+    // Inside input group
+    .input-group {
+        .multiselect-native-select {
+            display: flex;
+            align-items: center;
+            flex: 1 1 auto;
+
+            // Remove rounded corners from the first item
+            &:not(:first-child) {
+                .multiselect {
+                    @include border-start-radius(0);
+                }
+            }
+
+            // Remove rounded corners from the last item
+            &:not(:last-child) {
+                .multiselect {
+                    @include border-end-radius(0);
+                }
+            }
+        }
+
+        .multiselect:focus,
+        .show > .multiselect {
+            z-index: 3;
+        }
+    }
+}

@@ -1,0 +1,33 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Ribbons
+ *
+ *  Styles for ribbons - corner, vertical, horizontal
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-ribbon {
+
+    // Container
+    .ribbon-container {
+        width: 6.5rem;
+        height: 6.5rem;
+        overflow: hidden;
+        position: absolute;
+        top: calc(var(--#{$prefix}card-border-width) * -1);
+        right: calc(var(--#{$prefix}card-border-width) * -1);
+    }
+
+    // Corner ribbon
+    .ribbon {
+        text-align: center;
+        position: relative;
+        padding: 0.3125rem 0;
+        left: -0.6875rem;
+        top: 1.563rem;
+        width: 9.375rem;
+        z-index: 10;
+        transform: rotate(45deg);
+    }
+}

@@ -1,0 +1,242 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Dual listbox
+*
+*  Styles for dual-listbox.min.js - A responsive dual listbox widget
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-dual-listbox {
+
+    // Base
+    .dual-listbox {
+        --#{$prefix}dlb-height: 18.75rem;
+        --#{$prefix}dlb-input-padding-y: #{$input-padding-y};
+        --#{$prefix}dlb-input-padding-x: #{$input-padding-x};
+        --#{$prefix}dlb-input-bg: #{$input-bg};
+        --#{$prefix}dlb-input-color: #{$input-color};
+        --#{$prefix}dlb-input-placeholder-color: #{$input-placeholder-color};
+        --#{$prefix}dlb-input-border-width: #{$input-border-width};
+        --#{$prefix}dlb-input-border-color: #{$input-border-color};
+        --#{$prefix}dlb-input-border-radius: #{$input-border-radius};
+        --#{$prefix}dlb-input-box-shadow: #{$input-box-shadow};
+        --#{$prefix}dlb-input-focus-bg: #{$input-focus-bg};
+        --#{$prefix}dlb-input-focus-border-color: #{$input-focus-border-color};
+        --#{$prefix}dlb-input-focus-box-shadow: #{$input-focus-box-shadow};
+
+        --#{$prefix}dlb-btn-padding-x: #{$btn-padding-x};
+        --#{$prefix}dlb-btn-padding-y: #{$btn-padding-y};
+        --#{$prefix}dlb-btn-color: #{$btn-light-color};
+        --#{$prefix}dlb-btn-bg: #{$btn-light-bg};
+        --#{$prefix}dlb-btn-border-width: #{$btn-light-border-width};
+        --#{$prefix}dlb-btn-border-color: #{$btn-light-border-color};
+        --#{$prefix}dlb-btn-hover-color: #{$btn-light-hover-color};
+        --#{$prefix}dlb-btn-hover-bg: #{$btn-light-hover-bg};
+        --#{$prefix}dlb-btn-hover-border-color: #{$btn-light-hover-border-color};
+        --#{$prefix}dlb-btn-active-color: #{$btn-light-active-color};
+        --#{$prefix}dlb-btn-active-bg: #{$btn-light-active-bg};
+        --#{$prefix}dlb-btn-active-border-color: #{$btn-light-active-border-color};
+
+        // Dark theme
+        @include color-scheme(dark) {
+            --#{$prefix}dlb-input-bg: #{$input-darkmode-bg};
+            --#{$prefix}dlb-input-focus-bg: #{$input-darkmode-focus-bg};
+        }
+
+        display: flex;
+        flex-direction: column;
+
+        // Container
+        .dual-listbox__container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            flex-wrap: wrap;
+
+            > div:not(.dual-listbox__buttons) {
+                flex: 1;
+            }
+
+            .dual-listbox__buttons,
+            .dual-listbox__available {
+                margin-bottom: var(--#{$prefix}spacer);
+            }
+
+            > * {
+                width: 100%;
+            }
+
+            // On mobile
+            @include media-breakpoint-up(md) {
+                flex-direction: row;
+
+                > * {
+                    width: auto;
+                }
+
+                > *:not(:first-child) {
+                    margin-left: var(--#{$prefix}spacer);
+                }
+
+                .dual-listbox__buttons,
+                .dual-listbox__available {
+                    margin-bottom: 0;
+                }
+            }
+
+            // Inside sidebar
+            .sidebar & {
+                flex-direction: column;
+
+                > * {
+                    margin-left: 0;
+                    width: 100%;
+                }
+
+                .dual-listbox__buttons,
+                .dual-listbox__available {
+                    margin-bottom: var(--#{$prefix}spacer);
+                }
+            }
+        }
+
+        // Search input
+        .dual-listbox__search {
+            display: block;
+            width: 100%;
+            padding: var(--#{$prefix}dlb-input-padding-y) var(--#{$prefix}dlb-input-padding-x);
+            color: var(--#{$prefix}dlb-input-color);
+            background-color: var(--#{$prefix}dlb-input-bg);
+            background-clip: padding-box;
+            border: var(--#{$prefix}dlb-input-border-width) solid var(--#{$prefix}dlb-input-border-color);
+            margin-bottom: var(--#{$prefix}spacer);
+            @include border-radius(var(--#{$prefix}dlb-input-border-radius), 0);
+            @include box-shadow(var(--#{$prefix}dlb-input-box-shadow));
+            @include transition($input-transition);
+
+            // Focus state
+            &:focus {
+                color: $input-focus-color;
+                background-color: var(--#{$prefix}dlb-input-focus-bg);
+                border-color: var(--#{$prefix}dlb-input-focus-border-color);
+                outline: 0;
+                @if $enable-shadows {
+                    @include box-shadow($input-box-shadow, var(--#{$prefix}dlb-input-focus-box-shadow));
+                } @else {
+                    box-shadow: var(--#{$prefix}dlb-input-focus-box-shadow);
+                }
+            }
+
+            // Placeholder
+            &::placeholder {
+                color: var(--#{$prefix}dlb-input-placeholder-color);
+                opacity: 1;
+            }
+        }
+
+        // Select areas
+        .dual-listbox__available,
+        .dual-listbox__selected {
+            border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+            height: var(--#{$prefix}dlb-height);
+            overflow-y: auto;
+            padding: var(--#{$prefix}spacer-2) 0;
+            margin-top: 0;
+            margin-bottom: 0;
+            -webkit-margin-before: 0;
+            @include border-bottom-radius(var(--#{$prefix}border-radius));
+        }
+
+        // Buttons container
+        .dual-listbox__buttons {
+            display: flex;
+            flex-direction: column;
+
+            &:empty {
+                display: none;
+            }
+        }
+
+        // Buttons
+        .dual-listbox__button {
+            display: inline-block;
+            padding: var(--#{$prefix}dlb-btn-padding-y) var(--#{$prefix}dlb-btn-padding-x);
+            color: var(--#{$prefix}dlb-btn-color);
+            text-align: center;
+            text-decoration: if($link-decoration == none, null, none);
+            vertical-align: middle;
+            cursor: if($enable-button-pointers, pointer, null);
+            user-select: none;
+            border: var(--#{$prefix}dlb-btn-border-width) solid var(--#{$prefix}dlb-btn-border-color);
+            @include border-radius(var(--#{$prefix}border-radius));
+            @include gradient-bg(var(--#{$prefix}dlb-btn-bg));
+            @include transition($btn-transition);
+
+            // Spacing between buttons
+            &:not(:last-child) {
+                margin-bottom: var(--#{$prefix}spacer-2);                
+            }
+
+            // Hover state
+            &:hover {
+                color: var(--#{$prefix}dlb-btn-hover-color);
+                text-decoration: if($link-hover-decoration == underline, none, null);
+                background-color: var(--#{$prefix}dlb-btn-hover-bg);
+                border-color: var(--#{$prefix}dlb-btn-hover-border-color);
+            }
+
+            // Focus state
+            &:focus {
+                color: var(--#{$prefix}dlb-btn-hover-color);
+                @include gradient-bg(var(--#{$prefix}dlb-btn-hover-bg));
+                border-color: var(--#{$prefix}dlb-btn-hover-border-color);
+                outline: 0;
+            }
+
+            // Active state
+            &:active {
+                color: var(--#{$prefix}dlb-btn-active-color);
+                background-color: var(--#{$prefix}dlb-btn-active-bg);
+                background-image: if($enable-gradients, none, null);
+                border-color: var(--#{$prefix}dlb-btn-active-border-color);
+                @include box-shadow(var(--#{$prefix}dlb-btn-active-shadow));
+            }
+        }
+
+        // Select title
+        .dual-listbox__title {
+            font-weight: $font-weight-semibold;
+            background-color: var(--#{$prefix}light);
+            padding: var(--#{$prefix}spacer-2) var(--#{$prefix}spacer);
+            border-left: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+            border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+            border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+            @include border-top-radius(var(--#{$prefix}border-radius));
+        }
+
+        // Select item
+        .dual-listbox__item {
+            display: block;
+            padding: var(--#{$prefix}spacer-1) var(--#{$prefix}spacer);
+            cursor: pointer;
+            user-select: none;
+            @include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer), color ease-in-out var(--#{$prefix}transition-base-timer));
+
+            &:hover,
+            &:focus {
+                background-color: var(--#{$prefix}gray-200);
+            }
+
+            &:active {
+                background-color: var(--#{$prefix}gray-300);
+            }
+
+            // Selected state
+            &.dual-listbox__item--selected {
+                color: var(--#{$prefix}component-active-color);
+                background-color: var(--#{$prefix}component-active-bg);
+            }
+        }
+    }
+}

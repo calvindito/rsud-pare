@@ -1,0 +1,1190 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Quill editor
+*
+*  Styles for quill.min.js - super simple WYSIWYG Editor
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-quill {
+
+     // Base container
+    .ql-container {
+        height: 100%;
+        margin: 0;
+        position: relative;
+
+        &.ql-disabled {
+            .ql-tooltip {
+                visibility: hidden;
+            }
+
+            .ql-editor ul[data-checked] > li::before {
+                pointer-events: none;
+            }
+        }
+    }
+
+    // Clipboard
+    .ql-clipboard {
+        left: -100000px;
+        height: 1px;
+        overflow-y: hidden;
+        position: absolute;
+        top: 50%;
+
+        p {
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    // Editor base
+    .ql-editor {
+        height: 100%;
+        min-height: calc(calc(var(--#{$prefix}spacer) * 2) + calc(var(--#{$prefix}body-line-height-computed) * 3));
+        outline: none;
+        overflow-y: auto;
+        padding: var(--#{$prefix}spacer);
+        tab-size: 4;
+        text-align: left;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+
+        > * {
+            cursor: text;
+        }
+
+        // Scrollable
+        .quill-scrollable-container & {
+            overflow: auto;
+            max-height: 20rem;
+        }
+
+        // Reset
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+        }
+        p,
+        ol,
+        ul,
+        pre,
+        blockquote {
+            margin: 0;
+            padding: 0;
+            counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+        }
+
+        ol,
+        ul {
+            padding-left: 1.5em;
+
+            > li {
+                list-style-type: none;
+
+                &:before {
+                    content: '\2022';
+                }
+            }
+        }
+
+        ul {
+            &[data-checked=true],
+            &[data-checked=false] {
+                pointer-events: none;
+
+                > li {
+                    &:before {
+                        color: $text-muted;
+                        cursor: pointer;
+                        pointer-events: all;
+                    }
+                    * {
+                        pointer-events: all;
+                    }
+                }
+            }
+
+            &[data-checked=true] > li:before {
+                content: '\2611';
+            }
+            &[data-checked=false] > li:before {
+                content: '\2610';
+            }
+        }
+
+        li {
+            &:before {
+                display: inline-block;
+                white-space: nowrap;
+                width: 1.2em;
+            }
+
+            &:not(.ql-direction-rtl)::before {
+                margin-left: -1.5em;
+                margin-right: 0.5em;
+                text-align: right;
+            }
+
+            &.ql-direction-rtl::before {
+                margin-left: 0.5em;
+                margin-right: -1.5em;
+            }
+        }
+
+
+        //
+        // Indents
+        //
+
+        ol,
+        ul {
+            li {
+                &:not(.ql-direction-rtl) {
+                    padding-left: 1.5em;
+                }
+
+                &.ql-direction-rtl {
+                    padding-right: 1.5em;
+                }
+            }
+        }
+
+        ol {
+            li {
+                counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+                counter-increment: list-0;
+
+                &:before {
+                    content: counter(list-0, decimal) '. ';
+                }
+
+                &.ql-indent-1 {
+                    counter-increment: list-1;
+                    counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+
+                    &:before {
+                        content: counter(list-1, lower-alpha) '. ';
+                    }
+                }
+
+                &.ql-indent-2 {
+                    counter-increment: list-2;
+                    counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+
+                    &:before {
+                        content: counter(list-2, lower-roman) '. ';
+                    }
+                }
+
+                &.ql-indent-3 {
+                    counter-increment: list-3;
+                    counter-reset: list-4 list-5 list-6 list-7 list-8 list-9;
+
+                    &:before {
+                        content: counter(list-3, decimal) '. ';
+                    }
+                }
+
+                &.ql-indent-4 {
+                    counter-increment: list-4;
+                    counter-reset: list-5 list-6 list-7 list-8 list-9;
+
+                    &:before {
+                        content: counter(list-4, lower-alpha) '. ';
+                    }
+                }
+
+                &.ql-indent-5 {
+                    counter-increment: list-5;
+                    counter-reset: list-6 list-7 list-8 list-9;
+
+                    &:before {
+                        content: counter(list-5, lower-roman) '. ';
+                    }
+                }
+
+                &.ql-indent-6 {
+                    counter-increment: list-6;
+                    counter-reset: list-7 list-8 list-9;
+
+                    &:before {
+                        content: counter(list-6, decimal) '. ';
+                    }
+                }
+
+                &.ql-indent-7 {
+                    counter-increment: list-7;
+                    counter-reset: list-8 list-9;
+
+                    &:before {
+                        content: counter(list-7, lower-alpha) '. ';
+                    }
+                }
+
+                &.ql-indent-8 {
+                    counter-increment: list-8;
+                    counter-reset: list-9;
+
+                    &:before {
+                        content: counter(list-8, lower-roman) '. ';
+                    }
+                }
+
+                &.ql-indent-9 {
+                    counter-increment: list-9;
+
+                    &:before {
+                        content: counter(list-9, decimal) '. ';
+                    }
+                }
+            }
+        }
+
+        .ql-indent-1 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 3em;
+            }
+            &.ql-direction-rtl {
+                .ql-align-right {
+                    padding-right: 3em;
+                }
+            }
+        }
+        li.ql-indent-1 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 4.5em;
+            }
+            &.ql-direction-rtl {
+                &.ql-align-right {
+                    padding-right: 4.5em;
+                }
+            }
+        }
+
+        .ql-indent-2 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 6em;
+            }
+            &.ql-direction-rtl {
+                .ql-align-right {
+                    padding-right: 6em;
+                }
+            }
+        }
+        li.ql-indent-2 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 7.5em;
+            }
+            &.ql-direction-rtl {
+                &.ql-align-right {
+                    padding-right: 7.5em;
+                }
+            }
+        }
+
+        .ql-indent-3 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 9em;
+            }
+            &.ql-direction-rtl {
+                .ql-align-right {
+                    padding-right: 9em;
+                }
+            }
+        }
+        li.ql-indent-3 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 10.5em;
+            }
+            &.ql-direction-rtl {
+                &.ql-align-right {
+                    padding-right: 10.5em;
+                }
+            }
+        }
+
+        .ql-indent-4 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 12em;
+            }
+            &.ql-direction-rtl {
+                .ql-align-right {
+                    padding-right: 12em;
+                }
+            }
+        }
+        li.ql-indent-4 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 13.5em;
+            }
+            &.ql-direction-rtl {
+                &.ql-align-right {
+                    padding-right: 13.5em;
+                }
+            }
+        }
+
+        .ql-indent-5 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 15em;
+            }
+            &.ql-direction-rtl {
+                .ql-align-right {
+                    padding-right: 15em;
+                }
+            }
+        }
+        li.ql-indent-5 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 16.5em;
+            }
+            &.ql-direction-rtl {
+                &.ql-align-right {
+                    padding-right: 16.5em;
+                }
+            }
+        }
+
+        .ql-indent-6 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 18em;
+            }
+            &.ql-direction-rtl {
+                .ql-align-right {
+                    padding-right: 18em;
+                }
+            }
+        }
+        li.ql-indent-6 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 19.5em;
+            }
+            &.ql-direction-rtl {
+                &.ql-align-right {
+                    padding-right: 19.5em;
+                }
+            }
+        }
+
+        .ql-indent-7 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 21em;
+            }
+            &.ql-direction-rtl {
+                .ql-align-right {
+                    padding-right: 21em;
+                }
+            }
+        }
+        li.ql-indent-7 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 22.5em;
+            }
+            &.ql-direction-rtl {
+                &.ql-align-right {
+                    padding-right: 22.5em;
+                }
+            }
+        }
+
+        .ql-indent-8 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 24em;
+            }
+            &.ql-direction-rtl {
+                .ql-align-right {
+                    padding-right: 24em;
+                }
+            }
+        }
+        li.ql-indent-8 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 25.5em;
+            }
+            &.ql-direction-rtl {
+                &.ql-align-right {
+                    padding-right: 25.5em;
+                }
+            }
+        }
+
+        .ql-indent-9 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 27em;
+            }
+            &.ql-direction-rtl {
+                .ql-align-right {
+                    padding-right: 27em;
+                }
+            }
+        }
+        li.ql-indent-9 {
+            &:not(.ql-direction-rtl) {
+                padding-left: 28.5em;
+            }
+            &.ql-direction-rtl {
+                &.ql-align-right {
+                    padding-right: 28.5em;
+                }
+            }
+        }
+
+
+        //
+        // Video
+        //
+
+        .ql-video {
+            display: block;
+            max-width: 100%;
+
+            &.ql-align-center {
+                margin: 0 auto;
+            }
+            &.ql-align-right {
+                margin: 0 0 0 auto;
+            }
+        }
+
+
+        //
+        // Images
+        //
+
+        img {
+            max-width: 100%;
+        }
+
+
+        //
+        // Background colors
+        //
+
+        .ql-bg-black {
+            background-color: var(--#{$prefix}black);
+        }
+        .ql-bg-red {
+            background-color: var(--#{$prefix}danger);
+        }
+        .ql-bg-orange {
+            background-color: var(--#{$prefix}warning);
+        }
+        .ql-bg-yellow {
+            background-color: var(--#{$prefix}yellow);
+        }
+        .ql-bg-green {
+            background-color: var(--#{$prefix}success);
+        }
+        .ql-bg-blue {
+            background-color: var(--#{$prefix}primary);
+        }
+        .ql-bg-purple {
+            background-color: var(--#{$prefix}purple);
+        }
+
+
+        //
+        // Text colors
+        //
+
+        .ql-color-black {
+            color: var(--#{$prefix}black);
+        }
+        .ql-color-red {
+            color: var(--#{$prefix}danger);
+        }
+        .ql-color-orange {
+            color: var(--#{$prefix}warning);
+        }
+        .ql-color-yellow {
+            color: var(--#{$prefix}yellow);
+        }
+        .ql-color-green {
+            color: var(--#{$prefix}success);
+        }
+        .ql-color-blue {
+            color: var(--#{$prefix}primary);
+        }
+        .ql-color-purple {
+            color: var(--#{$prefix}purple);
+        }
+
+
+        //
+        // Font family
+        //
+
+        .ql-font-serif {
+            font-family: var(--#{$prefix}font-sans-serif);
+        }
+        .ql-font-monospace {
+            font-family: var(--#{$prefix}font-monospace);
+        }
+
+
+        //
+        // Font sizes
+        //
+
+        .ql-size-small {
+            font-size: 0.75em;
+        }
+        .ql-size-large {
+            font-size: 1.5em;
+        }
+        .ql-size-huge {
+            font-size: 2.5em;
+        }
+
+
+        //
+        // RTL direction
+        //
+
+        .ql-direction-rtl {
+            direction: rtl;
+            text-align: inherit;
+        }
+
+
+        //
+        // Text alignment
+        //
+
+        .ql-align-center {
+            text-align: center;
+        }
+        .ql-align-justify {
+            text-align: justify;
+        }
+        .ql-align-right {
+            text-align: right;
+        }
+
+
+        //
+        // Blank editor
+        //
+
+        &.ql-blank:before {
+            color: $text-muted;
+            content: attr(data-placeholder);
+            left: var(--#{$prefix}spacer);
+            pointer-events: none;
+            position: absolute;
+            right: var(--#{$prefix}spacer);
+        }
+    }
+
+
+    //
+    // Toolbar
+    //
+
+    .ql-toolbar {
+        padding: var(--#{$prefix}spacer-2);
+        border-bottom: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+
+        // Clear floating
+        &:after {
+            clear: both;
+            content: '';
+            display: table;
+        }
+
+        // Remove border from content area
+        + .ql-container {
+            border-top: 0;
+        }
+
+        // Button group
+        .ql-formats {
+            margin-right: var(--#{$prefix}spacer-2);
+            padding-right: var(--#{$prefix}spacer-2);
+            border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+        }
+
+        // Toolbar button
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            float: left;
+            height: 1.5rem;
+            padding: .1875rem .3125rem;
+            width: 1.75rem;
+
+            &:active:hover {
+                outline: 0;
+            }
+
+            svg {
+                float: left;
+                height: 100%;
+            }
+        }
+
+        // Hide native file input
+        input.ql-image[type=file] {
+            display: none;
+        }
+
+        // Button colors
+        .ql-fill {
+            @include transition(fill ease-in-out var(--#{$prefix}transition-base-timer));
+        }
+        .ql-stroke {
+            @include transition(stroke ease-in-out var(--#{$prefix}transition-base-timer));
+        }
+        button:hover,
+        button:focus,
+        button.ql-active,
+        .ql-picker-label:hover,
+        .ql-picker-label.ql-active,
+        .ql-picker-item:hover,
+        .ql-picker-item.ql-selected {
+            color: var(--#{$prefix}link-color);
+        }
+        button:hover .ql-fill,
+        button:focus .ql-fill,
+        button.ql-active .ql-fill,
+        .ql-picker-label:hover .ql-fill,
+        .ql-picker-label.ql-active .ql-fill,
+        .ql-picker-item:hover .ql-fill,
+        .ql-picker-item.ql-selected .ql-fill,
+        button:hover .ql-stroke.ql-fill,
+        button:focus .ql-stroke.ql-fill,
+        button.ql-active .ql-stroke.ql-fill,
+        .ql-picker-label:hover .ql-stroke.ql-fill,
+        .ql-picker-label.ql-active .ql-stroke.ql-fill,
+        .ql-picker-item:hover .ql-stroke.ql-fill,
+        .ql-picker-item.ql-selected .ql-stroke.ql-fill {
+            fill: var(--#{$prefix}link-color);
+        }
+        button:hover .ql-stroke,
+        button:focus .ql-stroke,
+        button.ql-active .ql-stroke,
+        .ql-picker-label:hover .ql-stroke,
+        .ql-picker-label.ql-active .ql-stroke,
+        .ql-picker-item:hover .ql-stroke,
+        .ql-picker-item.ql-selected .ql-stroke,
+        button:hover .ql-stroke-miter,
+        button:focus .ql-stroke-miter,
+        button.ql-active .ql-stroke-miter,
+        .ql-picker-label:hover .ql-stroke-miter,
+        .ql-picker-label.ql-active .ql-stroke-miter,
+        .ql-picker-item:hover .ql-stroke-miter,
+        .ql-picker-item.ql-selected .ql-stroke-miter {
+            stroke: var(--#{$prefix}link-color);
+        }
+        @media (pointer: coarse) {
+            button:hover:not(.ql-active) {
+                color: var(--#{$prefix}body-color);
+            }
+            button:hover:not(.ql-active) .ql-fill,
+            button:hover:not(.ql-active) .ql-stroke.ql-fill {
+                fill: var(--#{$prefix}body-color);
+            }
+            button:hover:not(.ql-active) .ql-stroke,
+            button:hover:not(.ql-active) .ql-stroke-miter {
+                stroke: var(--#{$prefix}body-color);
+            }
+        }
+    }
+
+
+    //
+    // Tooltip
+    //
+
+    .ql-tooltip {
+        --#{$prefix}ql-tooltip-bg: #{$ql-tooltip-bg};
+        --#{$prefix}ql-tooltip-color: #{$ql-tooltip-color};
+        --#{$prefix}ql-tooltip-input-focus-border-color: #{$input-focus-border-color};
+        --#{$prefix}ql-tooltip-input-focus-box-shadow: #{$input-focus-box-shadow};
+        @include color-scheme(dark) {
+            --#{$prefix}ql-tooltip-bg: #{$ql-darkmode-tooltip-bg};
+        }
+        position: absolute;
+        background-color: var(--#{$prefix}ql-tooltip-bg);
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+        color: var(--#{$prefix}ql-tooltip-color);
+        padding: var(--#{$prefix}spacer-2) calc(var(--#{$prefix}spacer-2) * 1.5);
+        white-space: nowrap;
+        z-index: $zindex-tooltip;
+        transform: translateY(var(--#{$prefix}spacer-2));
+        @include border-radius(var(--#{$prefix}border-radius));
+        @include box-shadow(var(--#{$prefix}box-shadow));
+
+        // Title
+        &:before {
+            content: "Visit URL:";
+            margin-right: var(--#{$prefix}spacer-2);
+        }
+
+        // Links
+        a {
+            cursor: pointer;
+
+            &.ql-preview {
+                display: inline-block;
+                max-width: 12.5rem;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+                vertical-align: top;
+            }
+            &.ql-action::after {
+                border-right: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+                content: 'Edit';
+                margin-left: var(--#{$prefix}spacer);
+                padding-right: var(--#{$prefix}spacer-2);
+            }
+            &.ql-remove::before {
+                content: 'Remove';
+                margin-left: var(--#{$prefix}spacer-2);
+            }
+        }
+
+        // Orientation helper
+        &.ql-flip {
+            transform: translateY(calc(var(--#{$prefix}spacer-2) * -1));
+        }
+
+        // Input field
+        input[type=text] {
+            display: none;
+            border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+            margin: 0;
+            padding: var(--#{$prefix}spacer-1) var(--#{$prefix}spacer-2);
+            width: 10.625rem;
+            @include border-radius(var(--#{$prefix}border-radius));
+            @include transition($input-transition);
+
+            &:focus {
+                border-color: var(--#{$prefix}ql-tooltip-input-focus-border-color);
+                outline: 0;
+                @if $enable-shadows {
+                    @include box-shadow($input-box-shadow, var(--#{$prefix}ql-tooltip-input-focus-box-shadow));
+                } @else {
+                    box-shadow: var(--#{$prefix}ql-tooltip-input-focus-box-shadow);
+                }
+            }
+        }
+
+        &.ql-editing {
+            a.ql-preview,
+            a.ql-remove {
+                display: none;
+            }
+            input[type=text] {
+                display: inline-block;
+            }
+            a.ql-action::after {
+                border-right: 0;
+                content: 'Save';
+                padding-right: 0;
+            }
+        }
+
+        &[data-mode=link]::before {
+            content: "Enter link:";
+        }
+        &[data-mode=formula]::before {
+            content: "Enter formula:";
+        }
+        &[data-mode=video]::before {
+            content: "Enter video:";
+        }
+    }
+
+
+    //
+    // Formats
+    //
+
+    .ql-formats {
+        display: inline-block;
+        vertical-align: middle;
+
+        &:after {
+            clear: both;
+            content: '';
+            display: table;
+        }
+    }
+
+
+    //
+    // SVG styles
+    //
+
+    .ql-stroke {
+        fill: none;
+        stroke: var(--#{$prefix}body-color);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5;
+    }
+    .ql-stroke-miter {
+        fill: none;
+        stroke: var(--#{$prefix}body-color);
+        stroke-miterlimit: 10;
+        stroke-width: 1.5;
+    }
+    .ql-fill,
+    .ql-stroke.ql-fill {
+        fill: var(--#{$prefix}body-color);
+    }
+    .ql-empty {
+        fill: none;
+    }
+    .ql-even {
+        fill-rule: evenodd;
+    }
+    .ql-thin,
+    .ql-stroke.ql-thin {
+        stroke-width: 1;
+    }
+    .ql-transparent {
+        opacity: 0.4;
+    }
+    .ql-direction {
+        svg:last-child {
+            display: none;
+        }
+        &.ql-active svg {
+            &:last-child {
+                display: inline;
+            }
+            &:first-child {
+                display: none;
+            }
+        }
+    }
+
+
+    //
+    // Typography
+    //
+
+    .ql-editor {
+        blockquote {
+            border-left: calc(var(--#{$prefix}border-width) * 4) solid var(--#{$prefix}border-color);
+            margin-bottom: var(--#{$prefix}spacer-1);
+            margin-top: var(--#{$prefix}spacer-1);
+            padding-left: var(--#{$prefix}spacer);
+        }
+        code,
+        pre {
+            background-color: var(--#{$prefix}gray-200);
+            @include border-radius(var(--#{$prefix}border-radius));
+        }
+        pre {
+            white-space: pre-wrap;
+            padding: var(--#{$prefix}spacer);
+
+            &.ql-syntax {
+                background-color: var(--#{$prefix}gray-200);
+                color: var(--#{$prefix}body-color);
+                overflow: visible;
+            }
+        }
+        code {
+            font-size: $code-font-size;
+        }
+    }
+
+
+    //
+    // Pickers
+    //
+
+    // Base
+    .ql-picker {
+        color: var(--#{$prefix}body-color);
+        display: inline-block;
+        float: left;
+        height: 1.5rem;
+        position: relative;
+        vertical-align: middle;
+    }
+
+    // Label
+    .ql-picker-label {
+        cursor: pointer;
+        display: inline-block;
+        height: 100%;
+        border: var(--#{$prefix}border-color) solid transparent;
+        padding-left: var(--#{$prefix}spacer-2);
+        padding-right: var(--#{$prefix}spacer-1);
+        position: relative;
+        width: 100%;
+        line-height: 1.5rem;
+        @include transition(color ease-in-out var(--#{$prefix}transition-base-timer));
+
+        &:before {
+            display: inline-block;
+        }
+    }
+
+    // Dropdown menu
+    .ql-picker-options {
+        --#{$prefix}ql-dropdown-bg: #{$dropdown-bg};
+        --#{$prefix}ql-dropdown-border-color: #{$dropdown-border-color};
+        --#{$prefix}ql-dropdown-box-shadow: #{$dropdown-box-shadow};
+        @include color-scheme(dark) {
+            --#{$prefix}ql-dropdown-bg: #{$dropdown-darkmode-bg};
+            --#{$prefix}ql-dropdown-border-color: #{$dropdown-darkmode-border-color};
+        }
+
+        background-color: var(--#{$prefix}ql-dropdown-bg);
+        display: none;
+        min-width: 100%;
+        padding: var(--#{$prefix}spacer-2);
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}ql-dropdown-border-color);
+        position: absolute;
+        white-space: nowrap;
+        @include border-radius(var(--#{$prefix}border-radius));
+        @include box-shadow(var(--#{$prefix}ql-dropdown-box-shadow));
+
+        .ql-picker-item {
+            cursor: pointer;
+            display: block;
+            padding: var(--#{$prefix}spacer-1) var(--#{$prefix}spacer-2);
+            @include transition(color ease-in-out var(--#{$prefix}transition-base-timer));
+        }
+    }
+
+    // Expanded state
+    .ql-picker.ql-expanded {
+        .ql-picker-label {
+            color: var(--#{$prefix}link-color);
+            z-index: 2;
+
+            .ql-fill {
+                fill: var(--#{$prefix}link-color);
+            }
+            .ql-stroke {
+                stroke: var(--#{$prefix}link-color);
+            }
+        }
+        .ql-picker-options {
+            display: block;
+            margin-top: calc(var(--#{$prefix}spacer-2) - var(--#{$prefix}border-width));
+            top: 100%;
+            z-index: 1;
+        }
+    }
+
+
+    //
+    // Color and icon picker
+    //
+
+    // Common styles
+    .ql-color-picker,
+    .ql-icon-picker {
+        width: 1.75rem;
+
+        .ql-picker-label {
+            padding: .125rem .25rem;
+
+            svg {
+               right: .25rem;
+               display: block;
+            }
+        }
+    }
+
+    // Icon picker
+    .ql-icon-picker {
+        .ql-picker-options {
+            padding: .25rem 0;
+        }
+        .ql-picker-item {
+            padding: .25rem;
+
+            svg {
+                display: block;
+            }
+        }
+    }
+
+    // Color picker
+    .ql-color-picker {
+        .ql-picker-options {
+            padding: .1875rem .3125rem;
+            width: 9.5rem;
+        }
+        .ql-picker-item {
+            border: var(--#{$prefix}border-width) solid transparent;
+            float: left;
+            height: 1rem;
+            margin: .125rem;
+            padding: 0;
+            width: 1rem;
+        }
+        &.ql-background .ql-picker-item {
+            background-color: #fff;
+        }
+        &.ql-color .ql-picker-item {
+            background-color: #000;
+        }
+    }
+
+    // Picker SVG
+    .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+        position: absolute;
+        right: 0;
+        top: 50%;
+        width: 1.125rem;
+        transform: translateY(-50%);
+    }
+
+
+    //
+    // Selects
+    //
+
+    .ql-picker {
+        &.ql-header .ql-picker-label[data-label]:not([data-label=''])::before,
+        &.ql-font .ql-picker-label[data-label]:not([data-label=''])::before,
+        &.ql-size .ql-picker-label[data-label]:not([data-label=''])::before,
+        &.ql-header .ql-picker-item[data-label]:not([data-label=''])::before,
+        &.ql-font .ql-picker-item[data-label]:not([data-label=''])::before,
+        &.ql-size .ql-picker-item[data-label]:not([data-label=''])::before {
+            content: attr(data-label);
+        }
+
+        // Headings
+        &.ql-header {
+            width: 6.125rem;
+
+            .ql-picker-label::before,
+            .ql-picker-item::before {
+                content: 'Normal';
+            }
+            .ql-picker-label[data-value="1"]::before,
+            .ql-picker-item[data-value="1"]::before {
+                content: 'Heading 1';
+            }
+            .ql-picker-label[data-value="2"]::before,
+            .ql-picker-item[data-value="2"]::before {
+                content: 'Heading 2';
+            }
+            .ql-picker-label[data-value="3"]::before,
+            .ql-picker-item[data-value="3"]::before {
+                content: 'Heading 3';
+            }
+            .ql-picker-label[data-value="4"]::before,
+            .ql-picker-item[data-value="4"]::before {
+                content: 'Heading 4';
+            }
+            .ql-picker-label[data-value="5"]::before,
+            .ql-picker-item[data-value="5"]::before {
+                content: 'Heading 5';
+            }
+            .ql-picker-label[data-value="6"]::before,
+            .ql-picker-item[data-value="6"]::before {
+                content: 'Heading 6';
+            }
+            .ql-picker-item[data-value="1"]::before {
+                font-size: $h1-font-size;
+            }
+            .ql-picker-item[data-value="2"]::before {
+                font-size: $h2-font-size;
+            }
+            .ql-picker-item[data-value="3"]::before {
+                font-size: $h3-font-size;
+            }
+            .ql-picker-item[data-value="4"]::before {
+                font-size: $h4-font-size;
+            }
+            .ql-picker-item[data-value="5"]::before {
+                font-size: $h5-font-size;
+            }
+            .ql-picker-item[data-value="6"]::before {
+                font-size: $h6-font-size;
+            }
+        }
+
+        // Font style
+        &.ql-font {
+            width: 6.75rem;
+
+            .ql-picker-label::before,
+            .ql-picker-item::before {
+                content: 'Sans Serif';
+            }
+            .ql-picker-label[data-value=serif]::before,
+            .ql-picker-item[data-value=serif]::before {
+                content: 'Serif';
+            }
+            .ql-picker-label[data-value=monospace]::before,
+            .ql-picker-item[data-value=monospace]::before {
+                content: 'Monospace';
+            }
+            .ql-picker-item[data-value=serif]::before {
+                font-family: Georgia, Times New Roman, serif;
+            }
+            .ql-picker-item[data-value=monospace]::before {
+                font-family: $font-family-monospace;
+            }
+        }
+
+        // Font size
+        &.ql-size {
+            width: 6.125rem;
+
+            .ql-picker-label::before,
+            .ql-picker-item::before {
+                content: 'Normal';
+            }
+            .ql-picker-label[data-value=small]::before,
+            .ql-picker-item[data-value=small]::before {
+                content: 'Small';
+            }
+            .ql-picker-label[data-value=large]::before,
+            .ql-picker-item[data-value=large]::before {
+                content: 'Large';
+            }
+            .ql-picker-label[data-value=huge]::before,
+            .ql-picker-item[data-value=huge]::before {
+                content: 'Huge';
+            }
+            .ql-picker-item[data-value=small]::before {
+                font-size: .75rem;
+            }
+            .ql-picker-item[data-value=large]::before {
+                font-size: 1.125rem;
+            }
+            .ql-picker-item[data-value=huge]::before {
+                font-size: 2rem;
+            }
+        }
+    }
+
+
+    //
+    // Helpers
+    //
+
+    // Helper for hidden elements
+    .ql-hidden {
+        display: none;
+    }
+
+    // Orientation
+    .ql-out-bottom,
+    .ql-out-top {
+        visibility: hidden;
+    }
+}

@@ -1,0 +1,97 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Autocomplete
+*
+*  Styles for autocomplete.min.js - input suggestion engine
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-autocomplete {
+
+	// Configure color themes
+	.autoComplete_wrapper {
+		--#{$prefix}ac-bg: #{$dropdown-bg};
+		--#{$prefix}ac-border-width: #{$dropdown-border-width};
+		--#{$prefix}ac-border-color: #{$dropdown-border-color};
+		--#{$prefix}ac-border-radius: #{$dropdown-border-radius};
+		--#{$prefix}ac-box-shadow: #{$dropdown-box-shadow};
+		--#{$prefix}ac-scrollable-max-height: #{$dropdown-scrollable-max-height};
+		--#{$prefix}ac-min-width: #{$dropdown-min-width};
+		--#{$prefix}ac-spacer: #{$dropdown-spacer};
+		--#{$prefix}ac-padding-y: #{$dropdown-padding-y};
+
+		--#{$prefix}ac-item-padding-y: #{$dropdown-item-padding-y};
+		--#{$prefix}ac-item-padding-x: #{$dropdown-item-padding-x};
+		--#{$prefix}ac-item-color: #{$dropdown-link-color};
+		--#{$prefix}ac-item-hover-color: #{$dropdown-link-hover-color};
+		--#{$prefix}ac-item-hover-bg: #{$dropdown-link-hover-bg};
+		--#{$prefix}ac-item-active-color: #{$dropdown-link-active-color};
+		--#{$prefix}ac-item-active-bg: #{$dropdown-link-active-bg};
+
+		// Dark
+		@include color-scheme(dark) {
+			--#{$prefix}ac-bg: #{$dropdown-darkmode-bg};
+			--#{$prefix}ac-border-color: #{$dropdown-darkmode-border-color};
+		}
+	}
+
+	// Base
+	.autoComplete_wrapper {
+		position: relative;
+
+		// List container
+		> ul {
+			position: absolute;
+			max-height: var(--#{$prefix}ac-scrollable-max-height);
+			overflow-y: auto;
+			left: 0;
+			right: 0;
+			margin-top: var(--#{$prefix}ac-spacer);
+			min-width: var(--#{$prefix}ac-min-width);
+			padding: var(--#{$prefix}ac-padding-y) 0;
+			z-index: 1;
+			list-style: none;
+			background-color: var(--#{$prefix}ac-bg);
+			border: var(--#{$prefix}ac-border-width) solid var(--#{$prefix}ac-border-color);
+			outline: none;
+			@include border-radius(var(--#{$prefix}ac-border-radius));
+			@include box-shadow(var(--#{$prefix}ac-box-shadow));
+			@include transition(color ease-in-out var(--#{$prefix}transition-base-timer), background-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+			// Hidden state
+			&[hidden],
+			&:empty {
+				display: block;
+				opacity: 0;
+				transform: scale(0);
+			}
+
+			// List item
+			> li {
+				padding: var(--#{$prefix}ac-item-padding-y) var(--#{$prefix}ac-item-padding-x);
+				white-space: nowrap;
+				cursor: default;
+				color: var(--#{$prefix}ac-item-color);
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				@include transition(color ease-in-out var(--#{$prefix}transition-base-timer), background-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+				// Hover state
+				&:hover {
+					color: var(--#{$prefix}ac-item-hover-color);
+					background-color: var(--#{$prefix}ac-item-hover-bg);
+				}
+
+				// Active state
+				&:active,
+				&[aria-selected="true"] {
+					color: var(--#{$prefix}ac-item-active-color);
+					background-color: var(--#{$prefix}ac-item-active-bg);
+				}
+			}
+		}
+	}
+}
+

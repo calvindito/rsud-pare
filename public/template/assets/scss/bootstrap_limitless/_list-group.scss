@@ -1,0 +1,48 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # List group component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Interactive list items
+.list-group-item-action {
+    @include transition($list-group-action-transition);
+
+    // Give collapsible items correct state
+    &[data-bs-toggle="collapse"][aria-expanded="true"] {
+        color: var(--#{$prefix}list-group-action-active-color);
+        background-color: var(--#{$prefix}list-group-action-active-bg);
+    }
+}
+
+// Borderless list
+.list-group-borderless {
+    --#{$prefix}list-group-border-width: 0;
+
+    .list-group-item {
+        &:first-child {
+            @include border-top-radius(0);
+        }
+
+        &:last-child {
+            @include border-bottom-radius(0);
+        }
+    }
+}
+
+// List group contextual variants
+@each $state, $value in $dark-theme-colors {
+    $list-group-variant-bg: $value;
+    $list-group-variant-color: shift-color($value, $list-group-item-darkmode-color-scale);
+    @if (contrast-ratio($list-group-variant-bg, $list-group-variant-color) < $min-contrast-ratio) {
+        $list-group-variant-color: mix($value, color-contrast($list-group-variant-bg), abs($list-group-item-darkmode-color-scale));
+    }
+
+    @include list-group-item-variant($state, rgba($list-group-variant-bg, 0.1), $list-group-variant-color);
+}
+
+// Sizes
+.list-group-sm {
+    --#{$prefix}list-group-item-padding-x: #{$list-group-item-padding-x-sm};
+    --#{$prefix}list-group-item-padding-y: #{$list-group-item-padding-y-sm};
+}

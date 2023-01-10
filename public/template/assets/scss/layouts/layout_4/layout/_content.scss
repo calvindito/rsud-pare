@@ -1,0 +1,67 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Main content layout
+ *
+ *  Styles for main structure of content area
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Make sure document has 100% height
+html {
+    display: flex;
+    flex-direction: column;
+}
+
+// Document body
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+// Main container
+.page-content {
+    position: relative;
+    display: flex;
+    flex-grow: 1;
+    padding: $content-container-padding-y $content-container-padding-x;
+}
+
+// Content wrapper
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+// Main content container
+.content {
+    flex-grow: 1;
+    margin-left: $content-container-padding-x;
+    margin-right: $content-container-padding-x;
+    @include clearfix;
+}
+
+
+//
+// Scroll to top
+//
+
+.btn-to-top {
+    position: fixed;
+    bottom: $content-container-padding-y;
+    right: $content-container-padding-x;
+    align-self: flex-end;
+    opacity: 0;
+    visibility: hidden;
+    z-index: $zindex-dropdown - 1;
+    @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer), visibility ease-in-out var(--#{$prefix}transition-base-timer), bottom ease-in-out var(--#{$prefix}transition-base-timer));
+
+    // Show
+    &-visible {
+        visibility: visible;
+        opacity: 1;
+    }
+}

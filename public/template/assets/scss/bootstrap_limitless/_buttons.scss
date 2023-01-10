@@ -1,0 +1,148 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Buttons component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+//
+// Base styles
+//
+
+.btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+//
+// Flat buttons
+//
+
+@each $color, $value in $theme-colors {
+    .btn-flat-#{$color} {
+        @include button-flat-variant($color, $value);
+    }
+}
+
+
+//
+// Icon buttons
+//
+
+.btn-icon {
+    padding-left: var(--#{$prefix}btn-padding-y);
+    padding-right: var(--#{$prefix}btn-padding-y);
+}
+
+
+//
+// Button with transparent background
+// in default state
+//
+
+.btn-transparent {
+    --#{$prefix}btn-bg: transparent;
+}
+
+
+//
+// Labeled buttons
+//
+
+// Base
+.btn-labeled {
+    position: relative;
+
+    // Left aligned
+    &-start {
+        padding-left: calc(calc(var(--#{$prefix}btn-padding-y) * 2) + calc(var(--#{$prefix}btn-border-width) * 2) + calc(var(--#{$prefix}btn-font-size) * var(--#{$prefix}btn-line-height)) + var(--#{$prefix}btn-padding-x));
+    }
+
+    // Right aligned
+    &-end {
+        padding-right: calc(calc(var(--#{$prefix}btn-padding-y) * 2) + calc(var(--#{$prefix}btn-border-width) * 2) + calc(var(--#{$prefix}btn-font-size) * var(--#{$prefix}btn-line-height)) + var(--#{$prefix}btn-padding-x));
+    }
+}
+
+// Icon
+.btn-labeled-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: calc(var(--#{$prefix}btn-border-width) * -1);
+    bottom: calc(var(--#{$prefix}btn-border-width) * -1);
+    padding: var(--#{$prefix}btn-padding-y);
+    width: calc(calc(var(--#{$prefix}btn-padding-y) * 2) + calc(var(--#{$prefix}btn-border-width) * 2) + calc(var(--#{$prefix}btn-font-size) * var(--#{$prefix}btn-line-height)));
+
+    // Left alignment
+    .btn-labeled-start & {
+        left: calc(var(--#{$prefix}btn-border-width) * -1);
+        @include border-start-radius(inherit);
+    }
+
+    // Right alignment
+    .btn-labeled-end & {
+        right: calc(var(--#{$prefix}btn-border-width) * -1);
+        @include border-end-radius(inherit);
+    }
+}
+
+
+//
+// Sizes
+//
+
+.btn-lg {
+    --#{$prefix}btn-line-height: #{$btn-line-height-lg};
+}
+.btn-sm {
+    --#{$prefix}btn-line-height: #{$btn-line-height-sm};
+}
+
+
+//
+// Buttons in dark theme
+//
+
+// Flat light and dark
+.btn-flat-dark,
+.btn-flat-light {
+    @include color-scheme(dark) {
+        --#{$prefix}btn-color: #fff;
+        --#{$prefix}btn-hover-color: #fff;
+        --#{$prefix}btn-active-color: #fff;
+        --#{$prefix}btn-disabled-color: #fff;
+    }
+}
+
+// Dark solid
+.btn-dark {
+    @include color-scheme(dark) {
+        --#{$prefix}btn-bg: #181818;
+        --#{$prefix}btn-border-color: #181818;
+        --#{$prefix}btn-hover-bg: #111;
+        --#{$prefix}btn-hover-border-color: #111;
+        --#{$prefix}btn-focus-shadow-rgb: #{to-rgb(#111)};
+        --#{$prefix}btn-active-bg: #000;
+        --#{$prefix}btn-active-border-color: #000;
+        --#{$prefix}btn-disabled-bg: #181818;
+        --#{$prefix}btn-disabled-border-color: #181818;
+    }
+}
+
+// Dark outline
+.btn-outline-dark {
+    @include color-scheme(dark) {
+        --#{$prefix}btn-color: #fff;
+        --#{$prefix}btn-border-color: #111;
+        --#{$prefix}btn-hover-bg: #111;
+        --#{$prefix}btn-hover-border-color: #111;
+        --#{$prefix}btn-focus-shadow-rgb: #{to-rgb(#111)};
+        --#{$prefix}btn-active-color: #fff;
+        --#{$prefix}btn-active-bg: #000;
+        --#{$prefix}btn-active-border-color: #000;
+        --#{$prefix}btn-disabled-color: #fff;
+    }
+}

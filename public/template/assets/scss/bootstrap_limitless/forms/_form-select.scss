@@ -1,0 +1,44 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Form select overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Base
+.form-select {
+
+    // Dark theme
+    @include color-scheme(dark) {
+        --#{$prefix}form-select-bg: #{$form-select-darkmode-bg};
+        background-image: escape-svg($form-select-indicator-dark);
+    }
+
+    // Multi select
+    &[multiple],
+    &[size]:not([size="1"]) {
+        background-image: none !important;
+        height: 200px;
+        padding: var(--#{$prefix}form-select-padding-y) calc(var(--#{$prefix}form-select-padding-x) * .75);
+
+        option {
+            padding: var(--#{$prefix}form-select-padding-y) calc(var(--#{$prefix}form-select-padding-x) * .75);
+            @include border-radius(var(--#{$prefix}border-radius));
+
+            + option {
+                margin-top: 1px; //$dropdown-spacer;
+            }
+        }
+    }
+}
+
+// Sizes
+.form-select-sm {
+    --#{$prefix}form-select-indicator-padding: #{$form-select-indicator-padding-sm};
+    --#{$prefix}form-select-bg-position: #{$form-select-bg-position-sm};
+    --#{$prefix}form-select-bg-size: #{$form-select-bg-size-sm};
+}
+.form-select-lg {
+    --#{$prefix}form-select-indicator-padding: #{$form-select-indicator-padding-lg};
+    --#{$prefix}form-select-bg-position: #{$form-select-bg-position-lg};
+    --#{$prefix}form-select-bg-size: #{$form-select-bg-size-lg};
+}

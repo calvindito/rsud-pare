@@ -1,0 +1,79 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Offcanvas component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+
+// Base
+.offcanvas {
+    @include color-scheme(dark) {
+        --#{$prefix}offcanvas-bg: #{$offcanvas-darkmode-bg-color};
+    }
+}
+
+// Header
+.offcanvas-header {
+    .btn-close {
+        @include color-scheme(dark) {
+            filter: $btn-close-white-filter;
+        }
+    }
+}
+
+// Alignment
+.offcanvas-top {
+    bottom: auto;
+}
+.offcanvas-bottom {
+    top: auto;
+}
+
+// Sizes
+.offcanvas-size-lg {
+    --#{$prefix}offcanvas-width: #{$offcanvas-horizontal-width-lg};
+}
+.offcanvas-size-sm {
+    --#{$prefix}offcanvas-width: #{$offcanvas-horizontal-width-sm};
+}
+.offcanvas-size-xs {
+    --#{$prefix}offcanvas-width: #{$offcanvas-horizontal-width-xs};
+}
+
+// Resizable
+.offcanvas-resize-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: .5rem;
+    background-color: var(--#{$prefix}gray-100);
+    border-left: var(--#{$prefix}offcanvas-border-width) solid var(--#{$prefix}offcanvas-border-color);
+    border-right: var(--#{$prefix}offcanvas-border-width) solid var(--#{$prefix}offcanvas-border-color);
+    cursor: ew-resize;
+    @include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+    // Handle icon
+    &:after {
+        content: '';
+        position: absolute;
+        background-color: var(--#{$prefix}offcanvas-border-color);
+        width: 0.0625rem;
+        height: 2rem;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    // Hover state
+    &:hover {
+        background-color: var(--#{$prefix}gray-200);
+    }
+
+    // Positioning
+    .offcanvas-start & {
+        right: -.5rem;
+    }
+    .offcanvas-end & {
+        left: -.5rem;
+    }
+}

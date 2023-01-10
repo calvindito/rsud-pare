@@ -1,0 +1,47 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Demo styles
+ *
+ *  Styles used for demostration purposes only
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-demo {
+
+    // Icons showcase
+    .glyphs {
+        > div > div {
+            padding: var(--#{$prefix}spacer-2) var(--#{$prefix}spacer);
+            @include transition(all ease-in-out var(--#{$prefix}transition-base-timer));
+
+            // Hover state
+            &:hover {
+                background-color: var(--#{$prefix}dark);
+                color: var(--#{$prefix}white);
+                @include border-radius(var(--#{$prefix}border-radius));
+
+                @include color-scheme(dark) {
+                    background-color: var(--#{$prefix}white);
+                    color: var(--#{$prefix}black);
+                }
+            }
+        }
+    }
+
+    // Velocity animations box
+    .demo-velocity-box {
+        padding: var(--#{$prefix}spacer-2) var(--#{$prefix}spacer);
+        margin-bottom: var(--#{$prefix}spacer);
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+        text-align: center;
+        background-color: var(--#{$prefix}light);
+        border-radius: var(--#{$prefix}border-radius);
+        outline: calc(var(--#{$prefix}border-width) * 2) solid transparent;
+        box-shadow: 0 0 0 0 var(--#{$prefix}primary);
+    }
+}

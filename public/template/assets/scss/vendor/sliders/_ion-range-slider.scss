@@ -1,0 +1,359 @@
+/* ------------------------------------------------------------------------------
+*
+*  # ION Range Slider
+*
+*  Styles for ion_rangeslider.min.js - range slider plugin
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-ion {
+
+    // Base
+    .irs {
+        --#{$prefix}ion-bg: #{$slider-bg};
+        --#{$prefix}ion-connect-bg: #{$slider-connect-bg};
+        --#{$prefix}ion-height: #{$slider-height};
+
+        --#{$prefix}ion-tooltip-bg: #{$tooltip-bg};
+        --#{$prefix}ion-tooltip-color: #{$tooltip-color};
+        --#{$prefix}ion-tooltip-padding-y: #{$tooltip-padding-y};
+        --#{$prefix}ion-tooltip-padding-x: #{$tooltip-padding-x};
+        --#{$prefix}ion-tooltip-arrow-height: #{$tooltip-arrow-height};
+
+        --#{$prefix}ion-handle-size: #{$slider-handle-size};
+        --#{$prefix}ion-handle-bg: #{$slider-handle-bg};
+        --#{$prefix}ion-handle-inner-bg: #{$slider-handle-inner-bg};
+        --#{$prefix}ion-handle-inner-hover-bg: #{$slider-handle-inner-hover-bg};
+        --#{$prefix}ion-handle-border-width: #{$slider-handle-border-width};
+        --#{$prefix}ion-handle-border-color: #{$slider-handle-border-color};
+
+        --#{$prefix}ion-pips-spacer-y: #{$slider-pips-spacer-y};
+        --#{$prefix}ion-pips-spacer-x: #{$slider-pips-spacer-x};
+        --#{$prefix}ion-pips-color: #{$slider-pips-color};
+        --#{$prefix}ion-pips-font-size: #{$slider-pips-font-size};
+        --#{$prefix}ion-pips-marker-width: #{$slider-pips-marker-width};
+        --#{$prefix}ion-pips-marker-height: #{$slider-pips-marker-height};
+
+        position: relative;
+        display: block;
+        height: calc(var(--#{$prefix}ion-tooltip-arrow-height) + calc(var(--#{$prefix}ion-tooltip-padding-y) * 2) + var(--#{$prefix}ion-pips-font-size) + calc(var(--#{$prefix}ion-height) * 4));
+        user-select: none;
+        /*rtl:ignore*/
+        direction: ltr;
+    }
+
+    // Hide original input
+    .irs-hidden-input {
+        position: absolute !important;
+        display: block !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
+        font-size: 0 !important;
+        line-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        outline: none !important;
+        z-index: -9999 !important;
+        background: none !important;
+        border-style: solid !important;
+        border-color: transparent !important;
+    }
+
+
+    //
+    // Background line
+    //
+
+    // Base
+    .irs-line {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        outline: none;
+        height: var(--#{$prefix}ion-height);
+        top: calc(var(--#{$prefix}ion-tooltip-arrow-height) + calc(var(--#{$prefix}ion-tooltip-padding-y) * 2) + var(--#{$prefix}ion-pips-font-size) + calc(var(--#{$prefix}ion-height) * 2));
+        background-color: var(--#{$prefix}ion-bg);
+        @include border-radius(var(--#{$prefix}border-radius-pill));
+    }
+
+    // It consists of 3 parts
+    .irs-line-left,
+    .irs-line-mid,
+    .irs-line-right {
+        position: absolute;
+        display: block;
+        top: 0;
+    }
+
+    // Left
+    .irs-line-left {
+        /*rtl:ignore*/
+        left: 0;
+        width: 11%;
+    }
+
+    // Middle
+    .irs-line-mid {
+        /*rtl:ignore*/
+        left: 9%;
+        width: 82%;
+    }
+
+    // And right
+    .irs-line-right {
+        /*rtl:ignore*/
+        right: 0;
+        width: 11%;
+    }
+
+
+    //
+    // Colored bar
+    //
+
+    // Base
+    .irs-bar {
+        position: absolute;
+        display: block;
+        top: calc(var(--#{$prefix}ion-tooltip-arrow-height) + calc(var(--#{$prefix}ion-tooltip-padding-y) * 2) + var(--#{$prefix}ion-pips-font-size) + calc(var(--#{$prefix}ion-height) * 2));
+        /*rtl:ignore*/
+        left: 0;
+        width: 0;
+        height: var(--#{$prefix}ion-height);
+        background-color: var(--#{$prefix}ion-connect-bg);
+        @include border-radius(var(--#{$prefix}border-radius-pill));
+    }
+
+    // Edge
+    .irs-bar-edge {
+        position: absolute;
+        display: block;
+        top: calc(var(--#{$prefix}ion-tooltip-arrow-height) + calc(var(--#{$prefix}ion-tooltip-padding-y) * 2) + var(--#{$prefix}ion-pips-font-size) + calc(var(--#{$prefix}ion-height) * 2));
+        /*rtl:ignore*/
+        left: 0;
+        height: 0.75rem;
+        width: 0.5625rem;
+    }
+
+    // Shadow for highlighting disabled range
+    .irs-shadow {
+        position: absolute;
+        display: none;
+        top: calc(var(--#{$prefix}ion-tooltip-arrow-height) + calc(var(--#{$prefix}ion-tooltip-padding-y) * 2) + var(--#{$prefix}ion-pips-font-size) + calc(var(--#{$prefix}ion-height) * 2));
+        /*rtl:ignore*/
+        left: 0;
+        width: 0;
+        height: var(--#{$prefix}ion-height);
+        background-color: var(--#{$prefix}body-color);
+        opacity: 0.25;
+        @include border-radius(var(--#{$prefix}border-radius-pill));
+    }
+
+
+
+    //
+    // Handles
+    //
+
+    // Base
+    .irs-handle {
+        position: absolute;
+        display: block;
+        background-color: var(--#{$prefix}ion-handle-bg);
+        border: var(--#{$prefix}ion-handle-border-width) solid var(--#{$prefix}ion-handle-border-color);
+        cursor: pointer;
+        top: calc(var(--#{$prefix}ion-tooltip-arrow-height) + calc(var(--#{$prefix}ion-tooltip-padding-y) * 2) + var(--#{$prefix}ion-pips-font-size) + var(--#{$prefix}ion-height));
+        cursor: pointer;
+        z-index: 1;
+        width: var(--#{$prefix}ion-handle-size);
+        height: var(--#{$prefix}ion-handle-size);
+        background-clip: content-box;
+        @include border-radius(var(--#{$prefix}border-radius-pill));
+
+        // Small circle
+        &:after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: calc(calc(var(--#{$prefix}ion-height) * .5) * -1);
+            margin-left: calc(calc(var(--#{$prefix}ion-height) * .5) * -1);
+            background-color: var(--#{$prefix}ion-handle-inner-bg);
+            width: var(--#{$prefix}ion-height);
+            height: var(--#{$prefix}ion-height);
+            @include border-radius(var(--#{$prefix}border-radius-pill));
+        }
+
+        // Animate handle
+        &,
+        &:after {
+            @include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+        }
+
+        // Hover state
+        &:hover,
+        &:focus {
+            &:after {
+                background-color: var(--#{$prefix}ion-handle-inner-hover-bg);
+            }
+        }
+
+        // The last one is on top of the first one
+        &.type_last {
+            z-index: 2;
+        }
+    }
+
+
+
+    //
+    // Tooltips
+    //
+
+    // Base
+    .irs-min,
+    .irs-max,
+    .irs-from,
+    .irs-to,
+    .irs-single {
+        position: absolute;
+        display: block;
+        cursor: default;
+    }
+
+    // Minimum and maximum labels
+    .irs-min,
+    .irs-max {
+        color: var(--#{$prefix}ion-pips-color);
+        font-size: var(--#{$prefix}ion-pips-font-size);
+        line-height: 1;
+        top: 0;
+        padding: var(--#{$prefix}ion-tooltip-padding-y);
+        background-color: var(--#{$prefix}ion-bg);
+        @include border-radius(var(--#{$prefix}border-radius));
+    }
+    .irs-min {
+        /*rtl:ignore*/
+        left: 0;
+    }
+    .irs-max {
+        /*rtl:ignore*/
+        right: 0;
+    }
+
+    // Handle tooltips
+    .irs-from,
+    .irs-to,
+    .irs-single {
+        top: 0;
+        /*rtl:ignore*/
+        left: 0;
+        white-space: nowrap;
+        color: var(--#{$prefix}ion-tooltip-color);
+        font-size: var(--#{$prefix}ion-pips-font-size);
+        line-height: 1;
+        padding: var(--#{$prefix}ion-tooltip-padding-y);
+        top: 0;
+        background-color: var(--#{$prefix}ion-tooltip-bg);
+        @include border-radius(var(--#{$prefix}border-radius));
+
+        // Tooltip arrow
+        &:after {
+            content: "";
+            position: absolute;
+            display: block;
+            bottom: calc(calc(var(--#{$prefix}ion-tooltip-arrow-height) * 2) * -1);
+            left: 50%;
+            transform: translateX(-50%);
+            overflow: hidden;
+            border: var(--#{$prefix}ion-tooltip-arrow-height) solid transparent;
+            border-top-color: var(--#{$prefix}ion-tooltip-bg);
+            width: 0;
+            height: 0;
+        }
+    }
+
+
+    //
+    // The grid
+    //
+
+    // Base
+    .irs-grid {
+        position: absolute;
+        display: none;
+        bottom: 0;
+        /*rtl:ignore*/
+        left: 0;
+        width: 100%;
+        height: calc(var(--#{$prefix}ion-pips-font-size) + var(--#{$prefix}ion-pips-spacer-y));
+    }
+
+    // If slider has grid
+    .irs-with-grid {
+        height: calc(var(--#{$prefix}ion-tooltip-arrow-height) + calc(var(--#{$prefix}ion-tooltip-padding-y) * 2) + var(--#{$prefix}ion-pips-font-size) + calc(var(--#{$prefix}ion-height) * 7) + var(--#{$prefix}ion-pips-spacer-y));
+
+        // Display grid
+        .irs-grid {
+            display: block;
+        }
+    }
+
+    // Marker
+    .irs-grid-pol {
+        position: absolute;
+        top: 0;
+        /*rtl:ignore*/
+        left: 0;
+        width: var(--#{$prefix}ion-pips-marker-width);
+        height: calc(var(--#{$prefix}ion-pips-marker-height) * 2);
+        background-color: var(--#{$prefix}ion-pips-color);
+
+        // Sub marker
+        &.small {
+            height: var(--#{$prefix}ion-pips-marker-height);
+        }
+    }
+
+    // Text label
+    .irs-grid-text {
+        position: absolute;
+        bottom: 0;
+        /*rtl:ignore*/
+        left: 0;
+        white-space: nowrap;
+        text-align: center;
+        font-size: var(--#{$prefix}ion-pips-font-size);
+        color: var(--#{$prefix}ion-pips-color);
+        line-height: 1;
+        padding: 0 var(--#{$prefix}ion-pips-marker-height);
+    }
+
+
+    //
+    // Disabled state
+    //
+
+    // Disabled mask
+    .irs-disable-mask {
+        position: absolute;
+        display: block;
+        top: 0;
+        /*rtl:ignore*/
+        left: -1%;
+        width: 102%;
+        height: 100%;
+        cursor: default;
+        background: transparent;
+        z-index: 2;
+    }
+
+    // Mute slider if disabled
+    .irs-disabled {
+        opacity: .65;
+    }
+}

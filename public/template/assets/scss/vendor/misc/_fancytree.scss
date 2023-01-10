@@ -1,0 +1,532 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Fancytree
+*
+*  Styles for fancytree_all.min.js - tree plugin for jQuery
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-fancytree {
+
+
+    // Base
+    // ------------------------------
+
+    // Container
+    .fancytree-container {
+        --#{$prefix}ft-node-padding-y: #{$fancytree-node-padding-y};
+        --#{$prefix}ft-node-padding-x: #{$fancytree-node-padding-x};
+        --#{$prefix}ft-node-selected-bg: #{$fancytree-node-selected-bg};
+        --#{$prefix}ft-node-selected-color: #{$fancytree-node-selected-color};
+        --#{$prefix}ft-node-active-bg: #{$fancytree-node-active-bg};
+        --#{$prefix}ft-node-active-color: #{$fancytree-node-active-color};
+
+        --#{$prefix}ft-check-width: #{$form-check-input-width};
+        --#{$prefix}ft-check-height: #{$form-check-input-height};
+        --#{$prefix}ft-check-border-width: #{$fancytree-check-border-width};
+        --#{$prefix}ft-check-border-color: #{$fancytree-check-border-color};
+        --#{$prefix}ft-check-bg: #{$form-check-input-bg};
+        --#{$prefix}ft-check-border-radius: #{$form-check-input-border-radius};
+        --#{$prefix}ft-check-transition: #{$form-check-transition};
+        --#{$prefix}ft-check-checked-border-color: #{$form-check-input-checked-border-color};
+        --#{$prefix}ft-check-checked-bg: #{$form-check-input-checked-bg-color};
+        --#{$prefix}ft-radio-border-radius: #{$form-check-radio-border-radius};
+
+        list-style: none;
+        white-space: nowrap;
+        padding: 0;
+        margin: 0;
+        overflow: auto;
+        position: relative;
+
+        // Remove outline on focus
+        &:focus {
+            outline: 0;
+        }
+
+        // List
+        ul {
+            list-style: none;
+            padding-left: var(--#{$prefix}icon-font-size);
+            margin: 0;
+        }
+
+        // Disabled state
+        .ui-fancytree-disabled & {
+            opacity: 0.65;
+        }
+    }
+
+    // Disabled state
+    .ui-fancytree-disabled {
+        .fancytree-container,
+        .fancytree-title,
+        .fancytree-expander {
+            cursor: default;
+        }
+
+        .fancytree-treefocus .fancytree-selected .fancytree-title {
+            background-color: var(--#{$prefix}ft-node-selected-bg);
+            color: var(--#{$prefix}ft-node-selected-color);
+        }
+    }
+
+    // Give icons common base
+    .fancytree-expander:after,
+    .fancytree-icon:after,
+    .fancytree-checkbox:after,
+    .fancytree-drag-helper-img:after,
+    .fancytree-drop-before:after,
+    .fancytree-drop-after:after,
+    .fancytree-loading .fancytree-expander:after,
+    .fancytree-statusnode-wait .fancytree-icon:after {
+        font-family: var(--#{$prefix}icon-font-family);
+        display: inline-block;
+        font-size: var(--#{$prefix}icon-font-size);
+        line-height: 1;
+        vertical-align: top;
+        @include ll-font-smoothing();
+    }
+
+
+    //
+    // Common icon definitions
+    //
+
+    // Base
+    .fancytree-icon,
+    .fancytree-custom-icon,
+    .fancytree-expander {
+        display: inline-block;
+        vertical-align: top;
+        margin-left: var(--#{$prefix}ft-node-padding-x);
+        margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) + calc(var(--#{$prefix}ft-node-padding-y) * 2) - var(--#{$prefix}icon-font-size)) * .5);
+        width: var(--#{$prefix}icon-font-size);
+        height: var(--#{$prefix}icon-font-size);
+    }
+
+    // Checkboxes
+    .fancytree-checkbox {
+        vertical-align: top;
+        margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) + calc(var(--#{$prefix}ft-node-padding-y) * 2) - var(--#{$prefix}ft-check-height)) * .5);
+        margin-left: var(--#{$prefix}ft-node-padding-x);
+    }
+
+    // Used by 'icon' node option
+    img.fancytree-icon {
+        border: 0;
+    }
+
+
+
+    //
+    // Expander icon
+    //
+    // Prefix: fancytree-exp-
+    // 1st character: 'e': expanded, 'c': collapsed, 'n': no children
+    // 2nd character (optional): 'd': lazy (Delayed)
+    // 3rd character (optional): 'l': Last sibling
+    // ----------------------------------------
+
+    // Icons
+    .fancytree-expander {
+        .fancytree-exp-c &:after {
+            content: $icon-caret-right;
+        }
+        .fancytree-exp-cl &:after {
+            content: $icon-caret-right;
+        }
+        .fancytree-exp-cd &:after,
+        .fancytree-exp-cdl &:after {
+            content: $icon-caret-right;
+        }
+        .fancytree-exp-e &:after,
+        .fancytree-exp-ed &:after {
+            content: $icon-caret-down;
+        }
+        .fancytree-exp-el &:after,
+        .fancytree-exp-edl &:after {
+            content: $icon-caret-down;
+        }
+    }
+
+    // Status node icons
+    .fancytree-statusnode-error .fancytree-icon:after {
+        content: $icon-validation-error;
+    }
+
+    // Loading icon
+    .fancytree-loading .fancytree-expander,
+    .fancytree-statusnode-wait .fancytree-icon {
+        margin-left: auto;
+        margin-right: auto;
+        display: inline-block;
+        text-align: center;
+        width: var(--#{$prefix}icon-font-size);
+        height: var(--#{$prefix}icon-font-size);
+
+        &:after {
+            content: $icon-loading-spinner;
+            @include transition(all ease-in-out var(--#{$prefix}transition-base-timer));
+        }
+    }
+
+
+
+    //
+    // # Node type icon
+    //
+    // Prefix: fancytree-ico-
+    // 1st character: 'e': expanded, 'c': collapsed,
+    // 2nd character (optional): 'f': folder
+    // ----------------------------------------
+
+
+    //
+    // Documents
+    //
+
+    // Icons
+    .fancytree-ico-c,
+    .fancytree-ico-e {
+        .fancytree-icon:after {
+            content: $icon-fancytree-file;
+        }
+    }
+
+    // With children
+    .fancytree-has-children {
+        &.fancytree-ico-c .fancytree-icon:after {
+            content: $icon-fancytree-sub-collapse;
+        }
+
+        &.fancytree-ico-e .fancytree-icon:after {
+            content: $icon-fancytree-sub-expand;
+        }
+    }
+
+
+    //
+    // Folders
+    //
+
+    // Icons
+    .fancytree-ico-cf,
+    .fancytree-ico-ef {
+        .fancytree-icon:after {
+            content: $icon-fancytree-folder;
+        }
+    }
+
+    // With children
+    .fancytree-has-children {
+        &.fancytree-ico-cf .fancytree-icon:after {
+            content: $icon-fancytree-folder-collapse;
+        }
+
+        &.fancytree-ico-ef .fancytree-icon:after {
+            content: $icon-fancytree-folder-expand;
+        }
+    }
+
+
+    //
+    // Checkbox icon
+    //
+
+    .fancytree-checkbox {
+        width: var(--#{$prefix}ft-check-width);
+        height: var(--#{$prefix}ft-check-height);
+        border: var(--#{$prefix}ft-check-border-width) solid var(--#{$prefix}ft-check-border-color);
+        background-color: var(--#{$prefix}ft-check-bg);
+        display: inline-block;
+        text-align: center;
+        position: relative;
+        cursor: pointer;        
+        @include border-radius(var(--#{$prefix}ft-check-border-radius));
+        @include transition(var(--#{$prefix}ft-check-transition));
+
+        // Dark theme
+        @include color-scheme(dark) {
+            --#{$prefix}ft-check-bg: #{$form-check-input-darkmode-bg};
+        }
+
+        // Checker base
+        &:after {
+            content: '';
+            position: absolute;
+            width: calc(var(--#{$prefix}ft-check-width) - calc(var(--#{$prefix}ft-check-border-width) * 2));
+            height: calc(var(--#{$prefix}ft-check-width) - calc(var(--#{$prefix}ft-check-border-width) * 2));
+            top: 0;
+            left: 0;
+            background-image: escape-svg($form-check-input-checked-bg-image);
+            background-position: center;
+            background-size: contain;
+            opacity: 0;
+            @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+        }
+
+        // Display indicators
+        .fancytree-selected &:after,
+        .fancytree-partsel &:after {
+            opacity: 1;
+        }
+
+        // Disabled selection
+        .fancytree-unselectable & {
+            opacity: .65;
+            cursor: default;
+        }
+
+        // Checked state
+        .fancytree-selected &,
+        .fancytree-partsel & {
+            border-color: var(--#{$prefix}ft-check-checked-border-color);
+            @include gradient-bg(var(--#{$prefix}ft-check-checked-bg));
+        }
+        .fancytree-has-children:not(.fancytree-selected) &:after {
+            background-image: none;
+        }
+
+        // Indeterminate state
+        .fancytree-partsel.fancytree-has-children:not(.fancytree-selected) &:after {
+            background-image: escape-svg($form-check-input-indeterminate-bg-image);
+        }
+
+        // Radio (single select imitation)
+        .fancytree-radio & {
+            @include border-radius(var(--#{$prefix}ft-radio-border-radius));
+
+            &:after {
+                background-image: escape-svg($form-check-radio-checked-bg-image);
+            }
+        }
+    }
+
+
+
+    // Other styles
+    // ------------------------------
+
+    //
+    // Drag'n'drop support
+    //
+
+    // Helper
+    .fancytree-drag-helper {
+        .fancytree-title {
+            padding-right: calc(calc(var(--#{$prefix}ft-node-padding-x) * 2) + var(--#{$prefix}icon-font-size));
+            border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+            opacity: 0.8;
+            margin: 0;
+        }
+    }
+
+    // Drag helper image
+    .fancytree-drag-helper-img {
+        &:after {
+            position: absolute;
+            top: 50%;
+            margin-top: calc(calc(var(--#{$prefix}icon-font-size) * .5) * -1);
+            right: var(--#{$prefix}ft-node-padding-x);
+            z-index: 10;
+        }
+
+        // If accept
+        .fancytree-drop-accept &:after {
+            content: $icon-validation-success;
+            color: var(--#{$prefix}success);
+        }
+
+        // If reject
+        .fancytree-drop-reject &:after {
+            content: $icon-validation-error;
+            color: var(--#{$prefix}danger);
+        }
+    }
+
+    // Marker icon
+    #fancytree-drop-marker {
+        &.fancytree-drop-before,
+        &.fancytree-drop-after {
+            width: 15rem;
+            border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+            position: absolute !important;
+        }
+    }
+
+    // Source node while dragging
+    .fancytree-drag-source {
+        opacity: 0.5;
+    }
+
+    // Target node while dragging cursor is over it
+    .fancytree-drop-target.fancytree-drop-accept a {
+        background-color: var(--#{$prefix}primary) !important;
+        color: var(--#{$prefix}white) !important;
+        text-decoration: none;
+    }
+
+
+    //
+    // Styles specific to this skin
+    //
+
+    // Node
+    .fancytree-node {
+        display: inherit;
+        width: 100%;
+        position: relative;
+        margin-bottom: 1px;
+    }
+
+    // Title
+    .fancytree-title {
+        border: 0;
+        padding: var(--#{$prefix}ft-node-padding-y) var(--#{$prefix}ft-node-padding-x);
+        margin-left: var(--#{$prefix}spacer-1);
+        display: inline-block;
+        cursor: pointer;
+        @include border-radius(var(--#{$prefix}border-radius));
+        @include transition(all ease-in-out var(--#{$prefix}transition-base-timer));
+
+        // Editable node input
+        > input {
+            border: 0;
+            outline: 0;
+            padding: 0;
+            background-color: transparent;
+            color: var(--#{$prefix}body-color);
+        }
+
+        // Selected title
+        .fancytree-selected &,
+        .fancytree-active & {
+            background-color: var(--#{$prefix}ft-node-selected-bg);
+            color: var(--#{$prefix}ft-node-selected-color);
+        }
+
+        // Title when focused
+        .fancytree-treefocus .fancytree-selected & {
+            background-color: var(--#{$prefix}ft-node-active-bg);
+            color: var(--#{$prefix}ft-node-active-color);
+        }
+    }
+
+
+    //
+    // Table extension
+    //
+
+    .fancytree-ext-table {
+
+        // Node
+        .fancytree-node {
+            display: inline-block;
+            width: auto;
+            margin: 0;
+        }
+
+        // Title
+        .fancytree-title {
+            display: inline;
+        }
+
+        // Container
+        &.fancytree-container {
+            white-space: normal;
+        }
+
+        // Icons
+        .fancytree-expander,
+        .fancytree-icon,
+        .fancytree-custom-icon {
+            margin-top: calc(calc(var(--#{$prefix}icon-font-size) - var(--#{$prefix}body-font-size)) * .5);
+        }
+
+        // Checkboxes
+        .fancytree-checkbox {
+            margin: 0 auto;
+            float: none;
+        }
+
+        // Rows
+        tbody tr {
+            @include transition(all ease-in-out var(--#{$prefix}transition-base-timer));
+
+            // Checkbox cell
+            td:first-child {
+                text-align: center;
+            }
+
+            // Title
+            .fancytree-title {
+                background-color: transparent;
+                color: inherit !important;
+                padding: 0;
+                @include transition(none);
+            }
+
+            // Focused items
+            &.fancytree-focused,
+            &.fancytree-active {
+                background-color: var(--#{$prefix}gray-200);
+            }
+
+            // Selected items
+            &.fancytree-selected {
+                background-color: var(--#{$prefix}gray-300);
+
+                // Title bg override
+                .fancytree-title {
+                    background-color: transparent;
+                }
+            }
+
+            // Focused and selected
+            .fancytree-treefocus &.fancytree-selected {
+                .fancytree-title {
+                    @include transition(color ease-in-out var(--#{$prefix}transition-base-timer));
+                }
+            }
+        }
+    }
+
+
+    //
+    // Child Counter extension
+    //
+
+    .fancytree-ext-childcounter .fancytree-childcounter {
+        position: absolute;
+        right: 0;
+        top: var(--#{$prefix}ft-node-padding-y);
+        color: rgba(var(--#{$prefix}body-color-rgb), .75);
+    }
+
+
+    //
+    // Helpers
+    //
+
+    // Hide original elements
+    .fancytree-helper-hidden {
+        display: none;
+    }
+
+    // Indeterminate state
+    .fancytree-helper-indeterminate-cb {
+        color: rgba(var(--#{$prefix}body-color-rgb), .75);
+    }
+
+    // Disabled state
+    .fancytree-helper-disabled {
+        color: rgba(var(--#{$prefix}body-color-rgb), .5);
+    }
+
+    // Spinner
+    .fancytree-helper-spin {
+        animation: rotation 1s linear infinite;
+    }
+}

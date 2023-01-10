@@ -1,0 +1,368 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Navbar component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Base
+.navbar {
+    --#{$prefix}navbar-bg: #{$navbar-light-bg};
+    --#{$prefix}navbar-brand-width: #{$navbar-brand-width};
+    --#{$prefix}navbar-brand-image-size: #{$navbar-brand-image-size};
+    --#{$prefix}navbar-search-width: #{$navbar-search-width};
+    --#{$prefix}navbar-link-padding-y: #{$navbar-link-padding-y};
+    --#{$prefix}navbar-link-padding-x: #{$navbar-link-padding-x};
+    --#{$prefix}navbar-hover-bg: #{$navbar-light-hover-bg};
+    --#{$prefix}navbar-hover-active-bg: #{$navbar-light-hover-active-bg};
+    --#{$prefix}navbar-hover-active-color: #{$navbar-light-hover-active-color};
+    --#{$prefix}navbar-active-bg: #{$navbar-light-active-bg};
+
+    // Dark theme
+    @include color-scheme(dark) {
+        --#{$prefix}navbar-bg: #{$navbar-light-darkmode-bg};
+    }
+
+    flex-shrink: 0;
+    background-color: var(--#{$prefix}navbar-bg);
+    color: var(--#{$prefix}navbar-color);
+}
+
+
+//
+// Navbar nav
+//
+
+.navbar-nav {
+    // Reset active link color in tabs
+    .nav-tabs {
+        --#{$prefix}navbar-active-color: null;
+    }
+}
+
+// Navbar nav links (our solution)
+.navbar-nav-link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    color: var(--#{$prefix}navbar-color);
+    padding: var(--#{$prefix}navbar-link-padding-y) var(--#{$prefix}navbar-link-padding-x);
+    outline: 0;
+    @include transition($nav-link-transition);
+
+    // Hover state
+    &:hover,
+    &:focus {
+        color: var(--#{$prefix}navbar-hover-color);
+        background-color: var(--#{$prefix}navbar-hover-bg);
+    }
+
+    // Pressed state
+    &:active {
+        color: var(--#{$prefix}navbar-hover-active-color);
+        background-color: var(--#{$prefix}navbar-hover-active-bg);
+    }
+
+    // Active state
+    &.show,
+    &[aria-expanded="true"],
+    &.active {
+        color: var(--#{$prefix}navbar-active-color);
+        background-color: var(--#{$prefix}navbar-active-bg);
+    }
+
+    // Disabled state
+    &.disabled {
+        pointer-events: none;
+        cursor: default;
+        opacity: .5;
+    }
+
+    // Icons
+    i {
+        margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+        margin-bottom: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+    }
+}
+
+// Links with icon only
+.navbar-nav-link-icon {
+    padding-left: var(--#{$prefix}navbar-link-padding-y);
+    padding-right: var(--#{$prefix}navbar-link-padding-y);
+
+    // Icon
+    i {
+        margin-left: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+        margin-right: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+    }
+}
+
+
+//
+// Navbar components
+//
+
+// Logo
+.navbar-brand {
+    display: inline-flex;
+    align-items: center;
+
+    img {
+        height: var(--#{$prefix}navbar-brand-image-size);
+    }
+}
+
+// Navbar text
+.navbar-text {
+    padding-top: var(--#{$prefix}navbar-link-padding-y);
+    padding-bottom: var(--#{$prefix}navbar-link-padding-y);
+}
+
+// Button for toggling the navbar when in its collapsed state
+.navbar-toggler {
+    border: 0;
+
+    // Hover state
+    &:hover,
+    &:focus {
+        color: var(--#{$prefix}navbar-hover-color);
+        background-color: var(--#{$prefix}navbar-hover-bg);
+    }
+
+    // Active state
+    &:active,
+    &[aria-expanded="true"] {
+        color: var(--#{$prefix}navbar-active-color);
+        background-color: var(--#{$prefix}navbar-active-bg);
+    }
+}
+
+
+//
+// Fixed navbar setup (works only in static layout)
+//
+
+// Top placement
+.navbar {
+    $navbar-height-sm: calc(#{$line-height-computed} + calc(#{$navbar-link-padding-y-sm} * 2) + calc(#{$navbar-padding-y} * 2)) !default;
+    $navbar-height-md: calc(#{$line-height-computed} + calc(#{$navbar-link-padding-y} * 2) + calc(#{$navbar-padding-y} * 2)) !default;
+    $navbar-height-lg: calc(#{$line-height-computed} + calc(#{$navbar-link-padding-y-lg} * 2) + calc(#{$navbar-padding-y} * 2)) !default;
+
+    &-top {
+        padding-top: $navbar-height-md;
+    }
+    &-lg-top {
+        padding-top: $navbar-height-lg;
+    }
+    &-sm-top {
+        padding-top: $navbar-height-sm;
+    }
+
+    &-lg-lg-top {
+        padding-top: calc(#{$navbar-height-lg} * 2);
+    }
+    &-lg-md-top {
+        padding-top: calc(#{$navbar-height-lg} + #{$navbar-height-md});
+    }
+    &-lg-sm-top {
+        padding-top: calc(#{$navbar-height-lg} + #{$navbar-height-sm});
+    }
+    &-md-md-top {
+        padding-top: calc(#{$navbar-height-md} * 2);
+    }
+    &-md-sm-top {
+        padding-top: calc(#{$navbar-height-sm} + #{$navbar-height-md});
+    }
+    &-sm-sm-top {
+        padding-top: calc(#{$navbar-height-sm} * 2);
+    }
+
+    &-bottom {
+        padding-bottom: $navbar-height-md;
+    }
+    &-lg-bottom {
+        padding-bottom: $navbar-height-lg;
+    }
+    &-sm-bottom {
+        padding-bottom: $navbar-height-sm;
+    }
+
+    &-lg-lg-bottom {
+        padding-bottom: calc(#{$navbar-height-lg} * 2);
+    }
+    &-lg-md-bottom {
+        padding-bottom: calc(#{$navbar-height-lg} + #{$navbar-height-md});
+    }
+    &-lg-sm-bottom {
+        padding-bottom: calc(#{$navbar-height-lg} + #{$navbar-height-sm});
+    }
+    &-md-md-bottom {
+        padding-bottom: calc(#{$navbar-height-md} * 2);
+    }
+    &-md-sm-bottom {
+        padding-bottom: calc(#{$navbar-height-sm} + #{$navbar-height-md});
+    }
+    &-sm-sm-bottom {
+        padding-bottom: calc(#{$navbar-height-sm} * 2);
+    }
+}
+
+
+//
+// Sizes
+//
+
+.navbar-lg {
+    .navbar-nav-link {
+        --#{$prefix}navbar-link-padding-y: #{$navbar-link-padding-y-lg};
+        --#{$prefix}navbar-link-padding-x: #{$navbar-link-padding-x-lg};        
+    }
+}
+.navbar-sm {
+    .navbar-nav-link {
+        --#{$prefix}navbar-link-padding-y: #{$navbar-link-padding-y-sm};
+        --#{$prefix}navbar-link-padding-x: #{$navbar-link-padding-x-sm};        
+    }
+}
+
+
+//
+// Responsive navbar
+//
+
+.navbar-expand {
+    @each $breakpoint in map-keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+
+        &#{$infix} {
+            @include media-breakpoint-up($next) {
+
+                // Logo
+                .navbar-brand {
+                    width: var(--#{$prefix}navbar-brand-width);
+                }
+
+                // Search
+                .navbar-search {
+                    max-width: var(--#{$prefix}navbar-search-width);
+                }
+            }
+
+            @include media-breakpoint-down($next) {
+                .navbar-nav-link:after {
+                    // display: none;
+                }
+
+                // Links in .navbar-collapse
+                .navbar-collapse {
+                    .navbar-nav-link {
+                        padding-left: var(--#{$prefix}navbar-link-padding-x);
+                        padding-right: var(--#{$prefix}navbar-link-padding-x);
+
+                        &:after {
+                            display: inline-block;
+                            margin-left: auto;
+                        }
+
+                        i {
+                            margin-left: 0;
+                            margin-right: 0;
+                        }
+                    }
+                }
+
+                // Override dropdown submanus
+                .dropdown-submenu {
+
+                    // Change arrow icon direction
+                    .dropdown-toggle:after {
+                        content: $icon-caret-down;
+                    }
+
+                    // Make them stacked
+                    &,
+                    &.dropdown-submenu-start {
+                        .dropdown-menu {
+                            margin: 0;
+                            border-width: 0;
+                            @include border-radius(0);
+                            @include box-shadow(none);
+                        }
+                    }
+
+                    // Third level
+                    > .dropdown-menu > .dropdown-item,
+                    > .dropdown-menu > .dropdown-submenu > .dropdown-item {
+                        padding-left: calc(var(--#{$prefix}dropdown-item-padding-x) * 2);
+                    }
+
+                    // Fourth level
+                    > .dropdown-menu > .dropdown-submenu > .dropdown-menu > .dropdown-item,
+                    > .dropdown-menu > .dropdown-submenu > .dropdown-menu > .dropdown-submenu > .dropdown-item {
+                        padding-left: calc(var(--#{$prefix}dropdown-item-padding-x) * 3);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// Helper class to keep dropdowns behave like dropdowns on mobile.
+// Add this class to dropdown parent container
+.nav-item-dropdown {
+    @each $breakpoint in map-keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+
+        &#{$infix} {
+            @include media-breakpoint-down($next) {
+                position: static;
+
+                // Keep dropdowns on top
+                > .dropdown-menu {
+                    position: absolute;
+                    left: calc(calc(#{$grid-gutter-width} * .5) + var(--#{$prefix}navbar-padding-x)) !important;
+                    right: calc(calc(#{$grid-gutter-width} * .5) + var(--#{$prefix}navbar-padding-x)) !important;
+                }
+            }
+        }
+    }
+}
+
+
+//
+// Dark navbar
+//
+
+.navbar-dark {
+    --#{$prefix}navbar-bg: #{$navbar-dark-bg};
+    --#{$prefix}navbar-hover-bg: #{$navbar-dark-hover-bg};
+    --#{$prefix}navbar-disabled-bg: #{$navbar-dark-disabled-bg};
+    --#{$prefix}navbar-hover-active-bg: #{$navbar-dark-hover-active-bg};
+    --#{$prefix}navbar-hover-active-color: #{$navbar-dark-hover-active-color};
+    --#{$prefix}navbar-active-bg: #{$navbar-dark-active-bg};
+
+    // Dark theme
+    @include color-scheme(dark) {
+        --#{$prefix}navbar-bg: #{$navbar-dark-darkmode-bg};
+    }
+}
+
+
+//
+// Misc
+//
+
+// Fix for static navbar to appear on top of sidebar
+.navbar-static {
+    z-index: ($zindex-sticky + 4);
+
+    & + & {
+        z-index: ($zindex-sticky + 3);
+    }
+
+    .content-wrapper & {
+        z-index: ($zindex-sticky + 1);
+    }
+}

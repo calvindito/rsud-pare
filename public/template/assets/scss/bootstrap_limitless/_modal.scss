@@ -1,0 +1,35 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Modal component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Container that the modal scrolls within
+.modal {
+    @include color-scheme(dark) {
+        --#{$prefix}modal-bg: #{$modal-content-darkmode-bg};
+    }
+}
+
+// Modal header
+.modal-header {
+    .btn-close {
+        @include color-scheme(dark) {
+            filter: $btn-close-white-filter;
+        }
+    }
+}
+
+// Scale up the modal
+@include media-breakpoint-up(sm) {
+
+    // Mini size
+    .modal-xs {
+        --#{$prefix}modal-width: #{$modal-xs};
+    }
+
+    // Full width size
+    .modal-full {
+        --#{$prefix}modal-width: #{$modal-full};
+    }
+}

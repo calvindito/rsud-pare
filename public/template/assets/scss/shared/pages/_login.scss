@@ -1,0 +1,24 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Login and related forms
+ *
+ *  Styles related to user login - logins, registration, password revovery, unlock etc.
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-login {
+
+    // Cover image
+    .login-cover {
+        background: url(#{$img-path}/login_cover.jpg) no-repeat;
+        background-size: cover;
+    }
+
+    // Form
+    .login-form {
+        @include media-breakpoint-up(sm) {
+            width: $login-form-width;
+        }
+    }
+}

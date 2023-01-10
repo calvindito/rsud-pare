@@ -1,0 +1,31 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Tooltip component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Base class
+.tooltip {
+    @include color-scheme(dark) {
+        --#{$prefix}tooltip-color: #{$tooltip-darkmode-color};
+        --#{$prefix}tooltip-bg: #{$tooltip-darkmode-bg};
+    }
+}
+
+// Tooltip with custom theme
+.tooltip-custom.bs-tooltip-auto[data-popper-placement^=top] .tooltip-arrow::before,
+.tooltip-custom.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: inherit;
+}
+.tooltip-custom.bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow::before,
+.tooltip-custom.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: inherit;
+}
+.tooltip-custom.bs-tooltip-auto[data-popper-placement^=start] .tooltip-arrow::before,
+.tooltip-custom.bs-tooltip-start .tooltip-arrow::before {
+    border-left-color: inherit;
+}
+.tooltip-custom.bs-tooltip-auto[data-popper-placement^=end] .tooltip-arrow::before,
+.tooltip-custom.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: inherit;
+}

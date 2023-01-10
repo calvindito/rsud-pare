@@ -1,0 +1,85 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Mail list
+ *
+ *  Inbox page - list, read and write
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-inbox {
+
+    // Base
+    .table-inbox {
+        --#{$prefix}inbox-read-row-bg: #{$inbox-read-row-bg};
+        --#{$prefix}inbox-unread-row-bg: #{$inbox-unread-row-bg};
+        --#{$prefix}inbox-img-size: #{$inbox-img-size};
+
+        table-layout: fixed;
+        min-width: map-get($grid-breakpoints, "md");
+
+        // Rows and cells
+        tr {
+            cursor: pointer;
+            @include transition(all ease-in-out var(--#{$prefix}transition-base-timer));
+
+            // Read message background color
+            &:not([class*=bg-]) {
+                background-color: var(--#{$prefix}inbox-read-row-bg);
+            }
+
+            // Remove left padding in all cells except first
+            td {
+                &:not(:first-child) {
+                    padding-left: 0;
+                }
+            }
+
+            // New mail
+            &.unread {
+                font-weight: $font-weight-bold;
+
+                // Unread message background color
+                &:not([class*=bg-]) {
+                    background-color: var(--#{$prefix}inbox-unread-row-bg);
+                }
+            }
+        }
+    }
+
+    // Cell with checkbox
+    .table-inbox-checkbox {
+        width: calc(var(--#{$prefix}table-cell-padding-x) * 3);
+    }
+
+    // Set fixed width to star and atachment cells
+    .table-inbox-star,
+    .table-inbox-attachment {
+        width: calc(var(--#{$prefix}table-cell-padding-x) + var(--#{$prefix}icon-font-size));
+    }
+
+    // User image cell
+    .table-inbox-image {
+        width: calc(var(--#{$prefix}table-cell-padding-x) + var(--#{$prefix}inbox-img-size));
+    }
+
+    // Sender name
+    .table-inbox-name {
+        width: 15rem;
+    }
+
+    // Message subject
+    .table-inbox-subject {
+        @include media-breakpoint-down(sm) {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    // Time cell
+    .table-inbox-time {
+        text-align: right;
+        width: 5.5rem;
+    }
+}

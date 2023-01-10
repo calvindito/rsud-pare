@@ -1,0 +1,15 @@
+@each $color, $value in $theme-colors {
+  .link-#{$color} {
+  	--#{$prefix}link-opacity: 1;
+    color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}link-opacity));
+
+    @if $link-shade-percentage != 0 {
+      &:hover,
+      &:focus {
+	    color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}link-opacity));
+        filter: if(color-contrast($value) == $color-contrast-light, brightness(1.15), brightness(.85));
+      }
+    }
+  }
+
+}

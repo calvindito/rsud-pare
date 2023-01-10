@@ -1,0 +1,111 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Form inputs overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+//
+// Check/radio
+//
+
+// In horizontal form group
+.form-check-horizontal {
+    margin-top: add($input-padding-y, $input-border-width);
+}
+
+// Inputs
+.form-check-input {
+    margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}form-check-input-height)) * .5);
+
+    // Dark theme
+    @include color-scheme(dark) {
+        --#{$prefix}form-check-input-bg: #{$form-check-input-darkmode-bg};
+    }
+}
+
+
+//
+// Switch
+//
+
+.form-switch {
+    .form-check-input {
+        @include color-scheme(dark) {
+            background-image: escape-svg($form-switch-bg-image-light);
+        }
+    }
+}
+
+
+//
+// Color options
+//
+
+.form-check-input {
+
+    // Secondary
+    &-secondary {
+        --#{$prefix}focus-ring-box-shadow: 0 0 #{$input-btn-focus-blur} #{$input-focus-width} rgba(var(--#{$prefix}secondary-rgb), #{$input-btn-focus-color-opacity});
+        --#{$prefix}component-active-bg: var(--#{$prefix}secondary);
+    }
+
+    // Dark
+    &-dark {
+        --#{$prefix}focus-ring-box-shadow: 0 0 #{$input-btn-focus-blur} #{$input-focus-width} rgba(var(--#{$prefix}dark-rgb), #{$input-btn-focus-color-opacity});
+        --#{$prefix}component-active-bg: var(--#{$prefix}dark);
+    }
+
+    // Success
+    &-success {
+        --#{$prefix}focus-ring-box-shadow: 0 0 #{$input-btn-focus-blur} #{$input-focus-width} rgba(var(--#{$prefix}success-rgb), #{$input-btn-focus-color-opacity});
+        --#{$prefix}component-active-bg: var(--#{$prefix}success);
+    }
+
+    // Danger
+    &-danger {
+        --#{$prefix}focus-ring-box-shadow: 0 0 #{$input-btn-focus-blur} #{$input-focus-width} rgba(var(--#{$prefix}danger-rgb), #{$input-btn-focus-color-opacity});
+        --#{$prefix}component-active-bg: var(--#{$prefix}danger);
+    }
+
+    // Warning
+    &-warning {
+        --#{$prefix}focus-ring-box-shadow: 0 0 #{$input-btn-focus-blur} #{$input-focus-width} rgba(var(--#{$prefix}warning-rgb), #{$input-btn-focus-color-opacity});
+        --#{$prefix}component-active-bg: var(--#{$prefix}warning);
+    }
+
+    // Info
+    &-info {
+        --#{$prefix}focus-ring-box-shadow: 0 0 #{$input-btn-focus-blur} #{$input-focus-width} rgba(var(--#{$prefix}info-rgb), #{$input-btn-focus-color-opacity});
+        --#{$prefix}component-active-bg: var(--#{$prefix}info);
+    }
+
+    // White
+    &-white {
+        --#{$prefix}form-check-input-bg: transparent !important;
+        --#{$prefix}form-check-input-border: calc(#{$input-border-width} * 2) solid rgba(var(--white-rgb), .5);
+        --#{$prefix}focus-ring-box-shadow: 0 0 #{$input-btn-focus-blur} #{$input-focus-width} rgba(var(--#{$prefix}white-rgb), #{$input-btn-focus-color-opacity});
+        --#{$prefix}component-active-bg: var(--#{$prefix}white);
+        --#{$prefix}form-check-input-focus-box-shadow: 0 0 #{$focus-ring-blur} #{$focus-ring-width} rgba(var(--#{$prefix}white-rgb), .25);
+
+        // Override bg images
+        &:checked[type=checkbox] {
+            background-image: escape-svg($form-check-input-checked-bg-image-dark);
+        }
+        &:checked[type="checkbox"]:indeterminate {
+            background-image: escape-svg($form-check-input-indeterminate-bg-image-dark);
+        }
+        &:checked[type="radio"] {
+            background-image: escape-svg($form-check-radio-checked-bg-image-dark);
+        }
+        .form-switch & {
+            &,
+            &:focus {
+                background-image: escape-svg($form-switch-bg-image-light);
+            }
+            &:checked[type=checkbox],
+            &:checked[type=radio] {
+                background-image: escape-svg($form-switch-checked-bg-image-dark);
+            }
+        }
+    }
+}

@@ -1,0 +1,152 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Form controls overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+//
+// General form controls (plus a few specific high-level interventions)
+//
+
+// Base
+.form-control {
+    --#{$prefix}input-disabled-color: #{$input-disabled-color};
+
+    // Dark theme
+    @include color-scheme(dark) {
+        --#{$prefix}input-bg: #{$input-darkmode-bg};
+        --#{$prefix}input-focus-bg: #{$input-darkmode-focus-bg};
+
+        &:not([list])::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+        }
+    }
+
+    // Disabled state
+    &:disabled {
+        color: var(--#{$prefix}input-disabled-color);
+    }
+
+    // Readonly mode
+    &[readonly]:focus {
+        border-color: var(--#{$prefix}input-focus-border-color);
+    }
+
+    // Data list arrow
+    &[list]::-webkit-calendar-picker-indicator {
+        color: currentcolor;
+    }
+
+    // Spinner
+    &-number {
+        -webkit-appearance: textfield;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+        }
+    }
+}
+
+// Readonly controls as plain text
+.form-control-plaintext {
+    &:focus {
+        outline: 0;
+    }
+}
+
+
+//
+// Form control feedback states
+//
+
+// Default left icon position
+.form-control-feedback {
+    position: relative;
+
+    // Left alignment
+    &-start {
+
+        // Stick icon to the left
+        .form-control-feedback-icon {
+            left: 0;
+        }
+
+        // Ensure icons don't overlap text
+        .form-control {
+            padding-left: calc(calc(var(--#{$prefix}input-padding-x) * 2) + var(--#{$prefix}icon-font-size));
+        }
+    }
+
+    // Right alignment
+    &-end {
+
+        // Stick icon to the right
+        .form-control-feedback-icon {
+            right: 0;
+        }
+
+        // Ensure icons don't overlap text
+        .form-control {
+            padding-right: calc(calc(var(--#{$prefix}input-padding-x) * 2) + var(--#{$prefix}icon-font-size));
+        }
+    }
+
+    // Sizes
+    .form-control {
+        &-lg {
+          --#{$prefix}icon-font-size: var(--#{$prefix}icon-font-size-lg);
+        }
+        &-sm {
+          --#{$prefix}icon-font-size: var(--#{$prefix}icon-font-size-sm);
+        }
+    }
+}
+
+// Feedback icon
+.form-control-feedback-icon {
+  --#{$prefix}input-icon-padding-y: #{$input-padding-y};
+  --#{$prefix}input-icon-padding-x: #{$input-padding-x};
+    position: absolute;
+    top: calc(#{$input-border-width} + calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+    color: rgba(var(--#{$prefix}body-color-rgb), .75);
+    padding: var(--#{$prefix}input-icon-padding-y) var(--#{$prefix}input-icon-padding-x);
+    min-width: 1em;
+    display: flex;
+    align-items: center;
+    z-index: 5;
+
+    // Large size
+    &-lg {
+        --#{$prefix}input-icon-padding-x: #{$input-padding-x-lg};
+    }
+
+    // Small size
+    &-sm {
+        --#{$prefix}input-icon-padding-x: #{$input-padding-x-sm};
+    }
+}
+
+
+//
+// Misc
+//
+
+// Color options
+@each $state, $value in $theme-colors {
+    .form-control.border-#{$state} {
+        --#{$prefix}focus-ring-box-shadow: 0 0 0 #{$focus-ring-width} rgba(var(--#{$prefix}#{$state}-rgb), #{$focus-ring-opacity});
+    }
+}
+
+// Form control styles in contenteditable
+.form-control-content {
+    max-height: calc(calc(var(--#{$prefix}body-line-height-computed) * 8) + calc(var(--#{$prefix}input-padding-y) * 2));
+    overflow-y: auto;
+
+    // Simulate placeholder behaviour
+    &[contentEditable]:empty:before {
+        content: attr(data-placeholder);
+        opacity: 0.6;
+    }
+}

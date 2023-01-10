@@ -1,0 +1,626 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Sidebar layouts
+ *
+ *  Sidebar components, main navigation and sidebar itself
+ *
+ * ---------------------------------------------------------------------------- */
+
+
+// Sidebar base
+// ------------------------------
+
+// Base
+.sidebar {
+  	--#{$prefix}sidebar-width: #{$sidebar-base-width};
+  	--#{$prefix}sidebar-bg: #{$sidebar-bg};
+  	--#{$prefix}sidebar-color: #{$sidebar-color};
+  	--#{$prefix}sidebar-border-color: #{$sidebar-border-color};
+  	--#{$prefix}sidebar-border-width: #{$sidebar-border-width};
+  	--#{$prefix}sidebar-box-shadow: #{$sidebar-start-mobile-box-shadow};
+  	--#{$prefix}sidebar-section-padding-y: #{$sidebar-section-body-padding-y};
+  	--#{$prefix}sidebar-section-padding-x: #{$sidebar-section-body-padding-x};
+
+  	// Dark theme
+  	@include color-scheme(dark) {
+		--#{$prefix}sidebar-bg: #{$sidebar-darkmode-bg};
+  	}
+
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	width: var(--#{$prefix}sidebar-width);
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	background-color: var(--#{$prefix}sidebar-bg);
+	color: var(--#{$prefix}sidebar-color);
+	box-shadow: var(--#{$prefix}sidebar-box-shadow);
+
+	// Tabs
+	.nav-tabs:not(.nav-tabs-underline):not(.nav-tabs-overline) {
+		.nav-link.active {
+			background-color: var(--#{$prefix}sidebar-bg);
+			border-bottom-color: var(--#{$prefix}sidebar-bg);
+		}
+	}
+}
+
+// Main and secondary sidebars default position
+.sidebar-main,
+.sidebar-secondary {
+	left: calc(calc(var(--#{$prefix}sidebar-width) * 1.1) * -1);
+	border-right: var(--#{$prefix}sidebar-border-width) solid var(--#{$prefix}sidebar-border-color);
+}
+
+// Right sidebar default position
+.sidebar-end {
+  	--#{$prefix}sidebar-box-shadow: #{$sidebar-end-mobile-box-shadow};
+	right: calc(calc(var(--#{$prefix}sidebar-width) * 1.1) * -1);
+	border-left: var(--#{$prefix}sidebar-border-width) solid var(--#{$prefix}sidebar-border-color);
+}
+
+
+
+// Sidebar content
+// ------------------------------
+
+// Main container
+.sidebar-content {
+	position: relative;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+// Content section
+.sidebar-section {
+	position: relative;
+	flex-shrink: 0;
+}
+
+// Logo
+.sidebar-logo {
+	padding: $navbar-link-padding-y var(--#{$prefix}sidebar-section-padding-x);
+
+	// Logo icon
+	&-icon {
+		height: $navbar-brand-height;
+	}
+}
+
+// Content section header
+.sidebar-section-header {
+  	--#{$prefix}sidebar-section-padding-y: calc(var(--#{$prefix}sidebar-section-padding-x) * .75);
+	display: flex;
+	align-items: center;
+	padding: var(--#{$prefix}sidebar-section-padding-y) var(--#{$prefix}sidebar-section-padding-x);
+}
+
+// Content section body
+.sidebar-section-body {
+	position: relative;
+	padding: var(--#{$prefix}sidebar-section-padding-y) var(--#{$prefix}sidebar-section-padding-x);
+}
+
+// Resized sidebar sections
+//
+// Add this class to containers that are only visible when
+// sidebar is resized. And use .sidebar-resize-hide to hide elements.
+.sidebar-resize-show {
+	display: none !important;
+}
+
+
+
+// Sidebar togglers
+// ------------------------------
+
+// Toggle sidebars on desktop
+.btn-sidebar-expand {
+	--#{$prefix}btn-color: currentColor;
+	--#{$prefix}btn-bg: #{$sidebar-btn-expand-bg};
+	--#{$prefix}btn-hover-bg: #{$sidebar-btn-expand-hover-bg};
+	--#{$prefix}btn-active-bg: #{$sidebar-btn-expand-active-bg};
+	--#{$prefix}btn-padding-y: var(--#{$prefix}spacer-1);
+	--#{$prefix}btn-padding-x: var(--#{$prefix}spacer-1);
+	--#{$prefix}btn-border-color: var(--#{$prefix}sidebar-border-color);
+	--#{$prefix}btn-hover-border-color: var(--#{$prefix}sidebar-border-color);
+	--#{$prefix}btn-active-border-color: var(--#{$prefix}sidebar-border-color);
+	--#{$prefix}btn-border-radius: 0;
+
+	// Dark theme config
+	@include color-scheme(dark) {
+		--#{$prefix}btn-bg: #{$sidebar-darkmode-btn-expand-bg};
+		--#{$prefix}btn-hover-bg: #{$sidebar-darkmode-btn-expand-hover-bg};
+		--#{$prefix}btn-active-bg: #{$sidebar-darkmode-btn-expand-active-bg};
+	}
+
+	display: none;
+	border-width: 0;
+
+	.sidebar-main &,
+	.sidebar-secondary & {
+		border-right-width: var(--#{$prefix}sidebar-border-width);
+	}
+	.sidebar-end & {
+		border-left-width: var(--#{$prefix}sidebar-border-width);
+	}
+}
+
+// Toggle main sidebar on mobile
+.sidebar-mobile-expanded {
+
+	// Left sidebars
+	&.sidebar-main,
+	&.sidebar-secondary {
+		left: 0;
+	}
+
+	// Right sidebar
+	&.sidebar-end {
+		right: 0;
+	}
+
+	// Sidebar in content section
+	&.sidebar-component {
+		display: block;
+	}
+}
+
+
+// Sidebar navigation
+// ------------------------------
+
+// Main sidebar nav
+.nav-sidebar {
+	--#{$prefix}nav-sidebar-padding-y: #{$nav-sidebar-padding-y};
+	--#{$prefix}nav-sidebar-divider-color: #{$nav-sidebar-divider-color};
+	--#{$prefix}nav-link-spacer-y: #{$nav-sidebar-link-spacer-y};
+	--#{$prefix}nav-link-padding-y: #{$nav-sidebar-link-padding-y};
+	--#{$prefix}nav-link-padding-x: #{$nav-sidebar-link-padding-x};
+	--#{$prefix}nav-link-color: #{$nav-sidebar-link-color};
+	--#{$prefix}nav-link-hover-bg: #{$nav-sidebar-link-hover-bg};
+	--#{$prefix}nav-link-hover-active-bg: #{$nav-sidebar-link-hover-active-bg};
+	--#{$prefix}nav-link-hover-color: #{$nav-sidebar-link-hover-color};
+	--#{$prefix}nav-link-active-bg: #{$nav-sidebar-link-active-bg};
+	--#{$prefix}nav-link-active-color: #{$nav-sidebar-link-active-color};
+	--#{$prefix}nav-link-font-weight: #{$nav-sidebar-link-font-weight};
+	flex-direction: column;
+
+	// Add vertical spacing to the first and last nav items
+	.nav-item:not(.nav-item-header) {
+		&:first-child {
+			padding-top: var(--#{$prefix}nav-sidebar-padding-y);
+		}
+		&:last-child {
+			padding-bottom: var(--#{$prefix}nav-sidebar-padding-y);
+		}
+	}
+
+	// Add spacing between nav items for better visual separation
+	.nav-item:not(.nav-item-divider):not(:last-child) {
+		margin-bottom: var(--#{$prefix}nav-link-spacer-y);
+	}
+
+	// Links
+	.nav-link {
+		position: relative;
+		align-items: flex-start;
+		background-color: transparent;
+
+		// Hover state
+		&:hover,
+		&:focus {
+			background-color: var(--#{$prefix}nav-link-hover-bg);
+		}
+
+		// Pressed state
+		&:active {
+			background-color: var(--#{$prefix}nav-link-hover-active-bg);
+		}
+
+		// Active
+		&.active {
+			background-color: var(--#{$prefix}nav-link-active-bg);
+		}
+
+		// Icons
+		i {
+			margin-right: var(--#{$prefix}nav-link-padding-x);
+			margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+			margin-bottom: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+		}
+	}
+
+	// Link in opened submenu
+	.nav-item-open > .nav-link:not(.disabled):not(:active),
+	> .nav-item-expanded > .nav-link:not(:active) {
+		background-color: var(--#{$prefix}nav-link-hover-bg);
+	}
+
+	// Nav item header
+	.nav-item-header {
+		padding: var(--#{$prefix}nav-link-padding-y) var(--#{$prefix}nav-link-padding-x);
+	}
+
+	// Divider
+	.nav-item-divider {
+		background-color: var(--#{$prefix}nav-sidebar-divider-color);
+		margin: var(--#{$prefix}nav-sidebar-padding-y) 0;
+		height: var(--#{$prefix}border-width);
+	}
+}
+
+// Nav items with submenu
+.nav-item-submenu {
+	> .nav-link {
+		padding-right: calc(var(--#{$prefix}nav-link-padding-x) + calc(var(--#{$prefix}body-font-size) * 1.5));
+
+		// Direction arrow
+		&:after {
+			content: $icon-caret-right;
+		    font-family: var(--#{$prefix}icon-font-family);
+		    display: inline-block;
+		    font-size: var(--#{$prefix}body-font-size);
+		    vertical-align: middle;
+		    line-height: 1;
+		    position: absolute;
+			top: var(--#{$prefix}nav-link-padding-y);
+			margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}body-font-size)) * .5);
+		    right: var(--#{$prefix}nav-link-padding-x);
+		    @include transition(transform ease-in-out var(--#{$prefix}transition-collapse-timer));
+		    @include ll-font-smoothing();
+
+		    // RTL
+		    [dir=rtl] & {
+				content: $icon-caret-left;
+		    }
+		}
+	}
+
+	// When submenu is opened, rotate arrow
+	&.nav-item-open > .nav-link {
+		&:after {
+			transform: rotate(90deg);
+		}
+	}
+}
+
+// Sidebar nav submenus
+.nav-group-sub {
+	--#{$prefix}nav-link-font-weight: #{$nav-sidebar-sub-link-font-weight};
+	--#{$prefix}nav-link-padding-y: #{$nav-sidebar-sub-padding-y};
+	@include list-unstyled();
+
+	// Links
+	.nav-link {
+		padding-left: calc(calc(var(--#{$prefix}nav-link-padding-x) * 2) + var(--#{$prefix}icon-font-size));
+	}
+
+	// Third level menus
+	.nav-group-sub {
+		.nav-link {
+			padding-left: calc(calc(var(--#{$prefix}nav-link-padding-x) * 3) + var(--#{$prefix}icon-font-size));
+		}
+
+		// Fourth level
+		.nav-group-sub {
+			.nav-link {
+				padding-left: calc(calc(var(--#{$prefix}nav-link-padding-x) * 4) + var(--#{$prefix}icon-font-size));
+			}
+		}
+	}
+}
+
+
+
+// Optional navigation styles
+// ------------------------------
+
+// Reversed icons alignment
+@if $enable-sidebar-nav-icons-reverse {
+	.nav-sidebar-icons-reverse {
+		.nav-link {
+			padding-right: calc(calc(var(--#{$prefix}nav-link-padding-y) * 2) + var(--#{$prefix}icon-font-size));
+
+			i {
+				position: absolute;
+				top: var(--#{$prefix}nav-link-padding-y);
+				right: var(--#{$prefix}nav-link-padding-x);
+				margin-right: 0;
+			}
+		}
+
+		.nav-item-submenu {
+			.nav-link {
+				padding-right: calc(calc(var(--#{$prefix}nav-link-padding-x) * 2) + calc(var(--#{$prefix}icon-font-size) * 2));
+
+				&:after {
+					right: calc(var(--#{$prefix}nav-link-padding-x) + calc(var(--#{$prefix}icon-font-size) * 2));
+				}
+			}
+		}
+
+		.nav-group-sub {
+			.nav-link {
+				padding-left: calc(var(--#{$prefix}nav-link-padding-x) * 2);
+			}
+
+			.nav-group-sub {
+				.nav-link {
+					padding-left: calc(var(--#{$prefix}nav-link-padding-x) * 3);
+				}
+
+				.nav-group-sub {
+					.nav-link {
+						padding-left: calc(var(--#{$prefix}nav-link-padding-x) * 4);
+					}
+				}
+			}
+		}
+	}
+}
+
+// Bordered navigation
+@if $enable-sidebar-nav-bordered {
+	.nav-sidebar-bordered {
+		--#{$prefix}nav-sidebar-padding-y: 0;
+		--#{$prefix}nav-link-spacer-y: 0;
+		--#{$prefix}nav-link-border-color: #{$nav-sidebar-divider-color};
+
+		// Dark sidebar
+		.sidebar-dark & {
+			--#{$prefix}nav-link-border-color: #{$nav-sidebar-dark-divider-color};
+		}
+
+		// Nav items
+		> .nav-item,
+		> .nav-item-header {
+			border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}nav-link-border-color);
+		}
+	}
+}
+
+
+
+// Sidebar colors
+// ------------------------------
+
+// Dark sidebar
+.sidebar-dark {
+	--#{$prefix}sidebar-bg: #{$sidebar-dark-bg};
+	--#{$prefix}sidebar-color: #{$sidebar-dark-color};
+	--#{$prefix}sidebar-border-color: #{$sidebar-dark-border-color};
+	color-scheme: dark;
+
+  	// Dark theme
+  	@include color-scheme(dark) {
+	  	--#{$prefix}sidebar-bg: #{$sidebar-dark-darkmode-bg};
+  	}
+
+	// Navigation
+	.nav-sidebar {
+		--#{$prefix}nav-sidebar-divider-color: #{$nav-sidebar-dark-divider-color};
+		--#{$prefix}nav-link-color: #{$nav-sidebar-dark-link-color};
+		--#{$prefix}nav-link-hover-color: #{$nav-sidebar-dark-link-hover-color};
+		--#{$prefix}nav-link-hover-bg: #{$nav-sidebar-dark-link-hover-bg};
+		--#{$prefix}nav-link-hover-active-bg: #{$nav-sidebar-dark-link-hover-active-bg};
+		--#{$prefix}nav-link-active-color: #{$nav-sidebar-dark-link-active-color};
+		--#{$prefix}nav-link-active-bg: #{$nav-sidebar-dark-link-active-bg};
+		--#{$prefix}nav-link-disabled-color: #{$nav-sidebar-dark-link-disabled-color};
+	}
+
+	// Expand sidebar button
+	.btn-sidebar-expand {
+		--#{$prefix}btn-bg: #{$sidebar-dark-btn-expand-bg};
+		--#{$prefix}btn-hover-bg: #{$sidebar-dark-btn-expand-hover-bg};
+		--#{$prefix}btn-active-bg: #{$sidebar-dark-btn-expand-active-bg};
+
+		// Dark theme
+		@include color-scheme(dark) {
+			--#{$prefix}btn-bg: #{$sidebar-dark-darkmode-btn-expand-bg};
+			--#{$prefix}btn-hover-bg: #{$sidebar-dark-darkmode-btn-expand-hover-bg};
+			--#{$prefix}btn-active-bg: #{$sidebar-dark-darkmode-btn-expand-active-bg};
+		}
+	}
+}
+
+
+
+// Content sidebar
+// ------------------------------
+
+// Base
+.sidebar-component {
+	--#{$prefix}sidebar-width: 100%;
+	display: none;
+	position: static;
+
+	.sidebar-content {
+		overflow: visible;
+	}
+}
+
+
+
+//
+// Generate series of `.sidebar-expand-*` responsive classes for configuring
+// where sidebar collapses. If togglers are in main navbar, make sure breakpoints match.
+// ------------------------------
+
+.sidebar-expand {
+    @each $breakpoint in map-keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+
+		&#{$infix} {
+			@include media-breakpoint-up($next) {
+				--#{$prefix}sidebar-box-shadow: #{$sidebar-start-desktop-box-shadow};
+				@include color-scheme(dark) {
+					--#{$prefix}sidebar-box-shadow: #{$sidebar-darkmode-start-desktop-box-shadow};
+				}
+				position: static;
+
+				// Collapsed state
+				&.sidebar-collapsed {
+					--#{$prefix}sidebar-width: auto;
+					border: 0;
+
+					// Display the button
+					.btn-sidebar-expand {
+						display: flex;
+					}
+
+					// Hide all content
+					> *:not(.btn-sidebar-expand) {
+						display: none !important;
+					}
+				}
+
+				// Main sidebar
+				&.sidebar-main {
+					z-index: $sidebar-zindex-main;
+				}
+
+				// Mini sidebar
+				&.sidebar-main-resized:not(.sidebar-collapsed) {
+					position: absolute;
+					left: 0;
+					transition: none;
+
+					// Add spacing = mini sidebar width
+					+ * {
+						margin-left: $sidebar-mini-width;
+					}
+
+					// Collapsed main sidebar
+					&:not(.sidebar-main-unfold) {
+						--#{$prefix}sidebar-width: #{$sidebar-mini-width};
+						--#{$prefix}sidebar-section-padding-x: 0;
+						overflow: hidden;
+						
+						// Hide all content
+						.nav-group-sub,
+						.nav-sidebar .nav-link > span {
+							display: none !important;
+						}
+
+						// Control elements' visibility.
+						// Use .sidebar-resize-hide to hide element when sidebar is resized
+						// Use .sidebar-resize-show to show element when sidebar is resized
+						.sidebar-resize-hide {
+							display: none !important;
+						}
+						.sidebar-resize-show {
+							display: block !important;
+						}
+
+						// Navigation
+						.nav-sidebar {
+							--#{$prefix}nav-link-padding-x: 0;
+
+							// Links
+							.nav-link {
+								justify-content: center;
+
+								// Hide submenu indicator
+								&:after {
+									content: none;
+								}
+							}
+
+							// Headers
+							.nav-item-header {
+								text-align: center;
+
+								// Icons
+								> i {
+									margin: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) / 2);
+									margin-bottom: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) / 2);
+								}
+							}
+						}
+					}
+
+					// Expanded mini sidebar
+					&.sidebar-main-unfold {
+						--#{$prefix}sidebar-box-shadow: #{$sidebar-start-mobile-box-shadow};
+						z-index: $sidebar-zindex-desktop;
+					}
+				}
+
+				// Secondary sidebar
+				&.sidebar-secondary {
+					z-index: $sidebar-zindex-secondary;
+				}
+
+				// Right sidebar
+				&.sidebar-end {
+					--#{$prefix}sidebar-box-shadow: #{$sidebar-end-desktop-box-shadow};
+					@include color-scheme(dark) {
+						--#{$prefix}sidebar-box-shadow: #{$sidebar-darkmode-end-desktop-box-shadow};
+					}
+					z-index: $sidebar-zindex-end;
+				}
+
+				// Sidebar component
+				&.sidebar-component {
+					--#{$prefix}sidebar-width: #{$sidebar-component-width};
+					display: flex;
+				}
+
+				// Sticky sidebar
+				&.sidebar-sticky {
+		            @supports (position: sticky) {
+		                position: sticky;
+		                top: var(--#{$prefix}spacer);
+		                z-index: $zindex-sticky;
+		            }
+				}
+			}
+
+			@include media-breakpoint-down($next) {
+				--#{$prefix}sidebar-border-width: 0;
+				z-index: $sidebar-zindex-mobile;
+				@include transition(left ease-in-out var(--#{$prefix}transition-base-timer), right ease-in-out var(--#{$prefix}transition-base-timer));
+			}
+		}
+	}
+}
+
+
+
+// Sidebar components
+// ------------------------------
+
+// Button group
+.row-tile {
+	div[class*=col] {
+
+		// Remove rounded corners from all buttons
+		.btn {
+			position: relative;
+
+			&:hover,
+			&:focus {
+				z-index: 3;
+			}
+		}
+
+		// Remove top borders
+		.btn + .btn {
+			margin-top: calc(var(--#{$prefix}btn-border-width) * -1);
+		}
+
+		// Remove left borders
+		+ div[class*=col] {
+			.btn {
+				margin-left: calc(var(--#{$prefix}btn-border-width) * -1);
+			}
+		}
+	}
+}

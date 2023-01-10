@@ -1,0 +1,268 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Steps wizard
+*
+*  Styles for steps.min.js - An all-in-one wizard plugin that is extremely flexible, compact and feature-rich
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-wizard {
+
+    // Base
+    .wizard {
+        --#{$prefix}wizard-step-line-size: #{$wizard-step-line-size};
+        --#{$prefix}wizard-step-line-color: #{$wizard-step-line-color};
+        --#{$prefix}wizard-step-inactive-color: #{$wizard-step-inactive-color};
+        --#{$prefix}wizard-step-number-size: #{$wizard-step-number-size};
+        --#{$prefix}wizard-step-number-bg: #{$wizard-step-number-bg};
+        --#{$prefix}wizard-step-number-color: #{$wizard-step-number-color};
+        --#{$prefix}wizard-step-number-active-bg: #{$wizard-step-number-active-bg};
+        --#{$prefix}wizard-step-number-active-color: #{$wizard-step-number-active-color};
+        --#{$prefix}wizard-step-number-error-bg: #{$wizard-step-number-error-bg};
+        --#{$prefix}wizard-step-number-error-color: #{$wizard-step-number-error-color};
+
+        @include color-scheme(dark) {
+            --#{$prefix}wizard-step-number-bg: #{$wizard-darkmode-step-number-bg};
+        }
+
+        // Title
+        > .steps .current-info,
+        > .content > .title {
+            display: none;
+        }
+
+        // Wizard content
+        > .content {
+            position: relative;
+            width: auto;
+            padding: 0;
+
+            > .body {
+                padding: 0 var(--#{$prefix}spacer);
+            }
+
+            > iframe {
+                border: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        // Steps
+        > .steps {
+            position: relative;
+            display: block;
+            width: 100%;
+
+            // Wizard nav
+            > ul {
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+
+                // Wizard nav item
+                > li {
+                    display: table-cell;
+                    width: auto;
+                    vertical-align: top;
+                    text-align: center;
+                    position: relative;
+
+                    // Link
+                    a {
+                        position: relative;
+                        padding-top: calc(var(--#{$prefix}wizard-step-number-size) + calc(var(--#{$prefix}spacer) * .5));
+                        margin-top: var(--#{$prefix}spacer);
+                        margin-bottom: var(--#{$prefix}spacer);
+                        display: block;
+                        outline: 0;
+                        color: var(--#{$prefix}wizard-step-inactive-color);
+                    }
+
+                    // Steps indicator line
+                    &:before,
+                    &:after {
+                        content: '';
+                        display: block;
+                        position: absolute;
+                        top: calc(calc(calc(var(--#{$prefix}wizard-step-number-size) + var(--#{$prefix}spacer)) - calc(var(--#{$prefix}wizard-step-number-size) * .5)) - calc(var(--#{$prefix}wizard-step-line-size) * .5));
+                        width: 50%;
+                        height: var(--#{$prefix}wizard-step-line-size);
+                        background-color: var(--#{$prefix}wizard-step-number-active-bg);
+                        z-index: 9;
+                        @include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+                    }
+                    &:before {
+                        left: 0;
+                    }
+                    &:after {
+                        right: 0;
+                    }
+                    &:first-child:before,
+                    &:last-child:after {
+                        content: none;
+                    }
+
+                    // Numbers and icons
+                    .number {
+                        background-color: var(--#{$prefix}wizard-step-number-bg);
+                        color: var(--#{$prefix}wizard-step-number-color);
+                        display: inline-block;
+                        position: absolute;
+                        top: 0;
+                        left: 50%;
+                        margin-left: calc(calc(var(--#{$prefix}wizard-step-number-size) * .5) * -1);
+                        border: var(--#{$prefix}wizard-step-line-size) solid var(--#{$prefix}wizard-step-line-color);
+                        z-index: 10;
+                        line-height: calc(var(--#{$prefix}wizard-step-number-size) - calc(var(--#{$prefix}wizard-step-line-size) * 2));
+                        text-align: center;
+                        width: var(--#{$prefix}wizard-step-number-size);
+                        height: var(--#{$prefix}wizard-step-number-size);
+                        @include border-radius(var(--#{$prefix}border-radius-pill));
+
+                        &:after {
+                            font-family: var(--#{$prefix}icon-font-family);
+                            display: inline-block;
+                            font-size: var(--#{$prefix}icon-font-size);
+                            @include ll-font-smoothing();
+                            @include transition(color ease-in-out var(--#{$prefix}transition-base-timer), background-color ease-in-out var(--#{$prefix}transition-base-timer), border-color ease-in-out var(--#{$prefix}transition-base-timer));
+                        }
+                    }
+
+                    // Current step
+                    &.current {
+                        &:after,
+                        ~ li:before,
+                        ~ li:after {
+                            background-color: var(--#{$prefix}wizard-step-line-color);
+                        }
+
+                        // Link
+                        > a {
+                            color: var(--#{$prefix}body-color);
+                            cursor: default;
+                        }
+
+                        // Icon container
+                        .number {
+                            border-color: var(--#{$prefix}wizard-step-number-active-bg);
+                            color: var(--#{$prefix}wizard-step-number-active-bg);
+                            font-size: 0;
+
+                            // Icon
+                            &:after {
+                                content: $icon-wizard-step-current;
+                            }
+                        }
+                    }
+
+                    // Completed step
+                    &.done {
+
+                        // Link
+                        a {
+                            &,
+                            &:hover,
+                            &:focus {
+                                color: var(--#{$prefix}body-color);
+                            }
+                        }
+
+                        // Icon container
+                        .number {
+                            background-color: var(--#{$prefix}wizard-step-number-active-bg);
+                            color: var(--#{$prefix}wizard-step-number-active-color);
+                            border-color: var(--#{$prefix}wizard-step-number-active-bg);
+                            font-size: 0;
+
+                            // Icon
+                            &:after {
+                                content: $icon-wizard-step-complete;
+                            }
+                        }
+                    }
+
+                    // Error
+                    &.error {
+                        .number {
+                            background-color: var(--#{$prefix}wizard-step-number-error-bg);
+                            color: var(--#{$prefix}wizard-step-number-error-color);
+                            border-color: var(--#{$prefix}wizard-step-number-error-bg);
+
+                            // Icon
+                            &:after {
+                                content: $icon-wizard-step-error;
+                            }
+                        }
+                    }
+                }
+
+                // Media queries
+                @include media-breakpoint-down(md) {
+                    margin-bottom: var(--#{$prefix}spacer);
+
+                    // Nav item
+                    > li {
+                        display: block;
+                        float: left;
+                        width: 50%;
+
+                        > a {
+                            margin-bottom: 0;
+                        }
+
+                        &:first-child:before,
+                        &:last-child:after {
+                            content: '';
+                        }
+
+                        &:last-child:after {
+                            background-color: var(--#{$prefix}wizard-step-number-active-bg);
+                        }
+                    }
+                }
+                @include media-breakpoint-down(sm) {
+
+                    // Nav item
+                    > li {
+                        width: 100%;
+
+                        &.current:after {
+                            background-color: var(--#{$prefix}wizard-step-number-active-bg);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Pagination
+        > .actions {
+            position: relative;
+            text-align: right;
+            padding: var(--#{$prefix}spacer);
+            padding-top: 0;
+
+            // Paging list
+            > ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                @include clearfix;
+
+                // Paging item
+                > li {
+                    display: inline-block;
+
+                    // Add horizontal spacing
+                    & + li {
+                        margin-left: var(--#{$prefix}spacer);
+                    }
+                }
+            }
+        }
+    }
+}

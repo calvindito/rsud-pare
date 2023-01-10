@@ -1,0 +1,343 @@
+/* ------------------------------------------------------------------------------
+*
+*  # CKEditor editor
+*
+*  Styles for CKEditor Classic, Document and Balloon
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-ckeditor {
+
+
+    //
+    // Base
+    //
+
+    // Configure variables
+    .ck {
+        --ck-font-size-base: var(--#{$prefix}body-font-size);
+        --ck-font-face: var(--#{$prefix}body-font-family);
+        --ck-color-text: var(--#{$prefix}body-color);
+        --ck-line-height-base: var(--#{$prefix}body-line-height);
+        --ck-border-radius: var(--#{$prefix}border-radius);
+
+        --ck-color-link-default: var(--#{$prefix}link-color);
+
+        --ck-color-base-background: #{$card-bg};
+        --ck-color-toolbar-background: #{$card-bg};
+        --ck-color-toolbar-border: var(--#{$prefix}border-color);
+
+        --ck-color-base-border: var(--#{$prefix}border-color);
+
+        --ck-focus-ring: var(--#{$prefix}border-width) solid transparent;
+        --ck-icon-size: #{$icon-font-size};
+
+        --ck-color-button-default-hover-background: var(--#{$prefix}gray-300);
+        --ck-color-button-default-active-background: var(--#{$prefix}gray-400);
+        --ck-color-button-default-active-shadow: (0,0,0,0);
+        --ck-color-button-save: var(--#{$prefix}success);
+        --ck-color-button-cancel: var(--#{$prefix}danger);
+        --ck-color-button-on-background: var(--#{$prefix}gray-400);
+        --ck-color-button-on-hover-background: var(--#{$prefix}gray-400);
+        --ck-color-button-on-active-background: var(--#{$prefix}gray-400);
+        --ck-color-button-on-active-shadow: (0,0,0,0);
+        --ck-color-button-on-disabled-background: var(--#{$prefix}gray-200);
+
+        --ck-color-list-background: #{$dropdown-bg};
+        --ck-color-list-button-hover-background: #{$dropdown-link-hover-bg};
+        --ck-color-list-button-on-background: #{$dropdown-link-active-bg};
+        --ck-color-list-button-on-background-focus: #{$dropdown-link-active-bg};
+        --ck-color-list-button-on-text: #{$dropdown-link-active-color};
+
+        --ck-color-dropdown-panel-background: #{$dropdown-bg};
+        --ck-color-dropdown-panel-border: #{$dropdown-border-color};
+
+        --ck-color-panel-background: #{$dropdown-bg};
+        --ck-color-panel-border: #{$dropdown-border-color};
+
+        --ck-drop-shadow: #{$dropdown-box-shadow};
+
+        --ck-color-input-background: #{$input-bg};
+        --ck-color-input-border: #{$input-border-color};
+        --ck-color-input-error-border: var(--#{$prefix}danger);
+        --ck-color-input-text: #{$input-color};
+        --ck-color-input-disabled-background: #{$input-disabled-bg};
+        --ck-color-input-disabled-border: #{$input-border-color};
+        --ck-color-input-disabled-text: var(--#{$prefix}gray-500);
+        --ck-color-labeled-field-label-background: transparent;
+
+        --ck-color-widget-editable-focus-background: var(--#{$prefix}gray-300);
+        --ck-color-engine-placeholder-text: #{$input-placeholder-color};
+        --ck-color-image-caption-background: var(--#{$prefix}gray-200);
+        --ck-color-image-caption-text: var(--#{$prefix}body-color);
+
+        --ck-color-table-focused-cell-background: var(--#{$prefix}gray-100);
+
+        --ck-inner-shadow: var(--#{$prefix}focus-ring-box-shadow);
+
+        --ck-color-widget-blurred-border: var(--#{$prefix}border-color);
+
+
+        // Dark theme
+        @include color-scheme(dark) {
+            --ck-color-base-background: #{$card-darkmode-bg};
+            --ck-color-toolbar-background: #{$card-darkmode-bg};
+
+            --ck-color-list-background: #{$dropdown-darkmode-bg};
+            --ck-color-dropdown-panel-background: #{$dropdown-darkmode-bg};
+
+            --ck-color-tooltip-text: #{$tooltip-darkmode-color};
+            --ck-color-tooltip-background: #{$tooltip-darkmode-bg};
+
+            --ck-color-panel-background: #{$dropdown-darkmode-bg};
+            --ck-color-panel-border: #{$dropdown-darkmode-border-color};
+
+            --ck-color-input-background: #{$input-darkmode-bg};
+        }
+    }
+
+
+    //
+    // Base
+    //
+
+    // Editable container
+    .ck.ck-editor__editable {
+        @include transition($input-transition);
+    }
+    .ck-editor .ck-editor__editable {
+        max-height: 450px;
+    }
+    .ck.ck-editor__editable_inline {
+        --ck-spacing-standard: var(--#{$prefix}spacer);
+        --ck-spacing-large: var(--#{$prefix}spacer);
+
+        &:not(.ck-focused) {
+            border-color: var(--#{$prefix}border-color);
+        }
+
+    }
+
+    // Editable area focus state
+    .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+        --ck-focus-ring: #{$input-border-width} solid #{$input-focus-border-color};
+        --ck-focus-inner-shadow: var(--#{$prefix}focus-ring-box-shadow);
+    }
+
+    // Image edit - alternative text
+    .ck.ck-text-alternative-form,
+    .ck.ck-link-form {
+        align-items: center;
+    }
+
+
+    //
+    // Buttons
+    //
+
+    // Button base
+    .ck.ck-button,
+    a.ck.ck-button {
+        --ck-spacing-tiny: #{$btn-padding-y};
+        --ck-focus-outer-shadow: none;
+        @include transition(all ease-in-out var(--#{$prefix}transition-base-timer) !important);
+
+        &:not(.ck-disabled) {
+            cursor: pointer;
+        }
+    }
+
+    // Icon button
+    .ck.ck-dropdown .ck-button.ck-dropdown__button:not(.ck-button_with-text) {
+        --ck-spacing-small: #{$btn-padding-y};
+    }
+
+
+    //
+    // Add parent target to avoid using !important
+    //
+
+    body {
+
+        // Dropdown
+        .ck.ck-dropdown__panel {
+            background-clip: padding-box;
+        }
+        .ck.ck-dropdown .ck-dropdown__panel .ck-list {
+            padding: $dropdown-padding-y 0;
+        }
+        .ck.ck-list__item .ck-button {
+            --ck-border-radius: 0;
+            padding: $dropdown-item-padding-y $dropdown-item-padding-x;
+            border: 0;
+
+            .ck-button__label {
+                line-height: var(--#{$prefix}body-line-height);
+            }
+        }
+        .ck.ck-dropdown__panel.ck-dropdown__panel_se .ck-color-table__remove-color {
+            border-top-left-radius: 0;
+        }
+        .ck.ck-dropdown__panel.ck-dropdown__panel_sw .ck-color-table__remove-color {
+            border-top-right-radius: 0;
+        }
+
+        // Toolbar
+        .ck-sticky-panel__placeholder {
+            display: none !important;
+        }
+        .ck.ck-sticky-panel .ck-sticky-panel__content_sticky {
+            width: 100% !important;
+            position: static;
+            box-shadow: none;
+        }
+        .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar {
+            border-bottom-width: 0;
+        }
+        .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar,
+        .ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content_sticky .ck-toolbar.ck-rounded-corners {
+            border-top-left-radius: var(--#{$prefix}border-radius);
+            border-top-right-radius: var(--#{$prefix}border-radius);
+        }
+        .ck.ck-splitbutton.ck-splitbutton_open>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover),
+        .ck.ck-splitbutton:hover>.ck-button:not(.ck-on):not(.ck-disabled):not(:hover) {
+            --ck-color-split-button-hover-background: var(--ck-color-button-default-hover-background);
+        }
+        .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__arrow:not(.ck-disabled):after,
+        .ck.ck-splitbutton:hover>.ck-splitbutton__arrow:not(.ck-disabled):after {
+            --ck-color-split-button-hover-border: var(--#{$prefix}border-color);
+        }
+        [dir=ltr] .ck.ck-splitbutton.ck-splitbutton_open>.ck-splitbutton__action,
+        [dir=ltr] .ck.ck-splitbutton:hover>.ck-splitbutton__action {
+            @include border-end-radius(0);
+        }
+
+        // Content
+        .ck-content {
+            figure, ol, p, ul {
+                margin-top: var(--#{$prefix}spacer);
+                margin-bottom: var(--#{$prefix}spacer);
+            }
+
+            .table table {
+                &,
+                th,
+                td {
+                    border-color: var(--#{$prefix}border-color);
+                }
+
+                th,
+                td {
+                    padding: $table-cell-padding-y $table-cell-padding-x;
+                }
+            }
+        }
+
+        // Balloon popup panel
+        .ck.ck-balloon-panel {
+            @include box-shadow(var(--#{$prefix}box-shadow));
+            border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+
+            &.ck-toolbar-container:after {
+                --ck-color-base-foreground: var(--ck-color-toolbar-background);
+            }
+            &.ck-toolbar-container:before {
+                border-bottom-color: var(--#{$prefix}border-color-translucent);
+            }
+
+        }
+
+        // Input fields
+        .ck.ck-input-text {
+            --ck-spacing-extra-tiny: #{$input-padding-y};
+            --ck-spacing-medium: #{$input-padding-x};
+            border-width: var(--#{$prefix}border-width);
+            padding-top: calc(#{$input-padding-y} + var(--#{$prefix}body-font-size) * 1.1);
+
+            // Focus state
+            &.ck-input_focused {
+                --ck-focus-ring: #{$input-border-width} solid #{$input-focus-border-color};
+                --ck-focus-outer-shadow: #{$input-focus-box-shadow};
+            }
+        }
+
+        // Input field sliding label
+        .ck.ck-labeled-field-view > .ck.ck-labeled-field-view__input-wrapper > .ck.ck-label {
+            padding: 0;
+            transform: translate(calc(#{$input-padding-x} + #{$input-border-width}), calc(#{$input-padding-y * 1.25} + #{$input-border-width})) scale(.75);
+        }
+        [dir=ltr] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,
+        [dir=ltr] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label {
+            transform: translate($input-padding-x, calc(var(--#{$prefix}body-font-size) * 1.35)) scale(1);
+        }
+        [dir=rtl] .ck.ck-labeled-field-view.ck-disabled.ck-labeled-field-view_empty>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label,
+        [dir=rtl] .ck.ck-labeled-field-view.ck-labeled-field-view_empty:not(.ck-labeled-field-view_focused):not(.ck-labeled-field-view_placeholder)>.ck.ck-labeled-field-view__input-wrapper>.ck.ck-label {
+            transform: translate($input-padding-x * -1, calc(var(--#{$prefix}body-font-size) * 1.35)) scale(1);
+        }
+    }
+
+
+    //
+    // Document editor
+    //
+
+    // Base
+    .document-editor {
+        --ck-doc-container-bg: rgba(var(--#{$prefix}black-rgb), .05);
+        --ck-doc-content-bg: #{$card-bg};
+        --ck-doc-content-box-shadow: #{$card-box-shadow};
+
+        [data-color-theme="dark"] & {
+            --ck-doc-container-bg: rgba(var(--#{$prefix}black-rgb), .25);
+            --ck-doc-content-bg: #{$card-darkmode-bg};
+        }
+
+        border: $border-width solid var(--#{$prefix}border-color);
+        border-radius: var(--#{$prefix}border-radius);
+        max-height: 700px;
+        display: flex;
+        flex-flow: column nowrap;
+    }
+
+    // Make the editable container look like the inside of a native word processor app
+    .document-editor-container {
+        padding: map-get($spacers, 3);
+        background-color: var(--ck-doc-container-bg);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        @include border-bottom-radius(calc(var(--#{$prefix}border-radius) - #{$border-width}));
+    }
+
+    // Toolbar
+    .document-editor-toolbar {
+        z-index: 1;
+        border-bottom: $border-width solid var(--#{$prefix}border-color);
+
+        // Adjust the look of the toolbar inside of the container
+        .ck.ck-toolbar {
+            border: 0;
+
+            &.ck-rounded-corners {
+                @include border-bottom-radius(0);
+            }
+        }
+    }
+
+    // Editable container
+    .document-editor-container .document-editor-editable.ck-editor__editable {
+        width: 15.8cm;
+        padding: var(--#{$prefix}spacer-4);
+        margin: 0 auto;
+        background-color: var(--ck-doc-content-bg);
+        @include box-shadow(var(--ck-doc-content-box-shadow));
+
+        // Adjust the width on different breakpoints
+        @include media-breakpoint-up(md) {
+            width: 90%;
+        }
+        @include media-breakpoint-up(xl) {
+            width: 60%;
+        }
+    }
+}

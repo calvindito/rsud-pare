@@ -1,0 +1,168 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Autofill extension
+ *
+ *  Spreadsheets such as Excel and Google Docs have a very handy data duplication
+ *  option of an auto fill tool
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-datatable-autofill {
+
+    // Handle
+    .dt-autofill-handle {
+        position: absolute;
+        z-index: 102;
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}primary);
+        background-color: var(--#{$prefix}primary);
+        width: var(--#{$prefix}spacer-2);
+        height: var(--#{$prefix}spacer-2);
+    }
+
+    // Select frame
+    .dt-autofill-select {
+        position: absolute;
+        z-index: 1001;
+        background-color: var(--#{$prefix}primary);
+        background-image: repeating-linear-gradient(45deg, transparent, transparent 0.3125rem, rgba(var(--#{$prefix}primary-rgb), 0.75) 0.3125rem, rgba(var(--#{$prefix}primary-rgb), 0.75) 0.625rem);
+
+        // Vertical lines
+        &.top,
+        &.bottom {
+            height: var(--#{$prefix}border-width);
+        }
+
+        // Horizontal lines
+        &.left,
+        &.right {
+            width: var(--#{$prefix}border-width);
+        }
+    }
+
+    // Confirmation dialog
+    .dt-autofill-list {
+        --#{$prefix}dtaf-bg: #{$modal-content-bg};
+        @include color-scheme(dark) {
+            --#{$prefix}dtaf-bg: #{$modal-content-darkmode-bg};
+        }
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        width: 31.25rem;
+        background-color: var(--#{$prefix}dtaf-bg);
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+        z-index: $zindex-modal;
+        padding: var(--#{$prefix}spacer-2) 0;
+        transform: translateX(-50%);
+        @include border-radius(var(--#{$prefix}border-radius));
+
+        // List
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 100%;
+
+            // List items
+            li {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                @include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+                // Highlight row on hover
+                &:hover {
+                    background-color: var(--#{$prefix}gray-200);
+                }
+                &:active {
+                    background-color: var(--#{$prefix}gray-300);
+                }
+            }
+        }
+
+        // Text label
+        .dt-autofill-question {
+            user-select: none;
+            padding: var(--#{$prefix}spacer-2) var(--#{$prefix}spacer);
+        }
+
+        // Confirm button
+        .dt-autofill-button {
+            padding: var(--#{$prefix}spacer-1) var(--#{$prefix}spacer);
+            text-align: right;
+            margin-left: auto;
+
+            // Button itself
+            .btn {
+                padding: 0;
+                background-color: transparent;
+                border: 0;
+                font-size: 0;
+                color: var(--#{$prefix}body-color);
+
+                // Checkmark icon
+                &:after {
+                    content: $icon-caret-right;
+                    font-family: var(--#{$prefix}icon-font-family);
+                    display: block;
+                    font-size: var(--#{$prefix}icon-font-size);
+                    width: var(--#{$prefix}icon-font-size);
+                    line-height: 1;
+                    @include ll-font-smoothing();
+                }
+            }
+        }
+
+        // Close button
+        .dtaf-popover-close {
+            position: relative;
+            margin-left: auto;
+            margin-right: var(--#{$prefix}spacer);
+            margin-top: var(--#{$prefix}spacer-2);
+            margin-bottom: var(--#{$prefix}spacer);
+            padding: var(--#{$prefix}spacer-1);
+            background-color: var(--#{$prefix}gray-200);
+            text-align: center;
+            cursor: pointer;
+            z-index: 12;
+            font-size: 0;
+            line-height: 1;
+            @include border-radius(var(--#{$prefix}border-radius));
+            @include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+            // Icon
+            &:after {
+                content: $icon-action-cross;
+                font-family: var(--#{$prefix}icon-font-family);
+                font-size: var(--#{$prefix}body-font-size);
+                line-height: 1;
+                @include ll-font-smoothing();
+            }
+
+            // Hover state
+            &:hover {
+                background-color: var(--#{$prefix}gray-300);
+            }
+        }
+    }
+
+    // Overlay
+    .dt-autofill-background {
+        --#{$prefix}dtaf-backdrop-zindex: #{$zindex-modal-backdrop};
+        --#{$prefix}dtaf-backdrop-bg: #{$modal-backdrop-bg};
+        --#{$prefix}dtaf-backdrop-opacity: #{$modal-backdrop-opacity};
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: var(--#{$prefix}dtaf-backdrop-zindex);
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--#{$prefix}dtaf-backdrop-bg);
+        opacity: var(--#{$prefix}dtaf-backdrop-opacity);
+    }
+}

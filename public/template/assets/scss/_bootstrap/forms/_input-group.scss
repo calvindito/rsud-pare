@@ -1,0 +1,184 @@
+//
+// Base styles
+//
+
+.input-group {
+  --#{$prefix}input-group-addon-padding-y: #{$input-group-addon-padding-y};
+  --#{$prefix}input-group-addon-padding-x: #{$input-group-addon-padding-x};
+  --#{$prefix}input-group-addon-bg: #{$input-group-addon-bg};
+  --#{$prefix}input-group-addon-color: #{$input-group-addon-color};
+  @include rfs($input-font-size, --#{$prefix}input-group-addon-font-size);
+  --#{$prefix}input-group-addon-font-weight: #{$input-group-addon-font-weight};
+  --#{$prefix}input-group-addon-line-height: #{$input-line-height};
+  --#{$prefix}input-group-addon-border-width: #{$input-border-width};
+  --#{$prefix}input-group-addon-border-color: #{$input-group-addon-border-color};
+  --#{$prefix}input-group-addon-border-radius: #{$input-border-radius};
+
+  position: relative;
+  display: flex;
+  flex-wrap: wrap; // For form validation feedback
+  align-items: stretch;
+  width: 100%;
+
+  > .form-control,
+  > .form-select,
+  > .form-floating {
+    position: relative; // For focus state's z-index
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0; // https://stackoverflow.com/questions/36247140/why-dont-flex-items-shrink-past-content-size
+  }
+
+  // Bring the "active" form control to the top of surrounding elements
+  > .form-control:focus,
+  > .form-select:focus,
+  > .form-floating:focus-within {
+    z-index: 5;
+  }
+
+  // Ensure buttons are always above inputs for more visually pleasing borders.
+  // This isn't needed for `.input-group-text` since it shares the same border-color
+  // as our inputs.
+  .btn {
+    position: relative;
+    z-index: 2;
+
+    &:focus {
+      z-index: 5;
+    }
+  }
+}
+
+
+// Textual addons
+//
+// Serves as a catch-all element for any text or radio/checkbox input you wish
+// to prepend or append to an input.
+
+.input-group-text {
+  display: flex;
+  align-items: center;
+  padding: var(--#{$prefix}input-group-addon-padding-y) var(--#{$prefix}input-group-addon-padding-x);
+  font-size: var(--#{$prefix}input-group-addon-font-size); // Match inputs
+  font-weight: var(--#{$prefix}input-group-addon-font-weight);
+  line-height: var(--#{$prefix}input-group-addon-line-height);
+  color: var(--#{$prefix}input-group-addon-color);
+  text-align: center;
+  white-space: nowrap;
+  background-color: var(--#{$prefix}input-group-addon-bg);
+  border: var(--#{$prefix}input-group-addon-border-width) solid var(--#{$prefix}input-group-addon-border-color);
+  @include border-radius(var(--#{$prefix}input-group-addon-border-radius));
+}
+
+
+// Sizing
+//
+// Remix the default form control sizing classes into new ones for easier
+// manipulation.
+
+.input-group-lg {
+  > .form-control {
+    --#{$prefix}input-padding-y: #{$input-padding-y-lg};
+    --#{$prefix}input-padding-x: #{$input-padding-x-lg};
+    @include rfs($input-font-size-lg, --#{$prefix}input-font-size);
+    --#{$prefix}input-line-height: #{$input-line-height-lg};
+    --#{$prefix}input-border-radius: #{$input-border-radius-lg};
+  }
+  > .form-select {
+    --#{$prefix}form-select-padding-y: #{$form-select-padding-y-lg};
+    --#{$prefix}form-select-padding-x: #{$form-select-padding-x-lg};
+    --#{$prefix}form-select-indicator-padding: #{$form-select-indicator-padding-lg};
+    @include rfs($form-select-font-size-lg, --#{$prefix}form-select-font-size);
+    --#{$prefix}form-select-line-height: #{$form-select-line-height-lg};
+    --#{$prefix}form-select-border-radius: #{$form-select-border-radius-lg};
+  }
+  > .input-group-text {
+    --#{$prefix}input-group-addon-padding-y: #{$input-padding-y-lg};
+    --#{$prefix}input-group-addon-padding-x: #{$input-padding-x-lg};
+    @include rfs($input-font-size-lg, --#{$prefix}input-group-addon-font-size);
+    --#{$prefix}input-group-addon-line-height: #{$input-line-height-lg};
+    --#{$prefix}input-group-addon-border-radius: #{$input-border-radius-lg};
+  }
+  > .btn {
+    --#{$prefix}btn-padding-y: #{$input-padding-y-lg};
+    --#{$prefix}btn-padding-x: #{$input-padding-x-lg};
+    @include rfs($input-font-size-lg, --#{$prefix}btn-font-size);
+    --#{$prefix}btn-line-height: #{$input-line-height-lg};
+    --#{$prefix}btn-border-radius: #{$input-border-radius-lg};
+  }
+}
+
+.input-group-sm {
+  > .form-control {
+    --#{$prefix}input-padding-y: #{$input-padding-y-sm};
+    --#{$prefix}input-padding-x: #{$input-padding-x-sm};
+    @include rfs($input-font-size-sm, --#{$prefix}input-font-size);
+    --#{$prefix}input-line-height: #{$input-line-height-sm};
+    --#{$prefix}input-border-radius: #{$input-border-radius-sm};
+  }
+  > .form-select {
+    --#{$prefix}form-select-padding-y: #{$form-select-padding-y-sm};
+    --#{$prefix}form-select-padding-x: #{$form-select-padding-x-sm};
+    --#{$prefix}form-select-indicator-padding: #{$form-select-indicator-padding-sm};
+    @include rfs($form-select-font-size-sm, --#{$prefix}form-select-font-size);
+    --#{$prefix}form-select-line-height: #{$form-select-line-height-sm};
+    --#{$prefix}form-select-border-radius: #{$form-select-border-radius-sm};
+  }
+  > .input-group-text {
+    --#{$prefix}input-group-addon-padding-y: #{$input-padding-y-sm};
+    --#{$prefix}input-group-addon-padding-x: #{$input-padding-x-sm};
+    @include rfs($input-font-size-sm, --#{$prefix}input-group-addon-font-size);
+    --#{$prefix}input-group-addon-line-height: #{$input-line-height-sm};
+    --#{$prefix}input-group-addon-border-radius: #{$input-border-radius-sm};
+  }
+  > .btn {
+    --#{$prefix}btn-padding-y: #{$input-padding-y-sm};
+    --#{$prefix}btn-padding-x: #{$input-padding-x-sm};
+    @include rfs($input-font-size-sm, --#{$prefix}btn-font-size);
+    --#{$prefix}btn-line-height: #{$input-line-height-sm};
+    --#{$prefix}btn-border-radius: #{$input-border-radius-sm};
+  }
+}
+
+
+// Rounded corners
+//
+// These rulesets must come after the sizing ones to properly override sm and lg
+// border-radius values when extending. They're more specific than we'd like
+// with the `.input-group >` part, but without it, we cannot override the sizing.
+
+// stylelint-disable-next-line no-duplicate-selectors
+.input-group {
+  &:not(.has-validation) {
+    > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+    > .dropdown-toggle:nth-last-child(n + 3),
+    > .form-floating:not(:last-child) > .form-control,
+    > .form-floating:not(:last-child) > .form-select {
+      @include border-end-radius(0);
+    }
+  }
+
+  &.has-validation {
+    > :nth-last-child(n + 3):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating),
+    > .dropdown-toggle:nth-last-child(n + 4),
+    > .form-floating:nth-last-child(n + 3) > .form-control,
+    > .form-floating:nth-last-child(n + 3) > .form-select {
+      @include border-end-radius(0);
+    }
+  }
+
+  $validation-messages: "";
+  @each $state in map-keys($form-validation-states) {
+    $validation-messages: $validation-messages + ":not(." + unquote($state) + "-tooltip)" + ":not(." + unquote($state) + "-feedback)";
+  }
+
+  > :not(:first-child):not(.dropdown-menu)#{$validation-messages} {
+    margin-left: calc(#{$input-border-width} * -1);
+    @include border-start-radius(0);
+  }
+
+  > .form-floating:not(:first-child) > .form-control,
+  > .form-floating:not(:first-child) > .form-select {
+    @include border-start-radius(0);
+  }
+}

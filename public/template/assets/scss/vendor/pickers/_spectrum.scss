@@ -1,0 +1,508 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Spectrum color picker
+*
+*  Flexible and powerful jQuery colorpicker library
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-spectrum {
+
+    // Base styles
+    // ------------------------------
+
+    // Color theme config
+    .sp-container {
+        --#{$prefix}spectrum-bg: #{$dropdown-bg};
+        --#{$prefix}spectrum-border-width: #{$dropdown-border-width};
+        --#{$prefix}spectrum-border-color: #{$dropdown-border-color};
+        --#{$prefix}spectrum-box-shadow: #{$dropdown-box-shadow};
+        --#{$prefix}spectrum-border-radius: #{$dropdown-border-radius};
+
+        // Dark theme
+        @include color-scheme(dark) {
+            --#{$prefix}spectrum-bg: #{$dropdown-darkmode-bg};
+            --#{$prefix}spectrum-border-color: #{$dropdown-darkmode-border-color};
+        }
+    }
+
+    // Base
+    .sp-sat,
+    .sp-val,
+    .sp-top-inner,
+    .sp-color,
+    .sp-hue,
+    .sp-clear-enabled .sp-clear,
+    .sp-preview-inner,
+    .sp-alpha-inner,
+    .sp-thumb-inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    // Hide containers by default
+    .sp-container.sp-input-disabled .sp-input-container,
+    .sp-container.sp-buttons-disabled .sp-button-container,
+    .sp-container.sp-palette-buttons-disabled .sp-palette-button-container,
+    .sp-palette-only .sp-picker-container,
+    .sp-palette-disabled .sp-palette-container,
+    .sp-initial-disabled .sp-initial {
+        display: none;
+    }
+    .sp-hidden {
+        display: none!important;
+    }
+    .sp-cf {
+        @include clearfix;
+    }
+
+    // Elements
+    .sp-preview,
+    .sp-alpha,
+    .sp-thumb-el {
+        position: relative;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
+    }
+
+    // Previews
+    .sp-preview-inner,
+    .sp-alpha-inner,
+    .sp-thumb-inner {
+        display: block;
+    }
+
+    // Picker and palette containers
+    .sp-container {
+        position: absolute;
+        top: 0;
+        /*rtl:ignore*/
+        left: 0;
+        display: inline-block;
+        z-index: $zindex-dropdown;
+        background-color: var(--#{$prefix}spectrum-bg);
+        background-clip: padding-box;
+        border: var(--#{$prefix}spectrum-border-width) solid var(--#{$prefix}spectrum-border-color);
+        overflow: hidden;
+        box-sizing: content-box;
+        @include border-radius(var(--#{$prefix}spectrum-border-radius));
+        @include box-shadow(var(--#{$prefix}spectrum-box-shadow));
+
+        // Flat picker
+        &.sp-flat {
+            position: relative;
+            overflow-x: auto;
+            max-width: 100%;
+            white-space: nowrap;
+            @include box-shadow(none);
+        }
+    }
+    .sp-picker-container,
+    .sp-palette-container {
+        display: block;
+        white-space: nowrap;
+        vertical-align: top;
+        position: relative;
+        padding: $spectrum-padding;
+
+        @include media-breakpoint-up(sm) {
+            display: inline-block;
+        }
+    }
+    .sp-picker-container {
+        width: $spectrum-width;
+    }
+
+    // Disable user selection
+    .sp-container,
+    .sp-replacer,
+    .sp-preview,
+    .sp-dragger,
+    .sp-slider,
+    .sp-alpha,
+    .sp-clear,
+    .sp-alpha-handle,
+    .sp-container.sp-dragging .sp-input,
+    .sp-container button {
+        user-select: none;
+    }
+
+
+    // Picker elements
+    // ------------------------------
+
+    // Colors and hue areas
+    .sp-top {
+        position: relative;
+        width: 100%;
+        display: block;
+    }
+    .sp-color {
+        right: 20%;
+        @include border-radius(var(--#{$prefix}border-radius));
+    }
+    .sp-hue {
+        left: 85%;
+        height: 100%;
+    }
+    .sp-clear-enabled .sp-hue {
+        top: 2.5rem;
+        height: 75%;
+    }
+    .sp-fill {
+        padding-top: 80%;
+    }
+
+    // Alpha
+    .sp-alpha-enabled {
+        .sp-top {
+            margin-bottom: 1.625rem;
+        }
+
+        .sp-alpha {
+            display: block;
+        }
+    }
+    .sp-alpha-handle {
+        position: absolute;
+        top: 50%;
+        width: .375rem;
+        height: 1rem;
+        /*rtl:ignore*/
+        left: 100%;
+        transform: translate(-25%, -50%);
+        cursor: ew-resize;
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+        background-color: var(--#{$prefix}white);
+        background-clip: content-box;
+        @include border-radius(var(--#{$prefix}border-radius));
+        @include box-shadow(var(--#{$prefix}box-shadow));
+    }
+    .sp-alpha {
+        display: none;
+        position: absolute;
+        bottom: -1rem;
+        right: 0;
+        left: 0;
+        height: .375rem;
+    }
+
+    // Clear
+    .sp-clear {
+        display: none;
+    }
+    .sp-clear-display {
+        cursor: pointer;
+
+        // Icon
+        &:after {
+            content: $icon-picker-color-clear;
+            display: block;
+            font-family: var(--#{$prefix}icon-font-family);
+            font-size: var(--#{$prefix}icon-font-size);
+            @include ll-font-smoothing();
+        }
+
+        // Hide icon in previews
+        .sp-preview &:after,
+        .sp-initial &:after {
+            content: none;
+        }
+    }
+    .sp-clear-enabled .sp-clear {
+        display: block;
+        left: 85%;
+        height: calc(var(--#{$prefix}icon-font-size) + calc(var(--#{$prefix}spacer-1) * 2));
+        text-align: center;
+        box-shadow: 0 0 0 var(--#{$prefix}border-width) var(--#{$prefix}border-color) inset;
+        @include border-radius(var(--#{$prefix}border-radius));
+    }
+
+    // Input
+    .sp-input-container {
+        margin-top: var(--#{$prefix}spacer-2);
+    }
+
+    // Initial color
+    .sp-initial {
+        margin-top: var(--#{$prefix}spacer-2);
+
+        // Color preview
+        span {
+            width: 50%;
+            height: var(--#{$prefix}body-line-height-computed);
+            display: block;
+            float: left;
+
+            .sp-thumb-inner {
+                height: 100%;
+                width: 100%;
+                display: block;
+            }
+        }
+
+        // Rounded corners
+        .sp-thumb-el {
+            &:first-child,
+            &:first-child .sp-thumb-inner {
+                @include border-start-radius(var(--#{$prefix}border-radius));
+            }
+            &:last-child,
+            &:last-child .sp-thumb-inner {
+                @include border-end-radius(var(--#{$prefix}border-radius));
+            }
+        }
+    }
+
+    // Dragger and slider
+    .sp-dragger {
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}white);
+        background-color: var(--#{$prefix}black);
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        /*rtl:ignore*/
+        left: 0;
+        width: .5rem;
+        height: .5rem;
+        transform: translate(.125rem, .125rem);
+        @include border-radius(var(--#{$prefix}border-radius-pill));
+    }
+    .sp-slider {
+        position: absolute;
+        top: 0;
+        cursor: ns-resize;
+        height: .375rem;
+        left: -.1875rem;
+        right: -.1875rem;
+        transform: translateY(.0625rem);
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+        background-color: var(--#{$prefix}white);
+        background-clip: content-box;
+        @include border-radius(var(--#{$prefix}border-radius));
+        @include box-shadow(var(--#{$prefix}box-shadow));
+    }
+
+
+    // Color preview
+    // ------------------------------
+
+    // Replacer (the little preview div that shows up instead of the <input>)
+    .sp-replacer {
+        padding: ($btn-padding-y * .75) $btn-padding-y;
+
+        &.sp-active {
+            color: var(--#{$prefix}btn-active-color);
+            background-color: var(--#{$prefix}btn-active-bg);
+            border-color: var(--#{$prefix}btn-active-border-color);
+        }
+
+        &.sp-disabled {
+            pointer-events: none;
+            opacity: $btn-disabled-opacity;
+        }
+    }
+
+    // Color preview
+    .sp-preview {
+        position: relative;
+        width: calc(var(--#{$prefix}body-line-height-computed) + calc(#{$btn-padding-y} * .5));
+        height: calc(var(--#{$prefix}body-line-height-computed) + calc(#{$btn-padding-y} * .5));
+        float: left;
+        z-index: 0;
+
+        &,
+        .sp-preview-inner {
+            @include border-radius(var(--#{$prefix}border-radius));
+        }
+
+        .sp-preview-inner,
+        .sp-clear-display {
+            border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color-translucent);
+        }
+    }
+
+    // Arrow
+    .sp-dd {
+        float: left;
+        font-size: 0;
+        position: relative;
+        margin-left: var(--#{$prefix}spacer-1);
+
+        // Arrow icon
+        &:after {
+            content: $icon-caret-down;
+            display: block;
+            font-family: var(--#{$prefix}icon-font-family);
+            font-size: var(--#{$prefix}icon-font-size);
+            line-height: 1;
+            @include ll-font-smoothing();
+        }
+    }
+
+
+    // Gradients
+    // ------------------------------
+
+    // Gradients for hue, saturation and value instead of images.  Not pretty... but it works
+    .sp-sat,
+    .sp-val,
+    .sp-hue {
+        @include border-radius(var(--#{$prefix}border-radius));
+    }
+    /*rtl:begin:ignore*/
+    .sp-sat {
+        background-image: linear-gradient(to right, #fff, rgba(204, 154, 129, 0));
+    }
+    .sp-val {
+        background-image: linear-gradient(to top, #000, rgba(204, 154, 129, 0));
+    }
+    .sp-hue {
+        background: linear-gradient(to bottom, #ff0000 0%, #ffff00 17%, #00ff00 33%, #00ffff 50%, #0000ff 67%, #ff00ff 83%, #ff0000 100%);
+    }
+    /*rtl:end:ignore*/
+
+
+    //
+    // IE filters do not support multiple color stops.
+    // Generate 6 divs, line them up, and do two color gradients for each.
+    // Yes, really.
+    //
+
+    /*rtl:begin:ignore*/
+    .sp-1 {
+        height: 17%;
+    }
+    .sp-2 {
+        height: 16%;
+    }
+    .sp-3 {
+        height: 17%;
+    }
+    .sp-4 {
+        height: 17%;
+    }
+    .sp-5 {
+        height: 16%;
+    }
+    .sp-6 {
+        height: 17%;
+    }
+    /*rtl:end:ignore*/
+
+
+    // Color palettes
+    // ------------------------------
+
+    // Basic styles
+    .sp-palette {
+        max-width: $spectrum-width;
+    }
+
+    // Palette thumbs
+    .sp-thumb-el {
+        position: relative;
+
+        .sp-palette & {
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        // Add 1px inner semi-transparent border
+        .sp-thumb-inner {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 0 var(--#{$prefix}border-width) rgba(var(--#{$prefix}black-rgb), 0.15) inset;
+            @include transition(box-shadow ease-in-out var(--#{$prefix}transition-base-timer));
+
+            // Hover state
+            &:hover {
+                box-shadow: 0 0 0 var(--#{$prefix}border-width) rgba(var(--#{$prefix}black-rgb), 0.75) inset;
+            }
+        }
+
+        // Inside palette
+        .sp-palette & {
+            width: 1rem;
+            height: 1rem;
+
+            + .sp-thumb-el {
+                margin-left: var(--#{$prefix}spacer-1);
+            }
+        }
+    }
+
+    // Adding checkmark to the active thumb
+    .sp-palette {
+        .sp-thumb-active {
+            &.sp-thumb-dark,
+            &.sp-thumb-light {
+                .sp-thumb-inner {
+                    &:after {
+                        content: $icon-checkbox-tick;
+                        font-family: var(--#{$prefix}icon-font-family);
+                        line-height: 1;
+                        @include ll-font-smoothing();
+                    }
+                }
+            }
+            &.sp-thumb-dark .sp-thumb-inner:after {
+                color: var(--#{$prefix}white);
+            }
+            &.sp-thumb-light .sp-thumb-inner:after {
+                color: var(--#{$prefix}black);
+            }
+        }
+    }
+
+    // Thumbnail row
+    .sp-palette-row {
+        display: flex;
+        flex-wrap: wrap;
+
+        & + .sp-palette-row {
+            margin-top: var(--#{$prefix}spacer-1);
+        }
+
+        &:empty {
+            margin-top: 0;
+        }
+    }
+
+
+    // Picker buttons
+    // ------------------------------
+
+    // Button base
+    .sp-cancel,
+    .sp-choose,
+    .sp-palette-toggle {
+        float: left;
+        width: 48%;
+        cursor: pointer;
+    }
+
+    // Button containers
+    .sp-palette-button-container,
+    .sp-button-container {
+        margin-top: calc(var(--#{$prefix}spacer) * .5);
+        text-align: center;
+    }
+
+    // Button states
+    .sp-cancel,
+    .sp-palette-toggle {
+        margin-right: 4%;
+    }
+
+    // Palette toggle buttons
+    .sp-palette-toggle {
+        margin-right: 0;
+        width: auto;
+        float: none;
+    }
+}

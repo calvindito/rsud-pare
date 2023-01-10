@@ -1,0 +1,806 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # GLightbox - lightbox extension
+ *
+ *  Styles for glightbox.min.js - Mac-style "lightbox" plugin
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-glightbox {
+
+    // Base
+    .glightbox-container {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999999 !important;
+        overflow: hidden;
+        touch-action: none;
+        text-size-adjust: 100%;
+        backface-visibility: hidden;
+        outline: none;
+
+        // Hide if inactive
+        &.inactive {
+            display: none;
+        }
+
+        // Media container
+        .gcontainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        // Slider container
+        .gslider {
+            height: 100%;
+            left: 0;
+            top: 0;
+            width: 100%;
+            position: relative;
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transform: translate3d(0, 0, 0);
+            transition: transform 0.25s ease;
+        }
+
+        // Slide
+        .gslide {
+            width: 100%;
+            position: absolute;
+            opacity: 1;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+
+            // Currently visible
+            &.current {
+                opacity: 1;
+                z-index: 99999;
+                position: relative;
+            }
+
+            // Previous
+            &.prev {
+                opacity: 1;
+                z-index: 9999;
+            }
+
+            // Content types
+            iframe,
+            video {
+                outline: none !important;
+                border: none;
+                min-height: 165px;
+                -webkit-overflow-scrolling: touch;
+                -ms-touch-action: auto;
+                touch-action: auto;
+            }
+        }
+
+        // Inner slide content
+        .gslide-inner-content {
+            width: 100%;
+        }
+
+        // Slide content wrapper
+        .ginner-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            max-width: 100%;
+            margin: auto;
+            height: 100vh;
+
+            // Video
+            &.gvideo-container {
+                width: 100%;
+            }
+
+            // Text description
+            &.desc-bottom,
+            &.desc-top {
+              flex-direction: column;
+            }
+            &.desc-left,
+            &.desc-right {
+              max-width: 100% !important;
+            }
+        }
+    }
+
+
+    //
+    // Media types
+    //
+
+    // Image
+    .gslide-image {
+        align-items: center;
+
+        // Image
+        img {
+            max-height: 100vh;
+            display: block;
+            padding: 0;
+            float: none;
+            outline: none;
+            border: none;
+            user-select: none;
+            max-width: 100vw;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+            touch-action: none;
+            margin: auto;
+            min-width: 200px;
+
+            &.zoomable {
+                position: relative;
+            }
+
+            &.dragging {
+                cursor: grabbing !important;
+                transition: none;
+            }
+        }
+
+        // With description
+        .desc-top & img,
+        .desc-bottom & img {
+            width: auto;
+        }
+        .desc-left & img,
+        .desc-right & img {
+            width: auto;
+            max-width: 100%;
+        }
+    }
+
+    // Video
+    .gslide-video {
+        position: relative;
+        max-width: 100vh;
+        width: 100% !important;
+
+        &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.34);
+            display: none;
+        }
+
+        &.playing::before {
+            display: none;
+        }
+
+        .gvideo-wrapper {
+            width: 100%;
+            margin: auto;
+        }
+
+        &.fullscreen {
+            max-width: 100% !important;
+            min-width: 100%;
+            height: 75vh;
+
+            video {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+        }
+    }
+
+    // Inline elements
+    .gslide-inline {
+        background-color: #fff;
+        text-align: left;
+        max-height: calc(100vh - 40px);
+        overflow: auto;
+        max-width: 100%;
+
+        .ginlined-content {
+            padding: 20px;
+            width: 100%;
+        }
+
+        .dragging {
+            cursor: grabbing !important;
+            transition: none;
+        }
+    }
+
+    // Other media
+    .gslide-media {
+        position: relative;
+        display: flex;
+        width: auto;
+        box-shadow: var(--#{$prefix}box-shadow-sm);
+
+        .zoomed & {
+            box-shadow: none !important;
+        }
+
+        .desc-top &,
+        .desc-bottom & {
+            margin: 0 auto;
+            flex-direction: column;
+        }
+    }
+
+    // Description
+    .gslide-description {
+        position: relative;
+        flex: 1 0 100%;
+
+        &.description-left,
+        &.description-right {
+            max-width: 100%;
+        }
+        &.description-bottom,
+        &.description-top {
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        p {
+            margin-bottom: var(--#{$prefix}spacer-2);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .zoomed & {
+            display: none;
+        }
+    }
+
+    //
+    // Misc
+    //
+
+    // Inline content wrapper
+    .ginlined-content {
+        overflow: auto;
+        display: block !important;
+        opacity: 1;
+    }
+
+    // External content
+    .gslide-external {
+        display: flex;
+        width: 100%;
+        min-width: 100%;
+        background-color: var(--#{$prefix}white);
+        padding: 0;
+        overflow: auto;
+        max-height: 75vh;
+        height: 100%;
+    }
+
+    // Hidedn buttons
+    .glightbox-button-hidden {
+      display: none;
+    }
+
+    .download-original-image {
+        position: absolute;
+        top: var(--#{$prefix}spacer-2);
+        right: var(--#{$prefix}spacer-2);
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--#{$prefix}white);
+        border-radius: var(--#{$prefix}border-radius-pill);
+        background-color: rgba(var(--#{$prefix}black-rgb), 0.1);
+
+        &:hover {
+            color: var(--#{$prefix}white);
+            background-color: rgba(var(--#{$prefix}black-rgb), 0.15);
+        }
+    }
+
+
+    /*
+     * Description for mobiles
+     * something like facebook does the description
+     * for the photos
+    */
+
+    .glightbox-mobile {
+        .glightbox-container {
+            .gslide-description {
+                height: auto !important;
+                width: 100%;
+                background: transparent;
+                position: absolute;
+                bottom: 15px;
+                padding: 19px 11px;
+                max-width: 100vw !important;
+                order: 2 !important;
+                max-height: 78vh;
+                overflow: auto !important;
+                background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.75) 100%);
+                transition: opacity 0.25s linear;
+                padding-bottom: 50px;
+            }
+
+            .gslide-title {
+                color: var(--#{$prefix}white);
+                font-size: 1em;
+            }
+
+            .gslide-desc {
+                color: $text-muted;
+
+                a,
+                string,
+                .desc-more {
+                    color: var(--#{$prefix}white);
+                }
+
+                a {
+                    font-weight: bold;
+                }
+
+                * {
+                    color: inherit;
+                }
+
+                .desc-more {
+                    opacity: 0.4;
+                }
+            }
+        }
+    }
+
+
+
+    // Description opened
+    .gdesc-open {
+        .gslide-media {
+            transition: opacity 0.25s ease;
+            opacity: 0.4;
+        }
+
+        .gdesc-inner {
+            padding-bottom: 30px;
+        }
+    }
+
+    // Description closed
+    .gdesc-closed {
+        .gslide-media {
+          transition: opacity 0.25s ease;
+          opacity: 1;
+        }
+    }
+
+
+    //
+    // Misc
+    //
+
+    // Utils
+    .greset {
+        transition: all 0.25s ease;
+    }
+    .gabsolute {
+        position: absolute;
+    }
+    .grelative {
+        position: relative;
+    }
+    .glightbox-desc {
+        display: none !important;
+    }
+    .glightbox-open {
+        overflow: hidden;
+    }
+
+    // Loader
+    .gloader {
+        height: 25px;
+        width: 25px;
+        animation: lightboxLoader 0.8s infinite linear;
+        border: 2px solid #fff;
+        border-right-color: transparent;
+        border-radius: 50%;
+        position: absolute;
+        display: block;
+        z-index: 9999;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        top: 47%;
+    }
+
+    // Overlay
+    .goverlay {
+        width: 100%;
+        height: calc(100vh + 1px);
+        position: fixed;
+        top: -1px;
+        left: 0;
+        background-color: rgba(var(--#{$prefix}black-rgb), 0.9);
+        will-change: opacity;
+    }
+
+
+    // Nav controls
+    .gprev,
+    .gnext,
+    .gclose {
+        z-index: 99999;
+        cursor: pointer;
+        width: 26px;
+        height: 44px;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        animation: gfadeIn 0.25s ease;
+        svg {
+            display: block;
+            width: 25px;
+            height: auto;
+            margin: 0;
+            padding: 0;
+        }
+
+        &.disabled {
+            opacity: 0.1;
+        }
+
+        .garrow {
+            stroke: var(--#{$prefix}white);
+        }
+    }
+
+    // Loader for autoplay
+    iframe.wait-autoplay {
+      opacity: 0;
+    }
+
+    // Closing
+    .glightbox-closing {
+        .gnext,
+        .gprev,
+        .gclose {
+            opacity: 0 !important;
+        }
+    }
+
+
+    //
+    // Skin
+    //
+
+    .glightbox-clean {
+
+        // Description
+        .gslide-description {
+            background-color: var(--#{$prefix}white);
+        }
+
+        // Inner content
+        .gdesc-inner {
+            padding: var(--#{$prefix}spacer);
+        }
+
+        // Title
+        .gslide-title {
+            margin-bottom: var(--#{$prefix}spacer);
+        }
+
+        // Description
+        .gslide-desc {
+            font-size: var(--#{$prefix}body-font-size-sm);
+            line-height: var(--#{$prefix}body-line-height-sm);
+            margin-bottom: 0;
+        }
+
+        // Video
+        .gslide-video {
+            background-color: var(--#{$prefix}black);
+        }
+
+        // Nav controls
+        .gprev,
+        .gnext,
+        .gclose {
+            background-color: transparent;
+            border-radius: var(--#{$prefix}border-radius-pill);
+
+            &:hover {
+                background-color: rgba(var(--#{$prefix}black-rgb), 0.25);
+            }
+
+            path {
+                fill: var(--#{$prefix}white);
+            }
+        }
+
+        .gprev {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+        }
+
+        .gnext {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+        }
+
+        .gclose {
+            width: 46px;
+            height: 46px;
+            top: 20px;
+            right: 20px;
+            position: absolute;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            svg {
+                width: 18px;
+                height: auto;
+            }
+        }
+
+        button:focus:not(.focused):not(.disabled) {
+            outline: none;
+        }
+    }
+
+
+    //
+    // Animations
+    //
+
+    // Classes
+    .gfadeIn {
+        animation: gfadeIn 0.25s ease;
+    }
+
+    .gfadeOut {
+        animation: gfadeOut 0.25s ease;
+    }
+
+    .gslideOutLeft {
+        animation: gslideOutLeft 0.25s ease;
+    }
+
+    .gslideInLeft {
+        animation: gslideInLeft 0.25s ease;
+    }
+
+    .gslideOutRight {
+        animation: gslideOutRight 0.25s ease;
+    }
+
+    .gslideInRight {
+        animation: gslideInRight 0.25s ease;
+    }
+
+    .gzoomIn {
+        animation: gzoomIn 0.25s ease;
+    }
+
+    .gzoomOut {
+        animation: gzoomOut 0.25s ease;
+    }
+
+    // Animations
+    @keyframes lightboxLoader {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes gfadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes gfadeOut {
+        from {
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+        }
+    }
+
+    @keyframes gslideInLeft {
+        from {
+            opacity: 0;
+            transform: translate3d(-60%, 0, 0);
+        }
+        to {
+            visibility: visible;
+            transform: translate3d(0, 0, 0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes gslideOutLeft {
+        from {
+            opacity: 1;
+            visibility: visible;
+            transform: translate3d(0, 0, 0);
+        }
+        to {
+            transform: translate3d(-60%, 0, 0);
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+
+    @keyframes gslideInRight {
+        from {
+            opacity: 0;
+            visibility: visible;
+            transform: translate3d(60%, 0, 0);
+        }
+        to {
+            transform: translate3d(0, 0, 0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes gslideOutRight {
+        from {
+            opacity: 1;
+            visibility: visible;
+            transform: translate3d(0, 0, 0);
+        }
+        to {
+            transform: translate3d(60%, 0, 0);
+            opacity: 0;
+        }
+    }
+
+    @keyframes gzoomIn {
+        from {
+            opacity: 0;
+            transform: scale3d(0.3, 0.3, 0.3);
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes gzoomOut {
+        from {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+            transform: scale3d(0.3, 0.3, 0.3);
+        }
+        to {
+            opacity: 0;
+        }
+    }
+
+
+
+    //
+    // Desktop view
+    //
+
+    @include media-breakpoint-up(md) {
+        .glightbox-container {
+            .ginner-container {
+                width: auto;
+                height: auto;
+                flex-direction: row;
+
+                &.desc-top {
+                    .gslide-description {
+                        order: 0;
+                    }
+
+                    .gslide-image,
+                    .gslide-image img {
+                        order: 1;
+                    }
+                }
+
+                &.desc-left {
+                    .gslide-description {
+                        order: 0;
+                    }
+                    .gslide-image {
+                        order: 1;
+                    }
+                }
+            }
+        }
+
+        .gslide-image {
+            img {
+                max-height: 97vh;
+                max-width: 100%;
+
+                &.zoomable {
+                    cursor: zoom-in;
+                }
+
+                .zoomed &.zoomable {
+                    cursor: grab;
+                }
+            }
+        }
+
+        .gslide-inline {
+            max-height: 95vh;
+        }
+        .gslide-external {
+            max-height: 100vh;
+        }
+
+        .gslide-description {
+            &.description-left,
+            &.description-right {
+                max-width: 275px;
+            }
+        }
+
+        .goverlay {
+            background-color: rgba(var(--#{$prefix}black-rgb), 0.9);
+        }
+
+        .glightbox-clean {
+            .description-left,
+            .description-right {
+                .gdesc-inner {
+                    position: absolute;
+                    height: 100%;
+                    overflow-y: auto;
+                }
+            }
+            .gprev {
+                bottom: 50%;
+                transform: translateY(50%);
+            }
+            .gnext {
+                bottom: 50%;
+                transform: translateY(50%);
+            }
+        }
+    }
+}

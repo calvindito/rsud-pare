@@ -1,0 +1,34 @@
+@mixin color-scheme($name, $level: '') {
+	@if $name == 'dark' {
+		@if ($level != 'root') {
+			&[data-color-theme=dark],
+			[data-color-theme=dark] &:not([data-color-theme]),
+			html[data-color-theme=dark] & {
+				color-scheme: dark;
+				@content;
+			}
+		}
+		@else {
+			[data-color-theme=dark],
+			html[data-color-theme=dark] [data-color-theme] {
+				@content;
+			}
+		}
+	}
+
+	@if $name == 'light' {
+		@if ($level != 'root') {
+			&[data-color-theme=light],
+			[data-color-theme=light] &:not([data-color-theme]),
+			html[data-color-theme=light] & {
+				@content;
+			}
+		}
+		@else {
+			[data-color-theme=light],
+			html[data-color-theme=light] [data-color-theme] {
+				@content;
+			}
+		}
+	}
+}

@@ -1,0 +1,36 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Core layout
+ *
+ *  Content area, sidebar, page header and boxed layout styles
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Import custom template config
+@import "../../../config";
+@import "../../../utils/ll-functions";
+@import "../../../utils/ll-mixins";
+
+// Core variables and mixins
+@import "../../../_bootstrap/functions";
+@import "../../../_bootstrap/variables";
+@import "../../../_bootstrap/mixins";
+
+// Import template's variables
+@import "../variables/variables-core";
+@import "../variables/variables-custom";
+@import "../../../bootstrap_limitless/maps";
+@import "../../../bootstrap_limitless/mixins";
+@import "../../../bootstrap_limitless/utilities";
+
+// Header
+@import "../layout/header";
+
+// Content
+@import "../layout/content";
+
+// Sidebar
+@import "../layout/sidebar";
+
+// Boxed layout
+@import "../layout/boxed";

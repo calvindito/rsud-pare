@@ -1,0 +1,1695 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # FullCalendar
+ *
+ *  Styles for fullcalendar JS files - JavaScript event calendar
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-fullcalendar {
+
+
+	// Layout
+	// ------------------------------
+
+	// Override events' custom cursors
+	.fc-not-allowed {
+		&,
+		.fc-event {
+			cursor: not-allowed;
+		}
+	}
+
+	// Disable selection
+	.fc-unselectable {
+		user-select: none;
+		-webkit-touch-callout: none;
+		-webkit-tap-highlight-color: rgba($black, 0);
+	}
+
+	// Base
+	.fc {
+        --#{$prefix}fc-bg: #{$fc-bg};
+        --#{$prefix}fc-cell-border-width: #{$table-border-width};
+        --#{$prefix}fc-cell-border-color: #{$table-border-color};
+        --#{$prefix}fc-cell-padding-y: #{$table-cell-padding-y};
+        --#{$prefix}fc-cell-padding-x: #{$table-cell-padding-x};
+        --#{$prefix}fc-event-bg: #{$fc-event-bg};
+        --#{$prefix}fc-event-font-size: #{$fc-event-font-size};
+        --#{$prefix}fc-event-color: #{$fc-event-color};
+        --#{$prefix}fc-event-border-width: #{$fc-event-border-width};
+        --#{$prefix}fc-event-border-color: #{$fc-event-border-color};
+        --#{$prefix}fc-event-spacer-y: #{$fc-event-spacer-y};
+        --#{$prefix}fc-event-spacer-x: #{$fc-event-spacer-x};
+        --#{$prefix}fc-event-padding-y: #{$fc-event-padding-y};
+        --#{$prefix}fc-event-padding-x: #{$fc-event-padding-x};
+        --#{$prefix}fc-event-more-bg: #{$fc-event-more-bg};
+        --#{$prefix}fc-event-more-hover-bg: #{$fc-event-more-hover-bg};
+        --#{$prefix}fc-event-resizer-size: #{$fc-event-resizer-size};
+        --#{$prefix}fc-today-bg: #{$fc-today-bg};
+        --#{$prefix}fc-bgevent-bg: #{$fc-bgevent-bg};
+        --#{$prefix}fc-nonbusiness-bg: #{$fc-nonbusiness-bg};
+        --#{$prefix}fc-highlight-bg: #{$fc-highlight-bg};
+        --#{$prefix}fc-weekday-color: #{$fc-weekday-color};
+		--#{$prefix}fc-popover-bg: #{$popover-bg};
+		--#{$prefix}fc-popover-border-width: #{$popover-border-width};
+		--#{$prefix}fc-popover-border-color: #{$popover-border-color};
+
+		// Dark theme
+		@include color-scheme(dark) {
+	        --#{$prefix}fc-bg: #{$fc-darkmode-bg};
+			--#{$prefix}fc-popover-bg: #{$popover-darkmode-bg};
+		}
+
+		display: flex;
+		flex-direction: column;
+
+		table {
+		    border-collapse: collapse;
+		    border-spacing: 0;
+		}
+
+		th {
+		    text-align: center;
+		}
+
+		th,
+		td {
+		    vertical-align: top;
+		    padding: 0;
+		}
+
+		a[data-navlink] {
+			cursor: pointer;
+		}
+	}
+
+	// Directions
+	.fc-direction-ltr {
+		/*rtl:begin:ignore*/
+		direction: ltr;
+		text-align: left;
+		/*rtl:end:ignore*/
+	}
+	.fc-direction-rtl {
+		/*rtl:begin:ignore*/
+		direction: rtl;
+		text-align: right;
+		/*rtl:end:ignore*/
+	}
+
+	// Themed table cells
+	.fc-theme-standard {
+		td,
+		th {
+		    border: var(--#{$prefix}fc-cell-border-width) solid var(--#{$prefix}fc-cell-border-color);
+		}
+	}
+
+	// For FF, which doesn't expand a 100% div within a table cell. use absolute positioning
+	// inner-wrappers are responsible for being absolute
+	.fc-liquid-hack {
+		td,
+		th {
+		    position: relative;
+		}
+	}
+
+
+	//
+	// Icons
+	//
+
+	@font-face {
+		font-family: 'fcicons';
+		src: url("data:application/x-font-ttf;charset=utf-8;base64,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") format('truetype');
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	.fc-icon {
+		display: inline-flex;
+		width: 1em;
+		height: 1em;
+		font-size: var(--#{$prefix}icon-font-size);
+		text-align: center;
+		user-select: none;
+		font-family: 'fcicons' !important;
+		speak: none;
+		font-style: normal;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		line-height: 1;
+		@include ll-font-smoothing();
+	}
+	.fc-icon-chevron-left:before {
+		content: "\e900";
+	}
+	.fc-icon-chevron-right:before {
+		content: "\e901";
+	}
+	.fc-icon-chevrons-left:before {
+		content: "\e902";
+	}
+	.fc-icon-chevrons-right:before {
+		content: "\e903";
+	}
+	.fc-icon-minus-square:before {
+		content: "\e904";
+	}
+	.fc-icon-plus-square:before {
+		content: "\e905";
+	}
+	.fc-icon-x:before {
+		content: "\e906";
+	}
+
+
+	//
+	// Buttons
+	//
+
+	.fc {
+
+		// Button base
+		.fc-button {
+			@include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-border-radius);
+			--#{$prefix}btn-font-weight: #{$btn-font-weight};
+			--#{$prefix}btn-line-height: #{$btn-line-height};
+			--#{$prefix}btn-border-width: #{$btn-border-width};
+			--#{$prefix}btn-box-shadow: #{$btn-box-shadow};
+			--#{$prefix}btn-disabled-opacity: #{$btn-disabled-opacity};
+			--#{$prefix}btn-focus-box-shadow: 0 0 0 #{$btn-focus-width} rgba(var(--#{$prefix}btn-focus-shadow-rgb), .25);
+
+			display: inline-flex;
+			align-items: center;
+			padding: var(--#{$prefix}btn-padding-y) var(--#{$prefix}btn-padding-x);
+			font-size: var(--#{$prefix}btn-font-size);
+			font-weight: var(--#{$prefix}btn-font-weight);
+			line-height: var(--#{$prefix}btn-line-height);
+			color: var(--#{$prefix}btn-color);
+			text-align: center;
+			text-decoration: if($link-decoration == none, null, none);
+			white-space: $btn-white-space;
+			vertical-align: middle;
+			cursor: if($enable-button-pointers, pointer, null);
+			user-select: none;
+			border: var(--#{$prefix}btn-border-width) solid var(--#{$prefix}btn-border-color);
+			@include border-radius(var(--#{$prefix}btn-border-radius));
+			@include gradient-bg(var(--#{$prefix}btn-bg));
+			@include box-shadow(var(--#{$prefix}btn-box-shadow));
+			@include transition($btn-transition);
+
+			// Hover state
+			&:hover,
+			&:focus {
+				color: var(--#{$prefix}btn-hover-color);
+				text-decoration: if($link-hover-decoration == underline, none, null);
+				background-color: var(--#{$prefix}btn-hover-bg);
+				border-color: var(--#{$prefix}btn-hover-border-color);
+			}
+			&:focus {
+				outline: 0;
+				box-shadow: var(--#{$prefix}btn-box-shadow), var(--#{$prefix}btn-focus-box-shadow);
+			}
+
+			// Active state
+			&:active,
+			&.fc-button-active {
+				color: var(--#{$prefix}btn-active-color);
+				background-color: var(--#{$prefix}btn-active-bg);
+				border-color: var(--#{$prefix}btn-active-border-color);
+				@include box-shadow(var(--#{$prefix}btn-active-shadow));
+
+				&:focus {
+					box-shadow: var(--#{$prefix}btn-active-shadow), var(--#{$prefix}btn-focus-box-shadow);
+				}
+			}
+
+			// Disabled state
+			&:disabled {
+				color: var(--#{$prefix}btn-disabled-color);
+				pointer-events: none;
+				background-color: var(--#{$prefix}btn-disabled-bg);
+				background-image: if($enable-gradients, none, null);
+				border-color: var(--#{$prefix}btn-disabled-border-color);
+				opacity: var(--#{$prefix}btn-disabled-opacity);
+				@include box-shadow(none);
+			}
+
+			// Icon
+			.fc-icon {
+				margin-top: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) / 2);
+				margin-bottom: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) / 2);
+			}
+		}
+
+		// Primary button
+		.fc-button-primary {
+			@include button-variant($light, $light);
+		}
+
+		// Previous and next buttons
+		.fc-prev-button,
+		.fc-next-button {
+			.fc-icon {
+				margin-left: calc(calc(var(--#{$prefix}btn-padding-x) - var(--#{$prefix}btn-padding-y) - var(--#{$prefix}btn-border-width)) * -1);
+				margin-right: calc(calc(var(--#{$prefix}btn-padding-x) - var(--#{$prefix}btn-padding-y) - var(--#{$prefix}btn-border-width)) * -1);
+			}
+		}
+
+		// Button group
+		.fc-button-group {
+		    position: relative;
+		    display: inline-flex;
+		    vertical-align: middle;
+
+		    > .fc-button {
+			    position: relative;
+			    flex: 1 1 auto;
+
+			    &:hover,
+			    &:focus,
+			    &:active,
+			    &.fc-button-active {
+				    z-index: 1;
+			    }
+		    }
+		}
+	}
+
+	// LTR
+	/*rtl:begin:ignore*/
+	.fc-direction-ltr {
+		.fc-button-group {
+			> .fc-button {
+				&:not(:first-child) {
+					margin-left: calc(var(--#{$prefix}btn-border-width) * -1);
+					@include border-start-radius(0);
+				}
+				&:not(:last-child) {
+					@include border-end-radius(0);
+				}
+			}
+		}
+	}
+	/*rtl:end:ignore*/
+
+	// RTL
+	/*rtl:begin:ignore*/
+	.fc-direction-rtl {
+		.fc-button-group {
+			> .fc-button {
+				&:not(:first-child) {
+					margin-right: calc(var(--#{$prefix}btn-border-width) * -1);
+					@include border-end-radius(0);
+				}
+				&:not(:last-child) {
+					@include border-start-radius(0);
+				}
+			}
+		}
+	}
+	/*rtl:end:ignore*/
+
+
+	//
+	// Toolbar
+	//
+
+	// Base
+	.fc {
+		.fc-toolbar {
+		    display: flex;
+		    justify-content: space-between;
+		    align-items: center;
+
+		    // Header toolbar
+			&.fc-header-toolbar {
+				margin-bottom: var(--#{$prefix}spacer);
+			}
+
+			// Footer toolbar
+			&.fc-footer-toolbar {
+				margin-top: var(--#{$prefix}spacer);
+			}
+		}
+
+		.fc-toolbar-title {
+			font-size: $h5-font-size;
+			margin-bottom: 0;
+		}
+	}
+
+	// LTR
+	/*rtl:begin:ignore*/
+	.fc-direction-ltr {
+		.fc-toolbar > * > :not(:first-child) {
+			margin-left: var(--#{$prefix}spacer-2);
+		}
+	}
+	/*rtl:end:ignore*/
+
+	// RTL
+	/*rtl:begin:ignore*/
+	.fc-direction-rtl {
+		.fc-toolbar > * > :not(:first-child) {
+			margin-right: var(--#{$prefix}spacer-2);
+		}
+		.fc-toolbar-ltr {
+			flex-direction: row-reverse;
+		}
+	}
+	/*rtl:end:ignore*/
+
+
+	//
+	// Scrollable container
+	//
+
+	.fc {
+		.fc-scroller {
+		    -webkit-overflow-scrolling: touch;
+		    position: relative;
+		}
+		.fc-scroller-liquid {
+			height: 100%;
+		}
+		.fc-scroller-liquid-absolute {
+		    position: absolute;
+		    top: 0;
+		    right: 0;
+		    left: 0;
+		    bottom: 0;
+		}
+		.fc-scroller-harness {
+		    position: relative;
+		    overflow: hidden;
+		    /*rtl:ignore*/
+		    direction: ltr;
+		}
+		.fc-scroller-harness-liquid {
+		    height: 100%;
+		}
+	}
+	.fc-direction-rtl {
+		.fc-scroller-harness > .fc-scroller {
+			/*rtl:ignore*/
+			direction: rtl;
+		}
+	}
+
+
+	//
+	// Scrollable grid
+	//
+
+	// Theme
+	.fc-theme-standard {
+		.fc-scrollgrid {
+		    border: var(--#{$prefix}fc-cell-border-width) solid var(--#{$prefix}fc-cell-border-color);
+		}
+	}
+
+	// Base
+	.fc {
+		.fc-scrollgrid {
+			border-collapse: separate;
+			border-right-width: 0;
+			border-bottom-width: 0;
+
+			&,
+			table {
+				width: 100%;
+				table-layout: fixed;
+			}
+
+			// Inner tables
+			table {
+				border-top-style: hidden;
+				border-left-style: hidden;
+				border-right-style: hidden;
+			}
+		}
+		.fc-scrollgrid-liquid {
+		    height: 100%;
+		}
+
+		// Sections
+		.fc-scrollgrid-section {
+			&,
+			table,
+			> td {
+				height: 1px;
+			}
+
+			 > * {
+			    border-top-width: 0;
+			    border-left-width: 0;
+			 }
+		}
+		.fc-scrollgrid-section-liquid {
+			height: auto;
+
+			> td {
+				height: 100%;
+			}
+		}
+		.fc-scrollgrid-section-header,
+		.fc-scrollgrid-section-footer {
+			> * {
+				border-bottom-width: 0;
+			}
+		}
+		.fc-scrollgrid-section-body,
+		.fc-scrollgrid-section-footer {
+			table {
+				border-bottom-style: hidden;
+			}
+		}
+
+
+		//
+		// Stickiness
+		//
+
+		.fc-scrollgrid-section-sticky {
+			> * {
+				background-color: var(--#{$prefix}fc-bg);
+				position: -webkit-sticky;
+				position: sticky;
+				z-index: 3;
+			}
+
+			&.fc-scrollgrid-section-header > * {
+				top: 0;
+			}
+			&.fc-scrollgrid-section-footer > * {
+				bottom: 0;
+			}
+		}
+
+		// For horizontal scrollbar
+		.fc-scrollgrid-sticky-shim {
+		    height: 1px;
+		    margin-bottom: -1px;
+		}
+
+		// Harness
+		.fc-view-harness {
+		    flex-grow: 1;
+		    position: relative;
+		}
+		.fc-view-harness-active {
+			> .fc-view {
+				position: absolute;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+			}
+		}
+
+		// Cushion
+		.fc-col-header-cell-cushion {
+		    display: inline-block;
+		    padding: var(--#{$prefix}fc-cell-padding-y) var(--#{$prefix}fc-cell-padding-x);
+		    color: var(--#{$prefix}body-color);
+		    font-weight: $font-weight-semibold;
+		}
+	}
+
+	// Sticky elements
+	.fc-sticky {
+		position: -webkit-sticky;
+		position: sticky;
+	}
+
+
+	//
+	// Events
+	//
+
+	// All events
+	.fc-event {
+		font-size: var(--#{$prefix}fc-event-font-size);
+	}
+
+	.fc {
+
+		// Base
+		.fc-bg-event,
+		.fc-non-business,
+		.fc-highlight {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+
+		// Non-business hours
+		.fc-non-business {
+			background-color: var(--#{$prefix}fc-nonbusiness-bg)
+		}
+
+		// Events
+		.fc-bg-event {
+			background: var(--#{$prefix}fc-bgevent-bg);
+			opacity: 0.2;
+		}
+
+		// Cell highlights
+		.fc-highlight {
+			background-color: var(--#{$prefix}fc-highlight-bg);
+		}
+
+		// Cell mute
+		.fc-cell-shaded,
+		.fc-day-disabled {
+			background-color: var(--#{$prefix}light);
+		}
+	}
+
+
+	//
+	// Utils
+	//
+
+	.fc-daygrid-event .fc-event-time {
+		order: 3;
+	}
+
+	// Link resets
+	a.fc-event {
+		&,
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	// Cursor
+	.fc-event {
+		&[href],
+		&.fc-event-draggable {
+			cursor: pointer;
+		}
+
+		// Text content
+		.fc-event-main {
+			position: relative;
+			z-index: 2;
+		}
+	}
+
+	// Dragging
+	.fc-event-dragging {
+
+		// Mouse
+		&:not(.fc-event-selected) {
+			opacity: 0.75;
+		}
+
+		// Touch
+		&.fc-event-selected {
+			box-shadow: var(--#{$prefix}box-shadow);
+		}
+	}
+
+	// Resizing
+	.fc-event-resizer {
+		.fc-event & {
+			display: none;
+			position: absolute;
+			z-index: 4;
+		}
+
+		.fc-event:hover &,
+		.fc-event-selected & {
+			display: block;
+		}
+
+		.fc-event-selected & {
+			&:before {
+				content: "";
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				width: calc(calc(var(--#{$prefix}fc-event-padding-y) * 2) + var(--#{$prefix}body-line-height-computed));
+				height: calc(calc(var(--#{$prefix}fc-event-padding-y) * 2) + var(--#{$prefix}body-line-height-computed));
+				z-index: $zindex-tooltip;
+			}
+		}
+	}
+
+	// Selecting
+	.fc-event-selected {
+		box-shadow: var(--#{$prefix}box-shadow);
+
+		&:before {
+			content: "";
+			position: absolute;
+			z-index: 3;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+
+		&:after {
+			content: "";
+			background: rgba(var(--#{$prefix}black-rgb), .15);
+			position: absolute;
+			z-index: 1;
+			top: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			right: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			bottom: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			left: calc(var(--#{$prefix}fc-event-border-width) * -1);
+		}
+	}
+
+
+	//
+	// Horizontal event
+	//
+
+	.fc-h-event {
+		display: block;
+		border: var(--#{$prefix}fc-event-border-width) solid var(--#{$prefix}fc-event-border-color);
+		background-color: var(--#{$prefix}fc-event-bg);
+
+		// Event text
+		.fc-event-main {
+			color: var(--#{$prefix}fc-event-color);
+		}
+
+		// Make fc-event-title-container expand
+		.fc-event-main-frame {
+			display: flex;
+		}
+
+		// Clip overflow on this element
+		.fc-event-time {
+			max-width: 100%;
+			overflow: hidden;
+		}
+
+		// Serves as a container for the sticky cushion
+		.fc-event-title-container {
+			flex-grow: 1;
+			flex-shrink: 1;
+			min-width: 0;
+		}
+
+		// Title
+		.fc-event-title {
+		    display: inline-block;
+		    vertical-align: top;
+		    left: 0;
+		    right: 0;
+		    max-width: 100%;
+		    overflow: hidden;
+		}
+
+		// Expand hit area
+		&.fc-event-selected:before {
+			top: calc(var(--#{$prefix}spacer-2) * -1);
+			bottom: calc(var(--#{$prefix}spacer-2) * -1);
+		}
+
+
+		//
+		// Resizer
+		//
+
+		// Adjust border and border-radius (if there is any) for non-start/end
+		&:not(.fc-event-selected) .fc-event-resizer {
+			top: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			bottom: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			width: var(--#{$prefix}fc-event-resizer-size);
+		}
+
+		// For touch
+		.fc-h-event.fc-event-selected .fc-event-resizer {
+			top: 50%;
+			margin-top: calc(var(--#{$prefix}fc-event-border-width) * -1);
+		}
+	}
+
+	// LTR
+	/*rtl:begin:ignore*/
+	.fc-direction-ltr {
+		.fc-daygrid-block-event {
+			&:not(.fc-event-start) {
+				border-left-width: 0;
+				@include border-start-radius(0);
+			}
+			&:not(.fc-event-end) {
+				border-right-width: 0;
+				@include border-end-radius(0);
+			}
+		}
+
+		.fc-h-event:not(.fc-event-selected) {
+			.fc-event-resizer-start {
+				cursor: w-resize;
+				left: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+			.fc-event-resizer-end {
+				cursor: e-resize;
+				right: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+		}
+
+		.fc-h-event.fc-event-selected {
+			.fc-event-resizer-start {
+				left: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+			.fc-event-resizer-end {
+				right: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+		}
+	}
+	/*rtl:end:ignore*/
+
+	// RTL
+	/*rtl:begin:ignore*/
+	.fc-direction-rtl {
+		.fc-daygrid-block-event {
+			&:not(.fc-event-end) {
+				border-left-width: 0;
+				@include border-start-radius(0);
+			}
+			&:not(.fc-event-start) {
+				border-right-width: 0;
+				@include border-end-radius(0);
+			}
+		}
+
+		.fc-h-event:not(.fc-event-selected) {
+			.fc-event-resizer-end {
+				cursor: w-resize;
+				left: calc(var(--#{$prefix}fc-event-border-width) * -1);
+				@include border-start-radius(var(--#{$prefix}border-radius));
+			}
+			.fc-event-resizer-start {
+				cursor: e-resize;
+				right: calc(var(--#{$prefix}fc-event-border-width) * -1);
+				@include border-end-radius(var(--#{$prefix}border-radius));
+			}
+		}
+
+		.fc-h-event.fc-event-selected {
+			.fc-event-resizer-end {
+				left: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+			.fc-event-resizer-start {
+				right: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+		}
+	}
+	/*rtl:end:ignore*/
+
+
+	//
+	// Popover
+	//
+
+	// Base
+	.fc {
+		.fc-popover {
+			position: absolute;
+			z-index: $zindex-popover;
+			@include box-shadow(var(--#{$prefix}box-shadow));
+			@include border-radius(var(--#{$prefix}border-radius));
+
+			.fc-daygrid-event.fc-event-start,
+			.fc-daygrid-event.fc-event-end {
+				margin-left: 0;
+				margin-right: 0;
+			}
+			.fc-h-event {
+				@include border-start-radius(var(--#{$prefix}border-radius));
+			}
+		}
+		.fc-popover-header {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			padding: var(--#{$prefix}fc-cell-padding-y) var(--#{$prefix}fc-cell-padding-y) calc(var(--#{$prefix}fc-cell-padding-y) - var(--#{$prefix}fc-event-spacer-y)) var(--#{$prefix}fc-cell-padding-y);
+		}
+		.fc-popover-title {
+			font-weight: $font-weight-semibold;
+		}
+		.fc-popover-close {
+			cursor: pointer;
+			opacity: 0.6;
+			@include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer));
+
+			&:hover {
+				opacity: 1;
+			}
+		}
+
+		.fc-more-popover {
+			.fc-popover-body {
+				min-width: 220px;
+				padding: var(--#{$prefix}fc-cell-padding-y);
+				padding-top: 0;
+			}
+		}
+	}
+
+	// Themed
+	.fc-theme-standard {
+		.fc-popover {
+			border: var(--#{$prefix}fc-popover-border-width) solid var(--#{$prefix}fc-popover-border-color);
+			background-color: var(--#{$prefix}fc-popover-bg);
+		}
+	}
+
+
+	//
+	// Day grid event
+	//
+
+	// Help things clear margins of inner content
+	.fc-daygrid-day-frame,
+	.fc-daygrid-day-events,
+	.fc-daygrid-event-harness {
+		&:before,
+		&:after {
+			content: "";
+			clear: both;
+			display: table;
+		}
+	}
+
+	// Base
+	.fc {
+
+		// Event body
+		.fc-daygrid-body {
+			position: relative;
+			z-index: 1;
+		}
+
+		// Today
+		.fc-daygrid-day {
+			&.fc-day-today {
+				background-color: var(--#{$prefix}fc-today-bg);
+			}
+		}
+
+		// Days frame
+		.fc-daygrid-day-frame {
+			position: relative;
+			min-height: 100%;
+		}
+
+		// Days container
+		.fc-daygrid-day-top {
+			display: flex;
+			flex-direction: row-reverse;
+		}
+
+		// Days from other months
+		.fc-day-other .fc-daygrid-day-top {
+			opacity: 0.3;
+		}
+
+		// Day number (within cell top)
+		.fc-daygrid-day-number {
+			position: relative;
+			z-index: 4;
+			padding: var(--#{$prefix}fc-event-padding-x);
+			padding-bottom: calc(var(--#{$prefix}fc-event-padding-x) - var(--#{$prefix}fc-event-spacer-y));
+			color: var(--#{$prefix}body-color);
+		}
+
+		// Event container
+		.fc-daygrid-day-events {
+			margin-top: var(--#{$prefix}fc-event-spacer-y);
+		}
+
+		// Positioning for balanced vs natural
+		.fc-daygrid-body-balanced {
+			.fc-daygrid-day-events {
+				position: absolute;
+				left: 0;
+				right: 0;
+			}
+		}
+		.fc-daygrid-body-unbalanced {
+			.fc-daygrid-day-events {
+				position: relative;
+				min-height: calc(var(--#{$prefix}body-line-height-computed) + calc(var(--#{$prefix}fc-event-padding-y) * 2) + calc(var(--#{$prefix}fc-event-border-width) * 2) + var(--#{$prefix}fc-event-spacer-y));
+			}
+		}
+		.fc-daygrid-body-natural {
+			.fc-daygrid-day-events {
+				margin-bottom: calc(var(--#{$prefix}fc-event-padding-y) + var(--#{$prefix}fc-event-spacer-y));
+			}
+		}
+
+		// Event harness
+		.fc-daygrid-event-harness {
+			position: relative;
+		}
+		.fc-daygrid-event-harness-abs {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+		}
+		.fc-daygrid-bg-harness {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+		}
+
+		// Bg content
+		.fc-daygrid-day-bg {
+			.fc-non-business {
+				z-index: 1;
+			}
+			.fc-bg-event {
+				z-index: 2;
+			}
+			.fc-highlight {
+				z-index: 3;
+			}
+		}
+
+		// Events
+		.fc-daygrid-event {
+			z-index: 6;
+			margin-top: var(--#{$prefix}fc-event-spacer-y);
+
+			&.fc-event-mirror {
+				z-index: 7;
+			}
+		}
+
+		// Cell bottom (within day-events)
+		.fc-daygrid-day-bottom {
+			&:before {
+				content: "";
+				clear: both;
+				display: table;
+			}
+		}
+		.fc-daygrid-more-link {
+			position: relative;
+			z-index: 4;
+			margin: var(--#{$prefix}fc-event-spacer-y) var(--#{$prefix}fc-event-spacer-x) 0 var(--#{$prefix}fc-event-spacer-x);
+			background-color: var(--#{$prefix}fc-event-more-bg);
+			color: var(--#{$prefix}link-color);
+			display: block;
+			padding: var(--#{$prefix}fc-event-padding-y) var(--#{$prefix}fc-event-padding-y);
+			text-align: center;
+			font-size: var(--#{$prefix}body-font-size-sm);
+			line-height: var(--#{$prefix}body-line-height-sm);
+			cursor: pointer;
+			@include border-radius(var(--#{$prefix}border-radius));
+			@include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+			&:hover,
+			&:focus {
+				background-color: var(--#{$prefix}fc-event-more-hover-bg);
+			}
+		}
+
+		// Week number (within frame)
+		.fc-daygrid-week-number {
+			position: absolute;
+			z-index: 5;
+			top: 0;
+			padding: var(--#{$prefix}fc-event-padding-x);
+			min-width: 1.5em;
+			text-align: center;
+			color: var(--#{$prefix}fc-weekday-color);
+		}
+	}
+
+	// Will cause inner absolute stuff to expand to <td>
+	.fc-liquid-hack .fc-daygrid-day-frame {
+		position: static;
+	}
+
+
+	//
+	// Directions
+	//
+
+	/*rtl:begin:ignore*/
+	.fc-direction-ltr .fc-daygrid-event.fc-event-start,
+	.fc-direction-rtl .fc-daygrid-event.fc-event-end {
+		margin-left: var(--#{$prefix}fc-event-spacer-x);
+	}
+	.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+	.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+		margin-right: var(--#{$prefix}fc-event-spacer-x);
+	}
+	.fc-direction-ltr .fc-daygrid-week-number {
+		left: 0;
+	}
+	.fc-direction-rtl .fc-daygrid-week-number {
+		right: 0;
+	}
+	/*rtl:end:ignore*/
+
+
+	//
+	// Events
+	//
+
+	// Make root-level, because will be dragged-and-dropped outside of a component root
+	.fc-daygrid-event {
+		position: relative;
+		white-space: nowrap;
+		border-radius: var(--#{$prefix}border-radius);
+		padding: var(--#{$prefix}fc-event-padding-y) var(--#{$prefix}fc-event-padding-x);
+	}
+
+	// The rectangle ("block") style of event
+	.fc-daygrid-block-event {
+		.fc-event-time {
+			font-weight: $font-weight-semibold;
+		}
+	}
+
+	// The dot style of event
+	.fc-daygrid-dot-event {
+		display: flex;
+		align-items: center;
+		color: var(--#{$prefix}body-color);
+		padding: var(--#{$prefix}fc-event-padding-y) 0;
+		background-color: var(--#{$prefix}fc-bg);
+		border: var(--#{$prefix}fc-cell-border-width) solid var(--#{$prefix}fc-cell-border-color);
+		@include transition(color ease-in-out var(--#{$prefix}transition-base-timer));
+
+		// Title
+		.fc-event-title {
+			margin-right: var(--#{$prefix}spacer-2);
+			flex-grow: 1;
+			flex-shrink: 1;
+			min-width: 0;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			font-weight: $font-weight-semibold;
+		}
+
+		// Expand hit area
+		&.fc-event-selected:before {
+			top: calc(var(--#{$prefix}spacer-2) * -1);
+			bottom: calc(var(--#{$prefix}spacer-2) * -1);
+		}
+	}
+
+	// The actual dot
+	.fc-daygrid-event-dot {
+		margin: 0 var(--#{$prefix}fc-event-spacer-x);
+		box-sizing: content-box;
+		padding: var(--#{$prefix}spacer-1);
+		background-color: var(--#{$prefix}fc-event-bg);
+		border-radius: var(--#{$prefix}border-radius-pill);
+	}
+
+	// Spacing between time and title
+	/*rtl:begin:ignore*/
+	.fc-direction-ltr .fc-daygrid-event .fc-event-time {
+		margin-right: var(--#{$prefix}spacer-2);
+	}
+	.fc-direction-rtl .fc-daygrid-event .fc-event-time {
+		margin-left: var(--#{$prefix}spacer-2);
+	}
+	/*rtl:end:ignore*/
+
+
+	//
+	// A vertical event
+	//
+
+	// Allowed to be top-level
+	.fc-v-event {
+		display: block;
+		border: var(--#{$prefix}fc-event-border-width) solid var(--#{$prefix}fc-event-border-color);
+		background-color: var(--#{$prefix}fc-event-bg);
+
+		// Event content
+		.fc-event-main {
+			color: var(--#{$prefix}fc-event-color);
+			height: 100%;
+		}
+
+		// Frame
+		.fc-event-main-frame {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+
+		// Time
+		.fc-event-time {
+			flex-grow: 0;
+			flex-shrink: 0;
+			max-height: 100%;
+			overflow: hidden;
+		}
+
+		// A container for the sticky cushion
+		.fc-event-title-container {
+			flex-grow: 1;
+			flex-shrink: 1;
+			min-height: 0;
+		}
+
+		// Title
+		.fc-event-title {
+			top: 0;
+			bottom: 0;
+			max-height: 100%;
+			overflow: hidden;
+		}
+
+		// Border radius adjustment
+		&:not(.fc-event-start) {
+			border-top-width: 0;
+		}
+		&:not(.fc-event-end) {
+			border-bottom-width: 0;
+			@include border-bottom-radius(0);
+		}
+
+		// Expand hit area
+		&.fc-event-selected:before {
+			left: calc(var(--#{$prefix}spacer-2) * -1);
+			right: calc(var(--#{$prefix}spacer-2) * -1);
+		}
+
+		// Resizer
+		.fc-event-resizer-start {
+			cursor: n-resize;
+		}
+		.fc-event-resizer-end {
+			cursor: s-resize;
+		}
+		&:not(.fc-event-selected) {
+			.fc-event-resizer {
+				height: var(--#{$prefix}fc-event-resizer-size);
+				left: calc(var(--#{$prefix}fc-event-border-width) * -1);
+				right: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+
+			.fc-event-resizer-start {
+				top: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+
+			.fc-event-resizer-end {
+				bottom: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+		}
+		&.fc-event-selected {
+			.fc-event-resizer {
+				left: 50%;
+				margin-left: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+
+			.fc-event-resizer-start {
+				top: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+
+			.fc-event-resizer-end {
+				bottom: calc(var(--#{$prefix}fc-event-border-width) * -1);
+			}
+		}
+	}
+
+
+	//
+	// The all-day daygrid within the timegrid view
+	//
+
+	// Base
+	.fc {
+
+		// Grid
+		.fc-timegrid {
+			.fc-daygrid-body {
+				z-index: 2;
+			}
+		}
+
+		// Divider
+		.fc-timegrid-divider {
+			padding: 0 0 var(--#{$prefix}fc-event-border-width);
+		}
+
+		// Body
+		.fc-timegrid-body {
+			position: relative;
+			z-index: 1;
+			min-height: 100%;
+		}
+
+		// For advanced ScrollGrid
+		.fc-timegrid-axis-chunk {
+			position: relative;
+
+			// Table
+			> table {
+				position: relative;
+				z-index: 1;
+			}
+		}
+
+
+		//
+		// Time slots
+		//
+
+		// Base
+		.fc-timegrid-slots {
+			position: relative;
+			z-index: 1;
+		}
+
+		// A <td>
+		.fc-timegrid-slot {
+			height: calc(var(--#{$prefix}body-line-height-computed) + calc(var(--#{$prefix}fc-event-padding-y) * 2) + calc(var(--#{$prefix}fc-event-border-width) * 2));
+			border-bottom: 0;
+
+			// Make sure there's at least an empty space to create height for height syncing
+			&:empty:before {
+				content: '\00a0';
+			}
+		}
+
+		.fc-timegrid-slot-minor {
+			border-top-style: dotted;
+		}
+
+		// Slot cushion
+		.fc-timegrid-slot-label-cushion {
+			display: inline-block;
+			white-space: nowrap;
+		}
+
+		// Slot label
+		.fc-timegrid-slot-label {
+			vertical-align: middle;
+		}
+
+		// Slots AND axis cells (top-left corner of view including the "all-day" text)
+		.fc-timegrid-axis-cushion,
+		.fc-timegrid-slot-label-cushion {
+			padding: 0 var(--#{$prefix}fc-event-padding-x);
+		}
+
+		// Axis cells (top-left corner of view including the "all-day" text)
+		.fc-timegrid-axis-frame-liquid {
+			height: 100%;
+		}
+		.fc-timegrid-axis-frame {
+			overflow: hidden;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.fc-timegrid-axis-cushion {
+			max-width: 60px;
+			flex-shrink: 0;
+			color: var(--#{$prefix}body-color);
+			font-weight: $font-weight-semibold;
+		}
+
+		// Column
+		.fc-timegrid-col.fc-day-today {
+			background-color: var(--#{$prefix}fc-today-bg);
+		}
+		.fc-timegrid-col-frame {
+			min-height: 100%;
+			position: relative;
+		}
+
+		// Background
+		.fc-timegrid-col-bg {
+			z-index: 2;
+
+			.fc-non-business {
+				z-index: 1;
+			}
+			.fc-bg-event {
+				z-index: 2;
+			}
+			.fc-highlight {
+				z-index: 3;
+			}
+		}
+		.fc-timegrid-bg-harness {
+			position: absolute;
+			left: 0;
+			right: 0;
+		}
+
+		// Foreground events
+		.fc .fc-timegrid-col-events {
+			z-index: 3;
+		}
+
+		// "Now" indicator
+		.fc-timegrid-now-indicator-container {
+			bottom: 0;
+			overflow: hidden;
+		}
+
+		// Line indicator
+		.fc-timegrid-now-indicator-line {
+			position: absolute;
+			z-index: 4;
+			left: 0;
+			right: 0;
+			border-style: solid;
+			border-color: var(--#{$prefix}fc-event-color);
+			border-width: $caret-width 0 0;
+		}
+
+		// Arrow indicator
+		.fc-timegrid-now-indicator-arrow {
+			position: absolute;
+			z-index: 4;
+			margin-top: calc(var(--#{$prefix}fc-event-padding-y) * -1);
+			border-style: solid;
+			border-color: var(--#{$prefix}fc-event-color);
+		}
+	}
+
+	// For liquid layouts
+	.fc-liquid-hack {
+		.fc-timegrid-axis-frame-liquid,
+		.fc-timegrid-col-frame {
+			height: auto;
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+		}
+	}
+
+	// For media screens
+	.fc-media-screen {
+		.fc-timegrid-cols {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+
+			> table {
+				height: 100%;
+			}
+		}
+		.fc-timegrid-col-bg,
+		.fc-timegrid-col-events,
+		.fc-timegrid-now-indicator-container {
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+		}
+	}
+
+	// Event harness
+	.fc-timegrid-event-harness {
+		position: absolute;
+
+		> .fc-timegrid-event {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+	}
+
+	// Simulate border in multiple events
+	.fc-timegrid-event-harness-inset .fc-timegrid-event,
+	.fc-timegrid-event.fc-event-mirror,
+	.fc-timegrid-more-link {
+		box-shadow: 0 0 0 var(--#{$prefix}fc-event-border-width) var(--#{$prefix}fc-bg);
+	}
+
+	// Events need to be root
+	.fc-timegrid-event,
+	.fc-timegrid-more-link {
+		@include border-radius(var(--#{$prefix}border-radius));
+	}
+
+	// Give some space from bottom
+	.fc-timegrid-event {
+		.fc-event-main {
+			padding: var(--#{$prefix}fc-event-padding-y) var(--#{$prefix}fc-event-padding-x) 0;
+		}
+
+		.fc-event-time {
+			white-space: nowrap;
+		}
+	}
+
+	// Short event preview
+	.fc-timegrid-event-short {
+		.fc-event-main-frame {
+			flex-direction: row;
+			overflow: hidden;
+		}
+		.fc-event-time:after {
+			content: '\00a0-\00a0';
+		}
+	}
+
+	// Show more
+	.fc-timegrid-more-link {
+		position: absolute;
+		z-index: 9999;
+		color: inherit;
+		background-color: var(--#{$prefix}fc-event-more-bg);
+		cursor: pointer;
+		margin-bottom: var(--#{$prefix}fc-event-spacer-y);
+	}
+	.fc-timegrid-more-link-inner {
+		padding: var(--#{$prefix}fc-event-padding-y) var(--#{$prefix}fc-event-padding-x);
+		top: 0;
+	}
+
+	// LTR
+	/*rtl:begin:ignore*/
+	.fc-direction-ltr {
+		.fc-timegrid-col-events {
+			margin: 0 2.5% 0 calc(var(--#{$prefix}fc-event-border-width) * 2);
+		}
+
+		.fc-timegrid-more-link {
+			right: 0;
+		}
+
+		.fc-timegrid-now-indicator-arrow {
+			left: 0;
+			border-width: $caret-width 0 $caret-width $caret-width;
+			border-top-color: transparent;
+			border-bottom-color: transparent;
+		}
+	}
+	/*rtl:end:ignore*/
+
+	// RTL
+	/*rtl:begin:ignore*/
+	.fc-direction-rtl {
+		.fc-timegrid-col-events {
+			margin: 0 2px 0 calc(var(--#{$prefix}fc-event-border-width) * 2);
+		}
+
+		.fc-timegrid-more-link {
+			left: 0;
+		}
+
+		.fc-timegrid-now-indicator-arrow {
+			right: 0;
+			border-width: $caret-width $caret-width $caret-width 0;
+			border-top-color: transparent;
+			border-bottom-color: transparent;
+		}
+	}
+	/*rtl:end:ignore*/
+
+
+	//
+	// List
+	//
+
+	// Theme
+	.fc-theme-standard {
+		.fc-list {
+			border: var(--#{$prefix}fc-cell-border-width) solid var(--#{$prefix}fc-cell-border-color);
+		}
+	}
+
+	// Base
+	.fc {
+
+		// Message when no events
+		.fc-list-empty {
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.fc-list-empty-cushion {
+			margin: var(--#{$prefix}spacer) 0;
+		}
+
+		// Table within the scroller
+		.fc-list-table {
+			width: 100%;
+			border-style: hidden;
+
+			th {
+				padding: 0;
+			}
+
+			tr > * {
+				border-left: 0;
+				border-right: 0;
+			}
+		}
+
+		// The cells
+		.fc-list-sticky .fc-list-day > * {
+			position: -webkit-sticky;
+			position: sticky;
+			top: 0;
+		}
+		.fc-list-table td,
+		.fc-list-day-cushion {
+			padding: var(--#{$prefix}fc-cell-padding-y) var(--#{$prefix}fc-cell-padding-x);
+		}
+
+		// Date heading rows
+		.fc-list-day-cushion:after {
+			content: "";
+			clear: both;
+			display: table;
+		}
+
+
+		//
+		// Events
+		//
+
+		// Highlights
+		.fc-list-event {
+			&.fc-event-forced-url {
+				cursor: pointer;
+			}
+		}
+
+		// Reset link styling
+		.fc-list-event-title a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		// Reset cells
+		.fc-list-event-graphic,
+		.fc-list-event-time {
+			white-space: nowrap;
+			width: 1px;
+		}
+
+		// Dot
+		.fc-list-event-dot {
+			display: inline-block;
+			margin: 0 var(--#{$prefix}fc-event-spacer-x);
+			box-sizing: content-box;
+			padding: var(--#{$prefix}spacer-1);
+			background-color: var(--#{$prefix}fc-event-bg);
+			border-radius: var(--#{$prefix}border-radius-pill);
+		}
+
+		// Day label
+		.fc-list-day-text,
+		.fc-list-day-side-text {
+			color: var(--#{$prefix}body-color);
+
+			&:focus {
+				outline: 0;
+			}
+		}
+	}
+
+	// Themes
+	.fc-theme-standard {
+		.fc-list-day-cushion {
+			background-color: var(--#{$prefix}light);
+		}
+	}
+	.fc-theme-bootstrap a:not([href]) {
+		color: inherit;
+	}
+
+	// Direction specific
+	/*rtl:begin:ignore*/
+	.fc-direction-ltr .fc-list-day-text,
+	.fc-direction-rtl .fc-list-day-side-text {
+		float: left;
+	}
+	.fc-direction-ltr .fc-list-day-side-text,
+	.fc-direction-rtl .fc-list-day-text {
+		float: right;
+	}
+	.fc-direction-ltr .fc-list-table .fc-list-event-graphic {
+		padding-right: 0;
+	}
+	.fc-direction-rtl .fc-list-table .fc-list-event-graphic {
+		padding-left: 0;
+	}
+	/*rtl:end:ignore*/
+
+
+	// Responsive stuff
+	// ------------------------------
+
+	@include media-breakpoint-down(sm) {
+		.fc {
+
+			// Stack toolbar
+			.fc-toolbar {
+				display: block;
+				text-align: center;
+
+				// Give title vertical margin
+				.fc-toolbar-title {
+					margin-top: var(--#{$prefix}spacer);
+					margin-bottom: var(--#{$prefix}spacer);
+				}
+			}
+
+			// Make calendar scrollable
+			.fc-view-harness {
+				overflow: auto;
+				min-height: 600px;
+				box-shadow: 0 0 0 var(--#{$prefix}fc-cell-border-width) var(--#{$prefix}fc-cell-border-color) inset;
+
+				// Give the main view min width
+				.fc-view {
+					min-width: 900px;
+				}
+			}
+		}
+	}
+}

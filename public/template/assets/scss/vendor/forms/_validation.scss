@@ -1,0 +1,62 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Form Validation
+*
+*  Styles for validate.min.js - jQuery plugin for simple clientside form validation
+*
+* ---------------------------------------------------------------------------- */
+
+// Check if component is enabled
+@if $enable-validation {
+
+	// Error label
+	.validation-invalid-label,
+	.validation-valid-label {
+		margin-top: $form-text-margin-top;
+		margin-bottom: $form-text-margin-top;
+		display: block;
+		color: var(--#{$prefix}danger);
+		position: relative;
+		padding-left: calc(var(--#{$prefix}spacer-2) + var(--#{$prefix}icon-font-size));
+	}
+
+	// Success label
+	.validation-valid-label {
+		color: var(--#{$prefix}success);
+	}
+
+
+	//
+	// Labels
+	//
+
+	// Icon container
+	.validation-invalid-label,
+	.validation-valid-label {
+		&:before {
+			font-family: var(--#{$prefix}icon-font-family);
+			font-size: var(--#{$prefix}icon-font-size);
+			position: absolute;
+			top: calc(calc(var(--#{$prefix}body-line-height-computed) - var(--#{$prefix}icon-font-size)) * .5);
+			left: 0;
+			display: inline-block;
+			line-height: 1;
+			@include ll-font-smoothing();
+		}
+
+		// Hide if empty
+		&:empty {
+			display: none;
+		}
+	}
+
+	// Error icon
+	.validation-invalid-label:before {
+		content: $icon-validation-error;
+	}
+
+	// Valid icon
+	.validation-valid-label:before {
+		content: $icon-validation-success;
+	}
+}

@@ -1,0 +1,35 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Images component overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+//
+// Status indicator in user avatar
+//
+
+// Container
+.status-indicator-container {
+    --#{$prefix}indicator-size: .3125rem;
+    --#{$prefix}indicator-gap: .125rem;
+    position: relative;
+
+    // Image
+    img {
+        -webkit-mask-image: radial-gradient(circle at calc(100% - var(--#{$prefix}indicator-size)) calc(100% - var(--#{$prefix}indicator-size)), rgba($black, 0) calc(var(--#{$prefix}indicator-size) + var(--#{$prefix}indicator-gap)), $black 0);
+    }
+}
+
+// Rounded indicator
+.status-indicator {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: var(--#{$prefix}indicator-size);
+    border-radius: var(--#{$prefix}border-radius-pill);
+}
+
+// Image preview for tables
+.img-preview {
+    max-height: $img-preview-max-height;
+}

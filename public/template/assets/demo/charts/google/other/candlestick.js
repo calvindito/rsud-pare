@@ -1,0 +1,184 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Google Visualization - candlestick
+ *
+ *  Google Visualization candlestick chart demonstration
+ *
+ * ---------------------------------------------------------------------------- */
+
+
+// Setup module
+// ------------------------------
+
+var GoogleCandlestickChart = function() {
+
+
+    //
+    // Setup module components
+    //
+
+    // Candlestick chart
+    var _googleCandlestickChart = function() {
+        if (typeof google == 'undefined') {
+            console.warn('Warning - Google Charts library is not loaded.');
+            return;
+        }
+
+        // Switch colors in dark and light themes
+        function color_theme(darkColor, lightColor) {
+            return document.documentElement.getAttribute('data-color-theme') == 'dark' ? darkColor : lightColor
+        }
+
+        // Initialize chart
+        google.charts.load('current', {
+            callback: function () {
+
+                // Draw chart
+                drawCandlestick();
+
+                // Resize on sidebar width change
+                var sidebarToggle = document.querySelectorAll('.sidebar-control');
+                if (sidebarToggle) {
+                    sidebarToggle.forEach(function(togglers) {
+                        togglers.addEventListener('click', drawCandlestick);
+                    });
+                }
+
+                // Resize on window resize
+                var resizeCandlestickChart;
+                window.addEventListener('resize', function() {
+                    clearTimeout(resizeCandlestickChart);
+                    resizeCandlestickChart = setTimeout(function () {
+                        drawCandlestick();
+                    }, 200);
+                });
+
+                // Redraw chart when color theme is changed
+                document.querySelectorAll('[name="main-theme"]').forEach(function(radio) {
+                    radio.addEventListener('change', drawCandlestick);
+                });
+            },
+            packages: ['corechart']
+        });
+
+        // Chart settings
+        function drawCandlestick() {
+
+            // Define charts element
+            var candlestick_chart_element = document.getElementById('google-candlestick');
+
+            // Data
+            var data = google.visualization.arrayToDataTable([
+                ['1', 20, 28, 38, 45],
+                ['2', 31, 38, 55, 66],
+                ['3', 50, 55, 77, 80],
+                ['4', 77, 77, 66, 50],
+                ['5', 68, 66, 22, 15],
+                ['6', 12, 25, 40, 60],
+                ['7', 10, 69, 39, 90],
+                ['8', 18, 56, 62, 80],
+                ['9', 10, 12, 40, 59],
+                ['10', 30, 36, 48, 55],
+                ['11', 78, 66, 42, 35],
+                ['12', 32, 35, 46, 32],
+                ['13', 65, 23, 54, 23],
+                ['14', 60, 54, 43, 30],
+                ['15', 12, 23, 45, 50],
+                ['16', 4, 15, 60, 45],
+                ['17', 5, 23, 25, 40],
+                ['18', 90, 56, 45, 23],
+                ['19', 65, 55, 45, 25],
+                ['20', 43, 35, 23, 2],
+                ['21', 12, 36, 58, 69],
+                ['22', 18, 26, 46, 60],
+                ['23', 60, 56, 23, 10],
+                ['24', 45, 23, 11, 1],
+                ['25', 4, 19, 40, 65],
+                ['26', 50, 40, 22, 12],
+                ['27', 67, 55, 34, 20],
+                ['28', 4, 12, 45, 68],
+                ['29', 34, 35, 56, 60],
+                ['30', 53, 20, 12, 2],
+                ['31', 25, 35, 45, 55]
+
+                // Treat first row as data as well.
+            ], true);
+
+            // Options
+            var options = {
+                fontName: 'var(--body-font-family)',
+                height: 400,
+                fontSize: 12,
+                backgroundColor: 'transparent',
+                chartArea: {
+                    left: '5%',
+                    width: '94%',
+                    height: 350
+                },
+                colors: [color_theme('#6e6f71', '#9CA3AF')],
+                candlestick: {
+                    fallingColor: {
+                        fill: '#2ec7c9',
+                        stroke: '#2ec7c9'
+                    },
+                    risingColor: {
+                        fill: '#ffb980',
+                        stroke: '#ffb980'
+                    }
+                },
+                tooltip: {
+                    textStyle: {
+                        fontSize: 14
+                    }
+                },
+                vAxis: {
+                    title: 'Income and Expenses',
+                    titleTextStyle: {
+                        fontSize: 14,
+                        italic: false,
+                        color: color_theme('#fff', '#333')
+                    },
+                    textStyle: {
+                        color: color_theme('#fff', '#333')
+                    },
+                    baselineColor: color_theme('#6e6f71', '#9CA3AF'),
+                    gridlines:{
+                        color: color_theme('#4d4d51', '#E5E7EB'),
+                        count: 10
+                    },
+                    minorGridlines: {
+                        color: color_theme('#3f4044', '#F3F4F6')
+                    },
+                    minValue: 0
+                },
+                hAxis: {
+                    textStyle: {
+                        color: color_theme('#fff', '#333')
+                    }
+                },
+                legend: 'none'
+            };
+
+            // Draw chart
+            var candlestick = new google.visualization.CandlestickChart(candlestick_chart_element);
+            candlestick.draw(data, options);
+        }
+    };
+
+
+    //
+    // Return objects assigned to module
+    //
+
+    return {
+        init: function() {
+            _googleCandlestickChart();
+        }
+    }
+}();
+
+
+// Initialize module
+// ------------------------------
+
+GoogleCandlestickChart.init();

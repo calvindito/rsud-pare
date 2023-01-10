@@ -1,0 +1,442 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Nav, Tabs and Pills components overrides
+ *
+ * ---------------------------------------------------------------------------- */
+
+// Base
+.nav {
+    --#{$prefix}nav-link-active-color: #{$nav-link-active-color};
+}
+
+// Link
+.nav-link {
+    display: flex;
+    align-items: center;
+
+    &.active {
+        color: var(--#{$prefix}nav-link-active-color);
+    }
+
+    &.show {
+        color: var(--#{$prefix}nav-link-hover-color);
+        text-decoration: if($link-hover-decoration == underline, none, null);
+    }
+
+    .nav-fill &,
+    .nav-justified & {
+        justify-content: center;
+    }
+}
+
+
+//
+// Tabs
+//
+
+// Base
+.nav-tabs {
+    &:not(.nav-tabs-underline):not(.nav-tabs-overline):not(.nav-tabs-solid) {
+        @include color-scheme(dark) {
+            --#{$prefix}nav-tabs-link-active-bg: #{$nav-tabs-link-darkmode-active-bg};
+            --#{$prefix}nav-tabs-link-active-border-color: #{$nav-tabs-link-darkmode-active-border-color};
+        }
+    }
+
+    .dropdown-menu & {
+        --#{$prefix}nav-tabs-link-active-bg: var(--#{$prefix}dropdown-bg) !important;
+
+        .nav-link.show,
+        .nav-link.active {
+            border-bottom-color: var(--#{$prefix}dropdown-bg);
+        }
+    }
+}
+
+// Responsive tabs - add this class to parent container
+// to make tabs nav inline, add scrollbar and prevent wrapping
+.nav-tabs-responsive {
+    overflow-x: auto;
+    box-shadow: 0 calc(var(--#{$prefix}border-width) * -1) 0 var(--#{$prefix}border-color) inset;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    // Disable wrapping
+    .nav-tabs {
+        flex-wrap: nowrap;
+        white-space: nowrap;
+        border-bottom-color: transparent;
+    }
+}
+
+
+//
+// Alternative styles
+//
+
+// Commmon styles
+.nav-tabs-highlight,
+.nav-tabs-overline,
+.nav-tabs-underline {
+    --#{$prefix}nav-tabs-underline-size: #{$nav-tabs-underline-size};
+    --#{$prefix}nav-tabs-underline-color: #{$nav-tabs-underline-color};
+
+    // Link
+    .nav-link {
+        position: relative;
+
+        // Line
+        &:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: var(--#{$prefix}nav-tabs-underline-size);
+            @include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+        }
+
+        // Active state
+        &.active:before {
+            background-color: var(--#{$prefix}nav-tabs-underline-color);
+        }
+    }
+}
+
+// Default tabs with top solid line
+.nav-tabs-highlight {
+    --#{$prefix}nav-tabs-border-radius: 0;
+
+    // Line
+    .nav-link:before {
+        top: calc(var(--#{$prefix}nav-tabs-border-width) * -1);
+        left: calc(var(--#{$prefix}nav-tabs-border-width) * -1);
+        right: calc(var(--#{$prefix}nav-tabs-border-width) * -1);
+    }
+}
+
+
+// Underline and overline commons
+.nav-tabs-overline,
+.nav-tabs-underline {
+    --#{$prefix}nav-tabs-link-active-bg: transparent;
+
+    // Reset link styles
+    .nav-link {
+        border-width: 0;
+        margin-bottom: 0;
+    }
+}
+
+// Overline
+.nav-tabs-overline {
+    border-bottom: 0;
+    border-top: var(--#{$prefix}nav-tabs-border-width) solid var(--#{$prefix}nav-tabs-border-color);
+
+    // Line
+    .nav-link:before {
+        top: calc(var(--#{$prefix}nav-tabs-border-width) * -1);
+    }
+}
+
+// Underline
+.nav-tabs-underline {
+    .nav-link:before {
+        bottom: calc(var(--#{$prefix}nav-tabs-border-width) * -1);
+    }
+}
+
+
+//
+// Tabs with darker background color
+//
+
+// Base
+.nav-tabs-solid {
+    --#{$prefix}nav-tabs-bg: var(--#{$prefix}gray-200);
+    --#{$prefix}nav-tabs-border-radius: 0;
+    --#{$prefix}nav-tabs-border-width: 0;
+    --#{$prefix}nav-tabs-link-active-color: var(--#{$prefix}component-active-color);
+    --#{$prefix}nav-tabs-link-active-bg: var(--#{$prefix}component-active-bg);
+
+    background-color: var(--#{$prefix}nav-tabs-bg);
+
+    // Link
+    .nav-link {
+        margin-bottom: 0;
+    }
+
+    // Bordered tabs
+    &.border {
+        .nav-link {
+            @include transition($nav-link-transition, box-shadow ease-in-out var(--#{$prefix}transition-base-timer));
+
+            // Add 1px box shadow around active tab to cover surrounding border
+            &.active {
+                box-shadow: 0 0 0 var(--#{$prefix}border-width) var(--#{$prefix}nav-tabs-link-active-bg);
+            }
+        }
+    }
+}
+
+// Custom background color
+.nav-tabs-solid-dark {
+    --#{$prefix}nav-link-color: rgba(var(--#{$prefix}white-rgb), .75);
+    --#{$prefix}nav-link-hover-color: var(--#{$prefix}white);
+    --#{$prefix}nav-link-disabled-color: rgba(var(--#{$prefix}white-rgb), .5);
+    --#{$prefix}nav-tabs-link-active-color: var(--#{$prefix}white);
+    --#{$prefix}nav-tabs-link-active-bg: rgba(var(--#{$prefix}white-rgb), .15);
+}
+
+
+//
+// Vertical tabs
+//
+
+// Base
+.nav-tabs-vertical {
+    --#{$prefix}nav-tabs-border-radius: 0;
+    --#{$prefix}nav-tabs-link-active-bg: transparent;
+    --#{$prefix}nav-tabs-underline-size: #{$nav-tabs-underline-size};
+    --#{$prefix}nav-tabs-underline-color: #{$nav-tabs-underline-color};
+
+    border-bottom: 0;
+    flex-direction: column;
+
+    // Link
+    .nav-link {
+        justify-content: flex-start;
+        position: relative;
+
+        // Line
+        &:before {
+            content: '';
+            position: absolute;
+            top: calc(var(--#{$prefix}nav-tabs-border-width) * -1);
+            bottom: calc(var(--#{$prefix}nav-tabs-border-width) * -1);
+            width: var(--#{$prefix}nav-tabs-underline-size);
+            @include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+        }
+
+        // Active state
+        &.active {
+            border-color: var(--#{$prefix}nav-tabs-border-color) transparent;
+
+            // Line
+            &:before {
+                background-color: var(--#{$prefix}nav-tabs-underline-color);
+            }
+        }
+    }
+
+    // Left alignment
+    &-start {
+        .nav-link {
+
+            // Display right border in all tabs except active
+            &:not(.active) {
+                border-right-color: var(--#{$prefix}nav-tabs-border-color);
+            }
+
+            // Line
+            &:before {
+                left: calc(var(--#{$prefix}nav-tabs-border-width) * -1);
+            }
+        }
+    }
+
+    // Right alignment
+    &-end {
+        .nav-link {
+
+            // Display left border in all tabs except active
+            &:not(.active) {
+                border-left-color: var(--#{$prefix}nav-tabs-border-color);
+            }
+
+            // Line
+            &:before {
+                right: calc(var(--#{$prefix}nav-tabs-border-width) * -1);
+            }
+        }
+    }
+}
+
+
+
+//
+// Pills
+//
+
+// Bordered pills
+.nav-pills-outline {
+
+    // Distance between items
+    .nav-item + .nav-item {
+        margin-left: calc(var(--#{$prefix}spacer) * .5);
+    }
+
+    // Link
+    .nav-link {
+        border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+    }
+
+    // Hover state
+    .nav-link:not(.active):hover,
+    .nav-link:not(.active):focus {
+        background-color: var(--#{$prefix}gray-200);
+        border-color: var(--#{$prefix}gray-500);
+    }
+
+    // Active state
+    .nav-link:not(.active):active,
+    .nav-link.show:not(.active) {
+        background-color: var(--#{$prefix}gray-300);
+        border-color: var(--#{$prefix}gray-600);
+        color: var(--#{$prefix}nav-link-hover-color);
+    }
+
+    // Highlighted link
+    .nav-link.active {
+        border-color: var(--#{$prefix}nav-pills-link-active-bg);
+    }
+
+    // Stacked pills layout
+    &.flex-column {
+        .nav-item + .nav-item {
+            margin-left: 0;
+            margin-top: calc(var(--#{$prefix}spacer) * .5);
+        }
+    }
+}
+
+// Pills toolbar
+.nav-pills-toolbar {
+
+    // Horizontal orientation
+    &:not(.flex-column) {
+        .nav-item {
+            + .nav-item {
+                margin-left: calc(var(--#{$prefix}border-width) * -1);
+            }
+
+            &:not(:first-child) {
+                .nav-link {
+                    @include border-start-radius(0);
+                }
+            }
+            &:not(:last-child) {
+                .nav-link {
+                    @include border-end-radius(0);
+                }
+            }
+        }
+    }
+
+    // Vertical orientation
+    &.flex-column {
+        .nav-item {
+            + .nav-item {
+                margin-top: calc(var(--#{$prefix}border-width) * -1);
+            }
+
+            &:not(:first-child) {
+                .nav-link {
+                    @include border-top-radius(0);
+                }
+            }
+            &:not(:last-child) {
+                .nav-link {
+                    @include border-bottom-radius(0);
+                }
+            }
+        }
+    }
+
+    // Link
+    .nav-link {
+        position: relative;
+
+        &:hover {
+            z-index: 2;
+        }
+
+        &:focus,
+        &.show {
+            z-index: 3;
+        }
+
+        &.active {
+            z-index: 4;
+        }
+    }
+}
+
+
+//
+// Misc
+//
+
+// The "x" button for tabs and pills
+.nav-btn-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(var(--#{$prefix}body-color-rgb), .075);
+    width: var(--#{$prefix}body-line-height-computed);
+    height: var(--#{$prefix}body-line-height-computed);
+    @include transition(background-color ease-in-out var(--#{$prefix}transition-base-timer));
+
+    // Hover state
+    &:hover,
+    &:focus {
+        background-color: rgba(var(--#{$prefix}body-color-rgb), .15);
+    }
+}
+
+// Scrollspy nav
+.nav-scrollspy {
+    --#{$prefix}nav-link-padding-y: var(--#{$prefix}spacer-1);
+    --#{$prefix}nav-link-padding-x: var(--#{$prefix}spacer-1);
+    --#{$prefix}nav-link-hover-color: var(--#{$prefix}link-color);
+
+    // Links inside container
+    .nav {
+        .nav-link {
+            padding-left: calc(var(--#{$prefix}spacer) * 2);
+        }
+    }
+
+    // Link
+    .nav-link {
+        position: relative;
+        padding-left: var(--#{$prefix}spacer);
+        border-left: 2px solid var(--#{$prefix}border-color);
+
+        &.active {
+            border-color: var(--#{$prefix}nav-link-hover-color);
+            color: var(--#{$prefix}nav-link-hover-color);
+        }
+    }
+
+    // Wrapper
+    &-wrapper {
+        &.sticky-top {
+            top: var(--#{$prefix}spacer-4);
+        }
+    }
+}
+
+// Active indicator (icon that is shown only in active state)
+.nav-item-active-indicator {
+    opacity: 0;
+    visibility: hidden;
+    @include transition(opacity ease-in-out var(--#{$prefix}transition-base-timer), visibility ease-in-out var(--#{$prefix}transition-base-timer));
+
+    .active & {
+        visibility: visible;
+        opacity: 1;
+    }
+}
