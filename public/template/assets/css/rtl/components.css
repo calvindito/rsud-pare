@@ -5752,7 +5752,7 @@ html[data-color-theme=dark] .dropzone .dz-preview .dz-success-mark {
   --swal-padding: 1.25rem;
   --swal-width: 31.25rem;
   --swal-max-width: 350px;
-  --swal-margin-x: 0.625rem;
+  --swal-margin-x: 1.25rem;
   --swal-content-margin: var(--spacer-1) var(--spacer-2) 0 var(--spacer-2);
   --swal-icon-border-width: 0.25rem;
   --swal-icon-size: 5rem;
@@ -7528,40 +7528,6 @@ pre.line-numbers > code {
 }
 .dragula-handle:hover, .dragula-handle:focus {
   color: var(--body-color);
-}
-
-/* ------------------------------------------------------------------------------
- *
- *  # Headroom
- *
- *  Styles for headroom.min.js - hides BS navbar component on page scroll
- *
- * ---------------------------------------------------------------------------- */
-.headroom {
-  transition: box-shadow ease-in-out 0.2s, -webkit-transform ease-in-out 0.2s;
-  transition: transform ease-in-out 0.2s, box-shadow ease-in-out 0.2s;
-  transition: transform ease-in-out 0.2s, box-shadow ease-in-out 0.2s, -webkit-transform ease-in-out 0.2s;
-  will-change: transform;
-}
-
-.navbar-slide-top.headroom--pinned {
-  -webkit-transform: translateY(0);
-          transform: translateY(0);
-}
-.navbar-slide-top.headroom--unpinned {
-  -webkit-transform: translateY(-100%);
-          transform: translateY(-100%);
-  box-shadow: none;
-}
-
-.navbar-slide-bottom.headroom--pinned {
-  -webkit-transform: translateY(100%);
-          transform: translateY(100%);
-  box-shadow: none;
-}
-.navbar-slide-bottom.headroom--unpinned {
-  -webkit-transform: translateY(0);
-          transform: translateY(0);
 }
 
 /* ------------------------------------------------------------------------------
@@ -12948,7 +12914,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
  *
  * ---------------------------------------------------------------------------- */
 .timeline {
-  --timeline-content-padding-x: calc(0.625rem * 2);
+  --timeline-content-padding-x: calc(1.25rem * 2);
   --timeline-line-width: calc(var(--border-width) * 2);
   --timeline-line-color: var(--gray-400);
   --timeline-icon-bg: var(--white);

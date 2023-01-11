@@ -61,56 +61,41 @@ const App = function () {
         // Elements
         const sidebarMainElement = document.querySelector('.sidebar-main'),
               sidebarMainToggler = document.querySelectorAll('.sidebar-main-resize'),
-              sidebarMobileTogglerClass = 'sidebar-mobile-expanded',
               resizeClass = 'sidebar-main-resized',
-              navSubmenuClass = 'nav-group-sub',
-              navSubmenuReversedClass = 'nav-group-sub-reversed',
-              submenuToggleClass = 'nav-group-sub-visible',
-              submenuElement = document.querySelectorAll('.sidebar-main .nav-sidebar > .nav-item-submenu');
+              unfoldClass = 'sidebar-main-unfold';
 
-        // Check if submenu is still in the viewport
-        function isInViewport(element) {
-            const rect = element.getBoundingClientRect();
-            return (
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
-        }
 
-        // Toggle small sidebar
-        if(sidebarMainToggler) {
+        // Config
+        if (sidebarMainElement) {
+
+            // Define variables
+            const unfoldDelay = 150;
+            let timerStart,
+                timerFinish;
+
+            // Toggle classes on click
             sidebarMainToggler.forEach(function(toggler) {
                 toggler.addEventListener('click', function(e) {
                     e.preventDefault();
                     sidebarMainElement.classList.toggle(resizeClass);
-                    sidebarMainElement.classList.remove(sidebarMobileTogglerClass);
-                    !sidebarMainElement.classList.contains(resizeClass) && sidebarMainElement.classList.remove(resizeClass);
+                    !sidebarMainElement.classList.contains(resizeClass) && sidebarMainElement.classList.remove(unfoldClass);
                 });                
             });
-        }
 
-        // Configure submenus
-        if(submenuElement) {
-            submenuElement.forEach(function(toggle) {
-                const sub = toggle.querySelector(`:scope > .${navSubmenuClass}`);
+            // Add class on mouse enter
+            sidebarMainElement.addEventListener('mouseenter', function() {
+                clearTimeout(timerFinish);
+                timerStart = setTimeout(function() {
+                    sidebarMainElement.classList.contains(resizeClass) && sidebarMainElement.classList.add(unfoldClass);
+                }, unfoldDelay);
+            });
 
-                // Display submenu on mouseenter
-                toggle.addEventListener('mouseenter', function() {
-                    if (sidebarMainElement.classList.contains(resizeClass)) {
-                        this.classList.add(submenuToggleClass);
-                        this.querySelector(':scope > .nav-link').classList.add('pe-none');
-                        !isInViewport(sub) && sub.classList.add(navSubmenuReversedClass);
-                    }
-                });
-
-                // Hide submenu on mouse leave
-                toggle.addEventListener('mouseleave', function() {
-                    this.classList.remove(submenuToggleClass);
-                    this.querySelector(':scope > .nav-link').classList.remove('pe-none');
-                    sub.classList.remove(navSubmenuReversedClass);
-                });
+            // Remove class on mouse leave
+            sidebarMainElement.addEventListener('mouseleave', function() {
+                clearTimeout(timerStart);
+                timerFinish = setTimeout(function() {
+                    sidebarMainElement.classList.remove(unfoldClass);
+                }, unfoldDelay);
             });
         }
     };
@@ -120,7 +105,7 @@ const App = function () {
 
         // Elements
         const sidebarMainElement = document.querySelector('.sidebar-main'),
-              sidebarMainRestElements = document.querySelectorAll('.sidebar:not(.sidebar-main)'),
+              sidebarMainRestElements = document.querySelectorAll('.sidebar:not(.sidebar-main):not(.sidebar-component)'),
               sidebarMainDesktopToggler = document.querySelectorAll('.sidebar-main-toggle'),
               sidebarMainMobileToggler = document.querySelectorAll('.sidebar-mobile-main-toggle'),
               sidebarCollapsedClass = 'sidebar-collapsed',
@@ -152,7 +137,7 @@ const App = function () {
 
         // Elements
         const sidebarSecondaryElement = document.querySelector('.sidebar-secondary'),
-              sidebarSecondaryRestElements = document.querySelectorAll('.sidebar:not(.sidebar-secondary)'),
+              sidebarSecondaryRestElements = document.querySelectorAll('.sidebar:not(.sidebar-secondary):not(.sidebar-component)'),
               sidebarSecondaryDesktopToggler = document.querySelectorAll('.sidebar-secondary-toggle'),
               sidebarSecondaryMobileToggler = document.querySelectorAll('.sidebar-mobile-secondary-toggle'),
               sidebarCollapsedClass = 'sidebar-collapsed',
@@ -184,7 +169,7 @@ const App = function () {
 
         // Elements
         const sidebarRightElement = document.querySelector('.sidebar-end'),
-              sidebarRightRestElements = document.querySelectorAll('.sidebar:not(.sidebar-end)'),
+              sidebarRightRestElements = document.querySelectorAll('.sidebar:not(.sidebar-end):not(.sidebar-component)'),
               sidebarRightDesktopToggler = document.querySelectorAll('.sidebar-end-toggle'),
               sidebarRightMobileToggler = document.querySelectorAll('.sidebar-mobile-end-toggle'),
               sidebarCollapsedClass = 'sidebar-collapsed',
@@ -210,6 +195,27 @@ const App = function () {
             });                
         });
     };
+
+    // Toggle component sidebar
+    const sidebarComponentToggle = function() {
+
+        // Elements
+        const sidebarComponentElement = document.querySelector('.sidebar-component'),
+              sidebarComponentMobileToggler = document.querySelectorAll('.sidebar-mobile-component-toggle'),
+              sidebarMobileExpandedClass = 'sidebar-mobile-expanded';
+
+        // Toggle classes
+        sidebarComponentMobileToggler.forEach(function(toggler) {
+            toggler.addEventListener('click', function(e) {
+                e.preventDefault();
+                sidebarComponentElement.classList.toggle(sidebarMobileExpandedClass);
+            });                
+        });
+    };
+
+
+    // Navigations
+    // -------------------------
 
     // Sidebar navigation
     const navigationSidebar = function() {
@@ -267,7 +273,9 @@ const App = function () {
         const tooltipSelector = document.querySelectorAll('[data-bs-popup="tooltip"]');
 
         tooltipSelector.forEach(function(popup) {
-            new bootstrap.Tooltip(popup);
+            new bootstrap.Tooltip(popup, {
+                boundary: '.page-content'
+            });
         });
     };
 
@@ -276,7 +284,9 @@ const App = function () {
         const popoverSelector = document.querySelectorAll('[data-bs-popup="popover"]');
 
         popoverSelector.forEach(function(popup) {
-            new bootstrap.Popover(popup);
+            new bootstrap.Popover(popup, {
+                boundary: '.page-content'
+            });
         });
     };
 
@@ -284,47 +294,54 @@ const App = function () {
     const componentToTopButton = function() {
 
         // Elements
-        const toTopElement = document.createElement('button'),
+        const toTopContainer = document.querySelector('.content-wrapper'),
+              toTopElement = document.createElement('button'),
               toTopElementIcon = document.createElement('i'),
               toTopButtonContainer = document.createElement('div'),
               toTopButtonColorClass = 'btn-secondary',
               toTopButtonIconClass = 'ph-arrow-up',
+              scrollableContainer = document.querySelector('.content-inner'),
               scrollableDistance = 250,
               footerContainer = document.querySelector('.navbar-footer');
 
-        // Create button container
-        document.body.appendChild(toTopButtonContainer);
-        toTopButtonContainer.classList.add('btn-to-top');
 
-        // Create button
-        toTopElement.classList.add('btn', toTopButtonColorClass, 'btn-icon', 'rounded-pill');
-        toTopElement.setAttribute('type', 'button');
-        toTopButtonContainer.appendChild(toTopElement);
-        toTopElementIcon.classList.add(toTopButtonIconClass);
-        toTopElement.appendChild(toTopElementIcon);
+        // Append only if container exists
+        if (scrollableContainer) {
 
-        // Show and hide on scroll
-        const to_top_button = document.querySelector('.btn-to-top'),
-              add_class_on_scroll = () => to_top_button.classList.add('btn-to-top-visible'),
-              remove_class_on_scroll = () => to_top_button.classList.remove('btn-to-top-visible');
+            // Create button container
+            toTopContainer.appendChild(toTopButtonContainer);
+            toTopButtonContainer.classList.add('btn-to-top');
 
-        window.addEventListener('scroll', function() { 
-            const scrollpos = document.documentElement.scrollTop;
-            scrollpos >= scrollableDistance ? add_class_on_scroll() : remove_class_on_scroll();
-            if(footerContainer) {
-                if (document.documentElement.scrollHeight - document.documentElement.scrollTop - document.documentElement.clientHeight <= footerContainer.clientHeight) {
-                    to_top_button.style.bottom = footerContainer.clientHeight + 20 + 'px';
+            // Create button
+            toTopElement.classList.add('btn', toTopButtonColorClass, 'btn-icon', 'rounded-pill');
+            toTopElement.setAttribute('type', 'button');
+            toTopButtonContainer.appendChild(toTopElement);
+            toTopElementIcon.classList.add(toTopButtonIconClass);
+            toTopElement.appendChild(toTopElementIcon);
+
+            // Show and hide on scroll
+            const to_top_button = document.querySelector('.btn-to-top'),
+                  add_class_on_scroll = () => to_top_button.classList.add('btn-to-top-visible'),
+                  remove_class_on_scroll = () => to_top_button.classList.remove('btn-to-top-visible');
+
+            scrollableContainer.addEventListener('scroll', function() { 
+                const scrollpos = scrollableContainer.scrollTop;
+                scrollpos >= scrollableDistance ? add_class_on_scroll() : remove_class_on_scroll();
+                if(footerContainer) {
+                    if (this.scrollHeight - this.scrollTop - this.clientHeight <= footerContainer.clientHeight) {
+                        to_top_button.style.bottom = footerContainer.clientHeight + 20 + 'px';
+                    }
+                    else {
+                        to_top_button.removeAttribute('style');
+                    }
                 }
-                else {
-                    to_top_button.removeAttribute('style');
-                }
-            }
-        });
+            });
 
-        // Scroll to top on click
-        document.querySelector('.btn-to-top .btn').addEventListener('click', function() {
-            document.documentElement.scrollTo(0, 0);
-        });
+            // Scroll to top on click
+            document.querySelector('.btn-to-top .btn').addEventListener('click', function() {
+                scrollableContainer.scrollTo(0, 0);
+            });
+        }
     };
 
 
@@ -430,6 +447,7 @@ const App = function () {
               buttonContainerClass = 'd-inline-flex',
               cardFullscreenClass = 'card-fullscreen',
               collapsedClass = 'collapsed-in-fullscreen',
+              scrollableContainerClass = 'content-inner',
               fullscreenAttr = 'data-fullscreen';
 
         // Configure
@@ -449,7 +467,7 @@ const App = function () {
                     cardFullscreen.querySelectorAll(`:scope > .${collapsedClass}`).forEach(function(collapsedElement) {
                         collapsedElement.classList.remove('show');
                     });
-                    document.body.classList.remove('overflow-hidden');
+                    document.querySelector(`.${scrollableContainerClass}`).classList.remove('overflow-hidden');
                     button.closest(`.${buttonContainerClass}`).querySelectorAll(`:scope > .${buttonClass}:not(${buttonAttribute})`).forEach(function(actions) {
                         actions.classList.remove('d-none');
                     });
@@ -460,7 +478,7 @@ const App = function () {
                     cardFullscreen.querySelectorAll(`:scope > .collapse:not(.show)`).forEach(function(collapsedElement) {
                         collapsedElement.classList.add('show', `.${collapsedClass}`);
                     });
-                    document.body.classList.add('overflow-hidden');
+                    document.querySelector(`.${scrollableContainerClass}`).classList.add('overflow-hidden');
                     button.closest(`.${buttonContainerClass}`).querySelectorAll(`:scope > .${buttonClass}:not(${buttonAttribute})`).forEach(function(actions) {
                         actions.classList.add('d-none');
                     });
@@ -523,6 +541,7 @@ const App = function () {
     };
 
 
+
     //
     // Return objects assigned to module
     //
@@ -539,7 +558,6 @@ const App = function () {
         initAfterLoad: function() {
             transitionsEnabled();
         },
-
         // Initialize all components
         initComponents: function() {
             componentTooltip();
@@ -553,6 +571,7 @@ const App = function () {
             sidebarMainToggle();
             sidebarSecondaryToggle();
             sidebarRightToggle();
+            sidebarComponentToggle();
         },
 
         // Initialize all navigations

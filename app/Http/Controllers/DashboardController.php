@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 class DashboardController extends Controller {
 
-    public function index()
+    public function general()
     {
         $data = [
-            'title' => 'Dashboard',
-            'content' => 'dashboard'
+            'title' => 'Dashboard Umum',
+            'content' => 'dashboard.general'
         ];
 
         return view('layouts.index', ['data' => $data]);

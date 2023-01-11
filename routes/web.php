@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('dashboard/general');
 });
 
-Route::get('dashboard', 'DashboardController@index');
+Route::prefix('dashboard')->group(function() {
+    Route::get('general', 'DashboardController@general');
+});

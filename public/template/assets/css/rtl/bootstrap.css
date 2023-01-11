@@ -4388,12 +4388,12 @@ textarea.form-control-lg {
   --navbar-color: var(--body-color);
   --navbar-hover-color: var(--body-color);
   --navbar-disabled-color: rgba(var(--body-color-rgb), 0.3);
-  --navbar-active-color: var(--link-color);
+  --navbar-active-color: var(--body-color);
   --navbar-brand-padding-y: var(--spacer-1);
-  --navbar-brand-margin-end: 0;
+  --navbar-brand-margin-end: var(--spacer);
   --navbar-brand-font-size: var(--body-font-size);
-  --navbar-brand-color: var(--link-color);
-  --navbar-brand-hover-color: var(--link-color);
+  --navbar-brand-color: var(--body-color);
+  --navbar-brand-hover-color: var(--body-color);
   --navbar-nav-link-padding-x: 1rem;
   --navbar-toggler-padding-y: var(--navbar-link-padding-y);
   --navbar-toggler-padding-x: var(--navbar-link-padding-y);

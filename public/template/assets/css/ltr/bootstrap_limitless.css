@@ -940,13 +940,13 @@ tbody > .table-border-double > *, tfoot > .table-border-double > * {
 
 .form-select-sm {
   --form-select-indicator-padding: 2.25rem;
-  --form-select-bg-position: right 0.75rem center /*!rtl:left 0.75rem center;*/;
+  --form-select-bg-position: right 0.75rem center;
   --form-select-bg-size: 14px 10px;
 }
 
 .form-select-lg {
   --form-select-indicator-padding: 3rem;
-  --form-select-bg-position: right 1rem center /*!rtl:left 1rem center;*/;
+  --form-select-bg-position: right 1rem center;
   --form-select-bg-size: 18px 14px;
 }
 
@@ -1915,7 +1915,7 @@ html[data-color-theme=dark] .btn-flat-light {
  * ---------------------------------------------------------------------------- */
 .navbar {
   --navbar-bg: var(--white);
-  --navbar-brand-width: calc(18.75rem - var(--navbar-padding-x));
+  --navbar-brand-width: auto;
   --navbar-brand-image-size: var(--body-line-height-computed);
   --navbar-search-width: 30rem;
   --navbar-link-padding-y: 0.625rem;
@@ -1923,7 +1923,7 @@ html[data-color-theme=dark] .btn-flat-light {
   --navbar-hover-bg: var(--gray-200);
   --navbar-hover-active-bg: var(--gray-300);
   --navbar-hover-active-color: var(--body-color);
-  --navbar-active-bg: rgba(var(--primary-rgb), 0.1);
+  --navbar-active-bg: var(--gray-300);
   -ms-flex-negative: 0;
       flex-shrink: 0;
   background-color: var(--navbar-bg);
