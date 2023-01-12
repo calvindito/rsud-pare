@@ -41,3 +41,16 @@ a.breadcrumb-item:hover {
 .fs-13 {
     font-size: 13px !important;
 }
+
+.nav-pills-outline .nav-link.active {
+    border: 1px solid var(--primary-color) !important;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background: var(--primary-color) !important;
+    color: white !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}

@@ -23,7 +23,7 @@
                         </a>
                         <ul class="nav-group-sub collapse {{ Request::segment(1) == 'dashboard' ? 'show' : '' }}">
                             <li class="nav-item">
-                                <a href="javascript:void(0)" class="nav-link {{ Request::segment(1) == 'dashboard' && Request::segment(2) == 'general' ? 'active' : '' }}">Umum</a>
+                                <a href="{{ url('dashboard/general') }}" class="nav-link {{ Request::segment(1) == 'dashboard' && Request::segment(2) == 'general' ? 'active' : '' }}">Umum</a>
                             </li>
                         </ul>
                     </li>

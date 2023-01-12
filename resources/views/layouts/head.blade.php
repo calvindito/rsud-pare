@@ -13,6 +13,7 @@
 	<script src="{{ asset('template/assets/js/jquery/jquery.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/tables/datatables/datatables.min.js') }}"></script>
+	<script src="{{ asset('template/assets/js/vendor/visualization/echarts/echarts.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/ui/prism.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/app.js') }}"></script>
 	<script src="{{ asset('template/custom.js') }}"></script>
