@@ -138,14 +138,14 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item nav-item-submenu">
+                    <li class="nav-item nav-item-submenu {{ Request::segment(1) == 'setting' ? 'nav-item-expanded nav-item-open' : '' }}">
                         <a href="#" class="nav-link">
                             <i class="ph-gear"></i>
                             <span>Pengaturan</span>
                         </a>
-                        <ul class="nav-group-sub collapse">
+                        <ul class="nav-group-sub collapse {{ Request::segment(1) == 'setting' ? 'show' : '' }}">
                             <li class="nav-item">
-                                <a href="javascript:void(0)" class="nav-link">Dropdown 1</a>
+                                <a href="{{ url('setting/role') }}" class="nav-link {{ Request::segment(1) == 'setting' && Request::segment(2) == 'role' ? 'active' : '' }}">Role</a>
                             </li>
                         </ul>
                     </li>
@@ -153,3 +153,5 @@
             </div>
         </div>
     </div>
+    <div class="content-wrapper">
+        <div class="content-inner">

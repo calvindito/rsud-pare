@@ -9,7 +9,6 @@
 			<div class="navbar-brand flex-1">
 				<a href="{{ url('dashboard/general') }}" class="d-inline-flex align-items-center">
 					<img src="{{ asset('assets/logo.png') }}">
-                    {{-- <span class="ms-2 fw-bold text-muted">RSUD KABUPATEN KEDIRI</span> --}}
 				</a>
 			</div>
 			<ul class="nav gap-1 flex-xl-1 justify-content-end order-0 order-xl-1">

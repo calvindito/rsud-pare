@@ -27,3 +27,17 @@
     background: var(--primary-light-color) !important;
     color: var(--primary-color) !important;
 }
+
+a.breadcrumb-item:hover {
+    color: var(--primary-color) !important;
+}
+
+.dataTables_paginate .pagination li.active .page-link {
+    background: var(--primary-color) !important;
+    color: white !important;
+    border: 1px solid var(--primary-color) !important;
+}
+
+.fs-13 {
+    font-size: 13px !important;
+}
