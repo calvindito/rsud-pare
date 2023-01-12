@@ -54,7 +54,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="#uptodate-inpatient-registration" class="nav-link rounded-end-pill" data-bs-toggle="tab">
-                                Registrasi Terkini Pasien Rawat Jalan
+                                Registrasi Terkini Pasien Rawat Inap
                             </a>
                         </li>
                     </ul>
@@ -62,7 +62,7 @@
                         <div class="tab-pane fade show active" id="uptodate-outpatient-registration">
                             <p class="mt-2">
                                 <div class="list-group list-group-borderless py-2">
-									<div class="list-group-item fw-semibold">List Data</div>
+									<div class="list-group-item fw-semibold">List Pasien Rawat Jalan</div>
 									<a href="#" class="list-group-item list-group-item-action hstack gap-3">
                                         <img src="{{ asset('template/assets/images/demo/users/face1.jpg') }}" class="w-40px h-40px rounded-pill">
 										<div class="flex-fill">
@@ -159,7 +159,7 @@
                         <div class="tab-pane fade" id="uptodate-inpatient-registration">
                             <p class="mt-2">
                                 <div class="list-group list-group-borderless py-2">
-									<div class="list-group-item fw-semibold">List Data</div>
+									<div class="list-group-item fw-semibold">List Pasien Rawat Inap</div>
 									<a href="#" class="list-group-item list-group-item-action hstack gap-3">
                                         <img src="{{ asset('template/assets/images/demo/users/face2.jpg') }}" class="w-40px h-40px rounded-pill">
 										<div class="flex-fill">
