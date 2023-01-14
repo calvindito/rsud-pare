@@ -30,3 +30,17 @@ function configDataTable() {
         }
     });
 }
+
+function onLoading(type, selector) {
+    if(type == 'show') {
+        $(selector).waitMe({
+            effect : 'facebook',
+            bg : 'rgba(255,255,255,0.5)',
+            color : '#005FA5',
+            waitTime : -1,
+            textPos : 'vertical'
+        });
+    } else if(type == 'close') {
+        $(selector).waitMe('hide');
+    }
+}
