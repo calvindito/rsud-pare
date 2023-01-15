@@ -6,7 +6,7 @@
         </div>
     </div>
 </div>
-<div class="content container pt-0">
+<div class="content pt-0">
     <div class="row">
         <div class="col-md-6">
             <div class="card">

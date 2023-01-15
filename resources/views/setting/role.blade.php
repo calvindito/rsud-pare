@@ -18,7 +18,7 @@
         </div>
     </div>
 </div>
-<div class="content container pt-0">
+<div class="content pt-0">
     <div class="card">
         <div class="card-body">
             <table class="table table-bordered" id="datatable-serverside">

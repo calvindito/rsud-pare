@@ -36,7 +36,7 @@ function onLoading(type, selector) {
         $(selector).waitMe({
             effect : 'facebook',
             bg : 'rgba(255,255,255,0.5)',
-            color : '#005FA5',
+            color : '#0C83FF',
             waitTime : -1,
             textPos : 'vertical'
         });
