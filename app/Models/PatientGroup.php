@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Role extends Model
+class PatientGroup extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Role extends Model
      *
      * @var string
      */
-    protected $table = 'roles';
+    protected $table = 'patient_groups';
 
     /**
      * The primary key associated with the table.
