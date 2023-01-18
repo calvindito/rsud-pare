@@ -1,27 +1,22 @@
 <?php
 
-use Faker\Factory as Faker;
 use Illuminate\Support\Facades\Route;
 
 Route::match(['get', 'post'], '/', 'AuthController@login');
-
-Route::get('demo', function () {
-    return view('layouts.index', [
-        'data' => [
-            'title' => 'Demo Form Sementara',
-            'faker' => Faker::create('id_ID'),
-            'content' => 'demo'
-        ]
-    ]);
-});
 
 Route::prefix('dashboard')->group(function () {
     Route::get('general', 'DashboardController@general');
 });
 
-Route::prefix('patient')->namespace('Patient')->group(function () {
-    Route::prefix('register')->group(function () {
-        Route::get('/', 'RegisterController@index');
+Route::prefix('master-data')->namespace('MasterData')->group(function () {
+    Route::prefix('general')->namespace('General')->group(function () {
+        Route::prefix('class-type')->group(function () {
+            Route::get('/', 'ClassTypeController@index');
+            Route::get('datatable', 'ClassTypeController@datatable');
+            Route::post('create', 'ClassTypeController@create');
+            Route::patch('update', 'ClassTypeController@update');
+            Route::delete('destroy', 'ClassTypeController@destroy');
+        });
     });
 });
 

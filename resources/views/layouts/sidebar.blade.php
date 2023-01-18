@@ -34,7 +34,7 @@
                         </a>
                         <ul class="nav-group-sub collapse {{ Request::segment(1) == 'master-data' ? 'show' : '' }}">
                             <li class="nav-item nav-item-submenu {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'general' ? 'nav-item-expanded nav-item-open' : '' }}">
-                                <a href="#" class="nav-link">General</a>
+                                <a href="#" class="nav-link">Umum</a>
                                 <ul class="nav-group-sub collapse {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'general' ? 'show' : '' }}">
                                     <li class="nav-item">
                                         <a href="{{ url('master-data/general/class-type') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'general' && Request::segment(3) == 'class-type' ? 'active' : '' }}">Kelas</a>
