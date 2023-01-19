@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\MasterData\General;
 
-use App\Models\ClassType;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class ClassTypeController extends Controller
+class DoctorController extends Controller
 {
     public function index()
     {
         $data = [
-            'content' => 'master-data.general.class-type'
+            'content' => 'master-data.general.doctor'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -21,20 +21,22 @@ class ClassTypeController extends Controller
 
     public function datatable(Request $request)
     {
-        $data = ClassType::orderByDesc('id');
+        $data = Doctor::orderByDesc('id');
         $search = $request->search['value'];
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('code', 'like', "%$search%")
-                        ->orWhere('code_bpjs', 'like', "%$search%")
-                        ->orWhere('name', 'like', "%$search%");
+                    $query->where('name', 'like', "%$search%")
+                        ->orWhere('calling', 'like', "%$search%")
+                        ->orWhere('address', 'like', "%$search%");
                 }
             })
-            ->editColumn('fee_nursing_care', '{{ number_format($fee_nursing_care, 2) }}')
-            ->editColumn('fee_monitoring', '{{ number_format($fee_monitoring, 2) }}')
-            ->addColumn('action', function (ClassType $query) {
+            ->editColumn('percentage', '{{ $percentage }}%')
+            ->editColumn('type', function (Doctor $query) {
+                return $query->type();
+            })
+            ->addColumn('action', function (Doctor $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -60,20 +62,21 @@ class ClassTypeController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'code' => 'required|unique:class_types,code',
             'name' => 'required',
-            'code_bpjs' => 'required',
-            'fee_monitoring' => 'required|numeric',
-            'fee_nursing_care' => 'required|numeric'
+            'calling' => 'required',
+            'type' => 'required',
+            'percentage' => 'required',
+            'phone' => 'required|digits_between:8,13|numeric',
+            'address' => 'required'
         ], [
-            'code.required' => 'kode kelas tidak boleh kosong',
-            'code.unique' => 'kode kelas telah digunakan',
-            'name.required' => 'nama kelas tidak boleh kosong',
-            'code_bpjs.required' => 'kode bpjs tidak boleh kosong',
-            'fee_monitoring.required' => 'biaya rr monitor tidak boleh kosong',
-            'fee_monitoring.numeric' => 'biaya rr monitor harus angka yang valid',
-            'fee_nursing_care.required' => 'biaya rr askep tidak boleh kosong',
-            'fee_nursing_care.numeric' => 'biaya rr askep harus angka yang valid'
+            'name.required' => 'nama dokter tidak boleh kosong',
+            'calling.required' => 'nama panggilan tidak boleh kosong',
+            'type.required' => 'mohon memilih jenis dokter',
+            'percentage.required' => 'persentase jasa tidak boleh kosong',
+            'phone.required' => 'no telp tidak boleh kosong',
+            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
+            'phone.numeric' => 'no telp harus angka',
+            'address.required' => 'alamat praktek tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -83,12 +86,13 @@ class ClassTypeController extends Controller
             ];
         } else {
             try {
-                $createData = ClassType::create([
-                    'code' => $request->code,
-                    'code_bpjs' => $request->code_bpjs,
+                $createData = Doctor::create([
                     'name' => $request->name,
-                    'fee_monitoring' => str_replace(',', '', $request->fee_monitoring),
-                    'fee_nursing_care' => str_replace(',', '', $request->fee_nursing_care)
+                    'calling' => $request->calling,
+                    'type' => $request->type,
+                    'percentage' => $request->percentage,
+                    'address' => $request->address,
+                    'phone' => $request->phone
                 ]);
 
                 $response = [
@@ -109,7 +113,7 @@ class ClassTypeController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = ClassType::findOrFail($id);
+        $data = Doctor::findOrFail($id);
 
         return response()->json($data);
     }
@@ -118,20 +122,21 @@ class ClassTypeController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'code' => 'required|unique:class_types,code,' . $id,
             'name' => 'required',
-            'code_bpjs' => 'required',
-            'fee_monitoring' => 'required|numeric',
-            'fee_nursing_care' => 'required|numeric'
+            'calling' => 'required',
+            'type' => 'required',
+            'percentage' => 'required',
+            'phone' => 'required|digits_between:8,13|numeric',
+            'address' => 'required'
         ], [
-            'code.required' => 'kode kelas tidak boleh kosong',
-            'code.unique' => 'kode kelas telah digunakan',
-            'name.required' => 'nama kelas tidak boleh kosong',
-            'code_bpjs.required' => 'kode bpjs tidak boleh kosong',
-            'fee_monitoring.required' => 'biaya rr monitor tidak boleh kosong',
-            'fee_monitoring.numeric' => 'biaya rr monitor harus angka yang valid',
-            'fee_nursing_care.required' => 'biaya rr askep tidak boleh kosong',
-            'fee_nursing_care.numeric' => 'biaya rr askep harus angka yang valid'
+            'name.required' => 'nama dokter tidak boleh kosong',
+            'calling.required' => 'nama panggilan tidak boleh kosong',
+            'type.required' => 'mohon memilih jenis dokter',
+            'percentage.required' => 'persentase jasa tidak boleh kosong',
+            'phone.required' => 'no telp tidak boleh kosong',
+            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
+            'phone.numeric' => 'no telp harus angka',
+            'address.required' => 'alamat praktek tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -141,12 +146,13 @@ class ClassTypeController extends Controller
             ];
         } else {
             try {
-                $updateData = ClassType::findOrFail($id)->update([
-                    'code' => $request->code,
-                    'code_bpjs' => $request->code_bpjs,
+                $updateData = Doctor::findOrFail($id)->update([
                     'name' => $request->name,
-                    'fee_monitoring' => str_replace(',', '', $request->fee_monitoring),
-                    'fee_nursing_care' => str_replace(',', '', $request->fee_nursing_care)
+                    'calling' => $request->calling,
+                    'type' => $request->type,
+                    'percentage' => $request->percentage,
+                    'address' => $request->address,
+                    'phone' => $request->phone
                 ]);
 
                 $response = [
@@ -169,7 +175,7 @@ class ClassTypeController extends Controller
         $id = $request->id;
 
         try {
-            ClassType::destroy($id);
+            Doctor::destroy($id);
 
             $response = [
                 'code' => 200,

@@ -18,6 +18,24 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'ClassTypeController@updateData');
             Route::delete('destroy-data', 'ClassTypeController@destroyData');
         });
+
+        Route::prefix('doctor')->group(function () {
+            Route::get('/', 'DoctorController@index');
+            Route::get('datatable', 'DoctorController@datatable');
+            Route::post('create-data', 'DoctorController@createData');
+            Route::get('show-data', 'DoctorController@showData');
+            Route::patch('update-data', 'DoctorController@updateData');
+            Route::delete('destroy-data', 'DoctorController@destroyData');
+        });
+
+        Route::prefix('employee')->group(function () {
+            Route::get('/', 'EmployeeController@index');
+            Route::get('datatable', 'EmployeeController@datatable');
+            Route::post('create-data', 'EmployeeController@createData');
+            Route::get('show-data', 'EmployeeController@showData');
+            Route::patch('update-data', 'EmployeeController@updateData');
+            Route::delete('destroy-data', 'EmployeeController@destroyData');
+        });
     });
 });
 

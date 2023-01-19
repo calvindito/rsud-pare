@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\MasterData\General;
 
-use App\Models\ClassType;
+use App\Models\City;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class ClassTypeController extends Controller
+class EmployeeController extends Controller
 {
     public function index()
     {
         $data = [
-            'content' => 'master-data.general.class-type'
+            'city' => City::all(),
+            'content' => 'master-data.general.employee'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -21,20 +23,19 @@ class ClassTypeController extends Controller
 
     public function datatable(Request $request)
     {
-        $data = ClassType::orderByDesc('id');
+        $data = Employee::orderByDesc('id');
         $search = $request->search['value'];
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
                     $query->where('code', 'like', "%$search%")
-                        ->orWhere('code_bpjs', 'like', "%$search%")
-                        ->orWhere('name', 'like', "%$search%");
+                        ->orWhere('name', 'like', "%$search%")
+                        ->orWhere('address', 'like', "%$search%")
+                        ->orWhere('email', 'like', "%$search%");
                 }
             })
-            ->editColumn('fee_nursing_care', '{{ number_format($fee_nursing_care, 2) }}')
-            ->editColumn('fee_monitoring', '{{ number_format($fee_monitoring, 2) }}')
-            ->addColumn('action', function (ClassType $query) {
+            ->addColumn('action', function (Employee $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -60,20 +61,20 @@ class ClassTypeController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'code' => 'required|unique:class_types,code',
             'name' => 'required',
-            'code_bpjs' => 'required',
-            'fee_monitoring' => 'required|numeric',
-            'fee_nursing_care' => 'required|numeric'
+            'postal_code' => 'nullable|digits:5|numeric',
+            'phone' => 'nullable|digits_between:8,13|numeric',
+            'cellphone' => 'nullable|digits_between:8,13|numeric',
+            'email' => 'nullable|email'
         ], [
-            'code.required' => 'kode kelas tidak boleh kosong',
-            'code.unique' => 'kode kelas telah digunakan',
-            'name.required' => 'nama kelas tidak boleh kosong',
-            'code_bpjs.required' => 'kode bpjs tidak boleh kosong',
-            'fee_monitoring.required' => 'biaya rr monitor tidak boleh kosong',
-            'fee_monitoring.numeric' => 'biaya rr monitor harus angka yang valid',
-            'fee_nursing_care.required' => 'biaya rr askep tidak boleh kosong',
-            'fee_nursing_care.numeric' => 'biaya rr askep harus angka yang valid'
+            'name.required' => 'nama tidak boleh kosong',
+            'postal_code.digits' => 'kode pos harus 5 karakter',
+            'postal_code.numeric' => 'kode pos harus angka',
+            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
+            'phone.numeric' => 'no telp harus angka',
+            'cellphone.digits_between' => 'no hp min 8 dan maks 13 karakter',
+            'cellphone.numeric' => 'no hp harus angka',
+            'email.email' => 'email tidak valid'
         ]);
 
         if ($validation->fails()) {
@@ -83,12 +84,15 @@ class ClassTypeController extends Controller
             ];
         } else {
             try {
-                $createData = ClassType::create([
-                    'code' => $request->code,
-                    'code_bpjs' => $request->code_bpjs,
+                $createData = Employee::create([
+                    'city_id' => $request->city_id,
                     'name' => $request->name,
-                    'fee_monitoring' => str_replace(',', '', $request->fee_monitoring),
-                    'fee_nursing_care' => str_replace(',', '', $request->fee_nursing_care)
+                    'address' => $request->address,
+                    'postal_code' => $request->postal_code,
+                    'phone' => $request->phone,
+                    'cellphone' => $request->cellphone,
+                    'email' => $request->email,
+                    'marital_status' => $request->marital_status
                 ]);
 
                 $response = [
@@ -109,7 +113,7 @@ class ClassTypeController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = ClassType::findOrFail($id);
+        $data = Employee::findOrFail($id);
 
         return response()->json($data);
     }
@@ -118,20 +122,20 @@ class ClassTypeController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'code' => 'required|unique:class_types,code,' . $id,
             'name' => 'required',
-            'code_bpjs' => 'required',
-            'fee_monitoring' => 'required|numeric',
-            'fee_nursing_care' => 'required|numeric'
+            'postal_code' => 'nullable|digits:5|numeric',
+            'phone' => 'nullable|digits_between:8,13|numeric',
+            'cellphone' => 'nullable|digits_between:8,13|numeric',
+            'email' => 'nullable|email'
         ], [
-            'code.required' => 'kode kelas tidak boleh kosong',
-            'code.unique' => 'kode kelas telah digunakan',
-            'name.required' => 'nama kelas tidak boleh kosong',
-            'code_bpjs.required' => 'kode bpjs tidak boleh kosong',
-            'fee_monitoring.required' => 'biaya rr monitor tidak boleh kosong',
-            'fee_monitoring.numeric' => 'biaya rr monitor harus angka yang valid',
-            'fee_nursing_care.required' => 'biaya rr askep tidak boleh kosong',
-            'fee_nursing_care.numeric' => 'biaya rr askep harus angka yang valid'
+            'name.required' => 'nama tidak boleh kosong',
+            'postal_code.digits' => 'kode pos harus 5 karakter',
+            'postal_code.numeric' => 'kode pos harus angka',
+            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
+            'phone.numeric' => 'no telp harus angka',
+            'cellphone.digits_between' => 'no hp min 8 dan maks 13 karakter',
+            'cellphone.numeric' => 'no hp harus angka',
+            'email.email' => 'email tidak valid'
         ]);
 
         if ($validation->fails()) {
@@ -141,12 +145,15 @@ class ClassTypeController extends Controller
             ];
         } else {
             try {
-                $updateData = ClassType::findOrFail($id)->update([
-                    'code' => $request->code,
-                    'code_bpjs' => $request->code_bpjs,
+                $updateData = Employee::findOrFail($id)->update([
+                    'city_id' => $request->city_id,
                     'name' => $request->name,
-                    'fee_monitoring' => str_replace(',', '', $request->fee_monitoring),
-                    'fee_nursing_care' => str_replace(',', '', $request->fee_nursing_care)
+                    'address' => $request->address,
+                    'postal_code' => $request->postal_code,
+                    'phone' => $request->phone,
+                    'cellphone' => $request->cellphone,
+                    'email' => $request->email,
+                    'marital_status' => $request->marital_status
                 ]);
 
                 $response = [
@@ -169,7 +176,7 @@ class ClassTypeController extends Controller
         $id = $request->id;
 
         try {
-            ClassType::destroy($id);
+            Employee::destroy($id);
 
             $response = [
                 'code' => 200,

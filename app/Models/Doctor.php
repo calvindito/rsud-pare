@@ -29,4 +29,26 @@ class Doctor extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * type
+     *
+     * @return void
+     */
+    public function type()
+    {
+        $type = $this->type;
+
+        if ($type == 1) {
+            $text = 'AHLI';
+        } else if ($type == 2) {
+            $text = 'GIGI';
+        } else if ($type == 3) {
+            $text = 'UMUM';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
 }

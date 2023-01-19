@@ -15,7 +15,6 @@ class CreateDoctorsTable extends Migration
     {
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('employee_id')->nullable();
             $table->string('name')->nullable();
             $table->string('calling')->nullable();
             $table->char('type', 1)->nullable();

@@ -16,15 +16,15 @@ Noty.overrideDefaults({
 $(function() {
     configDataTable();
     formatNumber();
+
+    $('.sidebar-control').on('click', function() {
+        gDataTable.columns.adjust().draw();
+    });
 });
 
 function configDataTable() {
     $.extend( $.fn.dataTable.defaults, {
         autoWidth: false,
-        columnDefs: [{
-            orderable: false,
-            width: 100
-        }],
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
             search: '<span class="me-1">Cari:</span> <div class="form-control-feedback form-control-feedback-end flex-fill">_INPUT_<div class="form-control-feedback-icon"><i class="ph-magnifying-glass opacity-50"></i></div></div>',
