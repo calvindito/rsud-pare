@@ -14,11 +14,6 @@
 			</div>
 			<ul class="nav gap-1 flex-xl-1 justify-content-end order-0 order-xl-1">
                 <li class="nav-item">
-					<a href="{{ url('demo') }}" class="navbar-nav-link rounded-pill fw-normal">
-						Demo Form Sementara
-					</a>
-				</li>
-                <li class="nav-item">
 					<a href="#" class="navbar-nav-link navbar-nav-link-icon rounded-pill" data-bs-toggle="offcanvas" data-bs-target=".panel-notification">
 						<i class="ph-bell"></i>
 						<span class="badge bg-yellow text-black position-absolute top-0 end-0 translate-middle-top zindex-1 rounded-pill mt-1 me-1">0</span>

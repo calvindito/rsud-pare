@@ -1,5 +1,21 @@
+const swalInit = Swal.mixin({
+    buttonsStyling: false,
+    customClass: {
+        confirmButton: 'btn bg-primary text-white',
+        cancelButton: 'btn bg-danger text-white',
+        denyButton: 'btn bg-light text-dark',
+        input: 'form-control'
+    }
+});
+
+Noty.overrideDefaults({
+    theme: 'limitless',
+    timeout: 2500
+});
+
 $(function() {
     configDataTable();
+    formatNumber();
 });
 
 function configDataTable() {
@@ -35,7 +51,7 @@ function onLoading(type, selector) {
     if(type == 'show') {
         $(selector).waitMe({
             effect : 'facebook',
-            bg : 'rgba(255,255,255,0.5)',
+            bg : 'rgba(255,255,255,0.7)',
             color : '#0C83FF',
             waitTime : -1,
             textPos : 'vertical'
@@ -43,4 +59,16 @@ function onLoading(type, selector) {
     } else if(type == 'close') {
         $(selector).waitMe('hide');
     }
+}
+
+function notification(type, text, layout = 'topCenter') {
+    new Noty({
+        layout: layout,
+        text: text,
+        type: type
+    }).show();
+}
+
+function formatNumber() {
+    $('.number-format').number(true, 2);
 }

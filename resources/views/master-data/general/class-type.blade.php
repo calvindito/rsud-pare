@@ -6,7 +6,14 @@
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <button type="button" class="btn btn-primary" onclick="onCreate()">
+            <div class="btn-group">
+                <button type="button" class="btn btn-flat-primary dropdown-toggle" data-bs-toggle="dropdown">Refresh</button>
+                <div class="dropdown-menu">
+                    <a href="javascript:void(0);" class="dropdown-item" onclick="onReloadTable()">Data</a>
+                    <a href="{{ url()->full() }}" class="dropdown-item">Halaman</a>
+                </div>
+            </div>
+            <button type="button" class="btn btn-flat-primary" onclick="onCreate()">
                 <i class="ph-plus-circle me-1"></i>
                 Tambah Data
             </button>
@@ -16,11 +23,15 @@
 <div class="content pt-0">
     <div class="card">
         <div class="card-body">
-            <table class="table table-bordered" id="datatable-serverside">
-                <thead class="bg-light">
+            <table class="table table-bordered table-hover table-xs display" id="datatable-serverside">
+                <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
+                        <th nowrap>Kode</th>
                         <th nowrap>Nama</th>
+                        <th nowrap>Kode BPJS</th>
+                        <th nowrap>Biaya RR Askep</th>
+                        <th nowrap>Biaya RR Monitor</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -30,29 +41,64 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Basic modal</h5>
+                <h5 class="modal-title"></h5>
                 <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
                     <i class="ph-x"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form">
-                    <div class="form-group">
-                        <label class="form-label">Kode <span class="text-danger fw-bold">*</span></label>
-                        <input type="text" class="form-control" name="code" id="code">
+                <div class="alert alert-danger d-none" id="validation-element">
+                    <ul class="mb-0" id="validation-data"></ul>
+                </div>
+                <form id="form-data">
+                    <input type="hidden" name="table_id" id="table_id">
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Kode Kelas <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode kelas">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Nama Kelas <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama kelas">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Kode BPJS</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="code_bpjs" id="code_bpjs" placeholder="Masukan kode BPJS">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Biaya RR Monitor <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control number-format" name="fee_monitoring" id="fee_monitoring" placeholder="Masukan biaya">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Biaya RR Askep <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control number-format" name="fee_nursing_care" id="fee_nursing_care" placeholder="Masukan biaya">
+                        </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer justify-content-end">
-                <button class="btn btn-flat-danger btn-icon">
-                    <i class="ph-trash"></i>
+                <button class="btn btn-danger d-none" id="btn-cancel" onclick="onCancel()">
+                    <i class="ph-x me-1"></i>
+                    Batalkan Perubahan
                 </button>
-                <button class="btn btn-primary" data-bs-dismiss="modal">
-                    <i class="ph-check me-1"></i>
-                    Save
+                <button class="btn btn-warning d-none" id="btn-update" onclick="updateData()">
+                    <i class="ph-floppy-disk me-1"></i>
+                    Simpan Perubahan Data
+                </button>
+                <button class="btn btn-primary d-none" id="btn-create" onclick="createData()">
+                    <i class="ph-plus-circle me-1"></i>
+                    Simpan Data
                 </button>
             </div>
         </div>
@@ -60,32 +106,274 @@
 </div>
 
 <script>
+    window.gDataTable;
+
     $(function() {
         loadData();
     });
 
+    function onReloadTable() {
+        window.gDataTable.ajax.reload(null, false);
+    }
+
     function onReset() {
-        onCreate();
+        clearValidation();
+        $('#modal-form').modal('hide');
+        $('#form-data').trigger('reset');
+        $('#btn-create').removeClass('d-none');
+        $('#btn-update').addClass('d-none');
+        $('#btn-cancel').addClass('d-none');
     }
 
     function onCreate() {
+        onReset();
+        $('#modal-form .modal-title').text('Tambah Data');
         $('#modal-form').modal('show');
     }
 
+    function onCancel() {
+        onReset();
+    }
+
+    function onUpdate() {
+        onReset();
+        $('#btn-create').addClass('d-none');
+        $('#btn-update').removeClass('d-none');
+        $('#btn-cancel').removeClass('d-none');
+        $('#modal-form .modal-title').text('Edit Data');
+        $('#modal-form').modal('show');
+    }
+
+    function clearValidation() {
+        $('#validation-element').addClass('d-none');
+        $('#validation-data').html('');
+    }
+
+    function showValidation(data) {
+        $('#validation-element').removeClass('d-none');
+        $('#validation-data').html('');
+
+        $.each(data, function(index, value) {
+            $('#validation-data').append('<li>' + value + '</li>');
+        });
+    }
+
+    function formSuccess() {
+        onReset();
+        onReloadTable();
+    }
+
     function loadData() {
-        $('#datatable-serverside').DataTable({
+        window.gDataTable = $('#datatable-serverside').DataTable({
             processing: true,
             serverSide: true,
             deferRender: true,
             destroy: true,
             ajax: {
-                url: '{{ url("master-data/general/class-type/datatable") }}'
+                url: '{{ url("master-data/general/class-type/datatable") }}',
+                dataType: 'JSON',
+                beforeSend: function() {
+                    onLoading('show', '.datatable-scroll');
+                },
+                complete: function() {
+                    onLoading('close', '.datatable-scroll');
+                },
+                error: function(response) {
+                    onLoading('close', '.datatable-scroll');
+
+                    swalInit.fire({
+                        html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
+                        icon: 'error',
+                        showCloseButton: true
+                    });
+                }
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
+                { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'code_bpjs', name: 'code_bpjs', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'fee_nursing_care', name: 'fee_nursing_care', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'fee_monitoring', name: 'fee_monitoring', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
+    }
+
+    function createData() {
+        $.ajax({
+            url: '{{ url("master-data/general/class-type/create-data") }}',
+            type: 'POST',
+            dataType: 'JSON',
+            data: $('#form-data').serialize(),
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            beforeSend: function() {
+                onLoading('show', '.modal-content');
+                clearValidation();
+            },
+            success: function(response) {
+                onLoading('close', '.modal-content');
+
+                if(response.code == 200) {
+                    formSuccess();
+                    notification('success', response.message);
+                } else if(response.code == 400) {
+                    $('#modal-form .modal-content').scrollTop(0);
+                    showValidation(response.error);
+                } else {
+                    swalInit.fire({
+                        title: 'Error',
+                        text: response.message,
+                        icon: 'error',
+                        showCloseButton: true
+                    });
+                }
+            },
+            error: function(response) {
+                onLoading('close', '.modal-content');
+
+                swalInit.fire({
+                    html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
+                    icon: 'error',
+                    showCloseButton: true
+                });
+            }
+        });
+    }
+
+    function showDataUpdate(id) {
+        $.ajax({
+            url: '{{ url("master-data/general/class-type/show-data") }}',
+            type: 'GET',
+            dataType: 'JSON',
+            data: {
+                id: id
+            },
+            beforeSend: function() {
+                onLoading('show', '.modal-content');
+                onUpdate();
+            },
+            success: function(response) {
+                onLoading('close', '.modal-content');
+
+                $('#table_id').val(response.id);
+                $('#code').val(response.code);
+                $('#name').val(response.name);
+                $('#code_bpjs').val(response.code_bpjs);
+                $('#fee_monitoring').val(response.fee_monitoring);
+                $('#fee_nursing_care').val(response.fee_nursing_care);
+            },
+            error: function(response) {
+                onLoading('close', '.modal-content');
+
+                swalInit.fire({
+                    html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
+                    icon: 'error',
+                    showCloseButton: true
+                });
+            }
+        });
+    }
+
+    function updateData() {
+        $.ajax({
+            url: '{{ url("master-data/general/class-type/update-data") }}',
+            type: 'PATCH',
+            dataType: 'JSON',
+            data: $('#form-data').serialize(),
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            beforeSend: function() {
+                onLoading('show', '.modal-content');
+                clearValidation();
+            },
+            success: function(response) {
+                onLoading('close', '.modal-content');
+
+                if(response.code == 200) {
+                    formSuccess();
+                    notification('success', response.message);
+                } else if(response.code == 400) {
+                    $('#modal-form .modal-content').scrollTop(0);
+                    showValidation(response.error);
+                } else {
+                    swalInit.fire({
+                        title: 'Error',
+                        text: response.message,
+                        icon: 'error',
+                        showCloseButton: true
+                    });
+                }
+            },
+            error: function(response) {
+                onLoading('close', '.modal-content');
+
+                swalInit.fire({
+                    html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
+                    icon: 'error',
+                    showCloseButton: true
+                });
+            }
+        });
+    }
+
+    function destroyData(id) {
+        notyConfirm = new Noty({
+            text: '<div class="mb-3"><h5 class="text-dark">Hapus Data?</h5><span class="text-muted">Data yang telah dihapus tidak bisa dikembalikan lagi</span></div>',
+            timeout: false,
+            modal: true,
+            layout: 'center',
+            closeWith: 'button',
+            type: 'confirm',
+            buttons: [
+                Noty.button('Tidak', 'btn btn-light', function () {
+                    notyConfirm.close();
+                }),
+                Noty.button('Hapus', 'btn btn-danger ms-2', function () {
+                    $.ajax({
+                        url: '{{ url("master-data/general/class-type/destroy-data") }}',
+                        type: 'DELETE',
+                        dataType: 'JSON',
+                        data: {
+                            id: id
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        beforeSend: function() {
+                            onLoading('show', '.noty_bar');
+                        },
+                        success: function(response) {
+                            onLoading('close', '.noty_bar');
+
+                            if(response.code == 200) {
+                                notyConfirm.close();
+                                onReloadTable();
+                                notification('success', response.message);
+                            } else {
+                                swalInit.fire({
+                                    title: 'Error',
+                                    text: response.message,
+                                    icon: 'error',
+                                    showCloseButton: true
+                                });
+                            }
+                        },
+                        error: function(response) {
+                            onLoading('close', '.noty_bar');
+
+                            swalInit.fire({
+                                html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
+                                icon: 'error',
+                                showCloseButton: true
+                            });
+                        }
+                    });
+                })
+            ]
+        }).show();
     }
 </script>

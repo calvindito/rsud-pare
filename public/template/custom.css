@@ -24,3 +24,7 @@
 .form-group {
     margin-bottom: 1rem;
 }
+
+.dropdown-menu {
+    min-width: 10rem !important;
+}
