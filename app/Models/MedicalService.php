@@ -29,4 +29,58 @@ class MedicalService extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * classType
+     *
+     * @return void
+     */
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class);
+    }
+
+    /**
+     * code
+     *
+     * @return void
+     */
+    public function code()
+    {
+        $code = $this->code;
+
+        if ($code == 1) {
+            $text = 'VISITE';
+        } else if ($code == 2) {
+            $text = 'VISITE IRD';
+        } else if ($code == 3) {
+            $text = 'KONSUL';
+        } else if ($code == 4) {
+            $text = 'KONSUL IRD';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
+
+    /**
+     * status
+     *
+     * @return void
+     */
+    public function status()
+    {
+        $status = $this->status;
+
+        if ($status == true) {
+            $html = '<span class="badge bg-success">Aktif</span>';
+        } else if ($status == false) {
+            $html = '<span class="badge bg-danger">Tidak Aktif</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
 }

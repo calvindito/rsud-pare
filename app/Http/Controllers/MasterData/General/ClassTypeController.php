@@ -21,8 +21,8 @@ class ClassTypeController extends Controller
 
     public function datatable(Request $request)
     {
-        $data = ClassType::orderByDesc('id');
         $search = $request->search['value'];
+        $data = ClassType::latest('id');
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {

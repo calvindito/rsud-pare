@@ -23,8 +23,8 @@ class EmployeeController extends Controller
 
     public function datatable(Request $request)
     {
-        $data = Employee::orderByDesc('id');
         $search = $request->search['value'];
+        $data = Employee::latest('id');
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -95,8 +95,7 @@ class EmployeeController extends Controller
                     'phone' => $request->phone,
                     'cellphone' => $request->cellphone,
                     'email' => $request->email,
-                    'marital_status' => $request->marital_status,
-                    'status' => $request->status
+                    'marital_status' => $request->marital_status
                 ]);
 
                 $response = [

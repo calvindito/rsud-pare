@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\MasterData\General;
 
-use App\Models\Doctor;
+use App\Models\ClassType;
 use Illuminate\Http\Request;
+use App\Models\MedicalService;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class DoctorController extends Controller
+class MedicalServiceController extends Controller
 {
     public function index()
     {
         $data = [
-            'content' => 'master-data.general.doctor'
+            'classType' => ClassType::all(),
+            'content' => 'master-data.general.medical-service'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -22,21 +24,25 @@ class DoctorController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Doctor::latest('id');
+        $data = MedicalService::with('classType')->latest('medical_services.id');
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
                     $query->where('name', 'like', "%$search%")
-                        ->orWhere('calling', 'like', "%$search%")
-                        ->orWhere('address', 'like', "%$search%");
+                        ->orWhereHas('classType', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        });
                 }
             })
-            ->editColumn('percentage', '{{ $percentage }}%')
-            ->editColumn('type', function (Doctor $query) {
-                return $query->type();
+            ->editColumn('fee', '{{ number_format($fee, 2) }}')
+            ->editColumn('code', function (MedicalService $query) {
+                return $query->code();
             })
-            ->addColumn('action', function (Doctor $query) {
+            ->editColumn('status', function (MedicalService $query) {
+                return $query->status();
+            })
+            ->addColumn('action', function (MedicalService $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -53,7 +59,7 @@ class DoctorController extends Controller
                     </div>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'status'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
@@ -62,21 +68,16 @@ class DoctorController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
+            'class_type_id' => 'required',
+            'code' => 'required',
             'name' => 'required',
-            'calling' => 'required',
-            'type' => 'required',
-            'percentage' => 'required',
-            'phone' => 'required|digits_between:8,13|numeric',
-            'address' => 'required'
+            'fee' => 'required|numeric',
         ], [
-            'name.required' => 'nama dokter tidak boleh kosong',
-            'calling.required' => 'nama panggilan tidak boleh kosong',
-            'type.required' => 'mohon memilih jenis dokter',
-            'percentage.required' => 'persentase jasa tidak boleh kosong',
-            'phone.required' => 'no telp tidak boleh kosong',
-            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
-            'phone.numeric' => 'no telp harus angka',
-            'address.required' => 'alamat praktek tidak boleh kosong'
+            'class_type_id.required' => 'mohon memilih kelas',
+            'code.required' => 'kode tidak boleh kosong',
+            'name.required' => 'nama tidak boleh kosong',
+            'fee.required' => 'biaya monitor tidak boleh kosong',
+            'fee.numeric' => 'biaya monitor harus angka yang valid'
         ]);
 
         if ($validation->fails()) {
@@ -86,13 +87,11 @@ class DoctorController extends Controller
             ];
         } else {
             try {
-                $createData = Doctor::create([
+                $createData = MedicalService::create([
+                    'class_type_id' => $request->class_type_id,
+                    'code' => $request->code,
                     'name' => $request->name,
-                    'calling' => $request->calling,
-                    'type' => $request->type,
-                    'percentage' => $request->percentage,
-                    'address' => $request->address,
-                    'phone' => $request->phone
+                    'fee' => str_replace(',', '', $request->fee)
                 ]);
 
                 $response = [
@@ -113,7 +112,7 @@ class DoctorController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = Doctor::findOrFail($id);
+        $data = MedicalService::findOrFail($id);
 
         return response()->json($data);
     }
@@ -122,21 +121,16 @@ class DoctorController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
+            'class_type_id' => 'required',
+            'code' => 'required',
             'name' => 'required',
-            'calling' => 'required',
-            'type' => 'required',
-            'percentage' => 'required',
-            'phone' => 'required|digits_between:8,13|numeric',
-            'address' => 'required'
+            'fee' => 'required|numeric',
         ], [
-            'name.required' => 'nama dokter tidak boleh kosong',
-            'calling.required' => 'nama panggilan tidak boleh kosong',
-            'type.required' => 'mohon memilih jenis dokter',
-            'percentage.required' => 'persentase jasa tidak boleh kosong',
-            'phone.required' => 'no telp tidak boleh kosong',
-            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
-            'phone.numeric' => 'no telp harus angka',
-            'address.required' => 'alamat praktek tidak boleh kosong'
+            'class_type_id.required' => 'mohon memilih kelas',
+            'code.required' => 'kode tidak boleh kosong',
+            'name.required' => 'nama tidak boleh kosong',
+            'fee.required' => 'biaya tidak boleh kosong',
+            'fee.numeric' => 'biaya harus angka yang valid'
         ]);
 
         if ($validation->fails()) {
@@ -146,13 +140,12 @@ class DoctorController extends Controller
             ];
         } else {
             try {
-                $updateData = Doctor::findOrFail($id)->update([
+                $updateData = MedicalService::findOrFail($id)->update([
+                    'class_type_id' => $request->class_type_id,
+                    'code' => $request->code,
                     'name' => $request->name,
-                    'calling' => $request->calling,
-                    'type' => $request->type,
-                    'percentage' => $request->percentage,
-                    'address' => $request->address,
-                    'phone' => $request->phone
+                    'fee' => str_replace(',', '', $request->fee),
+                    'status' => $request->status
                 ]);
 
                 $response = [
@@ -175,7 +168,7 @@ class DoctorController extends Controller
         $id = $request->id;
 
         try {
-            Doctor::destroy($id);
+            MedicalService::destroy($id);
 
             $response = [
                 'code' => 200,

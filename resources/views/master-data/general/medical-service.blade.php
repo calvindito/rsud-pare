@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Umum - <span class="fw-normal">Karyawan</span>
+                Master Data - Umum - <span class="fw-normal">Pelayanan Medik</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,11 +27,10 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode Karyawan</th>
                         <th nowrap>Nama</th>
-                        <th nowrap>Alamat</th>
-                        <th nowrap>No HP</th>
-                        <th nowrap>Email</th>
+                        <th nowrap>Kode</th>
+                        <th nowrap>Kelas</th>
+                        <th nowrap>Biaya</th>
                         <th class="text-center" nowrap>Status</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
@@ -57,9 +56,26 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Pegawai</label>
+                        <label class="col-form-label col-lg-3">Kelas <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Auto Generate" disabled>
+                            <select class="form-select" name="class_type_id" id="class_type_id">
+                                <option value="">-- Pilih --</option>
+                                @foreach($classType as $ct)
+                                    <option value="{{ $ct->id }}">{{ $ct->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Kode <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="code" id="code">
+                                <option value="">-- Pilih --</option>
+                                <option value="1">VISITE</option>
+                                <option value="2">VISITE IRD</option>
+                                <option value="3">KONSUL</option>
+                                <option value="4">KONSUL IRD</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -69,48 +85,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Alamat</label>
+                        <label class="col-form-label col-lg-3">Biaya <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <textarea class="form-control" name="address" id="address" style="resize:none;" placeholder="Masukan alamat"></textarea>
+                            <input type="text" class="form-control number-format" name="fee" id="fee" placeholder="Masukan biaya">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kota</label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="city_id" id="city_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($city as $c)
-                                    <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Pos</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="postal_code" id="postal_code" placeholder="Masukan kode pos">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">No Telp</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="phone" id="phone" placeholder="Masukan no telp">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">No HP</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="cellphone" id="cellphone" placeholder="Masukan no hp">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Email</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Masukan email">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Status <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Status</label>
                         <div class="col-md-9">
                             <select class="form-select" name="status" id="status">
                                 <option value="1" selected>Aktif</option>
@@ -207,7 +188,7 @@
             deferRender: true,
             destroy: true,
             ajax: {
-                url: '{{ url("master-data/general/employee/datatable") }}',
+                url: '{{ url("master-data/general/medical-service/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -227,11 +208,10 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
-                { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'address', name: 'address', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'cellphone', name: 'cellphone', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'email', name: 'email', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'code', name: 'code', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'class_type.name', name: 'class_type.name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'fee', name: 'fee', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
@@ -240,7 +220,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/general/employee/create-data") }}',
+            url: '{{ url("master-data/general/medical-service/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -283,7 +263,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/general/employee/show-data") }}',
+            url: '{{ url("master-data/general/medical-service/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -297,14 +277,10 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
+                $('#class_type_id').val(response.class_type_id);
                 $('#code').val(response.code);
                 $('#name').val(response.name);
-                $('#address').val(response.address);
-                $('#city_id').val(response.city_id);
-                $('#postal_code').val(response.postal_code);
-                $('#phone').val(response.phone);
-                $('#cellphone').val(response.cellphone);
-                $('#email').val(response.email);
+                $('#fee').val(response.fee);
                 $('#status').val(response.status);
             },
             error: function(response) {
@@ -321,7 +297,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/general/employee/update-data") }}',
+            url: '{{ url("master-data/general/medical-service/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -376,7 +352,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/general/employee/destroy-data") }}',
+                        url: '{{ url("master-data/general/medical-service/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {
