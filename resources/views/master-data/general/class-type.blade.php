@@ -220,7 +220,7 @@
                     formSuccess();
                     notification('success', response.message);
                 } else if(response.code == 400) {
-                    $('#modal-form .modal-content').scrollTop(0);
+                    $('#modal-form').scrollTop(0);
                     showValidation(response.error);
                 } else {
                     swalInit.fire({
@@ -297,7 +297,7 @@
                     formSuccess();
                     notification('success', response.message);
                 } else if(response.code == 400) {
-                    $('#modal-form .modal-content').scrollTop(0);
+                    $('#modal-form').scrollTop(0);
                     showValidation(response.error);
                 } else {
                     swalInit.fire({

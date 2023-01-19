@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Umum - <span class="fw-normal">Karyawan</span>
+                Master Data - Umum - <span class="fw-normal">Golongan Pasien</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,12 +27,12 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode Karyawan</th>
-                        <th nowrap>Nama</th>
-                        <th nowrap>Alamat</th>
-                        <th nowrap>No HP</th>
-                        <th nowrap>Email</th>
-                        <th class="text-center" nowrap>Status</th>
+                        <th nowrap>Kode Golongan</th>
+                        <th nowrap>Nama Golongan</th>
+                        <th nowrap>A Kpid</th>
+                        <th nowrap>Inisial</th>
+                        <th nowrap>Kode Kelas Hak</th>
+                        <th nowrap>Jenis Kelas Hak</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -42,7 +42,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -57,64 +57,92 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Pegawai</label>
+                        <label class="col-form-label col-lg-3">Kode Golongan <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Auto Generate" disabled>
+                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode golongan">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Nama Golongan <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama golongan">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Alamat</label>
+                        <label class="col-form-label col-lg-3">A Kpid</label>
                         <div class="col-md-9">
-                            <textarea class="form-control" name="address" id="address" style="resize:none;" placeholder="Masukan alamat"></textarea>
+                            <input type="text" class="form-control" name="kpid" id="kpid" placeholder="Masukan kpid">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kota</label>
+                        <label class="col-form-label col-lg-3">Inisial</label>
                         <div class="col-md-9">
-                            <select class="form-select" name="city_id" id="city_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($city as $c)
-                                    <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                @endforeach
+                            <input type="text" class="form-control" name="initial" id="initial" placeholder="Masukan inisial">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Kode Kelas Hak</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="privilege_class_code" id="privilege_class_code" placeholder="Masukan kode kelas hak">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Jenis Kelas Hak</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="privilege_class_type" id="privilege_class_type" placeholder="Masukan jenis kelas hak">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Kode Aturan</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="rule_code" id="rule_code" placeholder="Masukan kode aturan">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Nomor Awal</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="first_number" id="first_number" placeholder="Masukan nomor awal">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Penerima Bantuan Iuran</label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="contribution_assistance" id="contribution_assistance">
+                                <option value="1" selected>Ya</option>
+                                <option value="0">Tidak</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Pos</label>
+                        <label class="col-form-label col-lg-3">Mobil Ambulans Gratis</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="postal_code" id="postal_code" placeholder="Masukan kode pos">
+                            <input type="number" class="form-control" name="car_free_ambulance" id="car_free_ambulance" placeholder="Masukan total">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">No Telp</label>
+                        <label class="col-form-label col-lg-3">Mobil Jenazah Gratis</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="phone" id="phone" placeholder="Masukan no telp">
+                            <input type="number" class="form-control" name="car_free_corpse" id="car_free_corpse" placeholder="Masukan total">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">No HP</label>
+                        <label class="col-form-label col-lg-3">Kode Jenis Peserta</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="cellphone" id="cellphone" placeholder="Masukan no hp">
+                            <input type="text" class="form-control" name="code_member" id="code_member" placeholder="Masukan kode jenis peserta">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Email</label>
+                        <label class="col-form-label col-lg-3">Kode Jenis Kepersetaan</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Masukan email">
+                            <input type="text" class="form-control" name="code_membership" id="code_membership" placeholder="Masukan kode jenis kepersetaan">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Status <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Karyawan</label>
                         <div class="col-md-9">
-                            <select class="form-select" name="status" id="status">
-                                <option value="1" selected>Aktif</option>
-                                <option value="0">Tidak Aktif</option>
+                            <select class="form-select" name="employeeable" id="employeeable">
+                                <option value="1" selected>Ya</option>
+                                <option value="0">Tidak</option>
                             </select>
                         </div>
                     </div>
@@ -156,8 +184,8 @@
         $('#btn-create').removeClass('d-none');
         $('#btn-update').addClass('d-none');
         $('#btn-cancel').addClass('d-none');
-        $('#status').attr('disabled', true);
-        $('#status').val(1);
+        $('#contribution_assistance').val(1);
+        $('#employeeable').val(1);
     }
 
     function onCreate() {
@@ -177,8 +205,6 @@
         $('#btn-cancel').removeClass('d-none');
         $('#modal-form .modal-title').text('Edit Data');
         $('#modal-form').modal('show');
-        $('#status').attr('disabled', false);
-        $('#status').val(1);
     }
 
     function clearValidation() {
@@ -207,7 +233,7 @@
             deferRender: true,
             destroy: true,
             ajax: {
-                url: '{{ url("master-data/general/employee/datatable") }}',
+                url: '{{ url("master-data/general/patient-group/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -229,10 +255,10 @@
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'address', name: 'address', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'cellphone', name: 'cellphone', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'email', name: 'email', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle text-center' },
+                { data: 'kpid', name: 'kpid', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'initial', name: 'initial', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'privilege_class_code', name: 'privilege_class_code', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'privilege_class_type', name: 'privilege_class_type', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -240,7 +266,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/general/employee/create-data") }}',
+            url: '{{ url("master-data/general/patient-group/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -283,7 +309,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/general/employee/show-data") }}',
+            url: '{{ url("master-data/general/patient-group/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -299,13 +325,18 @@
                 $('#table_id').val(response.id);
                 $('#code').val(response.code);
                 $('#name').val(response.name);
-                $('#address').val(response.address);
-                $('#city_id').val(response.city_id);
-                $('#postal_code').val(response.postal_code);
-                $('#phone').val(response.phone);
-                $('#cellphone').val(response.cellphone);
-                $('#email').val(response.email);
-                $('#status').val(response.status);
+                $('#kpid').val(response.kpid);
+                $('#initial').val(response.initial);
+                $('#privilege_class_code').val(response.privilege_class_code);
+                $('#privilege_class_type').val(response.privilege_class_type);
+                $('#rule_code').val(response.rule_code);
+                $('#first_number').val(response.first_number);
+                $('#contribution_assistance').val(response.contribution_assistance);
+                $('#car_free_ambulance').val(response.car_free_ambulance);
+                $('#car_free_corpse').val(response.car_free_corpse);
+                $('#code_member').val(response.code_member);
+                $('#code_membership').val(response.code_membership);
+                $('#employeeable').val(response.employeeable);
             },
             error: function(response) {
                 onLoading('close', '.modal-content');
@@ -321,7 +352,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/general/employee/update-data") }}',
+            url: '{{ url("master-data/general/patient-group/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -376,7 +407,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/general/employee/destroy-data") }}',
+                        url: '{{ url("master-data/general/patient-group/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

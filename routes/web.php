@@ -45,6 +45,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'MedicalServiceController@updateData');
             Route::delete('destroy-data', 'MedicalServiceController@destroyData');
         });
+
+        Route::prefix('patient-group')->group(function () {
+            Route::get('/', 'PatientGroupController@index');
+            Route::get('datatable', 'PatientGroupController@datatable');
+            Route::post('create-data', 'PatientGroupController@createData');
+            Route::get('show-data', 'PatientGroupController@showData');
+            Route::patch('update-data', 'PatientGroupController@updateData');
+            Route::delete('destroy-data', 'PatientGroupController@destroyData');
+        });
     });
 });
 
