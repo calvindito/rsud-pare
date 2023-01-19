@@ -35,6 +35,9 @@ class EmployeeController extends Controller
                         ->orWhere('email', 'like', "%$search%");
                 }
             })
+            ->editColumn('status', function (Employee $query) {
+                return $query->status();
+            })
             ->addColumn('action', function (Employee $query) {
                 return '
                     <div class="btn-group">
@@ -52,7 +55,7 @@ class EmployeeController extends Controller
                     </div>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'status'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
@@ -92,7 +95,8 @@ class EmployeeController extends Controller
                     'phone' => $request->phone,
                     'cellphone' => $request->cellphone,
                     'email' => $request->email,
-                    'marital_status' => $request->marital_status
+                    'marital_status' => $request->marital_status,
+                    'status' => $request->status
                 ]);
 
                 $response = [
@@ -153,7 +157,8 @@ class EmployeeController extends Controller
                     'phone' => $request->phone,
                     'cellphone' => $request->cellphone,
                     'email' => $request->email,
-                    'marital_status' => $request->marital_status
+                    'marital_status' => $request->marital_status,
+                    'status' => $request->status
                 ]);
 
                 $response = [

@@ -24,6 +24,7 @@ class CreateEmployeesTable extends Migration
             $table->string('cellphone')->nullable();
             $table->string('email')->nullable();
             $table->char('marital_status', 1)->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
