@@ -29,4 +29,9 @@ class City extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
 }
