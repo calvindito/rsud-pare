@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Umum - <span class="fw-normal">Karyawan</span>
+                Master Data - Umum - <span class="fw-normal">Unit</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,12 +27,9 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode Karyawan</th>
-                        <th nowrap>Nama</th>
-                        <th nowrap>Alamat</th>
-                        <th nowrap>No HP</th>
-                        <th nowrap>Email</th>
-                        <th class="text-center" nowrap>Status</th>
+                        <th nowrap>Kode Unit</th>
+                        <th nowrap>Nama Unit</th>
+                        <th nowrap>Jenis Unit</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -42,7 +39,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -57,59 +54,25 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Pegawai</label>
+                        <label class="col-form-label col-lg-3">Kode Unit <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Auto Generate" disabled>
+                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode unit">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Nama Unit <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama unit">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Alamat</label>
+                        <label class="col-form-label col-lg-3">Jenis Unit <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <textarea class="form-control" name="address" id="address" style="resize:none;" placeholder="Masukan alamat"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kota</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="city" id="city" placeholder="Masukan kota">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Pos</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="postal_code" id="postal_code" placeholder="Masukan kode pos">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">No Telp</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="phone" id="phone" placeholder="Masukan no telp">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">No HP</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="cellphone" id="cellphone" placeholder="Masukan no hp">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Email</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Masukan email">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Status <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="status" id="status">
-                                <option value="1" selected>Aktif</option>
-                                <option value="0">Tidak Aktif</option>
+                            <select class="form-select" name="type" id="type">
+                                <option value="">-- Pilih --</option>
+                                <option value="1">Rawat Inap</option>
+                                <option value="2">Rawat Jalan</option>
+                                <option value="3">Penunjang</option>
                             </select>
                         </div>
                     </div>
@@ -151,8 +114,6 @@
         $('#btn-create').removeClass('d-none');
         $('#btn-update').addClass('d-none');
         $('#btn-cancel').addClass('d-none');
-        $('#status').attr('disabled', true);
-        $('#status').val(1);
     }
 
     function onCreate() {
@@ -172,8 +133,6 @@
         $('#btn-cancel').removeClass('d-none');
         $('#modal-form .modal-title').text('Edit Data');
         $('#modal-form').modal('show');
-        $('#status').attr('disabled', false);
-        $('#status').val(1);
     }
 
     function clearValidation() {
@@ -202,7 +161,7 @@
             deferRender: true,
             destroy: true,
             ajax: {
-                url: '{{ url("master-data/general/employee/datatable") }}',
+                url: '{{ url("master-data/general/unit/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -224,10 +183,7 @@
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'address', name: 'address', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'cellphone', name: 'cellphone', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'email', name: 'email', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle text-center' },
+                { data: 'type', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -235,7 +191,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/general/employee/create-data") }}',
+            url: '{{ url("master-data/general/unit/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -278,7 +234,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/general/employee/show-data") }}',
+            url: '{{ url("master-data/general/unit/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -294,13 +250,7 @@
                 $('#table_id').val(response.id);
                 $('#code').val(response.code);
                 $('#name').val(response.name);
-                $('#address').val(response.address);
-                $('#city').val(response.city);
-                $('#postal_code').val(response.postal_code);
-                $('#phone').val(response.phone);
-                $('#cellphone').val(response.cellphone);
-                $('#email').val(response.email);
-                $('#status').val(response.status);
+                $('#type').val(response.type);
             },
             error: function(response) {
                 onLoading('close', '.modal-content');
@@ -316,7 +266,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/general/employee/update-data") }}',
+            url: '{{ url("master-data/general/unit/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -371,7 +321,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/general/employee/destroy-data") }}',
+                        url: '{{ url("master-data/general/unit/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

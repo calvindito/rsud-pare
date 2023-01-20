@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\MasterData\General;
 
-use App\Models\City;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,7 +13,6 @@ class EmployeeController extends Controller
     public function index()
     {
         $data = [
-            'city' => City::all(),
             'content' => 'master-data.general.employee'
         ];
 
@@ -24,7 +22,7 @@ class EmployeeController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Employee::latest('id');
+        $data = Employee::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -88,8 +86,8 @@ class EmployeeController extends Controller
         } else {
             try {
                 $createData = Employee::create([
-                    'city_id' => $request->city_id,
                     'name' => $request->name,
+                    'city' => $request->city,
                     'address' => $request->address,
                     'postal_code' => $request->postal_code,
                     'phone' => $request->phone,
@@ -149,8 +147,8 @@ class EmployeeController extends Controller
         } else {
             try {
                 $updateData = Employee::findOrFail($id)->update([
-                    'city_id' => $request->city_id,
                     'name' => $request->name,
+                    'city' => $request->city,
                     'address' => $request->address,
                     'postal_code' => $request->postal_code,
                     'phone' => $request->phone,

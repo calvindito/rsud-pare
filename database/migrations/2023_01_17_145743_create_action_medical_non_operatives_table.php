@@ -16,7 +16,7 @@ class CreateActionMedicalNonOperativesTable extends Migration
         Schema::create('action_medical_non_operatives', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('class_type_id')->nullable();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->double('hospital_service')->nullable();
             $table->integer('doctor_operating')->nullable();

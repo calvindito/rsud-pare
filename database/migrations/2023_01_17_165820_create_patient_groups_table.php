@@ -15,17 +15,17 @@ class CreatePatientGroupsTable extends Migration
     {
         Schema::create('patient_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->integer('kpid')->nullable();
             $table->string('initial')->nullable();
             $table->string('privilege_class_code')->nullable();
             $table->string('privilege_class_type')->nullable();
             $table->string('rule_code')->nullable();
-            $table->integer('first_number')->nullable();
+            $table->string('first_number')->nullable();
             $table->boolean('contribution_assistance')->default(false);
-            $table->integer('car_free_ambulance')->nullable();
-            $table->integer('car_free_corpse')->nullable();
+            $table->boolean('car_free_ambulance')->default(false);
+            $table->boolean('car_free_corpse')->default(false);
             $table->string('code_member')->nullable();
             $table->string('code_membership')->nullable();
             $table->boolean('employeeable')->default(false);

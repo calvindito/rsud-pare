@@ -15,15 +15,14 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('city_id')->nullable();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('name')->nullable();
+            $table->string('city')->nullable();
             $table->text('address')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('phone')->nullable();
             $table->string('cellphone')->nullable();
             $table->string('email')->nullable();
-            $table->char('marital_status', 1)->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

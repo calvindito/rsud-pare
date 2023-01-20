@@ -16,7 +16,7 @@ class CreateRadiologiesTable extends Migration
         Schema::create('radiologies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('action_medical_supporting_id')->nullable();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('type')->nullable();
             $table->string('object')->nullable();
             $table->string('projection')->nullable();

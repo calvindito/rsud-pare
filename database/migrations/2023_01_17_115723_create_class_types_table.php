@@ -15,7 +15,7 @@ class CreateClassTypesTable extends Migration
     {
         Schema::create('class_types', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('code_bpjs')->nullable();
             $table->string('name')->nullable();
             $table->double('fee_monitoring')->nullable();

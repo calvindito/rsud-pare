@@ -191,21 +191,7 @@
                                     <li class="nav-item">
                                         <a href="{{ url('master-data/location/district') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'location' && Request::segment(3) == 'district' ? 'active' : '' }}">Kecamatan</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a href="{{ url('master-data/location/village') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'location' && Request::segment(3) == 'village' ? 'active' : '' }}">Kelurahan</a>
-                                    </li>
                                 </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="nav-item nav-item-submenu">
-                        <a href="#" class="nav-link">
-                            <i class="ph-shield-plus"></i>
-                            <span>BPJS</span>
-                        </a>
-                        <ul class="nav-group-sub collapse">
-                            <li class="nav-item">
-                                <a href="javascript:void(0)" class="nav-link">Dropdown 1</a>
                             </li>
                         </ul>
                     </li>
@@ -258,17 +244,6 @@
                             <i class="ph-video-camera"></i>
                             <span>Radiologi</span>
                         </a>
-                    </li>
-                    <li class="nav-item nav-item-submenu">
-                        <a href="#" class="nav-link">
-                            <i class="ph-flask"></i>
-                            <span>Laboratorium</span>
-                        </a>
-                        <ul class="nav-group-sub collapse">
-                            <li class="nav-item">
-                                <a href="javascript:void(0)" class="nav-link">Dropdown 1</a>
-                            </li>
-                        </ul>
                     </li>
                     <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link">

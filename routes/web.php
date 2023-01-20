@@ -63,6 +63,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'ReligionController@updateData');
             Route::delete('destroy-data', 'ReligionController@destroyData');
         });
+
+        Route::prefix('unit')->group(function () {
+            Route::get('/', 'UnitController@index');
+            Route::get('datatable', 'UnitController@datatable');
+            Route::post('create-data', 'UnitController@createData');
+            Route::get('show-data', 'UnitController@showData');
+            Route::patch('update-data', 'UnitController@updateData');
+            Route::delete('destroy-data', 'UnitController@destroyData');
+        });
     });
 });
 

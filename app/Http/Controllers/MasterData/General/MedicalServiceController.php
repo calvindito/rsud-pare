@@ -24,7 +24,7 @@ class MedicalServiceController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = MedicalService::with('classType')->latest('medical_services.id');
+        $data = MedicalService::with('classType');
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -59,6 +59,7 @@ class MedicalServiceController extends Controller
                     </div>
                 ';
             })
+
             ->rawColumns(['action', 'status'])
             ->addIndexColumn()
             ->escapeColumns()

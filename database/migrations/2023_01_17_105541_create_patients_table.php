@@ -21,7 +21,7 @@ class CreatePatientsTable extends Migration
             $table->unsignedBigInteger('village_id')->nullable();
             $table->unsignedBigInteger('religion_id')->nullable();
             $table->unsignedBigInteger('place_of_birth')->nullable();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('identity_number')->nullable();
             $table->string('name')->nullable();
             $table->char('gender', 1)->nullable();

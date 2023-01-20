@@ -22,7 +22,7 @@ class ReligionController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Religion::latest('id');
+        $data = Religion::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {

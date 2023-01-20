@@ -15,7 +15,7 @@ class CreateDTDSTable extends Migration
     {
         Schema::create('dtds', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->timestamps();
         });

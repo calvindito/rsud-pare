@@ -17,6 +17,7 @@ class CreateCitiesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('province_id')->nullable();
             $table->string('name')->nullable();
+            $table->string('island')->nullable();
             $table->timestamps();
         });
     }

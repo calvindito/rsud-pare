@@ -29,4 +29,26 @@ class Unit extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * type
+     *
+     * @return void
+     */
+    public function type()
+    {
+        $type = $this->type;
+
+        if ($type == 1) {
+            $text = 'Rawat Inap';
+        } else if ($type == 2) {
+            $text = 'Rawat Jalan';
+        } else if ($type == 3) {
+            $text = 'Penunjang';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
 }

@@ -57,6 +57,8 @@ class MedicalService extends Model
             $text = 'KONSUL';
         } else if ($code == 4) {
             $text = 'KONSUL IRD';
+        } else if ($code == 5) {
+            $text = 'PDP';
         } else {
             $text = 'Invalid';
         }

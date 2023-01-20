@@ -29,4 +29,44 @@ class PatientGroup extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * carFreeAmbulance
+     *
+     * @return void
+     */
+    public function carFreeAmbulance()
+    {
+        $carFreeAmbulance = $this->car_free_ambulance;
+
+        if ($carFreeAmbulance == true) {
+            $text = 'Ya';
+        } else if ($carFreeAmbulance == false) {
+            $text = 'Tidak';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
+
+    /**
+     * carFreeCorpse
+     *
+     * @return void
+     */
+    public function carFreeCorpse()
+    {
+        $carFreeCorpse = $this->car_free_corpse;
+
+        if ($carFreeCorpse == true) {
+            $text = 'Ya';
+        } else if ($carFreeCorpse == false) {
+            $text = 'Tidak';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
 }

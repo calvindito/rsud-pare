@@ -16,7 +16,7 @@ class CreateICDSTable extends Migration
         Schema::create('icds', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('dtd_id')->nullable();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
         });

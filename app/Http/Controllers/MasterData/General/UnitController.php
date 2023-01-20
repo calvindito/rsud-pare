@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\MasterData\General;
 
-use App\Models\Doctor;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class DoctorController extends Controller
+class UnitController extends Controller
 {
     public function index()
     {
         $data = [
-            'content' => 'master-data.general.doctor'
+            'content' => 'master-data.general.unit'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -22,21 +22,19 @@ class DoctorController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Doctor::query();
+        $data = Unit::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('name', 'like', "%$search%")
-                        ->orWhere('calling', 'like', "%$search%")
-                        ->orWhere('address', 'like', "%$search%");
+                    $query->where('code', 'like', "%$search%")
+                        ->orWhere('name', 'like', "%$search%");
                 }
             })
-            ->editColumn('percentage', '{{ $percentage }} %')
-            ->editColumn('type', function (Doctor $query) {
+            ->editColumn('type', function (Unit $query) {
                 return $query->type();
             })
-            ->addColumn('action', function (Doctor $query) {
+            ->addColumn('action', function (Unit $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -62,21 +60,14 @@ class DoctorController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
+            'code' => 'required|unique:units,code',
             'name' => 'required',
-            'calling' => 'required',
-            'type' => 'required',
-            'percentage' => 'required',
-            'phone' => 'required|digits_between:8,13|numeric',
-            'address' => 'required'
+            'type' => 'required'
         ], [
-            'name.required' => 'nama dokter tidak boleh kosong',
-            'calling.required' => 'nama panggilan tidak boleh kosong',
-            'type.required' => 'mohon memilih jenis dokter',
-            'percentage.required' => 'persentase jasa tidak boleh kosong',
-            'phone.required' => 'no telp tidak boleh kosong',
-            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
-            'phone.numeric' => 'no telp harus angka',
-            'address.required' => 'alamat praktek tidak boleh kosong'
+            'code.required' => 'kode unit tidak boleh kosong',
+            'code.unique' => 'kode unit telah digunakan',
+            'name.required' => 'nama unit tidak boleh kosong',
+            'type.required' => 'mohon memilih jenis unit'
         ]);
 
         if ($validation->fails()) {
@@ -86,13 +77,10 @@ class DoctorController extends Controller
             ];
         } else {
             try {
-                $createData = Doctor::create([
+                $createData = Unit::create([
+                    'code' => $request->code,
                     'name' => $request->name,
-                    'calling' => $request->calling,
-                    'type' => $request->type,
-                    'percentage' => $request->percentage,
-                    'address' => $request->address,
-                    'phone' => $request->phone
+                    'type' => $request->type
                 ]);
 
                 $response = [
@@ -113,7 +101,7 @@ class DoctorController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = Doctor::findOrFail($id);
+        $data = Unit::findOrFail($id);
 
         return response()->json($data);
     }
@@ -122,21 +110,14 @@ class DoctorController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
+            'code' => 'required|unique:units,code',
             'name' => 'required',
-            'calling' => 'required',
-            'type' => 'required',
-            'percentage' => 'required',
-            'phone' => 'required|digits_between:8,13|numeric',
-            'address' => 'required'
+            'type' => 'required'
         ], [
-            'name.required' => 'nama dokter tidak boleh kosong',
-            'calling.required' => 'nama panggilan tidak boleh kosong',
-            'type.required' => 'mohon memilih jenis dokter',
-            'percentage.required' => 'persentase jasa tidak boleh kosong',
-            'phone.required' => 'no telp tidak boleh kosong',
-            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
-            'phone.numeric' => 'no telp harus angka',
-            'address.required' => 'alamat praktek tidak boleh kosong'
+            'code.required' => 'kode unit tidak boleh kosong',
+            'code.unique' => 'kode unit telah digunakan',
+            'name.required' => 'nama unit tidak boleh kosong',
+            'type.required' => 'mohon memilih jenis unit'
         ]);
 
         if ($validation->fails()) {
@@ -146,13 +127,10 @@ class DoctorController extends Controller
             ];
         } else {
             try {
-                $updateData = Doctor::findOrFail($id)->update([
+                $updateData = Unit::findOrFail($id)->update([
+                    'code' => $request->code,
                     'name' => $request->name,
-                    'calling' => $request->calling,
-                    'type' => $request->type,
-                    'percentage' => $request->percentage,
-                    'address' => $request->address,
-                    'phone' => $request->phone
+                    'type' => $request->type
                 ]);
 
                 $response = [
@@ -175,7 +153,7 @@ class DoctorController extends Controller
         $id = $request->id;
 
         try {
-            Doctor::destroy($id);
+            Unit::destroy($id);
 
             $response = [
                 'code' => 200,

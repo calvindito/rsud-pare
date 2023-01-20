@@ -15,7 +15,7 @@ class CreateLabItemGroupsTable extends Migration
     {
         Schema::create('lab_item_groups', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->timestamps();
         });

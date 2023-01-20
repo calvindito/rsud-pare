@@ -22,7 +22,7 @@ class PatientGroupController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = PatientGroup::latest('id');
+        $data = PatientGroup::whereIn('code', ['111', '1001', '1002', '1004', '1008', '2401', '9204', '9205']);
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {

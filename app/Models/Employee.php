@@ -70,16 +70,6 @@ class Employee extends Model
     }
 
     /**
-     * city
-     *
-     * @return void
-     */
-    public function city()
-    {
-        return $this->belongsTo(City::class);
-    }
-
-    /**
      * status
      *
      * @return void

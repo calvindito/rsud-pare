@@ -15,7 +15,7 @@ class CreateActionMedicalOperativesTable extends Migration
     {
         Schema::create('action_medical_operatives', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->string('class')->nullable();
             $table->double('hospital_service')->nullable();

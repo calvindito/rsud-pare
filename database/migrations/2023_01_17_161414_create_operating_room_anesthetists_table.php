@@ -15,7 +15,7 @@ class CreateOperatingRoomAnesthetistsTable extends Migration
     {
         Schema::create('operating_room_anesthetists', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->timestamps();
         });

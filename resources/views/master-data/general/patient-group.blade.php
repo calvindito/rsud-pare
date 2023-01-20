@@ -116,13 +116,19 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Mobil Ambulans Gratis</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="car_free_ambulance" id="car_free_ambulance" placeholder="Masukan total">
+                            <select class="form-select" name="car_free_ambulance" id="car_free_ambulance">
+                                <option value="1" selected>Ya</option>
+                                <option value="0">Tidak</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Mobil Jenazah Gratis</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="car_free_corpse" id="car_free_corpse" placeholder="Masukan total">
+                            <select class="form-select" name="car_free_corpse" id="car_free_corpse">
+                                <option value="1" selected>Ya</option>
+                                <option value="0">Tidak</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -185,6 +191,8 @@
         $('#btn-update').addClass('d-none');
         $('#btn-cancel').addClass('d-none');
         $('#contribution_assistance').val(1);
+        $('#car_free_ambulance').val(1);
+        $('#car_free_corpse').val(1);
         $('#employeeable').val(1);
     }
 
