@@ -210,7 +210,7 @@
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'code', name: 'code', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'class_type.name', name: 'class_type.name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'class_type_name', name: 'class_type_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'fee', name: 'fee', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },

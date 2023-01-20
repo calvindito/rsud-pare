@@ -33,6 +33,15 @@ class CityController extends Controller
                         });
                 }
             })
+            ->addColumn('province_name', function (City $query) {
+                $provinceName = null;
+
+                if (isset($query->province)) {
+                    $provinceName = $query->province->name;
+                }
+
+                return $provinceName;
+            })
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();

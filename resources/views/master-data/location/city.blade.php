@@ -67,7 +67,7 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
-                { data: 'province.name', name: 'province.name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'province_name', name: 'province_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'island', name: 'island', orderable: true, searchable: true, className: 'align-middle' },
             ]

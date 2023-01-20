@@ -32,6 +32,15 @@ class DistrictController extends Controller
                         });
                 }
             })
+            ->addColumn('city_name', function (District $query) {
+                $cityName = null;
+
+                if (isset($query->city)) {
+                    $cityName = $query->city->name;
+                }
+
+                return $cityName;
+            })
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();

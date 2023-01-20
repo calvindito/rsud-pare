@@ -66,7 +66,7 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
-                { data: 'city.name', name: 'city.name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'city_name', name: 'city_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
             ]
         });

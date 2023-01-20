@@ -42,6 +42,15 @@ class MedicalServiceController extends Controller
             ->editColumn('status', function (MedicalService $query) {
                 return $query->status();
             })
+            ->addColumn('class_type_name', function (MedicalService $query) {
+                $classTypeName = null;
+
+                if (isset($query->classType)) {
+                    $classTypeName = $query->classType->name;
+                }
+
+                return $classTypeName;
+            })
             ->addColumn('action', function (MedicalService $query) {
                 return '
                     <div class="btn-group">
