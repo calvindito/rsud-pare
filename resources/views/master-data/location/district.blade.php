@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Wilayah - <span class="fw-normal">Kota</span>
+                Master Data - Wilayah - <span class="fw-normal">Kecamatan</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -23,9 +23,8 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Provinsi</th>
+                        <th nowrap>Kota</th>
                         <th nowrap>Nama</th>
-                        <th nowrap>Pulau</th>
                     </tr>
                 </thead>
             </table>
@@ -47,7 +46,7 @@
             deferRender: true,
             destroy: true,
             ajax: {
-                url: '{{ url("master-data/location/city/datatable") }}',
+                url: '{{ url("master-data/location/district/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -67,9 +66,8 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
-                { data: 'province.name', name: 'province.name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'city.name', name: 'city.name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'island', name: 'island', orderable: true, searchable: true, className: 'align-middle' },
             ]
         });
     }

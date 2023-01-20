@@ -29,7 +29,6 @@
                         <th nowrap>Luas</th>
                         <th nowrap>Pulau</th>
                         <th nowrap>Daerah Khusus</th>
-                        <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
             </table>

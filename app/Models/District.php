@@ -29,4 +29,14 @@ class District extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * city
+     *
+     * @return void
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
 }

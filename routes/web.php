@@ -84,6 +84,11 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::get('/', 'CityController@index');
             Route::get('datatable', 'CityController@datatable');
         });
+
+        Route::prefix('district')->group(function () {
+            Route::get('/', 'DistrictController@index');
+            Route::get('datatable', 'DistrictController@datatable');
+        });
     });
 });
 

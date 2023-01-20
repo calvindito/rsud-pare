@@ -30,6 +30,11 @@ class City extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * province
+     *
+     * @return void
+     */
     public function province()
     {
         return $this->belongsTo(Province::class);
