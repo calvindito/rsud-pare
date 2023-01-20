@@ -73,6 +73,18 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::delete('destroy-data', 'UnitController@destroyData');
         });
     });
+
+    Route::prefix('location')->namespace('Location')->group(function () {
+        Route::prefix('province')->group(function () {
+            Route::get('/', 'ProvinceController@index');
+            Route::get('datatable', 'ProvinceController@datatable');
+        });
+
+        Route::prefix('city')->group(function () {
+            Route::get('/', 'CityController@index');
+            Route::get('datatable', 'CityController@datatable');
+        });
+    });
 });
 
 Route::prefix('setting')->namespace('Setting')->group(function () {
