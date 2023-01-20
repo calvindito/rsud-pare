@@ -54,6 +54,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'PatientGroupController@updateData');
             Route::delete('destroy-data', 'PatientGroupController@destroyData');
         });
+
+        Route::prefix('religion')->group(function () {
+            Route::get('/', 'ReligionController@index');
+            Route::get('datatable', 'ReligionController@datatable');
+            Route::post('create-data', 'ReligionController@createData');
+            Route::get('show-data', 'ReligionController@showData');
+            Route::patch('update-data', 'ReligionController@updateData');
+            Route::delete('destroy-data', 'ReligionController@destroyData');
+        });
     });
 });
 
