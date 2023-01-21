@@ -59,7 +59,6 @@
                         <label class="col-form-label col-lg-3">DTD</label>
                         <div class="col-md-9">
                             <select class="form-select select2-basic" name="dtd_id" id="dtd_id">
-                                <option value="">-- Pilih --</option>
                                 @foreach($dtd as $d)
                                     <option value="{{ $d->id }}">{{ $d->code . ' - ' . $d->name }}</option>
                                 @endforeach
@@ -162,7 +161,9 @@
             processing: true,
             serverSide: true,
             deferRender: true,
+            scrollX: true,
             destroy: true,
+            order: [[0, 'desc']],
             ajax: {
                 url: '{{ url("master-data/medical-record/icd/datatable") }}',
                 dataType: 'JSON',
@@ -183,10 +184,10 @@
                 }
             },
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
+                { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'dtd_name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'dtd_name', name: 'name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'created_at', name: 'created_at', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'updated_at', name: 'updated_at', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },

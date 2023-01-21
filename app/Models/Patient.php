@@ -29,4 +29,54 @@ class Patient extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * province
+     *
+     * @return void
+     */
+    public function province()
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    /**
+     * city
+     *
+     * @return void
+     */
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    /**
+     * district
+     *
+     * @return void
+     */
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
+
+    /**
+     * gender
+     *
+     * @return void
+     */
+    public function gender()
+    {
+        $gender = $this->gender;
+
+        if ($gender == 1) {
+            $text = 'Laki - Laki';
+        } else if ($gender == 2) {
+            $text = 'Perempuan';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
 }

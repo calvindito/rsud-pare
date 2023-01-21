@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::match(['get', 'post'], '/', 'AuthController@login');
 
+Route::prefix('serverside')->group(function () {
+    Route::get('location', 'ServerSideController@location');
+});
+
 Route::prefix('dashboard')->group(function () {
     Route::get('general', 'DashboardController@general');
 });
@@ -92,6 +96,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
     });
 
     Route::prefix('medical-record')->namespace('MedicalRecord')->group(function () {
+        Route::prefix('patient')->group(function () {
+            Route::get('/', 'PatientController@index');
+            Route::get('datatable', 'PatientController@datatable');
+            Route::get('show-data', 'PatientController@showData');
+            Route::patch('update-data', 'PatientController@updateData');
+            Route::delete('destroy-data', 'PatientController@destroyData');
+            Route::get('print/{id}', 'PatientController@print');
+        });
+
         Route::prefix('dtd')->group(function () {
             Route::get('/', 'DTDController@index');
             Route::get('datatable', 'DTDController@datatable');

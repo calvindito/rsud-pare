@@ -75,5 +75,32 @@ function formatNumber() {
 }
 
 function select2Basic() {
-    $('.select2-basic').select2();
+    $('.select2-basic').select2({
+        placeholder: '-- Pilih --'
+    });
+}
+
+function select2AjaxLocation(selector, show = []) {
+    $(selector).select2({
+        placeholder: '-- Pilih --',
+        dropdownParent: '.modal',
+        minimumInputLength: 3,
+        allowClear: true,
+        cache: true,
+        ajax: {
+            url: '/serverside/location',
+            type: 'GET',
+            dataType: 'JSON',
+            delay: 250,
+            data: function(params) {
+                return {
+                    search: params.term,
+                    show: show
+                };
+            },
+            processResults: function(data) {
+                return { results: data }
+            }
+        }
+    });
 }

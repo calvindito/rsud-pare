@@ -45,6 +45,9 @@
             serverSide: true,
             deferRender: true,
             destroy: true,
+            scrollX: true,
+            destroy: true,
+            order: [[0, 'desc']],
             ajax: {
                 url: '{{ url("master-data/location/district/datatable") }}',
                 dataType: 'JSON',
@@ -65,7 +68,7 @@
                 }
             },
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
+                { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'city_name', name: 'city_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
             ]

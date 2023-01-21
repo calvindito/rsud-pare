@@ -239,7 +239,9 @@
             processing: true,
             serverSide: true,
             deferRender: true,
+            scrollX: true,
             destroy: true,
+            order: [[0, 'desc']],
             ajax: {
                 url: '{{ url("master-data/general/patient-group/datatable") }}',
                 dataType: 'JSON',
@@ -260,7 +262,7 @@
                 }
             },
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
+                { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'kpid', name: 'kpid', orderable: true, searchable: false, className: 'align-middle' },
