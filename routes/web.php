@@ -100,6 +100,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'DTDController@updateData');
             Route::delete('destroy-data', 'DTDController@destroyData');
         });
+
+        Route::prefix('icd')->group(function () {
+            Route::get('/', 'ICDController@index');
+            Route::get('datatable', 'ICDController@datatable');
+            Route::post('create-data', 'ICDController@createData');
+            Route::get('show-data', 'ICDController@showData');
+            Route::patch('update-data', 'ICDController@updateData');
+            Route::delete('destroy-data', 'ICDController@destroyData');
+        });
     });
 });
 

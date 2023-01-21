@@ -17,7 +17,7 @@ class CreateICDSTable extends Migration
             $table->id();
             $table->unsignedBigInteger('dtd_id')->nullable();
             $table->string('code')->nullable();
-            $table->text('description')->nullable();
+            $table->string('name')->nullable();
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ Noty.overrideDefaults({
 $(function() {
     configDataTable();
     formatNumber();
+    select2Basic();
 
     $('.sidebar-control').on('click', function() {
         gDataTable.columns.adjust().draw();
@@ -71,4 +72,8 @@ function notification(type, text, layout = 'topCenter') {
 
 function formatNumber() {
     $('.number-format').number(true, 2);
+}
+
+function select2Basic() {
+    $('.select2-basic').select2();
 }

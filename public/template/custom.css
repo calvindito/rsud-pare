@@ -28,3 +28,7 @@
 .dropdown-menu {
     min-width: 10rem !important;
 }
+
+.nowrap {
+    white-space: nowrap !important;
+}

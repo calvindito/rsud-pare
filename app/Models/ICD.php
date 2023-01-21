@@ -29,4 +29,14 @@ class ICD extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * dtd
+     *
+     * @return void
+     */
+    public function dtd()
+    {
+        return $this->belongsTo(DTD::class);
+    }
 }

@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Rekam Medik - <span class="fw-normal">DTD</span>
+                Master Data - Rekam Medik - <span class="fw-normal">ICD</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -29,6 +29,7 @@
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Kode</th>
                         <th nowrap>Nama</th>
+                        <th nowrap>DTD</th>
                         <th nowrap>Tanggal Dibuat</th>
                         <th nowrap>Tanggal Diupdate</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
@@ -40,7 +41,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -54,6 +55,17 @@
                 </div>
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">DTD</label>
+                        <div class="col-md-9">
+                            <select class="form-select select2-basic" name="dtd_id" id="dtd_id">
+                                <option value="">-- Pilih --</option>
+                                @foreach($dtd as $d)
+                                    <option value="{{ $d->id }}">{{ $d->code . ' - ' . $d->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Kode <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
@@ -104,6 +116,7 @@
         $('#btn-create').removeClass('d-none');
         $('#btn-update').addClass('d-none');
         $('#btn-cancel').addClass('d-none');
+        $('.select2-basic').val('').change();
     }
 
     function onCreate() {
@@ -151,7 +164,7 @@
             deferRender: true,
             destroy: true,
             ajax: {
-                url: '{{ url("master-data/medical-record/dtd/datatable") }}',
+                url: '{{ url("master-data/medical-record/icd/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -173,6 +186,7 @@
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'dtd_name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'created_at', name: 'created_at', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'updated_at', name: 'updated_at', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
@@ -182,7 +196,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/medical-record/dtd/create-data") }}',
+            url: '{{ url("master-data/medical-record/icd/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -225,7 +239,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/medical-record/dtd/show-data") }}',
+            url: '{{ url("master-data/medical-record/icd/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -239,6 +253,7 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
+                $('#dtd_id').val(response.dtd_id).change();
                 $('#code').val(response.code);
                 $('#name').val(response.name);
             },
@@ -256,7 +271,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/medical-record/dtd/update-data") }}',
+            url: '{{ url("master-data/medical-record/icd/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -311,7 +326,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/medical-record/dtd/destroy-data") }}',
+                        url: '{{ url("master-data/medical-record/icd/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

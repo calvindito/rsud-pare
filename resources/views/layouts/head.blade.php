@@ -17,6 +17,7 @@
 	<script src="{{ asset('template/assets/js/vendor/visualization/echarts/echarts.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/notifications/sweet_alert.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/notifications/noty.min.js') }}"></script>
+	<script src="{{ asset('template/assets/js/vendor/forms/selects/select2.min.js') }}"></script>
 	<script src="{{ asset('template/plugins/waitMe/waitMe.min.js') }}"></script>
 	<script src="{{ asset('template/plugins/number-format/jquery.number.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/ui/prism.min.js') }}"></script>
