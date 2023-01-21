@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\District;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DistrictSeeder extends Seeder
 {
@@ -14,16 +15,16 @@ class DistrictSeeder extends Seeder
      */
     public function run()
     {
-        require public_path('assets/masterdata-location.php');
-
-        foreach ($refkec as $rk) {
-            District::create([
-                'id' => $rk['KodeKec'],
-                'city_id' => $rk['KodeKabKota'],
-                'name' => $rk['NamaKec'],
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+        DB::connection('clone')->table('refkec')->orderBy('KodeKec')->chunk(1000, function ($query) {
+            foreach ($query as $q) {
+                District::insert([
+                    'id' => $q->KodeKec,
+                    'city_id' => $q->KodeKabKota,
+                    'name' => $q->NamaKec,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        });
     }
 }

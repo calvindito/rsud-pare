@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\MedicalService;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class MedicalServiceSeeder extends Seeder
 {
@@ -14,32 +15,33 @@ class MedicalServiceSeeder extends Seeder
      */
     public function run()
     {
-        require public_path('assets/masterdata-general.php');
+        DB::connection('clone')->table('jenis_visite')->orderBy('id_jenis_visite')->chunk(1000, function ($query) {
+            foreach ($query as $q) {
+                if ($q->kode_visite == 'VISITE') {
+                    $code = 1;
+                } else if ($q->kode_visite == 'VISITE IRD') {
+                    $code = 2;
+                } else if ($q->kode_visite == 'KONSUL') {
+                    $code = 3;
+                } else if ($q->kode_visite == 'KONSUL IRD') {
+                    $code = 4;
+                } else if ($q->kode_visite == 'PDP') {
+                    $code = 5;
+                } else {
+                    $code = 'Invalid';
+                }
 
-        foreach ($jenis_visite as $jv) {
-            if ($jv['kode_visite'] == 'VISITE') {
-                $code = 1;
-            } else if ($jv['kode_visite'] == 'VISITE IRD') {
-                $code = 2;
-            } else if ($jv['kode_visite'] == 'KONSUL') {
-                $code = 3;
-            } else if ($jv['kode_visite'] == 'KONSUL IRD') {
-                $code = 4;
-            } else if ($jv['kode_visite'] == 'PDP') {
-                $code = 5;
-            } else {
-                $code = 'Invalid';
+                MedicalService::insert([
+                    'id' => $q->id_jenis_visite,
+                    'class_type_id' => $q->kelas_tingkat,
+                    'code' => $code,
+                    'name' => $q->nama_visite,
+                    'fee' => $q->biaya,
+                    'status' => $q->is_deleted == true ? 0 : 1,
+                    'created_at' => $q->created_at,
+                    'updated_at' => $q->updated_at
+                ]);
             }
-
-            MedicalService::create([
-                'class_type_id' => $jv['kelas_tingkat'],
-                'code' => $code,
-                'name' => $jv['nama_visite'],
-                'fee' => $jv['biaya'],
-                'status' => $jv['is_deleted'] == true ? 0 : 1,
-                'created_at' => $jv['created_at'],
-                'updated_at' => $jv['updated_at']
-            ]);
-        }
+        });
     }
 }

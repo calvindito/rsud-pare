@@ -90,6 +90,17 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::get('datatable', 'DistrictController@datatable');
         });
     });
+
+    Route::prefix('medical-record')->namespace('MedicalRecord')->group(function () {
+        Route::prefix('dtd')->group(function () {
+            Route::get('/', 'DTDController@index');
+            Route::get('datatable', 'DTDController@datatable');
+            Route::post('create-data', 'DTDController@createData');
+            Route::get('show-data', 'DTDController@showData');
+            Route::patch('update-data', 'DTDController@updateData');
+            Route::delete('destroy-data', 'DTDController@destroyData');
+        });
+    });
 });
 
 Route::prefix('setting')->namespace('Setting')->group(function () {

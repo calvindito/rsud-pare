@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Employee;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeSeeder extends Seeder
 {
@@ -14,22 +15,22 @@ class EmployeeSeeder extends Seeder
      */
     public function run()
     {
-        require public_path('assets/masterdata-general.php');
-
-        foreach ($tpegawai as $tp) {
-            Employee::create([
-                'code' => $tp['KDPEGAWAI'],
-                'name' => $tp['NAMA'],
-                'city' => $tp['KOTA'],
-                'address' => $tp['ALAMAT'],
-                'postal_code' => $tp['KODEPOS'],
-                'phone' => $tp['TELEPON'],
-                'cellphone' => $tp['PONSEL'],
-                'email' => $tp['EMAIL'],
-                'status' => 1,
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+        DB::connection('clone')->table('tpegawai')->orderBy('KDPEGAWAI')->chunk(1000, function ($query) {
+            foreach ($query as $q) {
+                Employee::insert([
+                    'code' => $q->KDPEGAWAI,
+                    'name' => $q->NAMA,
+                    'city' => $q->KOTA,
+                    'address' => $q->ALAMAT,
+                    'postal_code' => $q->KODEPOS,
+                    'phone' => $q->TELEPON,
+                    'cellphone' => $q->PONSEL,
+                    'email' => $q->EMAIL,
+                    'status' => 1,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        });
     }
 }

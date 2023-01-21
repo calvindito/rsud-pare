@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\City;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CitySeeder extends Seeder
 {
@@ -14,17 +15,17 @@ class CitySeeder extends Seeder
      */
     public function run()
     {
-        require public_path('assets/masterdata-location.php');
-
-        foreach ($refkabkota as $rkk) {
-            City::create([
-                'id' => $rkk['KodeKabKota'],
-                'province_id' => $rkk['KodeProv'],
-                'name' => $rkk['NamaKabKota'],
-                'island' => $rkk['IbuKota'],
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+        DB::connection('clone')->table('refkabkota')->orderBy('KodeKabKota')->chunk(1000, function ($query) {
+            foreach ($query as $q) {
+                City::insert([
+                    'id' => $q->KodeKabKota,
+                    'province_id' => $q->KodeProv,
+                    'name' => $q->NamaKabKota,
+                    'island' => $q->IbuKota,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        });
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Unit;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UnitSeeder extends Seeder
 {
@@ -14,16 +15,16 @@ class UnitSeeder extends Seeder
      */
     public function run()
     {
-        require public_path('assets/masterdata-general.php');
-
-        foreach ($a_unit as $au) {
-            Unit::create([
-                'code' => $au['KodeUnit'],
-                'name' => $au['NamaUnit'],
-                'type' => $au['unit_tipe'] > 9 ? 0 : $au['unit_tipe'],
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+        DB::connection('clone')->table('a_unit')->orderBy('KodeUnit')->chunk(1000, function ($query) {
+            foreach ($query as $q) {
+                Unit::insert([
+                    'code' => $q->KodeUnit,
+                    'name' => $q->NamaUnit,
+                    'type' => $q->unit_tipe > 9 ? 0 : $q->unit_tipe,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        });
     }
 }

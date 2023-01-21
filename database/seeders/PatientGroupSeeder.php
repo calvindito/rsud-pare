@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\PatientGroup;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PatientGroupSeeder extends Seeder
 {
@@ -14,27 +15,27 @@ class PatientGroupSeeder extends Seeder
      */
     public function run()
     {
-        require public_path('assets/masterdata-general.php');
-
-        foreach ($a_golpasien as $agp) {
-            PatientGroup::create([
-                'code' => $agp['KodeGol'],
-                'name' => $agp['NamaGol'],
-                'kpid' => $agp['a_kpid'],
-                'initial' => $agp['Inisial'],
-                'privilege_class_code' => $agp['KodeKlsHak'],
-                'privilege_class_type' => $agp['JenisKlsHak'],
-                'rule_code' => $agp['KodeAturan'],
-                'first_number' => $agp['NoAwal'],
-                'contribution_assistance' => $agp['IsPBI'],
-                'car_free_ambulance' => $agp['MblAmbGratis'],
-                'car_free_corpse' => $agp['MblJnhGratis'],
-                'code_member' => $agp['KDJNSKPST'],
-                'code_membership' => $agp['KDJNSPESERTA'],
-                'employeeable' => $agp['IsKaryawan'],
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+        DB::connection('clone')->table('a_golpasien')->orderBy('KodeGol')->chunk(1000, function ($query) {
+            foreach ($query as $q) {
+                PatientGroup::insert([
+                    'code' => $q->KodeGol,
+                    'name' => $q->NamaGol,
+                    'kpid' => $q->a_kpid,
+                    'initial' => $q->Inisial,
+                    'privilege_class_code' => $q->KodeKlsHak,
+                    'privilege_class_type' => $q->JenisKlsHak,
+                    'rule_code' => $q->KodeAturan,
+                    'first_number' => $q->NoAwal,
+                    'contribution_assistance' => $q->IsPBI,
+                    'car_free_ambulance' => $q->MblAmbGratis,
+                    'car_free_corpse' => $q->MblJnhGratis,
+                    'code_member' => $q->KDJNSKPST,
+                    'code_membership' => $q->KDJNSPESERTA,
+                    'employeeable' => $q->IsKaryawan,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        });
     }
 }

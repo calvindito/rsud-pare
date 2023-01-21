@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Religion;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ReligionSeeder extends Seeder
 {
@@ -14,15 +15,15 @@ class ReligionSeeder extends Seeder
      */
     public function run()
     {
-        require public_path('assets/masterdata-general.php');
-
-        foreach ($dm_agama as $dma) {
-            Religion::create([
-                'id' => $dma['id_agama'],
-                'name' => $dma['nama_agama'],
-                'created_at' => now(),
-                'updated_at' => now()
-            ]);
-        }
+        DB::connection('clone')->table('dm_agama')->orderBy('id_agama')->chunk(1000, function ($query) {
+            foreach ($query as $q) {
+                Religion::insert([
+                    'id' => $q->id_agama,
+                    'name' => $q->nama_agama,
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ]);
+            }
+        });
     }
 }
