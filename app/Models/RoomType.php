@@ -29,4 +29,54 @@ class RoomType extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * classType
+     *
+     * @return void
+     */
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class);
+    }
+
+    /**
+     * room
+     *
+     * @return void
+     */
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
+
+    /**
+     * user
+     *
+     * @return void
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * status
+     *
+     * @return void
+     */
+    public function status()
+    {
+        $status = $this->status;
+
+        if ($status == true) {
+            $html = '<span class="badge bg-success">Aktif</span>';
+        } else if ($status == false) {
+            $html = '<span class="badge bg-danger">Tidak Aktif</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
 }

@@ -15,7 +15,7 @@ class DataController extends Controller
     {
         $data = [
             'unit' => Unit::where('type', 1)->get(),
-            'content' => 'master-data.bed.data'
+            'content' => 'master-data.room.data'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -71,7 +71,7 @@ class DataController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'code' => 'required|unique:dtds,code',
+            'code' => 'required|unique:rooms,code',
             'unit_id' => 'required'
         ], [
             'code.required' => 'kode tidak boleh kosong',
@@ -119,7 +119,7 @@ class DataController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'code' => 'required|unique:dtds,code,' . $id,
+            'code' => 'required|unique:rooms,code,' . $id,
             'unit_id' => 'required'
         ], [
             'code.required' => 'kode tidak boleh kosong',
