@@ -15,8 +15,7 @@ class CreateRoomSpacesTable extends Migration
     {
         Schema::create('room_spaces', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('room_id')->nullable();
-            $table->unsignedBigInteger('health_service_id')->nullable();
+            $table->unsignedBigInteger('room_type_id')->nullable();
             $table->string('name')->nullable();
             $table->string('facility')->nullable();
             $table->timestamps();

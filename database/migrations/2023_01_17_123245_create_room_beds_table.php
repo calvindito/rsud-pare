@@ -15,10 +15,10 @@ class CreateRoomBedsTable extends Migration
     {
         Schema::create('room_beds', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('inpatient')->nullable();
+            $table->unsignedBigInteger('room_space_id')->nullable();
             $table->char('type', 1)->nullable();
-            $table->string('space')->nullable();
             $table->string('name')->nullable();
+            $table->string('keywords')->nullable();
             $table->timestamps();
         });
     }
