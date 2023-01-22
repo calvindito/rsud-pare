@@ -21,7 +21,7 @@ class CityController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = City::with('province');
+        $data = City::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {

@@ -123,6 +123,17 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::delete('destroy-data', 'ICDController@destroyData');
         });
     });
+
+    Route::prefix('room')->namespace('Room')->group(function () {
+        Route::prefix('data')->group(function () {
+            Route::get('/', 'DataController@index');
+            Route::get('datatable', 'DataController@datatable');
+            Route::post('create-data', 'DataController@createData');
+            Route::get('show-data', 'DataController@showData');
+            Route::patch('update-data', 'DataController@updateData');
+            Route::delete('destroy-data', 'DataController@destroyData');
+        });
+    });
 });
 
 Route::prefix('setting')->namespace('Setting')->group(function () {

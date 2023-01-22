@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\MasterData\General;
+namespace App\Http\Controllers\MasterData\Room;
 
-use App\Models\ClassType;
+use App\Models\Room;
+use App\Models\Unit;
 use Illuminate\Http\Request;
-use App\Models\MedicalService;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class MedicalServiceController extends Controller
+class DataController extends Controller
 {
     public function index()
     {
         $data = [
-            'classType' => ClassType::all(),
-            'content' => 'master-data.general.medical-service'
+            'unit' => Unit::where('type', 1)->get(),
+            'content' => 'master-data.bed.data'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -24,34 +24,28 @@ class MedicalServiceController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = MedicalService::query();
+        $data = Room::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('name', 'like', "%$search%")
-                        ->orWhereHas('classType', function ($query) use ($search) {
+                    $query->where('code', 'like', "%$search%")
+                        ->orWhere('name', 'like', "%$search%")
+                        ->orWhereHas('unit', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
                         });
                 }
             })
-            ->editColumn('fee', '{{ number_format($fee, 2) }}')
-            ->editColumn('code', function (MedicalService $query) {
-                return $query->code();
-            })
-            ->editColumn('status', function (MedicalService $query) {
-                return $query->status();
-            })
-            ->addColumn('class_type_name', function (MedicalService $query) {
-                $classTypeName = null;
+            ->addColumn('unit_name', function (Room $query) {
+                $unitName = null;
 
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
+                if (isset($query->unit)) {
+                    $unitName = $query->unit->name;
                 }
 
-                return $classTypeName;
+                return $unitName;
             })
-            ->addColumn('action', function (MedicalService $query) {
+            ->addColumn('action', function (Room $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -68,8 +62,7 @@ class MedicalServiceController extends Controller
                     </div>
                 ';
             })
-
-            ->rawColumns(['action', 'status'])
+            ->rawColumns(['action'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
@@ -78,16 +71,12 @@ class MedicalServiceController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'class_type_id' => 'required',
-            'code' => 'required',
-            'name' => 'required',
-            'fee' => 'required|numeric',
+            'code' => 'required|unique:dtds,code',
+            'unit_id' => 'required'
         ], [
-            'class_type_id.required' => 'mohon memilih kelas',
             'code.required' => 'kode tidak boleh kosong',
-            'name.required' => 'nama tidak boleh kosong',
-            'fee.required' => 'biaya monitor tidak boleh kosong',
-            'fee.numeric' => 'biaya monitor harus angka yang valid'
+            'code.unique' => 'kode telah digunakan',
+            'unit_id.required' => 'mohon memilih unit'
         ]);
 
         if ($validation->fails()) {
@@ -97,11 +86,10 @@ class MedicalServiceController extends Controller
             ];
         } else {
             try {
-                $createData = MedicalService::create([
-                    'class_type_id' => $request->class_type_id,
+                $createData = Room::create([
+                    'unit_id' => $request->unit_id,
                     'code' => $request->code,
-                    'name' => $request->name,
-                    'fee' => str_replace(',', '', $request->fee)
+                    'name' => $request->name
                 ]);
 
                 $response = [
@@ -122,7 +110,7 @@ class MedicalServiceController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = MedicalService::findOrFail($id);
+        $data = Room::findOrFail($id);
 
         return response()->json($data);
     }
@@ -131,16 +119,12 @@ class MedicalServiceController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'class_type_id' => 'required',
-            'code' => 'required',
-            'name' => 'required',
-            'fee' => 'required|numeric',
+            'code' => 'required|unique:dtds,code,' . $id,
+            'unit_id' => 'required'
         ], [
-            'class_type_id.required' => 'mohon memilih kelas',
             'code.required' => 'kode tidak boleh kosong',
-            'name.required' => 'nama tidak boleh kosong',
-            'fee.required' => 'biaya tidak boleh kosong',
-            'fee.numeric' => 'biaya harus angka yang valid'
+            'code.unique' => 'kode telah digunakan',
+            'unit_id.required' => 'mohon memilih unit'
         ]);
 
         if ($validation->fails()) {
@@ -150,12 +134,10 @@ class MedicalServiceController extends Controller
             ];
         } else {
             try {
-                $updateData = MedicalService::findOrFail($id)->update([
-                    'class_type_id' => $request->class_type_id,
+                $updateData = Room::findOrFail($id)->update([
+                    'unit_id' => $request->unit_id,
                     'code' => $request->code,
-                    'name' => $request->name,
-                    'fee' => str_replace(',', '', $request->fee),
-                    'status' => $request->status
+                    'name' => $request->name
                 ]);
 
                 $response = [
@@ -178,7 +160,7 @@ class MedicalServiceController extends Controller
         $id = $request->id;
 
         try {
-            MedicalService::destroy($id);
+            Room::destroy($id);
 
             $response = [
                 'code' => 200,

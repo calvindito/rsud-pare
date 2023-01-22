@@ -76,14 +76,15 @@ function formatNumber() {
 
 function select2Basic() {
     $('.select2-basic').select2({
-        placeholder: '-- Pilih --'
+        placeholder: '-- Pilih --',
+        dropdownParent: $('.modal')
     });
 }
 
 function select2AjaxLocation(selector, show = []) {
     $(selector).select2({
         placeholder: '-- Pilih --',
-        dropdownParent: '.modal',
+        dropdownParent: $('.modal'),
         minimumInputLength: 3,
         allowClear: true,
         cache: true,

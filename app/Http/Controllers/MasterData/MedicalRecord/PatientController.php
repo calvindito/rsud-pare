@@ -26,7 +26,7 @@ class PatientController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Patient::with('district');
+        $data = Patient::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {

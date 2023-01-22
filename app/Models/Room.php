@@ -29,4 +29,14 @@ class Room extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * unit
+     *
+     * @return void
+     */
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }

@@ -258,8 +258,8 @@
         resetNavTab();
         $('#modal-form').modal('hide');
         $('#form-data').trigger('reset');
-        $('.select2-basic').val('').change();
-        $('.select2-basic').html('');
+        $('#location_id').val('').change();
+        $('#location_id').html('');
     }
 
     function onCancel() {

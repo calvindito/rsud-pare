@@ -21,7 +21,7 @@ class DistrictController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = District::with('city');
+        $data = District::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
