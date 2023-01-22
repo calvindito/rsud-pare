@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\MasterData\MedicalRecord;
 
+use PDF;
 use App\Helpers\Simrs;
 use App\Models\Patient;
 use App\Models\Religion;
@@ -60,11 +61,11 @@ class PatientController extends Controller
                                 <i class="ph-pen me-2"></i>
                                 Ubah Data
                             </a>
-                            <a href="' . url('master-data/medical-record/patient/print/' . $query->id) . '?slug=card" class="dropdown-item fs-13">
+                            <a href="' . url('master-data/medical-record/patient/print/' . $query->id) . '?slug=card" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-identification-card me-2"></i>
                                 Cetak Kartu
                             </a>
-                            <a href="' . url('master-data/medical-record/patient/print/' . $query->id) . '?slug=ticket" class="dropdown-item fs-13">
+                            <a href="' . url('master-data/medical-record/patient/print/' . $query->id) . '?slug=ticket" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-ticket me-2"></i>
                                 Cetak E-Tiket
                             </a>
@@ -158,5 +159,43 @@ class PatientController extends Controller
         }
 
         return response()->json($response);
+    }
+
+    public function print(Request $request, $id)
+    {
+        $data = Patient::findOrFail($id);
+
+        if ($request->has('slug')) {
+            if ($request->slug == 'card') {
+                $view = 'pdf.patient-card';
+                $pageSize = [85, 54];
+                $title = 'Kartu Pasien';
+            } else if ($request->slug == 'ticket') {
+                $view = 'pdf.patient-ticket';
+                $pageSize = [68, 43];
+                $title = 'E-Tiket Pasien';
+            } else {
+                abort(404);
+            }
+
+            $pdf = PDF::loadView($view, [
+                'title' => $title . ' - ' . $data->name . ' (' . $data->id . ')',
+                'data' => $data
+            ], [], [
+                'mode' => 'utf-8',
+                'format' => $pageSize,
+                'display_mode' => 'fullwidth',
+                'margin_top' => 3,
+                'margin_right' => 3,
+                'margin_bottom' => 3,
+                'margin_left' => 3,
+                'author' => session('name'),
+                'subject' => $title,
+            ]);
+
+            return $pdf->stream('Kartu Pasien ' . $data->id . '.pdf');
+        }
+
+        abort(404);
     }
 }
