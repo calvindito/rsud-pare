@@ -29,4 +29,14 @@ class RoomSpace extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * roomType
+     *
+     * @return void
+     */
+    public function roomType()
+    {
+        return $this->belongsTo(RoomType::class);
+    }
 }

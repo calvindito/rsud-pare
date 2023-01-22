@@ -142,6 +142,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'RoomClassController@updateData');
             Route::delete('destroy-data', 'RoomClassController@destroyData');
         });
+
+        Route::prefix('room-space')->group(function () {
+            Route::get('/', 'RoomSpaceController@index');
+            Route::get('datatable', 'RoomSpaceController@datatable');
+            Route::post('create-data', 'RoomSpaceController@createData');
+            Route::get('show-data', 'RoomSpaceController@showData');
+            Route::patch('update-data', 'RoomSpaceController@updateData');
+            Route::delete('destroy-data', 'RoomSpaceController@destroyData');
+        });
     });
 });
 
