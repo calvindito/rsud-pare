@@ -151,6 +151,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'RoomSpaceController@updateData');
             Route::delete('destroy-data', 'RoomSpaceController@destroyData');
         });
+
+        Route::prefix('bed')->group(function () {
+            Route::get('/', 'BedController@index');
+            Route::get('datatable', 'BedController@datatable');
+            Route::post('create-data', 'BedController@createData');
+            Route::get('show-data', 'BedController@showData');
+            Route::patch('update-data', 'BedController@updateData');
+            Route::delete('destroy-data', 'BedController@destroyData');
+        });
     });
 });
 

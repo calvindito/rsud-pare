@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\RoomBed;
+use App\Models\Bed;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RoomBedSeeder extends Seeder
+class BedSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,10 +17,22 @@ class RoomBedSeeder extends Seeder
     {
         DB::connection('clone')->table('m_bed')->orderBy('id')->chunk(1000, function ($query) {
             foreach ($query as $q) {
-                RoomBed::insert([
+                if ($q->jk == 'L') {
+                    $type = 1;
+                } else if ($q->jk == 'P') {
+                    $type = 2;
+                } else if ($q->jk == 'M') {
+                    $type = 3;
+                } else if ($q->jk  == 'A') {
+                    $type = 4;
+                } else {
+                    $type = null;
+                }
+
+                Bed::insert([
                     'id' => $q->id,
                     'room_space_id' => $q->ruang_id,
-                    'type' => $q->jk,
+                    'type' => $type,
                     'name' => $q->nama,
                     'keywords' => $q->keyword,
                     'created_at' => $q->created_at,
