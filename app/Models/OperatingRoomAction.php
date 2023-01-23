@@ -29,4 +29,54 @@ class OperatingRoomAction extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * classType
+     *
+     * @return void
+     */
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class);
+    }
+
+    /**
+     * operatingRoomActionType
+     *
+     * @return void
+     */
+    public function operatingRoomActionType()
+    {
+        return $this->belongsTo(OperatingRoomActionType::class);
+    }
+
+    /**
+     * operatingRoomGroup
+     *
+     * @return void
+     */
+    public function operatingRoomGroup()
+    {
+        return $this->belongsTo(OperatingRoomGroup::class);
+    }
+
+    /**
+     * status
+     *
+     * @return void
+     */
+    public function status()
+    {
+        $status = $this->status;
+
+        if ($status == true) {
+            $html = '<span class="badge bg-success">Aktif</span>';
+        } else if ($status == false) {
+            $html = '<span class="badge bg-danger">Tidak Aktif</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
 }

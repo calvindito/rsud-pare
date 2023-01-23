@@ -134,13 +134,21 @@
                                 <a href="#" class="nav-link">Layanan Kesehatan</a>
                                 <ul class="nav-group-sub collapse {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' ? 'show' : '' }}">
                                     <li class="nav-item">
-                                        <a href="{{ url('master-data/health-service/data') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' && Request::segment(3) == 'data' ? 'active' : '' }}">Data</a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a href="{{ url('master-data/health-service/upf') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' && Request::segment(3) == 'upf' ? 'active' : '' }}">UPF</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ url('master-data/health-service/bed') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' && Request::segment(3) == 'bed' ? 'active' : '' }}">Tempat Tidur</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item nav-item-submenu {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'poly' ? 'nav-item-expanded nav-item-open' : '' }}">
+                                <a href="#" class="nav-link">Poli</a>
+                                <ul class="nav-group-sub collapse {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'poly' ? 'show' : '' }}">
+                                    <li class="nav-item">
+                                        <a href="{{ url('master-data/poly/data') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'poly' && Request::segment(3) == 'data' ? 'active' : '' }}">Data</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="{{ url('master-data/poly/action') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'poly' && Request::segment(3) == 'action' ? 'active' : '' }}">Tindakan</a>
                                     </li>
                                 </ul>
                             </li>

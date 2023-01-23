@@ -15,7 +15,6 @@ class CreatePharmacyProductionsTable extends Migration
     {
         Schema::create('pharmacy_productions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('health_service_id')->nullable();
             $table->string('name')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();

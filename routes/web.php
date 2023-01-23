@@ -217,6 +217,17 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::delete('destroy-data', 'EmergencyCareController@destroyData');
         });
     });
+
+    Route::prefix('operating-room')->namespace('OperatingRoom')->group(function () {
+        Route::prefix('action')->group(function () {
+            Route::get('/', 'ActionController@index');
+            Route::get('datatable', 'ActionController@datatable');
+            Route::post('create-data', 'ActionController@createData');
+            Route::get('show-data', 'ActionController@showData');
+            Route::patch('update-data', 'ActionController@updateData');
+            Route::delete('destroy-data', 'ActionController@destroyData');
+        });
+    });
 });
 
 Route::prefix('setting')->namespace('Setting')->group(function () {

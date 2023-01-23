@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Kamar - <span class="fw-normal">Kelas Kamar</span>
+                Master Data - Kamar Operasi - <span class="fw-normal">Tindakan</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,14 +27,12 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
+                        <th nowrap>Biaya Jrs</th>
+                        <th nowrap>Biaya Dr Operasi</th>
+                        <th nowrap>Biaya Dr Anestesi</th>
+                        <th nowrap>Golongan Operasi</th>
+                        <th nowrap>Jenis Tindakan</th>
                         <th nowrap>Kelas</th>
-                        <th nowrap>Nama</th>
-                        <th nowrap>Kamar</th>
-                        <th nowrap>Biaya Kamar</th>
-                        <th nowrap>Biaya Makan</th>
-                        <th nowrap>Biaya Askep</th>
-                        <th nowrap>Asupan Nutrisi</th>
-                        <th nowrap>User Kamar</th>
                         <th class="text-center" nowrap>Status</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
@@ -45,7 +43,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -60,23 +58,6 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kamar <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="room_id" id="room_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($room as $r)
-                                    <option value="{{ $r->id }}">{{ $r->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-form-label col-lg-3">Kelas <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <select class="form-select" name="class_type_id" id="class_type_id">
@@ -88,50 +69,55 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Biaya Kamar <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Jenis Tindakan <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_room" id="fee_room" placeholder="Masukan biaya kamar">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Biaya Makan <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_meal" id="fee_meal" placeholder="Masukan biaya makan">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Biaya Askep <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_nursing_care" id="fee_nursing_care" placeholder="Masukan biaya askep">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Asupan Nutrisi <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_nutritional_care" id="fee_nutritional_care" placeholder="Masukan asupan nutrisi">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">User Kamar <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="user_id" id="user_id">
+                            <select class="form-select" name="operating_room_action_type_id" id="operating_room_action_type_id">
                                 <option value="">-- Pilih --</option>
-                                @foreach($user as $u)
-                                    <option value="{{ $u->id }}">{{ $u->employee->name }}</option>
+                                @foreach($operatingRoomActionType as $orat)
+                                    <option value="{{ $orat->id }}">{{ $orat->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Total Kasur</label>
+                        <label class="col-form-label col-lg-3">Golongan Operasi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="total_bed" id="total_bed" placeholder="Masukan total kasur">
+                            <select class="form-select" name="operating_room_group_id" id="operating_room_group_id">
+                                <option value="">-- Pilih --</option>
+                                @foreach($operatingRoomGroup as $org)
+                                    <option value="{{ $org->id }}">{{ $org->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Tingkatan Kamar <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Biaya Jrs <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="tier" id="tier" placeholder="Masukan tingkatan kamar">
+                            <input type="number" class="form-control" name="fee_hospital_service" id="fee_hospital_service" placeholder="Masukan biaya jrs">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Biaya Dr Operasi <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="fee_doctor_operating_room" id="fee_doctor_operating_room" placeholder="Masukan biaya dr operasi">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Biaya Dr Anestesi <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="fee_doctor_anesthetist" id="fee_doctor_anesthetist" placeholder="Masukan biaya dr anestesi">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Biaya Perawat Operasi <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="fee_nurse_operating_room" id="fee_nurse_operating_room" placeholder="Masukan biaya perawat operasi">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Biaya Perawat Anestesi <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="fee_nurse_anesthetist" id="fee_nurse_anesthetist" placeholder="Masukan biaya perawat anestesi">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -234,7 +220,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("master-data/room/room-class/datatable") }}',
+                url: '{{ url("master-data/operating-room/action/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -254,15 +240,13 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
+                { data: 'fee_hospital_service', name: 'fee_hospital_service', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'fee_doctor_operating_room', name: 'fee_doctor_operating_room', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'fee_doctor_anesthetist', name: 'fee_doctor_anesthetist', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'operating_room_group_name', name: 'operating_room_group_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'operating_room_action_type_name', name: 'operating_room_action_type_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'class_type_name', name: 'class_type_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'room_name', name: 'room_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'fee_room', name: 'fee_room', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'fee_meal', name: 'fee_meal', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'fee_nursing_care', name: 'fee_nursing_care', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'fee_nutritional_care', name: 'fee_nutritional_care', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'employee_name', name: 'employee_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'status', name: 'employee_name', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -270,7 +254,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/room/room-class/create-data") }}',
+            url: '{{ url("master-data/operating-room/action/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -313,7 +297,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/room/room-class/show-data") }}',
+            url: '{{ url("master-data/operating-room/action/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -327,16 +311,14 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#room_id').val(response.room_id);
-                $('#name').val(response.name);
                 $('#class_type_id').val(response.class_type_id);
-                $('#fee_room').val(response.fee_room);
-                $('#fee_meal').val(response.fee_meal);
-                $('#fee_nursing_care').val(response.fee_nursing_care);
-                $('#fee_nutritional_care').val(response.fee_nutritional_care);
-                $('#user_id').val(response.user_id);
-                $('#total_bed').val(response.total_bed);
-                $('#tier').val(response.tier);
+                $('#operating_room_action_type_id').val(response.operating_room_action_type_id);
+                $('#operating_room_group_id').val(response.operating_room_group_id);
+                $('#fee_hospital_service').val(response.fee_hospital_service);
+                $('#fee_doctor_operating_room').val(response.fee_doctor_operating_room);
+                $('#fee_doctor_anesthetist').val(response.fee_doctor_anesthetist);
+                $('#fee_nurse_operating_room').val(response.fee_nurse_operating_room);
+                $('#fee_nurse_anesthetist').val(response.fee_nurse_anesthetist);
                 $('#status').val(response.status);
             },
             error: function(response) {
@@ -353,7 +335,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/room/room-class/update-data") }}',
+            url: '{{ url("master-data/operating-room/action/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -408,7 +390,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/room/room-class/destroy-data") }}',
+                        url: '{{ url("master-data/operating-room/action/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {
