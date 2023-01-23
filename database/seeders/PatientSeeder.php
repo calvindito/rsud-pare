@@ -22,9 +22,7 @@ class PatientSeeder extends Seeder
             ->leftJoin('refkec', 'a_pasien.KodeKec', '=', 'refkec.KodeKec')
             ->leftJoin('refkabkota', 'refkec.KodeKabKota', '=', 'refkabkota.KodeKabKota')
             ->orderBy('a_pasien.NoMedrec')
-            ->take(500)
-            ->get()
-            ->each(function ($query) {
+            ->chunk(1000, function ($query) {
                 foreach ($query as $q) {
                     $getPatientUpdate = DB::connection('clone')
                         ->table('a_pasien_update')
