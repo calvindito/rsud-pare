@@ -17,10 +17,9 @@ class CreateUnitActionsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedBigInteger('action_id')->nullable();
-            $table->double('ahp')->nullable();
+            $table->double('bhp')->nullable();
             $table->double('hospital_service')->nullable();
             $table->double('service')->nullable();
-            $table->double('score')->nullable();
             $table->timestamps();
         });
     }

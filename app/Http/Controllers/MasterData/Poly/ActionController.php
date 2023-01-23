@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\MasterData\HealthService;
+namespace App\Http\Controllers\MasterData\Poly;
 
-use App\Models\ClassType;
+use App\Models\Unit;
+use App\Models\Action;
+use App\Models\UnitAction;
 use Illuminate\Http\Request;
-use App\Models\HealthServiceBed;
-use App\Models\PharmacyProduction;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class BedController extends Controller
+class ActionController extends Controller
 {
     public function index()
     {
         $data = [
-            'classType' => ClassType::all(),
-            'pharmacyProduction' => PharmacyProduction::where('status', 1)->get(),
-            'content' => 'master-data.health-service.bed'
+            'unit' => Unit::where('type', 2)->get(),
+            'action' => Action::all(),
+            'content' => 'master-data.poly.action'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -26,44 +26,50 @@ class BedController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = HealthServiceBed::query();
+        $data = UnitAction::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->whereHas('classType', function ($query) use ($search) {
+                    $query->whereHas('unit', function ($query) use ($search) {
                         $query->where('name', 'like', "%$search%");
                     });
 
-                    $query->orWhereHas('pharmacyProduction', function ($query) use ($search) {
+                    $query->orWhereHas('action', function ($query) use ($search) {
                         $query->where('name', 'like', "%$search%");
                     });
                 }
             })
-            ->addColumn('class_type_name', function (HealthServiceBed $query) {
-                $classTypeName = null;
+            ->editColumn('created_at', '{{ date("Y-m-d H:i:s", strtotime($created_at)) }}')
+            ->editColumn('updated_at', '{{ date("Y-m-d H:i:s", strtotime($updated_at)) }}')
+            ->addColumn('unit_name', function (UnitAction $query) {
+                $unitName = null;
 
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
+                if (isset($query->unit)) {
+                    $unitName = $query->unit->name;
                 }
 
-                return $classTypeName;
+                return $unitName;
             })
-            ->addColumn('pharmacy_production_name', function (HealthServiceBed $query) {
-                $pharmacyProductionName = null;
+            ->addColumn('action_name', function (UnitAction $query) {
+                $actionName = null;
 
-                if (isset($query->pharmacyProduction)) {
-                    $pharmacyProductionName = $query->pharmacyProduction->name;
+                if (isset($query->action)) {
+                    $actionName = $query->action->name;
                 }
 
-                return $pharmacyProductionName;
+                return $actionName;
             })
-            ->addColumn('total', function (HealthServiceBed $query) {
-                $total = $query->qty_man + $query->qty_woman;
+            ->addColumn('action_fee', function (UnitAction $query) {
+                $actionFee = null;
 
-                return $total;
+                if (isset($query->action)) {
+                    $actionFee = $query->action->fee;
+                }
+
+                return $actionFee;
             })
-            ->addColumn('action', function (HealthServiceBed $query) {
+            ->addColumn('action', function (UnitAction $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -80,7 +86,7 @@ class BedController extends Controller
                     </div>
                 ';
             })
-            ->rawColumns(['action', 'status'])
+            ->rawColumns(['action'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
@@ -89,11 +95,11 @@ class BedController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'class_type_id' => 'required',
-            'pharmacy_production_id' => 'required'
+            'unit_id' => 'required',
+            'action_id' => 'required'
         ], [
-            'class_type_id.required' => 'mohon memilih kelas',
-            'pharmacy_production_id.required' => 'mohon memilih upf'
+            'name.required' => 'mohon memilih poli',
+            'action_id.required' => 'mohon memilih tindakan'
         ]);
 
         if ($validation->fails()) {
@@ -103,11 +109,12 @@ class BedController extends Controller
             ];
         } else {
             try {
-                $createData = HealthServiceBed::create([
-                    'class_type_id' => $request->class_type_id,
-                    'pharmacy_production_id' => $request->pharmacy_production_id,
-                    'qty_man' => $request->qty_man,
-                    'qty_woman' => $request->qty_woman
+                $createData = UnitAction::create([
+                    'unit_id' => $request->unit_id,
+                    'action_id' => $request->action_id,
+                    'bhp' => $request->bhp,
+                    'hospital_service' => $request->hospital_service,
+                    'service' => $request->service
                 ]);
 
                 $response = [
@@ -128,7 +135,7 @@ class BedController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = HealthServiceBed::findOrFail($id);
+        $data = UnitAction::findOrFail($id);
 
         return response()->json($data);
     }
@@ -137,11 +144,11 @@ class BedController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'class_type_id' => 'required',
-            'pharmacy_production_id' => 'required'
+            'unit_id' => 'required',
+            'action_id' => 'required'
         ], [
-            'class_type_id.required' => 'mohon memilih kelas',
-            'pharmacy_production_id.required' => 'mohon memilih upf'
+            'name.required' => 'mohon memilih poli',
+            'action_id.required' => 'mohon memilih tindakan'
         ]);
 
         if ($validation->fails()) {
@@ -151,11 +158,12 @@ class BedController extends Controller
             ];
         } else {
             try {
-                $updateData = HealthServiceBed::findOrFail($id)->update([
-                    'class_type_id' => $request->class_type_id,
-                    'pharmacy_production_id' => $request->pharmacy_production_id,
-                    'qty_man' => $request->qty_man,
-                    'qty_woman' => $request->qty_woman
+                $updateData = UnitAction::findOrFail($id)->update([
+                    'unit_id' => $request->unit_id,
+                    'action_id' => $request->action_id,
+                    'bhp' => $request->bhp,
+                    'hospital_service' => $request->hospital_service,
+                    'service' => $request->service
                 ]);
 
                 $response = [
@@ -178,7 +186,7 @@ class BedController extends Controller
         $id = $request->id;
 
         try {
-            HealthServiceBed::destroy($id);
+            UnitAction::destroy($id);
 
             $response = [
                 'code' => 200,
