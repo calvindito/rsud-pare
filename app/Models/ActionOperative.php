@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ActionMedicalSupporting extends Model
+class ActionOperative extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class ActionMedicalSupporting extends Model
      *
      * @var string
      */
-    protected $table = 'action_medical_supportings';
+    protected $table = 'action_operatives';
 
     /**
      * The primary key associated with the table.

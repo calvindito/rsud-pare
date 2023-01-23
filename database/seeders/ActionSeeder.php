@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Room;
-use App\Models\Unit;
+use App\Models\Action;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RoomSeeder extends Seeder
+class ActionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,15 +15,13 @@ class RoomSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('clone')->table('dm_kamar_master')->orderBy('id')->chunk(1000, function ($query) {
+        DB::connection('clone')->table('dm_tindakan')->orderBy('id')->chunk(1000, function ($query) {
             foreach ($query as $q) {
-                $dataUnit = Unit::where('code', $q->unit_id)->first();
-
-                Room::insert([
+                Action::insert([
                     'id' => $q->id,
-                    'unit_id' => $dataUnit ? $dataUnit->id : null,
-                    'code' => $q->kode_kamar,
-                    'name' => $q->nama_kamar,
+                    'code' => $q->kode,
+                    'name' => $q->nama,
+                    'fee' => $q->biaya,
                     'created_at' => $q->created_at ? $q->created_at : now(),
                     'updated_at' => $q->updated_at ? $q->updated_at : now()
                 ]);

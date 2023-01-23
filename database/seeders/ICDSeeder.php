@@ -30,8 +30,8 @@ class ICDSeeder extends Seeder
                     'dtd_id' => $dtdId,
                     'code' => $q->kode,
                     'name' => $q->deskripsi,
-                    'created_at' => $q->created_at,
-                    'updated_at' => $q->updated_at
+                    'created_at' => $q->created_at ? $q->created_at : now(),
+                    'updated_at' => $q->updated_at ? $q->updated_at : now()
                 ]);
             }
         });

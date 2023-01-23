@@ -31,5 +31,11 @@ class DatabaseSeeder extends Seeder
         $this->call(RoomTypeSeeder::class);
         $this->call(RoomSpaceSeeder::class);
         $this->call(BedSeeder::class);
+        $this->call(ActionSeeder::class);
+        $this->call(ActionOtherSeeder::class);
+        $this->call(ActionOperativeSeeder::class);
+        $this->call(ActionNonOperativeSeeder::class);
+        $this->call(ActionSupportingSeeder::class);
+        $this->call(ActionEmergencyCareSeeder::class);
     }
 }

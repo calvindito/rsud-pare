@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateActionMedicalOperativesTable extends Migration
+class CreateActionOperativesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,16 @@ class CreateActionMedicalOperativesTable extends Migration
      */
     public function up()
     {
-        Schema::create('action_medical_operatives', function (Blueprint $table) {
+        Schema::create('action_operatives', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('class_type_id')->nullable();
             $table->string('code')->nullable();
             $table->string('name')->nullable();
-            $table->string('class')->nullable();
             $table->double('hospital_service')->nullable();
-            $table->integer('doctor_operating')->nullable();
-            $table->integer('doctor_anesthetist')->nullable();
-            $table->integer('nurse_operating_room')->nullable();
-            $table->integer('nurse_anesthetist')->nullable();
+            $table->double('doctor_operating')->nullable();
+            $table->double('doctor_anesthetist')->nullable();
+            $table->double('nurse_operating_room')->nullable();
+            $table->double('nurse_anesthetist')->nullable();
             $table->double('total')->nullable();
             $table->double('fee')->nullable();
             $table->timestamps();
@@ -36,6 +36,6 @@ class CreateActionMedicalOperativesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('action_medical_operatives');
+        Schema::dropIfExists('action_operatives');
     }
 }

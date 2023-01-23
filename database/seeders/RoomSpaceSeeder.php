@@ -22,8 +22,8 @@ class RoomSpaceSeeder extends Seeder
                     'room_type_id' => $q->kamar_id,
                     'name' => $q->nama,
                     'facility' => $q->fasilitas,
-                    'created_at' => $q->created_at,
-                    'updated_at' => $q->updated_at
+                    'created_at' => $q->created_at ? $q->created_at : now(),
+                    'updated_at' => $q->updated_at ? $q->updated_at : now()
                 ]);
             }
         });

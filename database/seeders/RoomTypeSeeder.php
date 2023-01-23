@@ -33,7 +33,7 @@ class RoomTypeSeeder extends Seeder
                     'total_bed' => $q->jumlah_kasur,
                     'tier' => $q->tingkat_kamar,
                     'status' => $q->is_hapus == 1 ? 0 : 1,
-                    'created_at' => $q->created,
+                    'created_at' => $q->created ? $q->created : now(),
                     'updated_at' => now()
                 ]);
             }

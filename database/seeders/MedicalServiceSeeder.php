@@ -38,8 +38,8 @@ class MedicalServiceSeeder extends Seeder
                     'name' => $q->nama_visite,
                     'fee' => $q->biaya,
                     'status' => $q->is_deleted == true ? 0 : 1,
-                    'created_at' => $q->created_at,
-                    'updated_at' => $q->updated_at
+                    'created_at' => $q->created_at ? $q->created_at : now(),
+                    'updated_at' => $q->updated_at ? $q->updated_at : now()
                 ]);
             }
         });

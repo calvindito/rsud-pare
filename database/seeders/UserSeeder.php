@@ -27,8 +27,8 @@ class UserSeeder extends Seeder
                         'username' => $q->USERNAME,
                         'password' => bcrypt(123456),
                         'status' => $q->STATUS != 1 ? 0 : 1,
-                        'created_at' => $q->created_at,
-                        'updated_at' => $q->updated_at
+                        'created_at' => $q->created_at ? $q->created_at : now(),
+                        'updated_at' => $q->updated_at ? $q->updated_at : now()
                     ]);
                 }
             }
