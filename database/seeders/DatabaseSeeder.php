@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(OperatingRoomGroupSeeder::class);
         $this->call(PharmacyProductionSeeder::class);
         $this->call(HealthServiceBedSeeder::class);
+        $this->call(UnitActionSeeder::class);
         $this->call(PatientSeeder::class);
     }
 }
