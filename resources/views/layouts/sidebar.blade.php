@@ -126,7 +126,7 @@
                                         <a href="{{ url('master-data/operating-room/operating-group') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'operating-room' && Request::segment(3) == 'operating-group' ? 'active' : '' }}">Golongan Operasi</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('master-data/operating-room/anesthetists') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'operating-room' && Request::segment(3) == 'anesthetists' ? 'active' : '' }}">Anestesi</a>
+                                        <a href="{{ url('master-data/operating-room/anesthetist') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'operating-room' && Request::segment(3) == 'anesthetist' ? 'active' : '' }}">Anestesi</a>
                                     </li>
                                 </ul>
                             </li>

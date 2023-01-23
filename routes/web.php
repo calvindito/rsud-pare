@@ -245,6 +245,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'OperatingGroupController@updateData');
             Route::delete('destroy-data', 'OperatingGroupController@destroyData');
         });
+
+        Route::prefix('anesthetist')->group(function () {
+            Route::get('/', 'AnesthetistController@index');
+            Route::get('datatable', 'AnesthetistController@datatable');
+            Route::post('create-data', 'AnesthetistController@createData');
+            Route::get('show-data', 'AnesthetistController@showData');
+            Route::patch('update-data', 'AnesthetistController@updateData');
+            Route::delete('destroy-data', 'AnesthetistController@destroyData');
+        });
     });
 });
 
