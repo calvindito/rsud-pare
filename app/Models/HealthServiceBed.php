@@ -29,4 +29,24 @@ class HealthServiceBed extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * classType
+     *
+     * @return void
+     */
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class);
+    }
+
+    /**
+     * pharmacyProduction
+     *
+     * @return void
+     */
+    public function pharmacyProduction()
+    {
+        return $this->belongsTo(PharmacyProduction::class);
+    }
 }
