@@ -134,7 +134,7 @@
                                 <a href="#" class="nav-link">Layanan Kesehatan</a>
                                 <ul class="nav-group-sub collapse {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' ? 'show' : '' }}">
                                     <li class="nav-item">
-                                        <a href="{{ url('master-data/health-service/upf') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' && Request::segment(3) == 'upf' ? 'active' : '' }}">UPF</a>
+                                        <a href="{{ url('master-data/health-service/pharmacy-production') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' && Request::segment(3) == 'pharmacy-production' ? 'active' : '' }}">UPF</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ url('master-data/health-service/bed') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' && Request::segment(3) == 'bed' ? 'active' : '' }}">Tempat Tidur</a>

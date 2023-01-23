@@ -29,4 +29,24 @@ class PharmacyProduction extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * status
+     *
+     * @return void
+     */
+    public function status()
+    {
+        $status = $this->status;
+
+        if ($status == true) {
+            $html = '<span class="badge bg-success">Aktif</span>';
+        } else if ($status == false) {
+            $html = '<span class="badge bg-danger">Tidak Aktif</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
 }

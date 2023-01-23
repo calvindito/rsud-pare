@@ -255,6 +255,17 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::delete('destroy-data', 'AnesthetistController@destroyData');
         });
     });
+
+    Route::prefix('health-service')->namespace('HealthService')->group(function () {
+        Route::prefix('pharmacy-production')->group(function () {
+            Route::get('/', 'PharmacyProductionController@index');
+            Route::get('datatable', 'PharmacyProductionController@datatable');
+            Route::post('create-data', 'PharmacyProductionController@createData');
+            Route::get('show-data', 'PharmacyProductionController@showData');
+            Route::patch('update-data', 'PharmacyProductionController@updateData');
+            Route::delete('destroy-data', 'PharmacyProductionController@destroyData');
+        });
+    });
 });
 
 Route::prefix('setting')->namespace('Setting')->group(function () {
