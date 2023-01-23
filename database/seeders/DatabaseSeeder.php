@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DoctorSeeder::class);
         $this->call(EmployeeSeeder::class);
         $this->call(MedicalServiceSeeder::class);
-        $this->call(PatientGroupSeeder::class);
         $this->call(ReligionSeeder::class);
         $this->call(UnitSeeder::class);
         $this->call(ProvinceSeeder::class);
@@ -37,5 +36,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ActionNonOperativeSeeder::class);
         $this->call(ActionSupportingSeeder::class);
         $this->call(ActionEmergencyCareSeeder::class);
+        $this->call(PatientGroupSeeder::class);
     }
 }
