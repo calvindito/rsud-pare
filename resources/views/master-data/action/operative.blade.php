@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Umum - <span class="fw-normal">Kelas</span>
+                Master Data - Tindakan - <span class="fw-normal">Operatif</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,11 +27,11 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode</th>
-                        <th nowrap>Nama</th>
-                        <th nowrap>Kode BPJS</th>
-                        <th nowrap>Biaya RR Askep</th>
-                        <th nowrap>Biaya RR Monitor</th>
+                        <th nowrap>Nama Tindakan</th>
+                        <th nowrap>Kode Tindakan</th>
+                        <th nowrap>Kelas</th>
+                        <th nowrap>Jrs</th>
+                        <th nowrap>Dr Operasi</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -41,7 +41,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -56,33 +56,68 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Kelas <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Nama Tindakan <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode kelas">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama tindakan">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nama Kelas <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Kode Tindakan <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama kelas">
+                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode tindakan">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode BPJS</label>
+                        <label class="col-form-label col-lg-3">Kelas <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="code_bpjs" id="code_bpjs" placeholder="Masukan kode BPJS">
+                            <select class="form-select" name="class_type_id" id="class_type_id">
+                                <option value="">-- Pilih --</option>
+                                @foreach($classType as $ct)
+                                    <option value="{{ $ct->id }}">{{ $ct->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Biaya RR Monitor <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Jrs <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_monitoring" id="fee_monitoring" placeholder="Masukan biaya rr monitor">
+                            <input type="number" class="form-control" name="hospital_service" id="hospital_service" placeholder="Masukan jrs">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Biaya RR Askep <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Dr Operasi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_nursing_care" id="fee_nursing_care" placeholder="Masukan biaya rr askep">
+                            <input type="number" class="form-control" name="doctor_operating" id="doctor_operating" placeholder="Masukan dr operasi">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Dr Anetesi <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="doctor_anesthetist" id="doctor_anesthetist" placeholder="Masukan dr anestesi">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Perawat Operasi <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="nurse_operating_room" id="nurse_operating_room" placeholder="Masukan perawat operasi">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Perawat Anestesi <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="nurse_anesthetist" id="nurse_anesthetist" placeholder="Masukan perawat anestesi">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Total <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="total" id="total" placeholder="Masukan total">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Tarif <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="fee" id="fee" placeholder="Masukan tarif">
                         </div>
                     </div>
                 </form>
@@ -172,7 +207,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("master-data/general/class-type/datatable") }}',
+                url: '{{ url("master-data/action/operative/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -192,11 +227,11 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'code_bpjs', name: 'code_bpjs', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'fee_nursing_care', name: 'fee_nursing_care', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'fee_monitoring', name: 'fee_monitoring', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'class_type_name', name: 'class_type_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'hospital_service', name: 'hospital_service', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'doctor_operating', name: 'doctor_operating', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -204,7 +239,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/general/class-type/create-data") }}',
+            url: '{{ url("master-data/action/operative/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -247,7 +282,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/general/class-type/show-data") }}',
+            url: '{{ url("master-data/action/operative/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -261,11 +296,16 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#code').val(response.code);
                 $('#name').val(response.name);
-                $('#code_bpjs').val(response.code_bpjs);
-                $('#fee_monitoring').val(response.fee_monitoring);
-                $('#fee_nursing_care').val(response.fee_nursing_care);
+                $('#code').val(response.code);
+                $('#class_type_id').val(response.class_type_id);
+                $('#hospital_service').val(response.hospital_service);
+                $('#doctor_operating').val(response.doctor_operating);
+                $('#doctor_anesthetist').val(response.doctor_anesthetist);
+                $('#nurse_operating_room').val(response.nurse_operating_room);
+                $('#nurse_anesthetist').val(response.nurse_anesthetist);
+                $('#total').val(response.total);
+                $('#fee').val(response.fee);
             },
             error: function(response) {
                 onLoading('close', '.modal-content');
@@ -281,7 +321,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/general/class-type/update-data") }}',
+            url: '{{ url("master-data/action/operative/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -336,7 +376,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/general/class-type/destroy-data") }}',
+                        url: '{{ url("master-data/action/operative/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

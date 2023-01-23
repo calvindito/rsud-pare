@@ -81,7 +81,7 @@ class DataController extends Controller
                 $createData = Action::create([
                     'code' => $request->code,
                     'name' => $request->name,
-                    'fee' => str_replace(',', '', $request->fee)
+                    'fee' => $request->fee
                 ]);
 
                 $response = [
@@ -132,7 +132,7 @@ class DataController extends Controller
                 $updateData = Action::findOrFail($id)->update([
                     'code' => $request->code,
                     'name' => $request->name,
-                    'fee' => str_replace(',', '', $request->fee)
+                    'fee' => $request->fee
                 ]);
 
                 $response = [

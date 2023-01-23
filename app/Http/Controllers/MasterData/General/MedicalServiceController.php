@@ -101,7 +101,7 @@ class MedicalServiceController extends Controller
                     'class_type_id' => $request->class_type_id,
                     'code' => $request->code,
                     'name' => $request->name,
-                    'fee' => str_replace(',', '', $request->fee)
+                    'fee' => $request->fee
                 ]);
 
                 $response = [
@@ -154,7 +154,7 @@ class MedicalServiceController extends Controller
                     'class_type_id' => $request->class_type_id,
                     'code' => $request->code,
                     'name' => $request->name,
-                    'fee' => str_replace(',', '', $request->fee),
+                    'fee' => $request->fee,
                     'status' => $request->status
                 ]);
 

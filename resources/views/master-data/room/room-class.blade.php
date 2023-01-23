@@ -90,25 +90,25 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya Kamar <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control number-format" name="fee_room" id="fee_room" placeholder="Masukan biaya">
+                            <input type="number" class="form-control" name="fee_room" id="fee_room" placeholder="Masukan biaya kamar">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya Makan <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control number-format" name="fee_meal" id="fee_meal" placeholder="Masukan biaya">
+                            <input type="number" class="form-control" name="fee_meal" id="fee_meal" placeholder="Masukan biaya makan">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya Askep <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control number-format" name="fee_nursing_care" id="fee_nursing_care" placeholder="Masukan biaya">
+                            <input type="number" class="form-control" name="fee_nursing_care" id="fee_nursing_care" placeholder="Masukan biaya askep">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Asupan Nutrisi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control number-format" name="fee_nutritional_care" id="fee_nutritional_care" placeholder="Masukan biaya">
+                            <input type="number" class="form-control" name="fee_nutritional_care" id="fee_nutritional_care" placeholder="Masukan asupan nutrisi">
                         </div>
                     </div>
                     <div class="form-group row">

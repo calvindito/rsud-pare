@@ -87,8 +87,8 @@ class ClassTypeController extends Controller
                     'code' => $request->code,
                     'code_bpjs' => $request->code_bpjs,
                     'name' => $request->name,
-                    'fee_monitoring' => str_replace(',', '', $request->fee_monitoring),
-                    'fee_nursing_care' => str_replace(',', '', $request->fee_nursing_care)
+                    'fee_monitoring' => $request->fee_monitoring,
+                    'fee_nursing_care' => $request->fee_nursing_care
                 ]);
 
                 $response = [
@@ -145,8 +145,8 @@ class ClassTypeController extends Controller
                     'code' => $request->code,
                     'code_bpjs' => $request->code_bpjs,
                     'name' => $request->name,
-                    'fee_monitoring' => str_replace(',', '', $request->fee_monitoring),
-                    'fee_nursing_care' => str_replace(',', '', $request->fee_nursing_care)
+                    'fee_monitoring' => $request->fee_monitoring,
+                    'fee_nursing_care' => $request->fee_nursing_care
                 ]);
 
                 $response = [

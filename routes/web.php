@@ -180,6 +180,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'OtherController@updateData');
             Route::delete('destroy-data', 'OtherController@destroyData');
         });
+
+        Route::prefix('operative')->group(function () {
+            Route::get('/', 'OperativeController@index');
+            Route::get('datatable', 'OperativeController@datatable');
+            Route::post('create-data', 'OperativeController@createData');
+            Route::get('show-data', 'OperativeController@showData');
+            Route::patch('update-data', 'OperativeController@updateData');
+            Route::delete('destroy-data', 'OperativeController@destroyData');
+        });
     });
 });
 

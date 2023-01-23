@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\MasterData\Action;
 
 use App\Models\ClassType;
-use App\Models\ActionOther;
 use Illuminate\Http\Request;
+use App\Models\ActionOperative;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class OtherController extends Controller
+class OperativeController extends Controller
 {
     public function index()
     {
         $data = [
             'classType' => ClassType::all(),
-            'content' => 'master-data.action.other'
+            'content' => 'master-data.action.operative'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -24,22 +24,19 @@ class OtherController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = ActionOther::query();
+        $data = ActionOperative::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('name', 'like', "%$search%")
+                    $query->where('code', 'like', "%$search%")
+                        ->orWhere('name', 'like', "%$search%")
                         ->orWhereHas('classType', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
                         });
                 }
             })
-            ->editColumn('fee', '{{ number_format($fee, 2) }}')
-            ->editColumn('consumables', '{{ number_format($consumables, 2) }}')
-            ->editColumn('hospital_service', '{{ number_format($hospital_service, 2) }}')
-            ->editColumn('service', '{{ number_format($service, 2) }}')
-            ->addColumn('class_type_name', function (ActionOther $query) {
+            ->addColumn('class_type_name', function (ActionOperative $query) {
                 $classTypeName = null;
 
                 if (isset($query->classType)) {
@@ -48,7 +45,7 @@ class OtherController extends Controller
 
                 return $classTypeName;
             })
-            ->addColumn('action', function (ActionOther $query) {
+            ->addColumn('action', function (ActionOperative $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -75,17 +72,34 @@ class OtherController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'name' => 'required',
+            'code' => 'required|unique:action_operatives,code',
             'class_type_id' => 'required',
-            'hospital_service' => 'required|numeric',
-            'service' => 'required|numeric',
+            'hospital_service' => 'required|numeric|max:100',
+            'doctor_operating' => 'required|numeric',
+            'doctor_anesthetist' => 'required|numeric',
+            'nurse_operating_room' => 'required|numeric',
+            'nurse_anesthetist' => 'required|numeric',
+            'total' => 'required|numeric|max:100',
             'fee' => 'required|numeric'
         ], [
             'name.required' => 'nama tindakan tidak boleh kosong',
+            'code.required' => 'kode tindakan tidak boleh kosong',
+            'code.unique' => 'kode tindakan telah digunakan',
             'class_type_id.required' => 'mohon memilih kelas',
             'hospital_service.required' => 'jrs tidak boleh kosong',
             'hospital_service.numeric' => 'jrs harus angka yang valid',
-            'service.required' => 'jaspel tidak boleh kosong',
-            'service.numeric' => 'jaspel harus angka yang valid',
+            'hospital_service.max' => 'jrs maksimal 100',
+            'doctor_operating.required' => 'dr operasi tidak boleh kosong',
+            'doctor_operating.numeric' => 'dr operasi harus angka yang valid',
+            'doctor_anesthetist.required' => 'dr anestesi tidak boleh kosong',
+            'doctor_anesthetist.numeric' => 'dr anestesi harus angka yang valid',
+            'nurse_operating_room.required' => 'perawat operasi tidak boleh kosong',
+            'nurse_operating_room.numeric' => 'perawat operasi harus angka yang valid',
+            'nurse_anesthetist.required' => 'perawat anestesi tidak boleh kosong',
+            'nurse_anesthetist.numeric' => 'perawat anestesi harus angka yang valid',
+            'total.required' => 'total tidak boleh kosong',
+            'total.numeric' => 'total harus angka yang valid',
+            'total.max' => 'total maksimal 100',
             'fee.required' => 'tarif tidak boleh kosong',
             'fee.numeric' => 'tarif harus angka yang valid'
         ]);
@@ -97,14 +111,17 @@ class OtherController extends Controller
             ];
         } else {
             try {
-                $createData = ActionOther::create([
+                $createData = ActionOperative::create([
                     'class_type_id' => $request->class_type_id,
+                    'code' => $request->code,
                     'name' => $request->name,
-                    'consumables' => $request->consumables,
                     'hospital_service' => $request->hospital_service,
-                    'service' => $request->service,
-                    'fee' => $request->fee,
-                    'description' => $request->description
+                    'doctor_operating' => $request->doctor_operating,
+                    'doctor_anesthetist' => $request->doctor_anesthetist,
+                    'nurse_operating_room' => $request->nurse_operating_room,
+                    'nurse_anesthetist' => $request->nurse_anesthetist,
+                    'total' => $request->total,
+                    'fee' => $request->fee
                 ]);
 
                 $response = [
@@ -125,7 +142,7 @@ class OtherController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = ActionOther::findOrFail($id);
+        $data = ActionOperative::findOrFail($id);
 
         return response()->json($data);
     }
@@ -135,17 +152,34 @@ class OtherController extends Controller
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
             'name' => 'required',
+            'code' => 'required|unique:action_operatives,code,' . $id,
             'class_type_id' => 'required',
-            'hospital_service' => 'required|numeric',
-            'service' => 'required|numeric',
+            'hospital_service' => 'required|numeric|max:100',
+            'doctor_operating' => 'required|numeric',
+            'doctor_anesthetist' => 'required|numeric',
+            'nurse_operating_room' => 'required|numeric',
+            'nurse_anesthetist' => 'required|numeric',
+            'total' => 'required|numeric|max:100',
             'fee' => 'required|numeric'
         ], [
             'name.required' => 'nama tindakan tidak boleh kosong',
+            'code.required' => 'kode tindakan tidak boleh kosong',
+            'code.unique' => 'kode tindakan telah digunakan',
             'class_type_id.required' => 'mohon memilih kelas',
             'hospital_service.required' => 'jrs tidak boleh kosong',
             'hospital_service.numeric' => 'jrs harus angka yang valid',
-            'service.required' => 'jaspel tidak boleh kosong',
-            'service.numeric' => 'jaspel harus angka yang valid',
+            'hospital_service.max' => 'jrs maksimal 100',
+            'doctor_operating.required' => 'dr operasi tidak boleh kosong',
+            'doctor_operating.numeric' => 'dr operasi harus angka yang valid',
+            'doctor_anesthetist.required' => 'dr anestesi tidak boleh kosong',
+            'doctor_anesthetist.numeric' => 'dr anestesi harus angka yang valid',
+            'nurse_operating_room.required' => 'perawat operasi tidak boleh kosong',
+            'nurse_operating_room.numeric' => 'perawat operasi harus angka yang valid',
+            'nurse_anesthetist.required' => 'perawat anestesi tidak boleh kosong',
+            'nurse_anesthetist.numeric' => 'perawat anestesi harus angka yang valid',
+            'total.required' => 'total tidak boleh kosong',
+            'total.numeric' => 'total harus angka yang valid',
+            'total.max' => 'total maksimal 100',
             'fee.required' => 'tarif tidak boleh kosong',
             'fee.numeric' => 'tarif harus angka yang valid'
         ]);
@@ -157,14 +191,17 @@ class OtherController extends Controller
             ];
         } else {
             try {
-                $updateData = ActionOther::findOrFail($id)->update([
+                $updateData = ActionOperative::findOrFail($id)->update([
                     'class_type_id' => $request->class_type_id,
+                    'code' => $request->code,
                     'name' => $request->name,
-                    'consumables' => $request->consumables,
                     'hospital_service' => $request->hospital_service,
-                    'service' => $request->service,
-                    'fee' => $request->fee,
-                    'description' => $request->description
+                    'doctor_operating' => $request->doctor_operating,
+                    'doctor_anesthetist' => $request->doctor_anesthetist,
+                    'nurse_operating_room' => $request->nurse_operating_room,
+                    'nurse_anesthetist' => $request->nurse_anesthetist,
+                    'total' => $request->total,
+                    'fee' => $request->fee
                 ]);
 
                 $response = [
@@ -187,7 +224,7 @@ class OtherController extends Controller
         $id = $request->id;
 
         try {
-            ActionOther::destroy($id);
+            ActionOperative::destroy($id);
 
             $response = [
                 'code' => 200,
