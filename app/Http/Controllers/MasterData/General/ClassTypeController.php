@@ -32,8 +32,6 @@ class ClassTypeController extends Controller
                         ->orWhere('name', 'like', "%$search%");
                 }
             })
-            ->editColumn('fee_nursing_care', '{{ number_format($fee_nursing_care, 2) }}')
-            ->editColumn('fee_monitoring', '{{ number_format($fee_monitoring, 2) }}')
             ->addColumn('action', function (ClassType $query) {
                 return '
                     <div class="btn-group">

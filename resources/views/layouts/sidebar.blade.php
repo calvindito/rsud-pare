@@ -106,7 +106,7 @@
                                         <a href="{{ url('master-data/action/non-operative') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'action' && Request::segment(3) == 'non-operative' ? 'active' : '' }}">Non Operatif</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('master-data/action/support') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'action' && Request::segment(3) == 'support' ? 'active' : '' }}">Penunjang</a>
+                                        <a href="{{ url('master-data/action/supporting') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'action' && Request::segment(3) == 'supporting' ? 'active' : '' }}">Penunjang</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ url('master-data/action/emergency-care') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'action' && Request::segment(3) == 'emergency-care' ? 'active' : '' }}">Rawat Darurat</a>

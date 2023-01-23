@@ -198,6 +198,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'NonOperativeController@updateData');
             Route::delete('destroy-data', 'NonOperativeController@destroyData');
         });
+
+        Route::prefix('supporting')->group(function () {
+            Route::get('/', 'SupportingController@index');
+            Route::get('datatable', 'SupportingController@datatable');
+            Route::post('create-data', 'SupportingController@createData');
+            Route::get('show-data', 'SupportingController@showData');
+            Route::patch('update-data', 'SupportingController@updateData');
+            Route::delete('destroy-data', 'SupportingController@destroyData');
+        });
     });
 });
 

@@ -35,10 +35,6 @@ class OtherController extends Controller
                         });
                 }
             })
-            ->editColumn('fee', '{{ number_format($fee, 2) }}')
-            ->editColumn('consumables', '{{ number_format($consumables, 2) }}')
-            ->editColumn('hospital_service', '{{ number_format($hospital_service, 2) }}')
-            ->editColumn('service', '{{ number_format($service, 2) }}')
             ->addColumn('class_type_name', function (ActionOther $query) {
                 $classTypeName = null;
 

@@ -44,10 +44,6 @@ class RoomClassController extends Controller
                         });
                 }
             })
-            ->editColumn('fee_room', '{{ number_format($fee_room, 2) }}')
-            ->editColumn('fee_meal', '{{ number_format($fee_meal, 2) }}')
-            ->editColumn('fee_nursing_care', '{{ number_format($fee_nursing_care, 2) }}')
-            ->editColumn('fee_nutritional_care', '{{ number_format($fee_nutritional_care, 2) }}')
             ->editColumn('status', function (RoomType $query) {
                 return $query->status();
             })

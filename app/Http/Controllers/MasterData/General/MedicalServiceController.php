@@ -35,7 +35,6 @@ class MedicalServiceController extends Controller
                         });
                 }
             })
-            ->editColumn('fee', '{{ number_format($fee, 2) }}')
             ->editColumn('code', function (MedicalService $query) {
                 return $query->code();
             })

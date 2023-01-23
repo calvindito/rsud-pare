@@ -31,7 +31,6 @@ class DataController extends Controller
                         ->orWhere('name', 'like', "%$search%");
                 }
             })
-            ->editColumn('fee', '{{ number_format($fee, 2) }}')
             ->editColumn('created_at', '{{ date("Y-m-d H:i:s", strtotime($created_at)) }}')
             ->editColumn('updated_at', '{{ date("Y-m-d H:i:s", strtotime($updated_at)) }}')
             ->addColumn('action', function (Action $query) {
