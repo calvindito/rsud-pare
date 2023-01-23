@@ -29,4 +29,14 @@ class ActionOther extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * classType
+     *
+     * @return void
+     */
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class);
+    }
 }

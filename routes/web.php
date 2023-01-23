@@ -171,6 +171,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'DataController@updateData');
             Route::delete('destroy-data', 'DataController@destroyData');
         });
+
+        Route::prefix('other')->group(function () {
+            Route::get('/', 'OtherController@index');
+            Route::get('datatable', 'OtherController@datatable');
+            Route::post('create-data', 'OtherController@createData');
+            Route::get('show-data', 'OtherController@showData');
+            Route::patch('update-data', 'OtherController@updateData');
+            Route::delete('destroy-data', 'OtherController@destroyData');
+        });
     });
 });
 
