@@ -16,13 +16,14 @@ class CreateOperatingRoomActionsTable extends Migration
         Schema::create('operating_room_actions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('class_type_id')->nullable();
-            $table->unsignedBigInteger('operating_room_type_action_id')->nullable();
+            $table->unsignedBigInteger('operating_room_action_type_id')->nullable();
             $table->unsignedBigInteger('operating_room_group_id')->nullable();
             $table->double('fee_hospital_service')->nullable();
             $table->double('fee_doctor_operating_room')->nullable();
             $table->double('fee_doctor_anesthetist')->nullable();
             $table->double('fee_nurse_operating_room')->nullable();
             $table->double('fee_nurse_anesthetist')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProvinceSeeder::class);
         $this->call(CitySeeder::class);
         $this->call(DistrictSeeder::class);
-        $this->call(PatientSeeder::class);
         $this->call(DTDSeeder::class);
         $this->call(RoomSeeder::class);
         $this->call(RoomTypeSeeder::class);
@@ -37,5 +36,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ActionSupportingSeeder::class);
         $this->call(ActionEmergencyCareSeeder::class);
         $this->call(PatientGroupSeeder::class);
+        $this->call(OperatingRoomActionSeeder::class);
+        $this->call(OperatingRoomActionTypeSeeder::class);
+        $this->call(OperatingRoomAnesthetistSeeder::class);
+        $this->call(OperatingRoomGroupSeeder::class);
+        $this->call(PatientSeeder::class);
     }
 }

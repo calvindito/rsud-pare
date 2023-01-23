@@ -128,14 +128,19 @@
                                     <li class="nav-item">
                                         <a href="{{ url('master-data/operating-room/anesthetists') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'operating-room' && Request::segment(3) == 'anesthetists' ? 'active' : '' }}">Anestesi</a>
                                     </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item nav-item-submenu {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' ? 'nav-item-expanded nav-item-open' : '' }}">
+                                <a href="#" class="nav-link">Layanan Kesehatan</a>
+                                <ul class="nav-group-sub collapse {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' ? 'show' : '' }}">
                                     <li class="nav-item">
-                                        <a href="{{ url('master-data/operating-room/upf') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'operating-room' && Request::segment(3) == 'upf' ? 'active' : '' }}">UPF</a>
+                                        <a href="{{ url('master-data/health-service/data') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' && Request::segment(3) == 'data' ? 'active' : '' }}">Data</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('master-data/operating-room/support') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'operating-room' && Request::segment(3) == 'support' ? 'active' : '' }}">Penunjang</a>
+                                        <a href="{{ url('master-data/health-service/upf') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' && Request::segment(3) == 'upf' ? 'active' : '' }}">UPF</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('master-data/operating-room/healt-service-bed') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'operating-room' && Request::segment(3) == 'emergency-care' ? 'active' : '' }}">Yankes Tempat Tidur</a>
+                                        <a href="{{ url('master-data/health-service/bed') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'health-service' && Request::segment(3) == 'bed' ? 'active' : '' }}">Tempat Tidur</a>
                                     </li>
                                 </ul>
                             </li>
