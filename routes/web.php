@@ -207,6 +207,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'SupportingController@updateData');
             Route::delete('destroy-data', 'SupportingController@destroyData');
         });
+
+        Route::prefix('emergency-care')->group(function () {
+            Route::get('/', 'EmergencyCareController@index');
+            Route::get('datatable', 'EmergencyCareController@datatable');
+            Route::post('create-data', 'EmergencyCareController@createData');
+            Route::get('show-data', 'EmergencyCareController@showData');
+            Route::patch('update-data', 'EmergencyCareController@updateData');
+            Route::delete('destroy-data', 'EmergencyCareController@destroyData');
+        });
     });
 });
 
