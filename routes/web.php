@@ -189,6 +189,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'OperativeController@updateData');
             Route::delete('destroy-data', 'OperativeController@destroyData');
         });
+
+        Route::prefix('non-operative')->group(function () {
+            Route::get('/', 'NonOperativeController@index');
+            Route::get('datatable', 'NonOperativeController@datatable');
+            Route::post('create-data', 'NonOperativeController@createData');
+            Route::get('show-data', 'NonOperativeController@showData');
+            Route::patch('update-data', 'NonOperativeController@updateData');
+            Route::delete('destroy-data', 'NonOperativeController@destroyData');
+        });
     });
 });
 
