@@ -29,4 +29,28 @@ class OperatingRoomGroup extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * group
+     *
+     * @return void
+     */
+    public function group()
+    {
+        $group = $this->group;
+
+        if ($group == 1) {
+            $text = 'KHUSUS';
+        } else if ($group == 2) {
+            $text = 'BESAR';
+        } else if ($group == 3) {
+            $text = 'SEDANG';
+        } else if ($group == 4) {
+            $text = 'KECIL';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
 }

@@ -236,6 +236,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'ActionTypeController@updateData');
             Route::delete('destroy-data', 'ActionTypeController@destroyData');
         });
+
+        Route::prefix('operating-group')->group(function () {
+            Route::get('/', 'OperatingGroupController@index');
+            Route::get('datatable', 'OperatingGroupController@datatable');
+            Route::post('create-data', 'OperatingGroupController@createData');
+            Route::get('show-data', 'OperatingGroupController@showData');
+            Route::patch('update-data', 'OperatingGroupController@updateData');
+            Route::delete('destroy-data', 'OperatingGroupController@destroyData');
+        });
     });
 });
 
