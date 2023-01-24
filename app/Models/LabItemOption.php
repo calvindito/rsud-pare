@@ -29,4 +29,14 @@ class LabItemOption extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * labItem
+     *
+     * @return void
+     */
+    public function labItem()
+    {
+        return $this->belongsTo(LabItem::class);
+    }
 }
