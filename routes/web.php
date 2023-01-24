@@ -350,6 +350,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'FeeController@updateData');
             Route::delete('destroy-data', 'FeeController@destroyData');
         });
+
+        Route::prefix('condition')->group(function () {
+            Route::get('/', 'ConditionController@index');
+            Route::get('datatable', 'ConditionController@datatable');
+            Route::post('create-data', 'ConditionController@createData');
+            Route::get('show-data', 'ConditionController@showData');
+            Route::patch('update-data', 'ConditionController@updateData');
+            Route::delete('destroy-data', 'ConditionController@destroyData');
+        });
     });
 });
 

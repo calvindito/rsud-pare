@@ -16,7 +16,9 @@ class CreateLabItemConditionDetailsTable extends Migration
         Schema::create('lab_item_condition_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('lab_item_condition_id')->nullable();
+            $table->string('slug')->nullable();
             $table->string('name')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

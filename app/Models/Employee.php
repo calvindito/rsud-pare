@@ -31,15 +31,13 @@ class Employee extends Model
     protected $guarded = ['id'];
 
     /**
-     * boot
+     * The "booted" method of the model.
      *
      * @return void
      */
-    protected static function boot()
+    protected static function booted()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
+        static::created(function ($model) {
             try {
                 $model->code = (new Self)->generateCode();
             } catch (\Exception $e) {
