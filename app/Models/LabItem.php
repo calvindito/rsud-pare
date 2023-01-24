@@ -29,4 +29,44 @@ class LabItem extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * labCategory
+     *
+     * @return void
+     */
+    public function labCategory()
+    {
+        return $this->belongsTo(LabCategory::class);
+    }
+
+    /**
+     * labItemGroup
+     *
+     * @return void
+     */
+    public function labItemGroup()
+    {
+        return $this->belongsTo(LabItemGroup::class);
+    }
+
+    /**
+     * status
+     *
+     * @return void
+     */
+    public function status()
+    {
+        $status = $this->status;
+
+        if ($status == true) {
+            $html = '<span class="badge bg-success">Aktif</span>';
+        } else if ($status == false) {
+            $html = '<span class="badge bg-danger">Tidak Aktif</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
 }

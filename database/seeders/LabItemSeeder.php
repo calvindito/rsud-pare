@@ -20,7 +20,7 @@ class LabItemSeeder extends Seeder
                 LabItem::insert([
                     'id' => $q->id,
                     'lab_category_id' => $q->kategori_id,
-                    'lab_group_id' => $q->grup_id,
+                    'lab_item_group_id' => $q->grup_id,
                     'name' => $q->nama,
                     'status' => $q->is_removed == 1 ? 0 : 1,
                     'created_at' => $q->created_at ? $q->created_at : now(),
