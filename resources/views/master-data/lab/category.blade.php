@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Tindakan - <span class="fw-normal">Data</span>
+                Master Data - Laboratorium - <span class="fw-normal">Kategori</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,9 +27,7 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode</th>
                         <th nowrap>Nama</th>
-                        <th nowrap>Biaya</th>
                         <th nowrap>Tanggal Dibuat</th>
                         <th nowrap>Tanggal Diupdate</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
@@ -56,21 +54,9 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Biaya <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee" id="fee" placeholder="Masukan biaya">
                         </div>
                     </div>
                 </form>
@@ -160,7 +146,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("master-data/action/data/datatable") }}',
+                url: '{{ url("master-data/lab/category/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -180,9 +166,7 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'fee', name: 'code_bpjs', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'created_at', name: 'created_at', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'updated_at', name: 'updated_at', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
@@ -192,7 +176,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/action/data/create-data") }}',
+            url: '{{ url("master-data/lab/category/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -235,7 +219,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/action/data/show-data") }}',
+            url: '{{ url("master-data/lab/category/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -249,9 +233,7 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#code').val(response.code);
                 $('#name').val(response.name);
-                $('#fee').val(response.fee);
             },
             error: function(response) {
                 onLoading('close', '.modal-content');
@@ -267,7 +249,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/action/data/update-data") }}',
+            url: '{{ url("master-data/lab/category/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -322,7 +304,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/action/data/destroy-data") }}',
+                        url: '{{ url("master-data/lab/category/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

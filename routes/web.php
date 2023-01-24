@@ -295,6 +295,17 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::delete('destroy-data', 'ActionController@destroyData');
         });
     });
+
+    Route::prefix('lab')->namespace('Lab')->group(function () {
+        Route::prefix('category')->group(function () {
+            Route::get('/', 'CategoryController@index');
+            Route::get('datatable', 'CategoryController@datatable');
+            Route::post('create-data', 'CategoryController@createData');
+            Route::get('show-data', 'CategoryController@showData');
+            Route::patch('update-data', 'CategoryController@updateData');
+            Route::delete('destroy-data', 'CategoryController@destroyData');
+        });
+    });
 });
 
 Route::prefix('setting')->namespace('Setting')->group(function () {

@@ -171,15 +171,15 @@
                                         <a href="{{ url('master-data/lab/item-group') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'lab' && Request::segment(3) == 'item-group' ? 'active' : '' }}">Item Grup</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('master-data/lab/medicine') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'lab' && Request::segment(3) == 'medicine' ? 'active' : '' }}">Obat</a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a href="{{ url('master-data/lab/fee') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'lab' && Request::segment(3) == 'fee' ? 'active' : '' }}">Biaya</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ url('master-data/lab/condition') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'lab' && Request::segment(3) == 'condition' ? 'active' : '' }}">Kondisi</a>
                                     </li>
                                 </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ url('master-data/lab/medicine') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'medicine' ? 'active' : '' }}">Obat</a>
                             </li>
                             <li class="nav-item nav-item-submenu {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'radiology' ? 'nav-item-expanded nav-item-open' : '' }}">
                                 <a href="#" class="nav-link">Radiologi</a>
