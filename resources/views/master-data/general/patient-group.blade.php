@@ -42,7 +42,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -294,7 +294,7 @@
                     formSuccess();
                     notification('success', response.message);
                 } else if(response.code == 400) {
-                    $('#modal-form').scrollTop(0);
+                    $('#modal-form .modal-body').scrollTop(0);
                     showValidation(response.error);
                 } else {
                     swalInit.fire({
@@ -380,7 +380,7 @@
                     formSuccess();
                     notification('success', response.message);
                 } else if(response.code == 400) {
-                    $('#modal-form').scrollTop(0);
+                    $('#modal-form .modal-body').scrollTop(0);
                     showValidation(response.error);
                 } else {
                     swalInit.fire({

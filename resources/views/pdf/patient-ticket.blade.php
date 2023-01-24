@@ -7,6 +7,10 @@
     <title>{{ $title }}</title>
 
     <style>
+        body {
+            text-align: center;
+        }
+
         .fs-9 {
             font-size: 9px;
         }
@@ -26,11 +30,28 @@
         .mb-5 {
             margin-bottom: 5px;
         }
+
+        .mt-0 {
+            margin-top: 0;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
+
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+
+        img {
+            max-height: 30px;
+        }
     </style>
 </head>
 <body>
     <h5 class="text-center mb-5 fw-bold">E-Tiket Pasien</h5>
-    <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($data->id, 'C39+') }}" height="30" width="100%" class="mb-5">
+    <hr class="mt-0">
+    <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG("$data->id", 'QRCODE') }}" class="mb-5">
     <table width="100%">
         <tr>
             <td class="fs-9 fw-bold text-center" colspan="3">{{ $data->name }}</td>

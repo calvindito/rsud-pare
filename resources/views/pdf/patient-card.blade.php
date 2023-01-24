@@ -7,12 +7,24 @@
     <title>{{ $title }}</title>
 
     <style>
-        .fs-10 {
-            font-size: 10px;
+        body {
+            text-align: center;
+        }
+
+        .fs-13 {
+            font-size: 13px;
+        }
+
+        .fs-11 {
+            font-size: 11px;
         }
 
         .fw-bold {
             font-weight: bold;
+        }
+
+        .fw-200 {
+            font-weight: 200;
         }
 
         .text-center {
@@ -22,12 +34,36 @@
         .mb-10 {
             margin-bottom: 10px;
         }
+
+        .mt-0 {
+            margin-top: 0;
+        }
+
+        .mb-0 {
+            margin-bottom: 0;
+        }
+
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+
+        .mb-2 {
+            margin-bottom: 2px;
+        }
+
+        img {
+            max-height: 50px;
+        }
     </style>
 </head>
 <body>
-    <h4 class="text-center mb-10 fw-bold">Kartu Pasien</h4>
-    <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($data->id, 'C39+') }}" height="50" width="100%" class="mb-10">
-    <table>
+    <h4 class="text-center mb-8 fw-bold">Kartu Pasien</h4>
+    <hr class="mt-0">
+    <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG("$data->id", 'QRCODE') }}" class="mb-10">
+    <div class="fw-bold fs-13 mb-2">{{ $data->id }}</div>
+    <div class="fw-200 fs-11 mb-2">{{ $data->name }}</div>
+    <div class="fw-200 fs-11">{{ $data->address }}</div>
+    {{-- <table>
         <tr>
             <td class="fs-10">No RM</td>
             <td class="fs-10">:</td>
@@ -53,6 +89,6 @@
                 @endif
             </td>
         </tr>
-    </table>
+    </table> --}}
 </body>
 </html>

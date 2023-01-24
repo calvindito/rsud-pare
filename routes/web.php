@@ -314,6 +314,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'ItemController@updateData');
             Route::delete('destroy-data', 'ItemController@destroyData');
         });
+
+        Route::prefix('item-parent')->group(function () {
+            Route::get('/', 'ItemParentController@index');
+            Route::get('datatable', 'ItemParentController@datatable');
+            Route::post('create-data', 'ItemParentController@createData');
+            Route::get('show-data', 'ItemParentController@showData');
+            Route::patch('update-data', 'ItemParentController@updateData');
+            Route::delete('destroy-data', 'ItemParentController@destroyData');
+        });
     });
 });
 

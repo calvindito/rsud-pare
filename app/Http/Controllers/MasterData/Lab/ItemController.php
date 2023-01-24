@@ -31,7 +31,13 @@ class ItemController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('name', 'like', "%$search%");
+                    $query->where('name', 'like', "%$search%")
+                        ->orWhereHas('labCategory', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('labItemGroup', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        });
                 }
             })
             ->editColumn('status', function (LabItem $query) {

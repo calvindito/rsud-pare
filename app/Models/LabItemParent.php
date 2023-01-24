@@ -29,4 +29,44 @@ class LabItemParent extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * parent
+     *
+     * @return void
+     */
+    public function parent()
+    {
+        return $this->belongsTo(LabItem::class, 'parent_id');
+    }
+
+    /**
+     * labItem
+     *
+     * @return void
+     */
+    public function labItem()
+    {
+        return $this->belongsTo(LabItem::class);
+    }
+
+    /**
+     * status
+     *
+     * @return void
+     */
+    public function status()
+    {
+        $status = $this->status;
+
+        if ($status == true) {
+            $html = '<span class="badge bg-success">Aktif</span>';
+        } else if ($status == false) {
+            $html = '<span class="badge bg-danger">Tidak Aktif</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
 }

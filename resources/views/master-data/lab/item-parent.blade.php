@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Umum - <span class="fw-normal">Unit</span>
+                Master Data - Laboratorium - <span class="fw-normal">Item Parent</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,9 +27,12 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode Unit</th>
-                        <th nowrap>Nama Unit</th>
-                        <th nowrap>Jenis Unit</th>
+                        <th nowrap>Parent</th>
+                        <th nowrap>Item</th>
+                        <th nowrap>Level</th>
+                        <th nowrap>Metode</th>
+                        <th nowrap>Satuan</th>
+                        <th class="text-center" nowrap>Status</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -54,25 +57,102 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Unit <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Parent <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode unit">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nama Unit <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama unit">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Jenis Unit <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="type" id="type">
+                            <select class="form-select" name="parent_id" id="parent_id">
                                 <option value="">-- Pilih --</option>
-                                <option value="1">Rawat Inap</option>
-                                <option value="2">Rawat Jalan</option>
-                                <option value="3">Penunjang</option>
+                                @foreach($labItem as $li)
+                                    <option value="{{ $li->id }}">{{ $li->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Item <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="lab_item_id" id="lab_item_id">
+                                <option value="">-- Pilih --</option>
+                                @foreach($labItem as $li)
+                                    <option value="{{ $li->id }}">{{ $li->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Level <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="level" id="level">
+                                <option value="">-- Pilih --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Batas Bawah</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="limit_lower" id="limit_lower" placeholder="Masukan batas bawah">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Batas Atas</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="limit_upper" id="limit_upper" placeholder="Masukan batas atas">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Batas Bawah Kritis</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="limit_critical_lower" id="limit_critical_lower" placeholder="Masukan batas bawah kritis">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Batas Atas Kritis</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="limit_critical_upper" id="limit_critical_upper" placeholder="Masukan batas atas kritis">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Batas Bawah Kritis Pasien</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="limit_critical_lower_patient" id="limit_critical_lower_patient" placeholder="Masukan batas bawah kritis pasien">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Batas Atas Kritis Pasien</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" name="limit_critical_upper_patient" id="limit_critical_upper_patient" placeholder="Masukan batas atas kritis pasien">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Dropdown</label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="dropdown" id="dropdown">
+                                <option value="1">Ya</option>
+                                <option value="0">Tidak</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Metode</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="method" id="method" placeholder="Masukan metode">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Satuan</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" name="unit" id="unit" placeholder="Masukan satuan">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Status</label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="status" id="status">
+                                <option value="1">Aktif</option>
+                                <option value="0">Tidak Aktif</option>
                             </select>
                         </div>
                     </div>
@@ -114,6 +194,9 @@
         $('#btn-create').removeClass('d-none');
         $('#btn-update').addClass('d-none');
         $('#btn-cancel').addClass('d-none');
+        $('#status').attr('disabled', true);
+        $('#status').val(1);
+        $('#dropdown').val(1);
     }
 
     function onCreate() {
@@ -133,6 +216,7 @@
         $('#btn-cancel').removeClass('d-none');
         $('#modal-form .modal-title').text('Edit Data');
         $('#modal-form').modal('show');
+        $('#status').attr('disabled', false);
     }
 
     function clearValidation() {
@@ -163,7 +247,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("master-data/general/unit/datatable") }}',
+                url: '{{ url("master-data/lab/item-parent/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -183,9 +267,12 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'type', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'parent_name', name: 'parent_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'lab_item_name', name: 'lab_item_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'level', name: 'level', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'method', name: 'method', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'unit', name: 'unit', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -193,7 +280,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/general/unit/create-data") }}',
+            url: '{{ url("master-data/lab/item-parent/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -236,7 +323,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/general/unit/show-data") }}',
+            url: '{{ url("master-data/lab/item-parent/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -250,9 +337,21 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#code').val(response.code);
-                $('#name').val(response.name);
-                $('#type').val(response.type);
+                $('#parent_id').val(response.parent_id);
+                $('#lab_item_id').val(response.lab_item_id);
+                $('#level').val(response.level);
+                $('#limit_lower').val(response.limit_lower);
+                $('#limit_critical_lower').val(response.limit_critical_lower);
+                $('#limit_upper').val(response.limit_upper);
+                $('#limit_critical_upper').val(response.limit_critical_upper);
+                $('#limit_lower_patient').val(response.limit_lower_patient);
+                $('#limit_critical_lower_patient').val(response.limit_critical_lower_patient);
+                $('#limit_upper_patient').val(response.limit_upper_patient);
+                $('#limit_critical_upper_patient').val(response.limit_critical_upper_patient);
+                $('#dropdown').val(response.dropdown);
+                $('#method').val(response.method);
+                $('#unit').val(response.unit);
+                $('#status').val(response.status);
             },
             error: function(response) {
                 onLoading('close', '.modal-content');
@@ -268,7 +367,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/general/unit/update-data") }}',
+            url: '{{ url("master-data/lab/item-parent/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -323,7 +422,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/general/unit/destroy-data") }}',
+                        url: '{{ url("master-data/lab/item-parent/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

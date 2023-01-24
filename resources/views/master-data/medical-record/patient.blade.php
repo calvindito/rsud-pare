@@ -39,7 +39,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="alert alert-danger d-none" id="validation-element">
@@ -419,7 +419,7 @@
                     formSuccess();
                     notification('success', response.message);
                 } else if(response.code == 400) {
-                    $('#modal-form').scrollTop(0);
+                    $('#modal-form .modal-body').scrollTop(0);
                     showValidation(response.error);
                 } else {
                     swalInit.fire({
