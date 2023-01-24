@@ -43,6 +43,14 @@ class DatabaseSeeder extends Seeder
         $this->call(PharmacyProductionSeeder::class);
         $this->call(HealthServiceBedSeeder::class);
         $this->call(UnitActionSeeder::class);
+        $this->call(LabCategorySeeder::class);
+        $this->call(LabItemSeeder::class);
+        $this->call(LabItemParentSeeder::class);
+        $this->call(LabItemOptionSeeder::class);
+        $this->call(LabItemGroupSeeder::class);
+        $this->call(LabFeeSeeder::class);
+        $this->call(LabItemConditionSeeder::class);
+        $this->call(LabItemConditionDetailSeeder::class);
         $this->call(PatientSeeder::class);
     }
 }

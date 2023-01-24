@@ -19,7 +19,7 @@ class CreateLabFeesTable extends Migration
             $table->unsignedBigInteger('class_type_id')->nullable();
             $table->double('consumables')->nullable();
             $table->double('hospital_service')->nullable();
-            $table->double('health_service')->nullable();
+            $table->double('service')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

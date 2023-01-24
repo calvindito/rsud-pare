@@ -17,6 +17,7 @@ class CreateLabItemParentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('lab_item_id')->nullable();
+            $table->char('level', 1)->nullable();
             $table->double('limit_lower')->nullable();
             $table->double('limit_critical_lower')->nullable();
             $table->double('limit_upper')->nullable();
@@ -25,6 +26,7 @@ class CreateLabItemParentsTable extends Migration
             $table->double('limit_critical_lower_patient')->nullable();
             $table->double('limit_upper_patient')->nullable();
             $table->double('limit_critical_upper_patient')->nullable();
+            $table->boolean('dropdown')->default(true);
             $table->string('method')->nullable();
             $table->string('unit')->nullable();
             $table->boolean('status')->default(true);
