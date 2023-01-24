@@ -341,6 +341,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::patch('update-data', 'ItemGroupController@updateData');
             Route::delete('destroy-data', 'ItemGroupController@destroyData');
         });
+
+        Route::prefix('fee')->group(function () {
+            Route::get('/', 'FeeController@index');
+            Route::get('datatable', 'FeeController@datatable');
+            Route::post('create-data', 'FeeController@createData');
+            Route::get('show-data', 'FeeController@showData');
+            Route::patch('update-data', 'FeeController@updateData');
+            Route::delete('destroy-data', 'FeeController@destroyData');
+        });
     });
 });
 
