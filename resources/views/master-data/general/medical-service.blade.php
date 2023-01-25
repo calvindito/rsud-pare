@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Umum - <span class="fw-normal">Pelayanan Medik</span>
+                Master Data - Umum - <span class="fw-normal">Pelayanan Medis</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">

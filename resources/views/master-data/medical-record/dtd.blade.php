@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Rekam Medik - <span class="fw-normal">DTD</span>
+                Master Data - Rekam Medis - <span class="fw-normal">DTD</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">

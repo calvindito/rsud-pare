@@ -12,7 +12,44 @@
             </div>
             <div class="sidebar-section">
                 <ul class="nav nav-sidebar" data-nav-type="accordion">
-                    <li class="nav-item-header">
+                    @foreach(config('menu') as $m1)
+                        @if($m1['sub'])
+                            <li class="nav-item nav-item-submenu {{ Request::segment(1) == $m1['name'] ? 'nav-item-expanded nav-item-open' : '' }}">
+                                <a href="{{ $m1['link'] }}" class="nav-link">
+                                    <i class="{{ $m1['icon'] }}"></i>
+                                    <span>{{ $m1['menu'] }}</span>
+                                </a>
+                                <ul class="nav-group-sub collapse {{ Request::segment(1) == $m1['name'] ? 'show' : '' }}">
+                                    @foreach($m1['sub'] as $m2)
+                                        @if($m2['sub'])
+                                            <li class="nav-item nav-item-submenu {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] ? 'nav-item-expanded nav-item-open' : '' }}">
+                                                <a href="{{ $m2['link'] }}" class="nav-link">{{ $m2['menu'] }}</a>
+                                                <ul class="nav-group-sub collapse {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] ? 'show' : '' }}">
+                                                    @foreach($m2['sub'] as $m3)
+                                                        <li class="nav-item">
+                                                            <a href="{{ $m3['link'] }}" class="nav-link {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] && Request::segment(3) == $m3['name'] ? 'active' : '' }}">{{ $m3['menu'] }}</a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </li>
+                                        @else
+                                            <li class="nav-item">
+                                                <a href="{{ $m2['link'] }}" class="nav-link {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] ? 'active' : '' }}">{{ $m2['menu'] }}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @else
+                            <li class="nav-item {{ Request::segment(1) == $m1['name'] }}">
+                                <a href="{{ $m1['link'] }}" class="nav-link">
+                                    <i class="{{ $m1['icon'] }}"></i>
+                                    <span>{{ $m1['menu'] }}</span>
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+                    {{-- <li class="nav-item-header">
                         <div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">Menu</div>
                         <i class="ph-dots-three sidebar-resize-show"></i>
                     </li>
@@ -46,7 +83,7 @@
                                         <a href="{{ url('master-data/general/employee') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'general' && Request::segment(3) == 'employee' ? 'active' : '' }}">Karyawan</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ url('master-data/general/medical-service') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'general' && Request::segment(3) == 'medical-service' ? 'active' : '' }}">Pelayanan Medik</a>
+                                        <a href="{{ url('master-data/general/medical-service') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'general' && Request::segment(3) == 'medical-service' ? 'active' : '' }}">Pelayanan Medis</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="{{ url('master-data/general/patient-group') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'general' && Request::segment(3) == 'patient-group' ? 'active' : '' }}">Golongan Pasien</a>
@@ -60,7 +97,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item nav-item-submenu {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'medical-record' ? 'nav-item-expanded nav-item-open' : '' }}">
-                                <a href="#" class="nav-link">Rekam Medik</a>
+                                <a href="#" class="nav-link">Rekam Medis</a>
                                 <ul class="nav-group-sub collapse {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'medical-record' ? 'show' : '' }}">
                                     <li class="nav-item">
                                         <a href="{{ url('master-data/medical-record/patient') }}" class="nav-link {{ Request::segment(1) == 'master-data' && Request::segment(2) == 'medical-record' && Request::segment(3) == 'patient' ? 'active' : '' }}">Pasien</a>
@@ -222,7 +259,7 @@
                     <li class="nav-item nav-item-submenu">
                         <a href="#" class="nav-link">
                             <i class="ph-first-aid"></i>
-                            <span>Rekam Medik</span>
+                            <span>Rekam Medis</span>
                         </a>
                         <ul class="nav-group-sub collapse">
                             <li class="nav-item">
@@ -301,11 +338,8 @@
                             <li class="nav-item">
                                 <a href="{{ url('setting/user') }}" class="nav-link {{ Request::segment(1) == 'setting' && Request::segment(2) == 'user' ? 'active' : '' }}">Pengguna</a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ url('setting/nunber-medical-record') }}" class="nav-link {{ Request::segment(1) == 'setting' && Request::segment(2) == 'nunber-medical-record' ? 'active' : '' }}">Nomor Rekam Medik</a>
-                            </li>
                         </ul>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
