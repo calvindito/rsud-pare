@@ -16,7 +16,7 @@ class CreateRoleAccessesTable extends Migration
         Schema::create('role_accesses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('role_id')->nullable();
-            $table->unsignedBigInteger('menu_id')->nullable();
+            $table->string('menu')->nullable();
             $table->timestamps();
         });
     }

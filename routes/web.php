@@ -394,6 +394,10 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
 Route::prefix('setting')->namespace('Setting')->group(function () {
     Route::prefix('role')->group(function () {
         Route::get('/', 'RoleController@index');
-        Route::get('load-data', 'RoleController@loadData');
+        Route::get('datatable', 'RoleController@datatable');
+        Route::post('create-data', 'RoleController@createData');
+        Route::get('show-data', 'RoleController@showData');
+        Route::patch('update-data', 'RoleController@updateData');
+        Route::delete('destroy-data', 'RoleController@destroyData');
     });
 });

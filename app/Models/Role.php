@@ -29,4 +29,14 @@ class Role extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * roleAccess
+     *
+     * @return void
+     */
+    public function roleAccess()
+    {
+        return $this->hasMany(RoleAccess::class);
+    }
 }
