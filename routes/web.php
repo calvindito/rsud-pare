@@ -360,6 +360,15 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
             Route::delete('destroy-data', 'ConditionController@destroyData');
         });
     });
+
+    Route::prefix('medicine')->group(function () {
+        Route::get('/', 'MedicineController@index');
+        Route::get('datatable', 'MedicineController@datatable');
+        Route::post('create-data', 'MedicineController@createData');
+        Route::get('show-data', 'MedicineController@showData');
+        Route::patch('update-data', 'MedicineController@updateData');
+        Route::delete('destroy-data', 'MedicineController@destroyData');
+    });
 });
 
 Route::prefix('setting')->namespace('Setting')->group(function () {

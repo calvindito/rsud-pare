@@ -16,7 +16,7 @@ class CreateMedicinesTable extends Migration
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
             $table->string('code')->nullable();
-            $table->string('code_item')->nullable();
+            $table->string('code_t')->nullable();
             $table->string('code_type')->nullable();
             $table->string('name')->nullable();
             $table->string('name_generic')->nullable();
@@ -25,7 +25,7 @@ class CreateMedicinesTable extends Migration
             $table->string('unit')->nullable();
             $table->string('inventory')->nullable();
             $table->string('bir')->nullable();
-            $table->string('non_gen')->nullable();
+            $table->string('non_generic')->nullable();
             $table->string('nar')->nullable();
             $table->string('oakrl')->nullable();
             $table->string('chronic')->nullable();

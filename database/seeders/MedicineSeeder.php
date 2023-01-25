@@ -18,8 +18,8 @@ class MedicineSeeder extends Seeder
         DB::connection('clone')->table('m_obat_akhp')->orderBy('kd_barang')->chunk(1000, function ($query) {
             foreach ($query as $q) {
                 Medicine::insert([
-                    'code' => $q->kd_t,
-                    'code_item' => $q->kd_barang,
+                    'code' => $q->kd_barang,
+                    'code_t' => $q->kd_t,
                     'code_type' => $q->kd_js,
                     'name' => $q->nama_barang,
                     'name_generic' => $q->nama_generik,
@@ -28,7 +28,7 @@ class MedicineSeeder extends Seeder
                     'unit' => $q->satuan,
                     'inventory' => $q->jns_sediaan,
                     'bir' => $q->b_i_r,
-                    'non_gen' => $q->gen_non,
+                    'non_generic' => $q->gen_non,
                     'nar' => $q->nar_p_non,
                     'oakrl' => $q->oakrl,
                     'chronic' => $q->kronis,
