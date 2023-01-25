@@ -37,7 +37,7 @@ class LabItemCondition extends Model
      */
     public static function booted()
     {
-        static::deleted(function ($query) {
+        static::deleting(function ($query) {
             $query->labItemConditionDetail()->delete();
         });
     }

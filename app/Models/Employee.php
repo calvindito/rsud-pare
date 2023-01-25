@@ -53,8 +53,8 @@ class Employee extends Model
      */
     private function generateCode()
     {
-        $data = Employee::selectRaw('RIGHT(code, 6) as code')
-            ->orderByRaw('RIGHT(code, 6) DESC')
+        $data = Employee::selectRaw('RIGHT(code, 17) as code')
+            ->orderByRaw('RIGHT(code, 17) DESC')
             ->take(1)
             ->get();
 
@@ -64,7 +64,7 @@ class Employee extends Model
             $code = 1;
         }
 
-        return 'PEG' . sprintf('%06s', $code);
+        return 'PEG' . sprintf('%017s', $code);
     }
 
     /**

@@ -29,4 +29,51 @@ class Radiology extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            try {
+                $model->code = (new Self)->generateCode();
+            } catch (\Exception $e) {
+                abort(500, $e->getMessage());
+            }
+        });
+    }
+
+    /**
+     * generateCode
+     *
+     * @return void
+     */
+    private function generateCode()
+    {
+        $data = Radiology::selectRaw('RIGHT(code, 3) as code')
+            ->orderByRaw('RIGHT(code, 3) DESC')
+            ->take(1)
+            ->get();
+
+        if ($data->count() > 0) {
+            $code = (int) $data[0]->code + 1;
+        } else {
+            $code = 1;
+        }
+
+        return 'RAD-' . sprintf('%03s', $code);
+    }
+
+    /**
+     * actionSupporting
+     *
+     * @return void
+     */
+    public function actionSupporting()
+    {
+        return $this->belongsTo(ActionSupporting::class);
+    }
 }
