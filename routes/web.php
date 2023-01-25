@@ -363,15 +363,6 @@ Route::prefix('master-data')->namespace('MasterData')->group(function () {
 });
 
 Route::prefix('setting')->namespace('Setting')->group(function () {
-    Route::prefix('menu')->group(function () {
-        Route::get('/', 'MenuController@index');
-        Route::get('datatable', 'MenuController@datatable');
-        Route::post('create-data', 'MenuController@createData');
-        Route::get('show-data', 'MenuController@showData');
-        Route::patch('update-data', 'MenuController@updateData');
-        Route::delete('destroy-data', 'MenuController@destroyData');
-    });
-
     Route::prefix('role')->group(function () {
         Route::get('/', 'RoleController@index');
         Route::get('load-data', 'RoleController@loadData');

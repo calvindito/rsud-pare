@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LabFeeSeeder::class);
         $this->call(LabItemConditionSeeder::class);
         $this->call(LabItemConditionDetailSeeder::class);
+        $this->call(MedicineSeeder::class);
         $this->call(PatientSeeder::class);
     }
 }

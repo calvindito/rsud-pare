@@ -11,7 +11,7 @@ return [
                 'name' => 'general',
                 'menu' => 'Umum',
                 'icon' => null,
-                'link' => url('dashboard/general'),
+                'link' => 'dashboard/general',
                 'sub' => null
             ]
         ]
@@ -32,49 +32,49 @@ return [
                         'name' => 'class-type',
                         'menu' => 'Kelas',
                         'icon' => null,
-                        'link' => url('master-data/general/class-type'),
+                        'link' => 'master-data/general/class-type',
                         'sub' => null
                     ],
                     [
                         'name' => 'doctor',
                         'menu' => 'Dokter',
                         'icon' => null,
-                        'link' => url('master-data/general/doctor'),
+                        'link' => 'master-data/general/doctor',
                         'sub' => null
                     ],
                     [
                         'name' => 'employee',
                         'menu' => 'Karyawan',
                         'icon' => null,
-                        'link' => url('master-data/general/employee'),
+                        'link' => 'master-data/general/employee',
                         'sub' => null
                     ],
                     [
                         'name' => 'medical-service',
                         'menu' => 'Pelayanan Medis',
                         'icon' => null,
-                        'link' => url('master-data/general/medical-service'),
+                        'link' => 'master-data/general/medical-service',
                         'sub' => null
                     ],
                     [
                         'name' => 'patient-group',
                         'menu' => 'Golongan Pasien',
                         'icon' => null,
-                        'link' => url('master-data/general/patient-group'),
+                        'link' => 'master-data/general/patient-group',
                         'sub' => null
                     ],
                     [
                         'name' => 'religion',
                         'menu' => 'Agama',
                         'icon' => null,
-                        'link' => url('master-data/general/religion'),
+                        'link' => 'master-data/general/religion',
                         'sub' => null
                     ],
                     [
                         'name' => 'unit',
                         'menu' => 'Unit',
                         'icon' => null,
-                        'link' => url('master-data/general/unit'),
+                        'link' => 'master-data/general/unit',
                         'sub' => null
                     ],
                 ]
@@ -89,21 +89,21 @@ return [
                         'name' => 'patient',
                         'menu' => 'Pasien',
                         'icon' => null,
-                        'link' => url('master-data/medical-record/patient'),
+                        'link' => 'master-data/medical-record/patient',
                         'sub' => null
                     ],
                     [
                         'name' => 'dtd',
                         'menu' => 'DTD',
                         'icon' => null,
-                        'link' => url('master-data/medical-record/dtd'),
+                        'link' => 'master-data/medical-record/dtd',
                         'sub' => null
                     ],
                     [
                         'name' => 'icd',
                         'menu' => 'ICD',
                         'icon' => null,
-                        'link' => url('master-data/medical-record/icd'),
+                        'link' => 'master-data/medical-record/icd',
                         'sub' => null
                     ],
                 ]
@@ -118,28 +118,28 @@ return [
                         'name' => 'data',
                         'menu' => 'Data',
                         'icon' => null,
-                        'link' => url('master-data/room/data'),
+                        'link' => 'master-data/room/data',
                         'sub' => null
                     ],
                     [
                         'name' => 'room-class',
                         'menu' => 'Kelas Kamar',
                         'icon' => null,
-                        'link' => url('master-data/room/room-class'),
+                        'link' => 'master-data/room/room-class',
                         'sub' => null
                     ],
                     [
                         'name' => 'room-space',
                         'menu' => 'Ruang Kamar',
                         'icon' => null,
-                        'link' => url('master-data/room/room-space'),
+                        'link' => 'master-data/room/room-space',
                         'sub' => null
                     ],
                     [
                         'name' => 'bed',
                         'menu' => 'Tempat Tidur',
                         'icon' => null,
-                        'link' => url('master-data/room/bed'),
+                        'link' => 'master-data/room/bed',
                         'sub' => null
                     ],
                 ]
@@ -154,42 +154,42 @@ return [
                         'name' => 'data',
                         'menu' => 'Data',
                         'icon' => null,
-                        'link' => url('master-data/action/data'),
+                        'link' => 'master-data/action/data',
                         'sub' => null
                     ],
                     [
                         'name' => 'other',
                         'menu' => 'Lain - Lain',
                         'icon' => null,
-                        'link' => url('master-data/action/other'),
+                        'link' => 'master-data/action/other',
                         'sub' => null
                     ],
                     [
                         'name' => 'operative',
                         'menu' => 'Operatif',
                         'icon' => null,
-                        'link' => url('master-data/action/operative'),
+                        'link' => 'master-data/action/operative',
                         'sub' => null
                     ],
                     [
                         'name' => 'non-operative',
                         'menu' => 'Non Operatif',
                         'icon' => null,
-                        'link' => url('master-data/action/non-operative'),
+                        'link' => 'master-data/action/non-operative',
                         'sub' => null
                     ],
                     [
                         'name' => 'supporting',
                         'menu' => 'Penunjang',
                         'icon' => null,
-                        'link' => url('master-data/action/supporting'),
+                        'link' => 'master-data/action/supporting',
                         'sub' => null
                     ],
                     [
                         'name' => 'emergency-care',
                         'menu' => 'Rawat Darurat',
                         'icon' => null,
-                        'link' => url('master-data/action/emergency-care'),
+                        'link' => 'master-data/action/emergency-care',
                         'sub' => null
                     ],
                 ]
@@ -204,28 +204,28 @@ return [
                         'name' => 'action',
                         'menu' => 'Tindakan',
                         'icon' => null,
-                        'link' => url('master-data/operating-room/action'),
+                        'link' => 'master-data/operating-room/action',
                         'sub' => null
                     ],
                     [
                         'name' => 'action-type',
                         'menu' => 'Jenis Tindakan',
                         'icon' => null,
-                        'link' => url('master-data/operating-room/action-type'),
+                        'link' => 'master-data/operating-room/action-type',
                         'sub' => null
                     ],
                     [
                         'name' => 'operating-group',
                         'menu' => 'Golongan Pasien',
                         'icon' => null,
-                        'link' => url('master-data/operating-room/operating-group'),
+                        'link' => 'master-data/operating-room/operating-group',
                         'sub' => null
                     ],
                     [
                         'name' => 'anesthetist',
                         'menu' => 'Anestesi',
                         'icon' => null,
-                        'link' => url('master-data/operating-room/anesthetist'),
+                        'link' => 'master-data/operating-room/anesthetist',
                         'sub' => null
                     ],
                 ]
@@ -240,14 +240,14 @@ return [
                         'name' => 'pharmacy-production',
                         'menu' => 'UPF',
                         'icon' => null,
-                        'link' => url('master-data/health-service/upf'),
+                        'link' => 'master-data/health-service/upf',
                         'sub' => null
                     ],
                     [
                         'name' => 'bed',
                         'menu' => 'Tempat Tidur',
                         'icon' => null,
-                        'link' => url('master-data/health-service/bed'),
+                        'link' => 'master-data/health-service/bed',
                         'sub' => null
                     ],
                 ]
@@ -262,14 +262,14 @@ return [
                         'name' => 'data',
                         'menu' => 'Data',
                         'icon' => null,
-                        'link' => url('master-data/poly/data'),
+                        'link' => 'master-data/poly/data',
                         'sub' => null
                     ],
                     [
                         'name' => 'action',
                         'menu' => 'Tindakan',
                         'icon' => null,
-                        'link' => url('master-data/poly/action'),
+                        'link' => 'master-data/poly/action',
                         'sub' => null
                     ],
                 ]
@@ -284,49 +284,49 @@ return [
                         'name' => 'category',
                         'menu' => 'Kategori',
                         'icon' => null,
-                        'link' => url('master-data/lab/category'),
+                        'link' => 'master-data/lab/category',
                         'sub' => null
                     ],
                     [
                         'name' => 'item',
                         'menu' => 'Item',
                         'icon' => null,
-                        'link' => url('master-data/lab/item'),
+                        'link' => 'master-data/lab/item',
                         'sub' => null
                     ],
                     [
                         'name' => 'item-parent',
                         'menu' => 'Item Parent',
                         'icon' => null,
-                        'link' => url('master-data/lab/item-parent'),
+                        'link' => 'master-data/lab/item-parent',
                         'sub' => null
                     ],
                     [
                         'name' => 'item-option',
                         'menu' => 'Item Option',
                         'icon' => null,
-                        'link' => url('master-data/lab/item-option'),
+                        'link' => 'master-data/lab/item-option',
                         'sub' => null
                     ],
                     [
                         'name' => 'item-group',
                         'menu' => 'Item Grup',
                         'icon' => null,
-                        'link' => url('master-data/lab/item-group'),
+                        'link' => 'master-data/lab/item-group',
                         'sub' => null
                     ],
                     [
                         'name' => 'fee',
                         'menu' => 'Biaya',
                         'icon' => null,
-                        'link' => url('master-data/lab/fee'),
+                        'link' => 'master-data/lab/fee',
                         'sub' => null
                     ],
                     [
                         'name' => 'condition',
                         'menu' => 'Kondisi',
                         'icon' => null,
-                        'link' => url('master-data/lab/condition'),
+                        'link' => 'master-data/lab/condition',
                         'sub' => null
                     ],
                 ]
@@ -335,7 +335,7 @@ return [
                 'name' => 'medicine',
                 'menu' => 'Obat',
                 'icon' => null,
-                'link' => url('master-data/medicine'),
+                'link' => 'master-data/medicine',
                 'sub' => null
             ],
             [
@@ -348,14 +348,14 @@ return [
                         'name' => 'data',
                         'menu' => 'Data',
                         'icon' => null,
-                        'link' => url('master-data/radiology/data'),
+                        'link' => 'master-data/radiology/data',
                         'sub' => null
                     ],
                     [
                         'name' => 'action',
                         'menu' => 'Tindakan',
                         'icon' => null,
-                        'link' => url('master-data/radiology/action'),
+                        'link' => 'master-data/radiology/action',
                         'sub' => null
                     ],
                 ]
@@ -370,21 +370,21 @@ return [
                         'name' => 'province',
                         'menu' => 'Provinsi',
                         'icon' => null,
-                        'link' => url('master-data/location/province'),
+                        'link' => 'master-data/location/province',
                         'sub' => null
                     ],
                     [
                         'name' => 'city',
                         'menu' => 'Kota',
                         'icon' => null,
-                        'link' => url('master-data/location/city'),
+                        'link' => 'master-data/location/city',
                         'sub' => null
                     ],
                     [
                         'name' => 'district',
                         'menu' => 'Kecamatan',
                         'icon' => null,
-                        'link' => url('master-data/location/district'),
+                        'link' => 'master-data/location/district',
                         'sub' => null
                     ],
                 ]
@@ -401,14 +401,14 @@ return [
                 'name' => 'role',
                 'menu' => 'Hak Akses',
                 'icon' => null,
-                'link' => url('setting/role'),
+                'link' => 'setting/role',
                 'sub' => null
             ],
             [
                 'name' => 'user',
                 'menu' => 'Pengguna',
                 'icon' => null,
-                'link' => url('setting/user'),
+                'link' => 'setting/user',
                 'sub' => null
             ],
         ]

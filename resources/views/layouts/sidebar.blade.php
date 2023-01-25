@@ -15,7 +15,7 @@
                     @foreach(config('menu') as $m1)
                         @if($m1['sub'])
                             <li class="nav-item nav-item-submenu {{ Request::segment(1) == $m1['name'] ? 'nav-item-expanded nav-item-open' : '' }}">
-                                <a href="{{ $m1['link'] }}" class="nav-link">
+                                <a href="{{ url($m1['link']) }}" class="nav-link">
                                     <i class="{{ $m1['icon'] }}"></i>
                                     <span>{{ $m1['menu'] }}</span>
                                 </a>
@@ -23,18 +23,18 @@
                                     @foreach($m1['sub'] as $m2)
                                         @if($m2['sub'])
                                             <li class="nav-item nav-item-submenu {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] ? 'nav-item-expanded nav-item-open' : '' }}">
-                                                <a href="{{ $m2['link'] }}" class="nav-link">{{ $m2['menu'] }}</a>
+                                                <a href="{{ url($m2['link']) }}" class="nav-link">{{ $m2['menu'] }}</a>
                                                 <ul class="nav-group-sub collapse {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] ? 'show' : '' }}">
                                                     @foreach($m2['sub'] as $m3)
                                                         <li class="nav-item">
-                                                            <a href="{{ $m3['link'] }}" class="nav-link {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] && Request::segment(3) == $m3['name'] ? 'active' : '' }}">{{ $m3['menu'] }}</a>
+                                                            <a href="{{ url($m3['link']) }}" class="nav-link {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] && Request::segment(3) == $m3['name'] ? 'active' : '' }}">{{ $m3['menu'] }}</a>
                                                         </li>
                                                     @endforeach
                                                 </ul>
                                             </li>
                                         @else
                                             <li class="nav-item">
-                                                <a href="{{ $m2['link'] }}" class="nav-link {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] ? 'active' : '' }}">{{ $m2['menu'] }}</a>
+                                                <a href="{{ url($m2['link']) }}" class="nav-link {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] ? 'active' : '' }}">{{ $m2['menu'] }}</a>
                                             </li>
                                         @endif
                                     @endforeach
@@ -42,7 +42,7 @@
                             </li>
                         @else
                             <li class="nav-item {{ Request::segment(1) == $m1['name'] }}">
-                                <a href="{{ $m1['link'] }}" class="nav-link">
+                                <a href="{{ url($m1['link']) }}" class="nav-link">
                                     <i class="{{ $m1['icon'] }}"></i>
                                     <span>{{ $m1['menu'] }}</span>
                                 </a>

@@ -18,14 +18,15 @@ class CreateMedicinesTable extends Migration
             $table->string('code')->nullable();
             $table->string('code_item')->nullable();
             $table->string('code_type')->nullable();
-            $table->string('item_name')->nullable();
-            $table->string('generic_name')->nullable();
+            $table->string('name')->nullable();
+            $table->string('name_generic')->nullable();
             $table->string('power')->nullable();
             $table->string('power_unit')->nullable();
             $table->string('unit')->nullable();
             $table->string('inventory')->nullable();
             $table->string('bir')->nullable();
             $table->string('non_gen')->nullable();
+            $table->string('nar')->nullable();
             $table->string('oakrl')->nullable();
             $table->string('chronic')->nullable();
             $table->integer('stock')->nullable();
