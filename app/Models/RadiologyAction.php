@@ -29,4 +29,24 @@ class RadiologyAction extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * radiology
+     *
+     * @return void
+     */
+    public function radiology()
+    {
+        return $this->belongsTo(Radiology::class);
+    }
+
+    /**
+     * classType
+     *
+     * @return void
+     */
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class);
+    }
 }

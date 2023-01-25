@@ -33,7 +33,7 @@ class DataController extends Controller
                         ->orWhere('type', 'like', "%$search%")
                         ->orWhere('object', 'like', "%$search%")
                         ->orWhere('projection', 'like', "%$search%")
-                        ->whereHas('actionSupporting', function ($query) use ($search) {
+                        ->orWhereHas('actionSupporting', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
                         });
                 }
