@@ -17,7 +17,7 @@
                                     <i class="ph-user-list me-3"></i>
                                     Profil
                                 </a>
-                                <a href="javascript:void(0);" class="list-group-item list-group-item-action">
+                                <a href="{{ url('auth/change-password') }}" class="list-group-item list-group-item-action">
                                     <i class="ph-lock me-3"></i>
                                     Ganti Password
                                 </a>

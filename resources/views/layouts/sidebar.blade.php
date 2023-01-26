@@ -17,7 +17,6 @@
                             $nameAccess = $m1['name'];
                             $checkAccessM1 = Simrs::hasPermission($nameAccess);
                         @endphp
-
                         @if($m1['sub'] && $checkAccessM1 != false)
                             <li class="nav-item nav-item-submenu {{ Request::segment(1) == $m1['name'] ? 'nav-item-expanded nav-item-open' : '' }}">
                                 <a href="{{ url($m1['link']) }}" class="nav-link">
@@ -30,7 +29,6 @@
                                             $nameAccess = $m1['name'] . '.' . $m2['name'];
                                             $checkAccessM2 = Simrs::hasPermission($nameAccess);
                                         @endphp
-
                                         @if($m2['sub'] && $checkAccessM2 != false)
                                             <li class="nav-item nav-item-submenu {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] ? 'nav-item-expanded nav-item-open' : '' }}">
                                                 <a href="{{ url($m2['link']) }}" class="nav-link">{{ $m2['menu'] }}</a>
@@ -40,7 +38,6 @@
                                                             $nameAccess = $m1['name'] . '.' . $m2['name'] . '.' . $m3['name'];
                                                             $checkAccessM3 = Simrs::hasPermission($nameAccess);
                                                         @endphp
-
                                                         @if($checkAccessM3 != false)
                                                             <li class="nav-item">
                                                                 <a href="{{ url($m3['link']) }}" class="nav-link {{ Request::segment(1) == $m1['name'] && Request::segment(2) == $m2['name'] && Request::segment(3) == $m3['name'] ? 'active' : '' }}">{{ $m3['menu'] }}</a>

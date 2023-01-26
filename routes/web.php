@@ -6,6 +6,7 @@ Route::match(['get', 'post'], '/', 'AuthController@login');
 
 Route::middleware('auth')->group(function () {
     Route::prefix('auth')->group(function () {
+        Route::match(['get', 'patch'], 'change-password', 'AuthController@changePassword');
         Route::get('logout', 'AuthController@logout');
     });
 
