@@ -69,7 +69,7 @@
                                 <th class="align-middle w-100">Berikan Semua Akses</th>
                                 <td class="align-middle">
                                     <div class="form-check justify-content-center">
-                                        <input type="checkbox" class="form-check-input" onclick="checkAllAccess()">
+                                        <input type="checkbox" class="form-check-input" onclick="checkUncheckAllAccess(this)">
                                     </div>
                                 </td>
                             </tr>
@@ -163,8 +163,12 @@
         loadData();
     });
 
-    function checkAllAccess() {
-        $('input[name="role_access_menu[]"]').attr('checked', true);
+    function checkUncheckAllAccess(param) {
+        if($(param).prop('checked') == true) {
+            $('input[name="role_access_menu[]"]').prop('checked', true);
+        } else {
+            $('input[name="role_access_menu[]"]').prop('checked', false);
+        }
     }
 
     function onReloadTable() {
@@ -224,7 +228,6 @@
             processing: true,
             serverSide: true,
             deferRender: true,
-            scrollX: true,
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
