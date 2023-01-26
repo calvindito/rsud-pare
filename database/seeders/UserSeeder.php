@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
                         'employee_id' => $employee->id,
                         'role_id' => $q->LEVEL,
                         'username' => $q->USERNAME,
-                        'password' => bcrypt(123456),
+                        'password' => bcrypt('123456'),
                         'status' => $q->STATUS != 1 ? 0 : 1,
                         'created_at' => $q->created_at ? $q->created_at : now(),
                         'updated_at' => $q->updated_at ? $q->updated_at : now()
