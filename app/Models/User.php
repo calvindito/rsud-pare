@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -38,5 +39,35 @@ class User extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    /**
+     * role
+     *
+     * @return void
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * status
+     *
+     * @return void
+     */
+    public function status()
+    {
+        $status = $this->status;
+
+        if ($status == 1) {
+            $html = '<span class="badge bg-success">Aktif</span>';
+        } else if ($status == 0) {
+            $html = '<span class="badge bg-danger">Diblokir</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
     }
 }

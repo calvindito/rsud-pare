@@ -69,9 +69,9 @@ class OperatingRoomAction extends Model
     {
         $status = $this->status;
 
-        if ($status == true) {
+        if ($status == 1) {
             $html = '<span class="badge bg-success">Aktif</span>';
-        } else if ($status == false) {
+        } else if ($status == 0) {
             $html = '<span class="badge bg-danger">Tidak Aktif</span>';
         } else {
             $html = '<span class="badge bg-warning">Invalid</span>';

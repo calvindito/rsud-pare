@@ -31,6 +31,18 @@ class Role extends Model
     protected $guarded = ['id'];
 
     /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    public static function booted()
+    {
+        static::deleting(function ($query) {
+            $query->roleAccess()->delete();
+        });
+    }
+
+    /**
      * roleAccess
      *
      * @return void

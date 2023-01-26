@@ -25,6 +25,7 @@ class CreateEmployeesTable extends Migration
             $table->string('email')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Employee extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -37,12 +38,16 @@ class Employee extends Model
      */
     protected static function booted()
     {
-        static::created(function ($model) {
+        static::creating(function ($model) {
             try {
                 $model->code = (new Self)->generateCode();
             } catch (\Exception $e) {
                 abort(500, $e->getMessage());
             }
+        });
+
+        static::deleting(function ($query) {
+            $query->user()->delete();
         });
     }
 
@@ -68,6 +73,16 @@ class Employee extends Model
     }
 
     /**
+     * user
+     *
+     * @return void
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
+    /**
      * status
      *
      * @return void
@@ -76,9 +91,9 @@ class Employee extends Model
     {
         $status = $this->status;
 
-        if ($status == true) {
+        if ($status == 1) {
             $html = '<span class="badge bg-success">Aktif</span>';
-        } else if ($status == false) {
+        } else if ($status == 0) {
             $html = '<span class="badge bg-danger">Tidak Aktif</span>';
         } else {
             $html = '<span class="badge bg-warning">Invalid</span>';

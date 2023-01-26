@@ -400,4 +400,13 @@ Route::prefix('setting')->namespace('Setting')->group(function () {
         Route::patch('update-data', 'RoleController@updateData');
         Route::delete('destroy-data', 'RoleController@destroyData');
     });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/', 'UserController@index');
+        Route::get('datatable', 'UserController@datatable');
+        Route::post('create-data', 'UserController@createData');
+        Route::get('show-data', 'UserController@showData');
+        Route::patch('update-data', 'UserController@updateData');
+        Route::delete('destroy-data', 'UserController@destroyData');
+    });
 });
