@@ -1,6 +1,6 @@
 <div class="content">
-    <div class="row">
-        <div class="col-lg-6 offset-lg-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
             <form method="POST">
                 @method('PATCH')
                 @csrf
@@ -26,7 +26,6 @@
                                 {{ session('error') }}
                             </div>
                         @endif
-
                         <div class="form-group row">
                             <label class="col-lg-4 col-form-label">Password Saat Ini <span class="text-danger fw-bold">*</span></label>
                             <div class="col-lg-8">

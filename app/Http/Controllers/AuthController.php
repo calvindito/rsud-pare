@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -32,6 +34,73 @@ class AuthController extends Controller
         }
 
         return view('login');
+    }
+
+    public function profile(Request $request)
+    {
+        $user = Auth::user();
+        $employee_id = $user->employee->id;
+        $user_id = $user->id;
+
+        if ($request->_token == csrf_token()) {
+            $validation = Validator::make($request->all(), [
+                'name' => 'required',
+                'postal_code' => 'nullable|digits:5|numeric',
+                'phone' => 'nullable|digits_between:8,13|numeric',
+                'cellphone' => 'nullable|digits_between:8,13|numeric',
+                'email' => 'nullable|email',
+                'username' => 'required|unique:users,username,' . $user_id
+            ], [
+                'name.required' => 'nama tidak boleh kosong',
+                'postal_code.digits' => 'kode pos harus 5 karakter',
+                'postal_code.numeric' => 'kode pos harus angka',
+                'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
+                'phone.numeric' => 'no telp harus angka',
+                'cellphone.digits_between' => 'no hp min 8 dan maks 13 karakter',
+                'cellphone.numeric' => 'no hp harus angka',
+                'email.email' => 'email tidak valid',
+                'username.required' => 'username tidak boleh kosong',
+                'username.unique' => 'username telah digunakan'
+            ]);
+
+            if ($validation->fails()) {
+                return redirect()->back()->withErrors($validation)->withInput();
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $employee_id, $user_id) {
+                        Employee::find($employee_id)->update([
+                            'name' => $request->name,
+                            'city' => $request->city,
+                            'address' => $request->address,
+                            'postal_code' => $request->postal_code,
+                            'phone' => $request->phone,
+                            'cellphone' => $request->cellphone,
+                            'email' => $request->email,
+                            'marital_status' => $request->marital_status
+                        ]);
+
+                        User::find($user_id)->update([
+                            'username' => $request->username
+                        ]);
+                    });
+
+                    return redirect('auth/profile')->with([
+                        'success' => 'Profil berhasil diganti'
+                    ]);
+                } catch (\Exception $e) {
+                    return redirect('auth/profile')->with([
+                        'error' => $e->getMessage()
+                    ]);
+                }
+            }
+        }
+
+        $data = [
+            'user' => $user,
+            'content' => 'profile'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
     }
 
     public function changePassword(Request $request)

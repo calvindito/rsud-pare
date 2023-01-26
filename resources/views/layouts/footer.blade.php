@@ -13,7 +13,7 @@
                             </div>
                             <div class="bg-light text-muted py-2 px-3">Navigasi</div>
                             <div class="list-group list-group-borderless py-2">
-                                <a href="javascript:void(0);" class="list-group-item list-group-item-action">
+                                <a href="{{ url('auth/profile') }}" class="list-group-item list-group-item-action">
                                     <i class="ph-user-list me-3"></i>
                                     Profil
                                 </a>
