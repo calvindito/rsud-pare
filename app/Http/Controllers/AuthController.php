@@ -133,7 +133,7 @@ class AuthController extends Controller
 
                 try {
                     $updatePassword = User::find($user->id)->update([
-                        'password' => bcrypt($request->newPassword)
+                        'password' => bcrypt($newPassword)
                     ]);
 
                     return redirect('auth/change-password')->with([
