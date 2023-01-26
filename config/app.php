@@ -235,6 +235,7 @@ return [
         'PDF' => Mccarlosen\LaravelMpdf\Facades\LaravelMpdf::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
         'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
+        'Simrs' => App\Helpers\Simrs::class,
 
     ],
 

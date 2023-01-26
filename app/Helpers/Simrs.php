@@ -5,6 +5,8 @@ namespace App\Helpers;
 use App\Models\City;
 use App\Models\District;
 use App\Models\Province;
+use App\Models\RoleAccess;
+use Illuminate\Support\Facades\Auth;
 
 class Simrs
 {
@@ -25,5 +27,18 @@ class Simrs
         }
 
         return $data;
+    }
+
+    public static function hasPermission($menu)
+    {
+        $user = Auth::user();
+        $role = $user->role;
+        $roleAccess = RoleAccess::where('role_id', $role->id)->whereRaw("LOCATE('$menu', menu)")->count();
+
+        if ($roleAccess > 0) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -10,6 +10,10 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        if (Auth::check()) {
+            return redirect('dashboard/general');
+        }
+
         if ($request->_token == csrf_token()) {
             $username = $request->username;
             $password = $request->password;
