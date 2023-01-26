@@ -21,7 +21,7 @@
                                     <i class="ph-lock me-3"></i>
                                     Ganti Password
                                 </a>
-                                <a href="javascript:void(0);" class="list-group-item list-group-item-action">
+                                <a href="{{ url('auth/logout') }}" class="list-group-item list-group-item-action">
                                     <i class="ph-power me-3"></i>
                                     Keluar
                                 </a>

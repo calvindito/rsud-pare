@@ -20,7 +20,8 @@
 		<div class="content-wrapper">
 			<div class="content-inner">
 				<div class="content d-flex justify-content-center align-items-center">
-					<form class="login-form" action="{{ url('dashboard/general') }}">
+					<form class="login-form" method="POST">
+                        @csrf
 						<div class="card mb-0">
 							<div class="card-body">
                                 <div class="text-center mb-3">
@@ -30,9 +31,18 @@
                                     <h5 class="mb-0">Masuk ke akun Anda</h5>
                                     <span class="d-block text-muted">Masukkan kredensial Anda di bawah ini</span>
                                 </div>
+                                @if(session('success'))
+                                    <div class="alert bg-success text-white fade show text-center">
+                                        {{ session('success') }}
+                                    </div>
+                                @elseif(session('failed'))
+                                    <div class="alert bg-danger text-white fade show text-center">
+                                        {{ session('failed') }}
+                                    </div>
+                                @endif
                                 <div class="mb-3">
                                     <div class="form-control-feedback form-control-feedback-start">
-                                        <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+                                        <input type="text" class="form-control" name="username" id="username" placeholder="Username" value="{{ old('username') }}" required>
                                         <div class="form-control-feedback-icon">
                                             <i class="ph-user-circle text-muted"></i>
                                         </div>
@@ -40,7 +50,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-control-feedback form-control-feedback-start">
-                                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                                        <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
                                         <div class="form-control-feedback-icon">
                                             <i class="ph-lock text-muted"></i>
                                         </div>
