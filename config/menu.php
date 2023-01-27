@@ -240,7 +240,7 @@ return [
                         'name' => 'pharmacy-production',
                         'menu' => 'UPF',
                         'icon' => null,
-                        'link' => 'master-data/health-service/upf',
+                        'link' => 'master-data/health-service/pharmacy-production',
                         'sub' => null
                     ],
                     [
@@ -426,10 +426,10 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'emergency-departments',
+                'name' => 'emergency-department',
                 'menu' => 'IGD',
                 'icon' => null,
-                'link' => 'register/emergency-departments',
+                'link' => 'register/emergency-department',
                 'sub' => null
             ],
         ]

@@ -26,7 +26,7 @@ class PatientController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Patient::query();
+        $data = Patient::whereNotNull('verified_at');
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -39,6 +39,9 @@ class PatientController extends Controller
                             $query->where('name', 'like', "%$search%");
                         });
                 }
+            })
+            ->editColumn('type', function (Patient $query) {
+                return $query->type();
             })
             ->editColumn('gender', function (Patient $query) {
                 return $query->gender();

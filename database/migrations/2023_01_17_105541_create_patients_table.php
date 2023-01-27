@@ -40,6 +40,8 @@ class CreatePatientsTable extends Migration
             $table->string('phone')->nullable();
             $table->string('parent_name')->nullable();
             $table->string('partner_name')->nullable();
+            $table->char('type', 1)->nullable();
+            $table->timestamp('verified_at')->nullable();
             $table->timestamps();
         });
     }

@@ -79,4 +79,19 @@ class Patient extends Model
 
         return $text;
     }
+
+    public function type()
+    {
+        $type = $this->type;
+
+        if ($type == 1) {
+            $text = 'Mandiri';
+        } else if ($type == 2) {
+            $text = 'Online';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
 }

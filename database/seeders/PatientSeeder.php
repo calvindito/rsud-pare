@@ -144,6 +144,8 @@ class PatientSeeder extends Seeder
                         'phone' => $phone,
                         'parent_name' => $parentName,
                         'partner_name' => $partnerName,
+                        'type' => 1,
+                        'verified_at' => now(),
                         'created_at' => $createdAt,
                         'updated_at' => $updatedAt,
                     ]);

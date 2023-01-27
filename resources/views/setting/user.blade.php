@@ -91,6 +91,11 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="alert alert-info text-center">
+                            password sementara akan digenerate otomatis oleh sistem ketika menambahkan data user dan password sementara user yang ditambahkan adalah <b class="fst-italic">simrskk{{ date('dmY') }}</b>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer justify-content-end">

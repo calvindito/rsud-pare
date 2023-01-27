@@ -102,11 +102,12 @@ class UserController extends Controller
             ];
         } else {
             try {
+                $password = 'simrskk' . date('dmY');
                 $createData = User::create([
                     'employee_id' => $request->employee_id,
                     'role_id' => $request->role_id,
                     'username' => $request->username,
-                    'password' => bcrypt('123456')
+                    'password' => bcrypt($password)
                 ]);
 
                 $response = [

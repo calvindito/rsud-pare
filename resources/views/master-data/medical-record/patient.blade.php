@@ -27,6 +27,7 @@
                         <th nowrap>Nama</th>
                         <th nowrap>Tanggal Lahir</th>
                         <th nowrap>Alamat</th>
+                        <th nowrap>Tipe</th>
                         <th nowrap>Jenis Kelamin</th>
                         <th nowrap>Nama Ortu</th>
                         <th nowrap>Kecamatan</th>
@@ -330,6 +331,7 @@
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'date_of_birth', name: 'name', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'address', name: 'address', orderable: true, searchable: true, className: 'align-middle nowrap' },
+                { data: 'type', name: 'type', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'gender', name: 'gender', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'parent_name', name: 'parent_name', orderable: true, searchable: true, className: 'align-middle nowrap' },
                 { data: 'district_name', name: 'district_name', orderable: false, searchable: true, className: 'align-middle nowrap' },
