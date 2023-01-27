@@ -392,6 +392,49 @@ return [
         ]
     ],
     [
+        'name' => 'register',
+        'menu' => 'Pendaftaran',
+        'icon' => 'ph-user-circle-plus',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'outpatient',
+                'menu' => 'Rawat Jalan',
+                'icon' => null,
+                'link' => 'register/outpatient',
+                'sub' => null
+            ],
+            [
+                'name' => 'inpatient',
+                'menu' => 'Rawat Inap',
+                'icon' => null,
+                'link' => 'register/inpatient',
+                'sub' => null
+            ],
+            [
+                'name' => 'neonates',
+                'menu' => 'Neonatus',
+                'icon' => null,
+                'link' => 'register/neonates',
+                'sub' => null
+            ],
+            [
+                'name' => 'online',
+                'menu' => 'Online',
+                'icon' => null,
+                'link' => 'register/online',
+                'sub' => null
+            ],
+            [
+                'name' => 'emergency-departments',
+                'menu' => 'IGD',
+                'icon' => null,
+                'link' => 'register/emergency-departments',
+                'sub' => null
+            ],
+        ]
+    ],
+    [
         'name' => 'setting',
         'menu' => 'Pengaturan',
         'icon' => 'ph-gear',
