@@ -302,7 +302,7 @@
                 <div class="form-group"><hr></div>
                 <div id="plus-destroy-item"></div>
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-3">Alamat</label>
+                    <label class="col-form-label col-lg-3">Keterangan</label>
                     <div class="col-md-9">
                         <textarea class="form-control" name="description" id="description" style="resize:none;" placeholder="Masukan keterangan"></textarea>
                     </div>
@@ -498,7 +498,7 @@
                     let timerInterval;
                     swalInit.fire({
                         title: 'Berhasil',
-                        html: 'Pasien telah didaftarkan, halaman akan disegarkan dalam waktu <b></b> detik',
+                        html: response.message + ', halaman akan disegarkan dalam waktu <b></b> detik',
                         icon: 'success',
                         timer: 2000,
                         timerProgressBar: true,

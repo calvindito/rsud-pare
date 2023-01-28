@@ -408,6 +408,12 @@ Route::middleware('auth')->group(function () {
                 Route::get('load-patient', 'OutpatientController@loadPatient');
                 Route::post('register-patient', 'OutpatientController@registerPatient');
             });
+
+            Route::prefix('inpatient')->group(function () {
+                Route::get('/', 'InpatientController@index');
+                Route::get('load-patient', 'InpatientController@loadPatient');
+                Route::post('register-patient', 'InpatientController@registerPatient');
+            });
         });
 
         Route::prefix('setting')->namespace('Setting')->group(function () {

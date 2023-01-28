@@ -143,7 +143,7 @@ class OutpatientController extends Controller
 
                 $response = [
                     'code' => 200,
-                    'message' => 'Data telah diubah'
+                    'message' => 'Pasien berhasil didaftarkan'
                 ];
             } catch (\Exception $e) {
                 $response = [
