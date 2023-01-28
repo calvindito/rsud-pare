@@ -184,7 +184,7 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'group', name: 'group', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'group_format_result', name: 'group', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'fee_cssd', name: 'fee_cssd', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },

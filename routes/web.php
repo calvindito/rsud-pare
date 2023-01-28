@@ -424,6 +424,12 @@ Route::middleware('auth')->group(function () {
             Route::prefix('online')->group(function () {
                 Route::get('/', 'OnlineController@index');
             });
+
+            Route::prefix('emergency-department')->group(function () {
+                Route::get('/', 'EmergencyDepartmentController@index');
+                Route::get('load-patient', 'EmergencyDepartmentController@loadPatient');
+                Route::post('register-patient', 'EmergencyDepartmentController@registerPatient');
+            });
         });
 
         Route::prefix('setting')->namespace('Setting')->group(function () {

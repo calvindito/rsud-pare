@@ -31,13 +31,20 @@ class Outpatient extends Model
     protected $guarded = ['id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['type_format_result', 'presence_format_result'];
+
+    /**
      * getTypeAttribute
      *
      * @return void
      */
-    protected function getTypeAttribute()
+    protected function getTypeFormatResultAttribute()
     {
-        $type = $this->attributes['type'];
+        $type = isset($this->attributes['type']) ? $this->attributes['type'] : null;
 
         if ($type == 1) {
             $text = 'Umum';
@@ -60,9 +67,14 @@ class Outpatient extends Model
         return $text;
     }
 
+    /**
+     * getPresenceAttribute
+     *
+     * @return void
+     */
     protected function getPresenceAttribute()
     {
-        $presence = $this->attributes['presence'];
+        $presence = isset($this->attributes['presence']) ? $this->attributes['presence'] : null;
 
         if ($presence == 1) {
             $text = 'Datang Sendiri';

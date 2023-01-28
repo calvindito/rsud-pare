@@ -31,13 +31,20 @@ class PatientGroup extends Model
     protected $guarded = ['id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['car_free_ambulance_format_result', 'car_free_corpse_format_result'];
+
+    /**
      * getCarFreeAmbulanceAttribute
      *
      * @return void
      */
-    protected function getCarFreeAmbulanceAttribute()
+    protected function getCarFreeAmbulanceFormatResultAttribute()
     {
-        $carFreeAmbulance = $this->attributes['car_free_ambulance'];
+        $carFreeAmbulance = isset($this->attributes['car_free_ambulance']) ? $this->attributes['car_free_ambulance'] : null;
 
         if ($carFreeAmbulance == true) {
             $text = 'Ya';
@@ -55,9 +62,9 @@ class PatientGroup extends Model
      *
      * @return void
      */
-    public function getCarFreeCorpseAttribute()
+    public function getCarFreeCorpseFormatResultAttribute()
     {
-        $carFreeCorpse = $this->attributes['car_free_corpse'];
+        $carFreeCorpse = isset($this->attributes['car_free_corpse']) ? $this->attributes['car_free_corpse'] : null;
 
         if ($carFreeCorpse == true) {
             $text = 'Ya';

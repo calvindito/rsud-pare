@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendaftaran - <span class="fw-normal">Neonatus</span>
+                Pendaftaran - <span class="fw-normal">IGD</span>
             </h5>
         </div>
     </div>
@@ -146,7 +146,7 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Kamar Tujuan</h5>
+                <h5 class="mb-0">Kamar IGD</h5>
             </div>
             <div class="card-body border-top">
                 <div class="form-group mb-4 text-center">
@@ -190,17 +190,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-3">Kamar <span class="text-danger fw-bold">*</span></label>
+                    <label class="col-form-label col-lg-3">DPJP</label>
                     <div class="col-md-9">
-                        <select class="form-select" name="room_type_id" id="room_type_id">
+                        <select class="form-select" name="doctor_id" id="doctor_id">
                             <option value="">-- Pilih --</option>
-                            @foreach($roomType as $rt)
-                                <option value="{{ $rt->id }}">
-                                    {{ $rt->name }}
-
-                                    @if($rt->classType)
-                                        - {{ $rt->classType->name }}
-                                    @endif
+                            @foreach($doctor as $d)
+                                <option value="{{ $d->id }}">
+                                    {{ $d->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -268,7 +264,7 @@
 
     function loadPatient() {
         $.ajax({
-            url: '{{ url("register/neonates/load-patient") }}',
+            url: '{{ url("register/emergency-department/load-patient") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -332,7 +328,7 @@
 
     function registerPatient() {
         $.ajax({
-            url: '{{ url("register/neonates/register-patient") }}',
+            url: '{{ url("register/emergency-department/register-patient") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -368,7 +364,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("register/neonates") }}');
+                        window.location.replace('{{ url("register/emergency-department") }}');
                     });
                 } else if(response.code == 400) {
                     $('.btn-to-top button').click();

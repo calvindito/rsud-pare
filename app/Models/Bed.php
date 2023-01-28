@@ -31,13 +31,20 @@ class Bed extends Model
     protected $guarded = ['id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['type_format_result'];
+
+    /**
      * getTypeAttribute
      *
      * @return void
      */
-    protected function getTypeAttribute()
+    protected function getTypeFormatResultAttribute()
     {
-        $type = $this->attributes['type'];
+        $type = isset($this->attributes['type']) ? $this->attributes['type'] : null;
 
         if ($type == 1) {
             $text = 'Laki - Laki';

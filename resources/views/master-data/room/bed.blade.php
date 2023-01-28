@@ -207,7 +207,7 @@
                 { data: 'room_type_name', name: 'room_type_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'room_space_name', name: 'room_space_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'type', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'type_format_result', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'created_at', name: 'created_at', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'updated_at', name: 'updated_at', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },

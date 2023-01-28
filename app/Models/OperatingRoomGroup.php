@@ -31,13 +31,20 @@ class OperatingRoomGroup extends Model
     protected $guarded = ['id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['group_format_result'];
+
+    /**
      * getGroupAttribute
      *
      * @return void
      */
-    protected function getGroupAttribute()
+    protected function getGroupFormatResultAttribute()
     {
-        $group = $this->attributes['group'];
+        $group = isset($this->attributes['group']) ? $this->attributes['group'] : null;
 
         if ($group == 1) {
             $text = 'KHUSUS';

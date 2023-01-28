@@ -31,13 +31,20 @@ class MedicalService extends Model
     protected $guarded = ['id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['code_format_result'];
+
+    /**
      * getCodeAttribute
      *
      * @return void
      */
-    protected function getCodeAttribute()
+    protected function getCodeFormatResultAttribute()
     {
-        $code = $this->attributes['code'];
+        $code = isset($this->attributes['code']) ? $this->attributes['code'] : null;
 
         if ($code == 1) {
             $text = 'VISITE';

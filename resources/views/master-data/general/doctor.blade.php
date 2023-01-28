@@ -204,7 +204,7 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'type', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'type_format_result', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'percentage', name: 'percentage', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'address', name: 'address', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'phone', name: 'phone', orderable: true, searchable: false, className: 'align-middle' },

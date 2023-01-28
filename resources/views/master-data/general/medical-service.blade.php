@@ -210,7 +210,7 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'code', name: 'code', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'code_format_result', name: 'code', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'class_type_name', name: 'class_type_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'fee', name: 'fee', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle text-center' },

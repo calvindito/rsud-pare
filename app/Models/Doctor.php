@@ -31,13 +31,20 @@ class Doctor extends Model
     protected $guarded = ['id'];
 
     /**
-     * type
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['type_format_result'];
+
+    /**
+     * getTypeFormatResultAttribute
      *
      * @return void
      */
-    public function type()
+    public function getTypeFormatResultAttribute()
     {
-        $type = $this->type;
+        $type = isset($this->attributes['type']) ? $this->attributes['type'] : null;
 
         if ($type == 1) {
             $text = 'AHLI';
