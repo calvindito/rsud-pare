@@ -420,6 +420,10 @@ Route::middleware('auth')->group(function () {
                 Route::get('load-patient', 'NeonatesController@loadPatient');
                 Route::post('register-patient', 'NeonatesController@registerPatient');
             });
+
+            Route::prefix('online')->group(function () {
+                Route::get('/', 'OnlineController@index');
+            });
         });
 
         Route::prefix('setting')->namespace('Setting')->group(function () {
