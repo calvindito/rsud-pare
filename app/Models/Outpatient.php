@@ -72,7 +72,7 @@ class Outpatient extends Model
      *
      * @return void
      */
-    protected function getPresenceAttribute()
+    protected function getPresenceFormatResultAttribute()
     {
         $presence = isset($this->attributes['presence']) ? $this->attributes['presence'] : null;
 
