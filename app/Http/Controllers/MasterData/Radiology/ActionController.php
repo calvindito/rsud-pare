@@ -32,7 +32,7 @@ class ActionController extends Controller
             ->filter(function ($query) use ($search) {
                 if ($search) {
                     $query->whereHas('radiology', function ($query) use ($search) {
-                        $query->where('name', 'like', "%$search%")
+                        $query->where('code', 'like', "%$search%")
                             ->orWhere('object', 'like', "%$search%")
                             ->orWhere('projection', 'like', "%$search%");
                     });

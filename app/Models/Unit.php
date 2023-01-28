@@ -31,13 +31,13 @@ class Unit extends Model
     protected $guarded = ['id'];
 
     /**
-     * type
+     * getTypeAttribute
      *
      * @return void
      */
-    public function type()
+    protected function getTypeAttribute()
     {
-        $type = $this->type;
+        $type = $this->attributes['type'];
 
         if ($type == 1) {
             $text = 'Rawat Inap';

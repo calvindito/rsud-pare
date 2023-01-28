@@ -34,7 +34,10 @@ class RoomClassController extends Controller
             ->filter(function ($query) use ($search) {
                 if ($search) {
                     $query->where('name', 'like', "%$search%")
-                        ->orWhereHas('unit', function ($query) use ($search) {
+                        ->orWhereHas('classType', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('room', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
                         })
                         ->orWhereHas('user', function ($query) use ($search) {

@@ -31,18 +31,13 @@ class Bed extends Model
     protected $guarded = ['id'];
 
     /**
-     * roomSpace
+     * getTypeAttribute
      *
      * @return void
      */
-    public function roomSpace()
+    protected function getTypeAttribute()
     {
-        return $this->belongsTo(RoomSpace::class);
-    }
-
-    public function type()
-    {
-        $type = $this->type;
+        $type = $this->attributes['type'];
 
         if ($type == 1) {
             $text = 'Laki - Laki';
@@ -57,5 +52,15 @@ class Bed extends Model
         }
 
         return $text;
+    }
+
+    /**
+     * roomSpace
+     *
+     * @return void
+     */
+    public function roomSpace()
+    {
+        return $this->belongsTo(RoomSpace::class);
     }
 }

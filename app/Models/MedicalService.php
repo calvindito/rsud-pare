@@ -31,23 +31,13 @@ class MedicalService extends Model
     protected $guarded = ['id'];
 
     /**
-     * classType
+     * getCodeAttribute
      *
      * @return void
      */
-    public function classType()
+    protected function getCodeAttribute()
     {
-        return $this->belongsTo(ClassType::class);
-    }
-
-    /**
-     * code
-     *
-     * @return void
-     */
-    public function code()
-    {
-        $code = $this->code;
+        $code = $this->attributes['code'];
 
         if ($code == 1) {
             $text = 'VISITE';
@@ -64,6 +54,16 @@ class MedicalService extends Model
         }
 
         return $text;
+    }
+
+    /**
+     * classType
+     *
+     * @return void
+     */
+    public function classType()
+    {
+        return $this->belongsTo(ClassType::class);
     }
 
     /**

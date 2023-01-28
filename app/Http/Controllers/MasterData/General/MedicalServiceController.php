@@ -35,9 +35,6 @@ class MedicalServiceController extends Controller
                         });
                 }
             })
-            ->editColumn('code', function (MedicalService $query) {
-                return $query->code();
-            })
             ->editColumn('status', function (MedicalService $query) {
                 return $query->status();
             })

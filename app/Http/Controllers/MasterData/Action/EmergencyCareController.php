@@ -27,7 +27,7 @@ class EmergencyCareController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('code', 'like', "%$search%");
+                    $query->where('name', 'like', "%$search%");
                 }
             })
             ->addColumn('action', function (ActionEmergencyCare $query) {

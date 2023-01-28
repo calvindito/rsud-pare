@@ -247,7 +247,7 @@
 
     $(function() {
         loadData();
-        select2AjaxLocation('#location_id', ['district']);
+        select2Ajax('#location_id', 'location?show=district');
     });
 
     function onReloadTable() {

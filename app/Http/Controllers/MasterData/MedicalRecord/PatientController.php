@@ -40,12 +40,6 @@ class PatientController extends Controller
                         });
                 }
             })
-            ->editColumn('type', function (Patient $query) {
-                return $query->type();
-            })
-            ->editColumn('gender', function (Patient $query) {
-                return $query->gender();
-            })
             ->addColumn('district_name', function (Patient $query) {
                 $districtName = null;
 

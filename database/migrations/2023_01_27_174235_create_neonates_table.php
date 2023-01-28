@@ -20,7 +20,7 @@ class CreateNeonatesTable extends Migration
             $table->unsignedBigInteger('room_type_id')->nullable();
             $table->unsignedBigInteger('pharmacy_production_id')->nullable();
             $table->char('type', 1)->nullable();
-            $table->timestamp('check_date')->nullable();
+            $table->timestamp('date_of_entry')->nullable();
             $table->timestamps();
         });
     }

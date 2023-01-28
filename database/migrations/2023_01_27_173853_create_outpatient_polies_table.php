@@ -17,7 +17,6 @@ class CreateOutpatientPoliesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('outpatient_id')->nullable();
             $table->unsignedBigInteger('unit_id')->nullable();
-            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

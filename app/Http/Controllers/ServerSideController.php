@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\Patient;
 use App\Models\District;
 use App\Models\Province;
 use Illuminate\Http\Request;
@@ -12,21 +13,21 @@ class ServerSideController extends Controller
 {
     public function location(Request $request)
     {
-        $show = isset($request->show) ? $request->show : [];
+        $show = isset($request->show) ? $request->show : null;
         $search = $request->search;
         $response = [];
         $result = [];
 
-        if (in_array('province', $show) || empty($show)) {
-            $response[] = Province::where('name', 'like', "%$search%")->latest('id')->get();
+        if ($show == 'province' || is_null($show)) {
+            $response[] = Province::where('name', 'like', "%$search%")->orderBy('name')->get();
         }
 
-        if (in_array('city', $show) || empty($show)) {
-            $response[] = City::where('name', 'like', "%$search%")->latest('id')->get();
+        if ($show == 'city' || is_null($show)) {
+            $response[] = City::where('name', 'like', "%$search%")->orderBy('name')->get();
         }
 
-        if (in_array('district', $show) || empty($show)) {
-            $response[] = District::where('name', 'like', "%$search%")->latest('id')->get();
+        if ($show == 'district' || is_null($show)) {
+            $response[] = District::where('name', 'like', "%$search%")->orderBy('name')->get();
         }
 
         if (count($response) > 0) {
@@ -53,5 +54,21 @@ class ServerSideController extends Controller
         }
 
         return response()->json($result);
+    }
+
+    public function patient(Request $request)
+    {
+        $search = $request->search;
+        $data = Patient::selectRaw('id, name as text')
+            ->whereNotNull('verified_at')
+            ->where(function ($query) use ($search) {
+                $query->where('id', 'like', "%$search%")
+                    ->orWhere('identity_number', 'like', "%$search%")
+                    ->orWhere('name', 'like', "%$search%");
+            })
+            ->get()
+            ->toArray();
+
+        return response()->json($data);
     }
 }

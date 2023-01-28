@@ -81,22 +81,27 @@ function select2Basic() {
     });
 }
 
-function select2AjaxLocation(selector, show = []) {
+function select2Ajax(selector, endpoint, onModal = true) {
+    if(onModal) {
+        var dropdownParent = $('.modal');
+    } else {
+        var dropdownParent = '';
+    }
+
     $(selector).select2({
         placeholder: '-- Pilih --',
-        dropdownParent: $('.modal'),
+        dropdownParent: dropdownParent,
         minimumInputLength: 3,
         allowClear: true,
         cache: true,
         ajax: {
-            url: '/serverside/location',
+            url: '/serverside/' + endpoint,
             type: 'GET',
             dataType: 'JSON',
             delay: 250,
             data: function(params) {
                 return {
-                    search: params.term,
-                    show: show
+                    search: params.term
                 };
             },
             processResults: function(data) {

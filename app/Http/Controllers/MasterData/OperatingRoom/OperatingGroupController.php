@@ -30,9 +30,6 @@ class OperatingGroupController extends Controller
                     $query->where('name', 'like', "%$search%");
                 }
             })
-            ->editColumn('group', function (OperatingRoomGroup $query) {
-                return $query->group();
-            })
             ->addColumn('action', function (OperatingRoomGroup $query) {
                 return '
                     <div class="btn-group">

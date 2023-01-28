@@ -33,9 +33,6 @@ class DoctorController extends Controller
                 }
             })
             ->editColumn('percentage', '{{ $percentage }} %')
-            ->editColumn('type', function (Doctor $query) {
-                return $query->type();
-            })
             ->addColumn('action', function (Doctor $query) {
                 return '
                     <div class="btn-group">

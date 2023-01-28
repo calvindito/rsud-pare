@@ -31,6 +31,46 @@ class Patient extends Model
     protected $guarded = ['id'];
 
     /**
+     * getGenderAttribute
+     *
+     * @return void
+     */
+    protected function getGenderAttribute()
+    {
+        $gender = $this->attributes['gender'];
+
+        if ($gender == 1) {
+            $text = 'Laki - Laki';
+        } else if ($gender == 2) {
+            $text = 'Perempuan';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
+
+    /**
+     * getTypeAttribute
+     *
+     * @return void
+     */
+    protected function getTypeAttribute()
+    {
+        $type = $this->attributes['type'];
+
+        if ($type == 1) {
+            $text = 'Mandiri';
+        } else if ($type == 2) {
+            $text = 'Online';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
+
+    /**
      * province
      *
      * @return void
@@ -61,37 +101,22 @@ class Patient extends Model
     }
 
     /**
-     * gender
+     * outpatient
      *
      * @return void
      */
-    public function gender()
+    public function outpatient()
     {
-        $gender = $this->gender;
-
-        if ($gender == 1) {
-            $text = 'Laki - Laki';
-        } else if ($gender == 2) {
-            $text = 'Perempuan';
-        } else {
-            $text = 'Invalid';
-        }
-
-        return $text;
+        return $this->hasMany(Outpatient::class);
     }
 
-    public function type()
+    /**
+     * inpatient
+     *
+     * @return void
+     */
+    public function inpatient()
     {
-        $type = $this->type;
-
-        if ($type == 1) {
-            $text = 'Mandiri';
-        } else if ($type == 2) {
-            $text = 'Online';
-        } else {
-            $text = 'Invalid';
-        }
-
-        return $text;
+        return $this->hasMany(Inpatient::class);
     }
 }

@@ -31,9 +31,6 @@ class UnitController extends Controller
                         ->orWhere('name', 'like', "%$search%");
                 }
             })
-            ->editColumn('type', function (Unit $query) {
-                return $query->type();
-            })
             ->addColumn('action', function (Unit $query) {
                 return '
                     <div class="btn-group">

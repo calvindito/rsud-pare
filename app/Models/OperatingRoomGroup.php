@@ -31,13 +31,13 @@ class OperatingRoomGroup extends Model
     protected $guarded = ['id'];
 
     /**
-     * group
+     * getGroupAttribute
      *
      * @return void
      */
-    public function group()
+    protected function getGroupAttribute()
     {
-        $group = $this->group;
+        $group = $this->attributes['group'];
 
         if ($group == 1) {
             $text = 'KHUSUS';

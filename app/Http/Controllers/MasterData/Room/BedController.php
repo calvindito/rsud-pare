@@ -30,17 +30,14 @@ class BedController extends Controller
             ->filter(function ($query) use ($search) {
                 if ($search) {
                     $query->where('name', 'like', "%$search%")
-                        ->orWhere('facility', 'like', "%$search%")
-                        ->orWhereHas('roomType', function ($query) use ($search) {
+                        ->orWhere('keywords', 'like', "%$search%")
+                        ->orWhereHas('roomSpace', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
                         });
                 }
             })
             ->editColumn('created_at', '{{ date("Y-m-d H:i:s", strtotime($created_at)) }}')
             ->editColumn('updated_at', '{{ date("Y-m-d H:i:s", strtotime($updated_at)) }}')
-            ->editColumn('type', function (Bed $query) {
-                return $query->type();
-            })
             ->addColumn('room_type_name', function (Bed $query) {
                 $roomTypeName = null;
 

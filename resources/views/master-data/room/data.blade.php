@@ -185,7 +185,7 @@
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'unit_name', name: 'unit_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'code', name: 'code_bpjs', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });

@@ -13,6 +13,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('serverside')->group(function () {
         Route::get('location', 'ServerSideController@location');
+        Route::get('patient', 'ServerSideController@patient');
     });
 
     Route::middleware('verify.permission')->group(function () {
@@ -398,6 +399,14 @@ Route::middleware('auth')->group(function () {
                     Route::patch('update-data', 'ActionController@updateData');
                     Route::delete('destroy-data', 'ActionController@destroyData');
                 });
+            });
+        });
+
+        Route::prefix('register')->namespace('Register')->group(function () {
+            Route::prefix('outpatient')->group(function () {
+                Route::get('/', 'OutpatientController@index');
+                Route::get('load-patient', 'OutpatientController@loadPatient');
+                Route::post('register-patient', 'OutpatientController@registerPatient');
             });
         });
 

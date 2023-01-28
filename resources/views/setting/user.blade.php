@@ -92,7 +92,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="alert alert-info text-center">
+                        <div class="alert alert-primary border-0 fade show text-center">
                             password sementara akan digenerate otomatis oleh sistem ketika menambahkan data user dan password sementara user yang ditambahkan adalah <b class="fst-italic">simrskk{{ date('dmY') }}</b>
                         </div>
                     </div>

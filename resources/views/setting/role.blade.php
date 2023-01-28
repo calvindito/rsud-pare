@@ -63,7 +63,7 @@
                     <legend class="fs-base fw-bold border-bottom pb-2 mb-3">
                         Silahkan memberikan akses menu apa saja yang bisa diakses untuk data ini :
                     </legend>
-                    <table class="table table-bordered table-hover">
+                    <table class="table table-bordered table-hover table-xs">
                         <tbody>
                             <tr class="table-primary">
                                 <th class="align-middle w-100">Berikan Semua Akses</th>

@@ -31,13 +31,13 @@ class PatientGroup extends Model
     protected $guarded = ['id'];
 
     /**
-     * carFreeAmbulance
+     * getCarFreeAmbulanceAttribute
      *
      * @return void
      */
-    public function carFreeAmbulance()
+    protected function getCarFreeAmbulanceAttribute()
     {
-        $carFreeAmbulance = $this->car_free_ambulance;
+        $carFreeAmbulance = $this->attributes['car_free_ambulance'];
 
         if ($carFreeAmbulance == true) {
             $text = 'Ya';
@@ -51,13 +51,13 @@ class PatientGroup extends Model
     }
 
     /**
-     * carFreeCorpse
+     * getCarFreeCorpseAttribute
      *
      * @return void
      */
-    public function carFreeCorpse()
+    public function getCarFreeCorpseAttribute()
     {
-        $carFreeCorpse = $this->car_free_corpse;
+        $carFreeCorpse = $this->attributes['car_free_corpse'];
 
         if ($carFreeCorpse == true) {
             $text = 'Ya';
