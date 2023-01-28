@@ -414,6 +414,12 @@ Route::middleware('auth')->group(function () {
                 Route::get('load-patient', 'InpatientController@loadPatient');
                 Route::post('register-patient', 'InpatientController@registerPatient');
             });
+
+            Route::prefix('neonates')->group(function () {
+                Route::get('/', 'NeonatesController@index');
+                Route::get('load-patient', 'NeonatesController@loadPatient');
+                Route::post('register-patient', 'NeonatesController@registerPatient');
+            });
         });
 
         Route::prefix('setting')->namespace('Setting')->group(function () {
