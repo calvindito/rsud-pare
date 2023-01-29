@@ -54,6 +54,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RadiologyActionSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(RoleSeeder::class);
+        $this->call(RoleAccessSeeder::class);
         $this->call(PatientSeeder::class);
     }
 }
