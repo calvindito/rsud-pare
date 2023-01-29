@@ -435,6 +435,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('accounting')->namespace('Accounting')->group(function () {
             Route::prefix('chart-of-account')->group(function () {
                 Route::get('/', 'ChartOfAccountController@index');
+                Route::get('load-parent', 'ChartOfAccountController@loadParent');
                 Route::get('datatable', 'ChartOfAccountController@datatable');
                 Route::post('create-data', 'ChartOfAccountController@createData');
                 Route::get('show-data', 'ChartOfAccountController@showData');

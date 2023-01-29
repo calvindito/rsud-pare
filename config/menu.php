@@ -437,7 +437,7 @@ return [
     [
         'name' => 'collection',
         'menu' => 'Pendataan',
-        'icon' => 'ph-archive',
+        'icon' => 'ph-folder-notch-open',
         'link' => 'javascript:void(0);',
         'sub' => [
             [
