@@ -432,6 +432,17 @@ Route::middleware('auth')->group(function () {
             });
         });
 
+        Route::prefix('accounting')->namespace('Accounting')->group(function () {
+            Route::prefix('chart-of-account')->group(function () {
+                Route::get('/', 'ChartOfAccountController@index');
+                Route::get('datatable', 'ChartOfAccountController@datatable');
+                Route::post('create-data', 'ChartOfAccountController@createData');
+                Route::get('show-data', 'ChartOfAccountController@showData');
+                Route::patch('update-data', 'ChartOfAccountController@updateData');
+                Route::delete('destroy-data', 'ChartOfAccountController@destroyData');
+            });
+        });
+
         Route::prefix('setting')->namespace('Setting')->group(function () {
             Route::prefix('role')->group(function () {
                 Route::get('/', 'RoleController@index');
