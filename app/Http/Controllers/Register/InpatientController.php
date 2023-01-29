@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 use App\Models\PharmacyProduction;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class InpatientController extends Controller
@@ -73,7 +72,7 @@ class InpatientController extends Controller
         } else {
             try {
                 DB::transaction(function () use ($request, $patientId) {
-                    $userId = Auth::id();
+                    $userId = auth()->id();
                     $dateOfEntry = date('Y-m-d H:i:s', strtotime($request->date_of_entry));
 
                     Patient::find($patientId)->update([

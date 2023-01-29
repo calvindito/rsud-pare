@@ -6,7 +6,6 @@ use App\Models\City;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\RoleAccess;
-use Illuminate\Support\Facades\Auth;
 
 class Simrs
 {
@@ -31,7 +30,7 @@ class Simrs
 
     public static function hasPermission($menu)
     {
-        $user = Auth::user();
+        $user = auth()->user();
         $role = $user->role;
         $roleAccess = RoleAccess::where('role_id', $role->id)->whereRaw("LOCATE('$menu', menu)")->count();
 

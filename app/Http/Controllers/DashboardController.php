@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-class DashboardController extends Controller {
+class DashboardController extends Controller
+{
 
     public function general()
     {
@@ -13,5 +14,4 @@ class DashboardController extends Controller {
 
         return view('layouts.index', ['data' => $data]);
     }
-
 }

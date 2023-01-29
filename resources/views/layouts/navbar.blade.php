@@ -21,8 +21,8 @@
 				</li>
 				<li class="nav-item ms-lg-2">
 					<a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="offcanvas" data-bs-target=".panel-account">
-                        <img src="{{ asset('template/assets/images/demo/users/face11.jpg') }}" class="w-32px h-32px rounded-pill">
-						<span class="d-none d-md-inline-block mx-md-2">Victoria</span>
+                        <img src="{{ auth()->user()->employee->image() }}" class="w-32px h-32px rounded-pill">
+						<span class="d-none d-md-inline-block mx-md-2">{{ auth()->user()->employee->name }}</span>
 					</a>
 				</li>
 			</ul>

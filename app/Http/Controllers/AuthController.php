@@ -7,7 +7,6 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,22 +14,28 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        if (Auth::check()) {
+        if (auth()->check()) {
             return redirect('dashboard/general');
         }
 
         if ($request->_token == csrf_token()) {
             $username = $request->username;
             $password = $request->password;
-            $credentials = ['username' => $username, 'password' => $password, 'status' => true];
 
-            if (Auth::attempt($credentials)) {
+            $credentials = [
+                'username' => $username,
+                'password' => $password,
+                'status' => true,
+                fn ($q) => $q->has('employee')
+            ];
+
+            if (auth()->attempt($credentials)) {
                 $request->session()->regenerate();
 
                 return redirect()->intended('dashboard/general');
             }
 
-            return back()->with(['failed' => 'Silahkan cek username dan password anda'])->onlyInput('username');
+            return back()->with(['failed' => 'Username dan Password yang anda masukan tidak ditemukan'])->onlyInput('username');
         }
 
         return view('login');
@@ -38,7 +43,7 @@ class AuthController extends Controller
 
     public function profile(Request $request)
     {
-        $user = Auth::user();
+        $user = auth()->user();
         $employee_id = $user->employee->id;
         $user_id = $user->id;
 
@@ -122,7 +127,7 @@ class AuthController extends Controller
             } else {
                 $currentPassword = $request->current_password;
                 $newPassword = $request->new_password;
-                $user = Auth::user();
+                $user = auth()->user();
                 $dbPassword = $user->password;
 
                 if (!Hash::check($currentPassword, $dbPassword)) {
@@ -156,7 +161,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        Auth::logout();
+        auth()->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

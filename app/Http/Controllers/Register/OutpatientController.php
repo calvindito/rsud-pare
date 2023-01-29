@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use App\Models\OutpatientPoly;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class OutpatientController extends Controller
@@ -84,7 +83,7 @@ class OutpatientController extends Controller
         } else {
             try {
                 DB::transaction(function () use ($request, $patientId) {
-                    $userId = Auth::id();
+                    $userId = auth()->id();
                     $locationId = $request->location_id;
                     $location = Simrs::locationById($locationId);
                     $hasDataPatient = Patient::find($patientId);

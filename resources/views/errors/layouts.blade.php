@@ -6,6 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title>@yield('title')</title>
+    <link href="{{ asset('assets/icon.png') }}" rel="shortcut icon">
 	<link href="{{ asset('template/assets/fonts/inter/inter.css') }}" rel="stylesheet">
 	<link href="{{ asset('template/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('template/assets/css/ltr/all.min.css') }}" id="stylesheet" rel="stylesheet">

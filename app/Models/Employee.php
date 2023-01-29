@@ -83,6 +83,26 @@ class Employee extends Model
     }
 
     /**
+     * image
+     *
+     * @return void
+     */
+    public function image()
+    {
+        $gender = $this->gender;
+
+        if ($gender == 1) {
+            $image = asset('assets/user-male.png');
+        } else if ($gender == 2) {
+            $image = asset('assets/user-female.png');
+        } else {
+            $image = asset('assets/user-random.png');
+        }
+
+        return $image;
+    }
+
+    /**
      * status
      *
      * @return void
