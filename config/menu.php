@@ -435,6 +435,71 @@ return [
         ]
     ],
     [
+        'name' => 'collection',
+        'menu' => 'Pendataan',
+        'icon' => 'ph-archive',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'outpatient',
+                'menu' => 'Rawat Jalan',
+                'icon' => null,
+                'link' => 'collection/outpatient',
+                'sub' => null
+            ],
+            [
+                'name' => 'inpatient',
+                'menu' => 'Rawat Inap',
+                'icon' => null,
+                'link' => 'collection/inpatient',
+                'sub' => null
+            ],
+            [
+                'name' => 'visit-window',
+                'menu' => 'Kunjungan Loket',
+                'icon' => null,
+                'link' => 'collection/visit-window',
+                'sub' => null
+            ],
+            [
+                'name' => 'emergency-department',
+                'menu' => 'Kunjungn IGD',
+                'icon' => null,
+                'link' => 'collection/emergency-department',
+                'sub' => null
+            ],
+            [
+                'name' => 'service',
+                'menu' => 'Pelayanan',
+                'icon' => null,
+                'link' => 'collection/service',
+                'sub' => null
+            ],
+            [
+                'name' => 'information',
+                'menu' => 'Informasi',
+                'icon' => null,
+                'link' => 'collection/information',
+                'sub' => null
+            ],
+        ]
+    ],
+    [
+        'name' => 'accounting',
+        'menu' => 'Akuntansi',
+        'icon' => 'ph-books',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'chart-of-account',
+                'menu' => 'Bagan Akun',
+                'icon' => null,
+                'link' => 'accounting/chart-of-account',
+                'sub' => null
+            ],
+        ]
+    ],
+    [
         'name' => 'setting',
         'menu' => 'Pengaturan',
         'icon' => 'ph-gear',
