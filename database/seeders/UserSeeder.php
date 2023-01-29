@@ -18,11 +18,11 @@ class UserSeeder extends Seeder
     {
         DB::connection('clone')->table('user')->orderBy('created_at')->chunk(1000, function ($query) {
             foreach ($query as $q) {
-                $employee = Employee::where('code', $q->PEGAWAI_ID)->first();
+                $dataEmployee = Employee::where('code', $q->PEGAWAI_ID)->first();
 
-                if ($employee) {
+                if ($dataEmployee) {
                     User::insert([
-                        'employee_id' => $employee->id,
+                        'employee_id' => $dataEmployee->id,
                         'role_id' => $q->LEVEL,
                         'username' => $q->USERNAME,
                         'password' => bcrypt('123456'),
