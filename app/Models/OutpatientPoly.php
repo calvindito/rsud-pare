@@ -31,6 +31,16 @@ class OutpatientPoly extends Model
     protected $guarded = ['id'];
 
     /**
+     * outpatient
+     *
+     * @return void
+     */
+    public function outpatient()
+    {
+        return $this->belongsTo(Outpatient::class);
+    }
+
+    /**
      * unit
      *
      * @return void

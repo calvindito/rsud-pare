@@ -432,6 +432,18 @@ Route::middleware('auth')->group(function () {
             });
         });
 
+        Route::prefix('collection')->namespace('Collection')->group(function () {
+            Route::prefix('outpatient')->group(function () {
+                Route::get('/', 'OutpatientController@index');
+                Route::get('datatable', 'OutpatientController@datatable');
+                Route::get('load-patient', 'OutpatientController@loadPatient');
+                Route::match(['get', 'patch'], 'update-data/{outpatient_id}', 'OutpatientController@updateData');
+                Route::match(['get', 'patch'], 'update-data/{outpatient_id}', 'OutpatientController@updateData');
+                Route::delete('destroy-data', 'OutpatientController@destroyData');
+                Route::get('print/{outpatient_id}', 'OutpatientController@print');
+            });
+        });
+
         Route::prefix('accounting')->namespace('Accounting')->group(function () {
             Route::prefix('chart-of-account')->group(function () {
                 Route::get('/', 'ChartOfAccountController@index');

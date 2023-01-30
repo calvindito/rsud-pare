@@ -104,6 +104,16 @@ class Outpatient extends Model
     }
 
     /**
+     * patient
+     *
+     * @return void
+     */
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    /**
      * outpatientPoly
      *
      * @return void

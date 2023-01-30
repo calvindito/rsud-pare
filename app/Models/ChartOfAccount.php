@@ -66,6 +66,7 @@ class ChartOfAccount extends Model
      * fullname
      *
      * @param  mixed $id
+     * @param  mixed $text
      * @return void
      */
     public function fullname($id = null, $text = [])

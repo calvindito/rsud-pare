@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="url" content="{{ url('/') }}">
 	<title>RSUD KAB KEDIRI</title>
     <link href="{{ asset('assets/icon.png') }}" rel="shortcut icon">
 	<link href="{{ asset('template/assets/fonts/inter/inter.css') }}" rel="stylesheet">
@@ -23,5 +24,5 @@
 	<script src="{{ asset('template/plugins/number-format/jquery.number.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/ui/prism.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/app.js') }}"></script>
-	<script src="{{ asset('template/custom.js?v=' . uniqid() . '&domain=' . env('APP_URL')) }}" id="custom-js"></script>
+	<script src="{{ asset('template/custom.js?v=' . uniqid()) }}"></script>
 </head>

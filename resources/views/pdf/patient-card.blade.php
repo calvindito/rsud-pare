@@ -63,32 +63,5 @@
     <div class="fw-bold fs-13 mb-2">{{ $data->id }}</div>
     <div class="fw-200 fs-11 mb-2">{{ $data->name }}</div>
     <div class="fw-200 fs-11">{{ $data->address }}</div>
-    {{-- <table>
-        <tr>
-            <td class="fs-10">No RM</td>
-            <td class="fs-10">:</td>
-            <td class="fs-10 fw-bold">{{ $data->id }}</td>
-        </tr>
-        <tr>
-            <td class="fs-10">Nama</td>
-            <td class="fs-10">:</td>
-            <td class="fs-10">{{ $data->name }}</td>
-        </tr>
-        <tr>
-            <td class="fs-10">Alamat</td>
-            <td class="fs-10">:</td>
-            <td class="fs-10">
-                @if(isset($data->district) && isset($data->village))
-                    {{ $data->district->name . ' ' . $data->village }}
-                @elseif(isset($data->district))
-                    {{ $data->district->name }}
-                @elseif(isset($data->village))
-                    {{ $data->village }}
-                @else
-                    -
-                @endif
-            </td>
-        </tr>
-    </table> --}}
 </body>
 </html>

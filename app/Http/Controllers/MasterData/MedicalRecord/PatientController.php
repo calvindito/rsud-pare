@@ -187,11 +187,11 @@ class PatientController extends Controller
                 'margin_right' => 3,
                 'margin_bottom' => 3,
                 'margin_left' => 3,
-                'author' => session('name'),
+                'author' => auth()->user()->employee->name,
                 'subject' => $title,
             ]);
 
-            return $pdf->stream('Kartu Pasien ' . $data->id . '.pdf');
+            return $pdf->download($title . ' - ' . $data->id . '.pdf');
         }
 
         abort(404);

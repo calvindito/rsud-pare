@@ -285,7 +285,7 @@
                             <tr>
                                 <td nowrap>` + o.date_of_entry + `</td>
                                 <td nowrap>` + o.type + `</td>
-                                <td nowrap>` + o.presence + `</td>
+                                <td nowrap>` + o.presence_format_result + `</td>
                                 <td nowrap>` + op.unit.name + `</td>
                             </tr>
                         `);

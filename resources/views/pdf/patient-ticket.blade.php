@@ -64,7 +64,7 @@
         <tr>
             <td class="fs-9">Jenis Kelamin</td>
             <td class="fs-9">:</td>
-            <td class="fs-9">{{ $data->gender ? $data->gender() : '-' }}</td>
+            <td class="fs-9">{{ $data->gender ? $data->gender_format_result : '-' }}</td>
         </tr>
         <tr>
             <td class="fs-9">Alamat</td>

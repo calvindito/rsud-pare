@@ -393,7 +393,7 @@ return [
     ],
     [
         'name' => 'register',
-        'menu' => 'Pendaftaran',
+        'menu' => 'Registrasi',
         'icon' => 'ph-user-circle-plus',
         'link' => 'javascript:void(0);',
         'sub' => [

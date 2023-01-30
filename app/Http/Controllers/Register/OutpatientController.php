@@ -8,7 +8,6 @@ use App\Models\Patient;
 use App\Models\Religion;
 use App\Models\Outpatient;
 use Illuminate\Http\Request;
-use App\Models\OutpatientPoly;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -133,8 +132,7 @@ class OutpatientController extends Controller
                     foreach ($request->item as $key => $i) {
                         $unitId = $request->unit_id[$key];
 
-                        OutpatientPoly::create([
-                            'outpatient_id' => $createOutpatient->id,
+                        $createOutpatient->outpatientPoly()->create([
                             'unit_id' => $unitId
                         ]);
                     }

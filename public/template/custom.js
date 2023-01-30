@@ -27,7 +27,7 @@ $(function() {
 });
 
 function setBaseUrl() {
-    var fileSrc = $('#custom-js').attr('src');
+    var fileSrc = $('meta[name="url"]').attr('content');
 
     if(fileSrc != undefined) {
         var queryParam = paramFile(fileSrc);
