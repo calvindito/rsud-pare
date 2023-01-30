@@ -203,6 +203,7 @@
             serverSide: true,
             deferRender: true,
             destroy: true,
+            scrollX: true,
             order: [[1, 'asc']],
             ajax: {
                 url: '{{ url("accounting/chart-of-account/datatable") }}',

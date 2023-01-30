@@ -1,3 +1,5 @@
+window.baseUrl = '/';
+
 const swalInit = Swal.mixin({
     buttonsStyling: false,
     customClass: {
@@ -17,11 +19,42 @@ $(function() {
     configDataTable();
     formatNumber();
     select2Basic();
+    setBaseUrl();
 
     $('.sidebar-control').on('click', function() {
         gDataTable.columns.adjust().draw();
     });
 });
+
+function setBaseUrl() {
+    var fileSrc = $('#custom-js').attr('src');
+
+    if(fileSrc != undefined) {
+        var queryParam = paramFile(fileSrc);
+
+        if(queryParam.length > 0) {
+            var domain = queryParam.find(domain => domain.key == 'domain');
+            window.baseUrl = domain.value + '/';
+        } else {
+            return false;
+        }
+    }
+}
+
+function paramFile(url) {
+    var vars = [], hash;
+    if(url == undefined || url.indexOf('?') ==  -1) {
+        return vars;
+    }
+
+    var hashes = url.slice(url.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push({key: hash[0], value: hash[1]});
+    }
+
+    return vars;
+}
 
 function configDataTable() {
     $.extend( $.fn.dataTable.defaults, {
@@ -95,7 +128,7 @@ function select2Ajax(selector, endpoint, onModal = true) {
         allowClear: true,
         cache: true,
         ajax: {
-            url: '/serverside/' + endpoint,
+            url: window.baseUrl + 'serverside/' + endpoint,
             type: 'GET',
             dataType: 'JSON',
             delay: 250,

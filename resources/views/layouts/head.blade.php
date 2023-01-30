@@ -23,5 +23,5 @@
 	<script src="{{ asset('template/plugins/number-format/jquery.number.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/ui/prism.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/app.js') }}"></script>
-	<script src="{{ asset('template/custom.js?v=' . uniqid()) }}"></script>
+	<script src="{{ asset('template/custom.js?v=' . uniqid() . '&domain=' . env('APP_URL')) }}" id="custom-js"></script>
 </head>
