@@ -15,7 +15,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="alert alert-info text-center">
-                    Silahkan cari data pasien yang telah terdaftar dibawah ini dengan kata kunci
+                    Silahkan pilih pasien terlebih dahulu dan cari data pasien yang telah terdaftar dibawah ini dengan kata kunci
                     <b class="fst-italic">
                         No Rekam Medik, No KTP, Nama Pasien
                     </b>
