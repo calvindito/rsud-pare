@@ -456,6 +456,17 @@ Route::middleware('auth')->group(function () {
             });
         });
 
+        Route::prefix('finance')->namespace('Finance')->group(function () {
+            Route::prefix('budget')->group(function () {
+                Route::get('/', 'BudgetController@index');
+                Route::get('datatable', 'BudgetController@datatable');
+                Route::post('create-data', 'BudgetController@createData');
+                Route::get('show-data', 'BudgetController@showData');
+                Route::patch('update-data', 'BudgetController@updateData');
+                Route::delete('destroy-data', 'BudgetController@destroyData');
+            });
+        });
+
         Route::prefix('setting')->namespace('Setting')->group(function () {
             Route::prefix('role')->group(function () {
                 Route::get('/', 'RoleController@index');

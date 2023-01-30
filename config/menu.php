@@ -500,6 +500,21 @@ return [
         ]
     ],
     [
+        'name' => 'finance',
+        'menu' => 'Keuangan',
+        'icon' => 'ph-money',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'budget',
+                'menu' => 'Anggaran',
+                'icon' => null,
+                'link' => 'finance/budget',
+                'sub' => null
+            ],
+        ]
+    ],
+    [
         'name' => 'setting',
         'menu' => 'Pengaturan',
         'icon' => 'ph-gear',
