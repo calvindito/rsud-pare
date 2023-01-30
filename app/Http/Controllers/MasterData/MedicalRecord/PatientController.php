@@ -177,7 +177,8 @@ class PatientController extends Controller
 
             $pdf = PDF::loadView($view, [
                 'title' => $title . ' - ' . $data->name . ' (' . $data->id . ')',
-                'data' => $data
+                'data' => $data,
+                'barcode' => $data->id
             ], [], [
                 'mode' => 'utf-8',
                 'format' => $pageSize,

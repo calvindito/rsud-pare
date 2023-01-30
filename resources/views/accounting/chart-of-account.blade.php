@@ -62,7 +62,7 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Kode <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode barang">
+                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode">
                         </div>
                     </div>
                     <div class="form-group row">

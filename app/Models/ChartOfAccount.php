@@ -68,19 +68,24 @@ class ChartOfAccount extends Model
      * @param  mixed $id
      * @return void
      */
-    public function fullname($id = null)
+    public function fullname($id = null, $text = [])
     {
-        $text = '';
         $data = ChartOfAccount::find($id);
 
         if ($data) {
             if ($data->parent && isset($data->parent_id)) {
-                $text .= $data->parent->name . ' -> ';
-                $this->fullname($data->parent->id);
+                $text[] = $data->parent->name;
+                return $this->fullname($data->parent->id, $text);
             }
         }
 
-        return $text;
+        if (count($text) > 0) {
+            $sequence = collect(array_reverse($text))->implode(' -> ') . ' -> ';
+        } else {
+            $sequence = null;
+        }
+
+        return $sequence;
     }
 
     /**
