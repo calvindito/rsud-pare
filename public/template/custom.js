@@ -121,3 +121,7 @@ function select2Ajax(selector, endpoint, onModal = true) {
         }
     });
 }
+
+function sidebarMini() {
+    $('.sidebar-control').click();
+}

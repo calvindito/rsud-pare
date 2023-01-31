@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBudgetsTable extends Migration
+class CreateCashBanksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateBudgetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('budgets', function (Blueprint $table) {
+        Schema::create('cash_banks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('chart_of_account_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->double('nominal')->nullable();
-            $table->double('limit_blud')->nullable();
             $table->date('date')->nullable();
+            $table->char('type', 1)->nullable();
             $table->text('description')->nullable();
-            $table->char('status', 1)->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ class CreateBudgetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('budgets');
+        Schema::dropIfExists('cash_banks');
     }
 }

@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Keuangan - <span class="fw-normal">Anggaran</span>
+                Keuangan - <span class="fw-normal">Kas & Bank</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -31,10 +31,9 @@
                         <th nowrap>Bagan Akun</th>
                         <th nowrap>Karyawan</th>
                         <th nowrap>Nominal</th>
-                        <th nowrap>Batas BLUD</th>
+                        <th nowrap>Jenis</th>
                         <th nowrap>Tanggal</th>
                         <th nowrap>Keterangan</th>
-                        <th class="text-center" nowrap>Status</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -80,12 +79,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Batas BLUD <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="number" class="form-control" name="limit_blud" id="limit_blud" placeholder="Masukan batas blud">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-form-label col-lg-3">Tanggal <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <input type="date" class="form-control" name="date" id="date">
@@ -100,12 +93,12 @@
                     <div class="form-group text-center mb-0">
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="radio" class="btn-check" name="status" id="status-1" value="1" autocomplete="off" checked>
-                                <label class="btn btn-outline-secondary btn-sm col-12" for="status-1">Draft</label>
+                                <input type="radio" class="btn-check" name="type" id="type-1" value="1" autocomplete="off" checked>
+                                <label class="btn btn-outline-success btn-sm col-12" for="type-1">Pendapatan</label>
                             </div>
                             <div class="col-md-6">
-                                <input type="radio" class="btn-check" name="status" id="status-2" value="2" autocomplete="off">
-                                <label class="btn btn-outline-info btn-sm col-12" for="status-2">Ajukan Sekarang</label>
+                                <input type="radio" class="btn-check" name="type" id="type-2" value="2" autocomplete="off">
+                                <label class="btn btn-outline-pink btn-sm col-12" for="type-2">Pengeluaran</label>
                             </div>
                         </div>
                     </div>
@@ -150,7 +143,7 @@
         $('#btn-cancel').addClass('d-none');
         $('#chart_of_account_id').val('').change();
         $('#date').val('{{ date("Y-m-d") }}');
-        $('input[name="status"][value="1"]').prop('checked', true);
+        $('input[name="type"][value="1"]').prop('checked', true);
     }
 
     function onCreate() {
@@ -200,7 +193,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("finance/budget/datatable") }}',
+                url: '{{ url("finance/cash-bank/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -224,10 +217,9 @@
                 { data: 'chart_of_account_name', name: 'chart_of_account_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'employee_name', name: 'employee_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'nominal', name: 'nominal', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'limit_blud', name: 'limit_blud', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'type_format_result', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'date', name: 'date', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'description', name: 'description', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'status', name: 'status', orderable: true, searchable: true, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -235,7 +227,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("finance/budget/create-data") }}',
+            url: '{{ url("finance/cash-bank/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -278,7 +270,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("finance/budget/show-data") }}',
+            url: '{{ url("finance/cash-bank/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -294,10 +286,9 @@
                 $('#table_id').val(response.id);
                 $('#chart_of_account_id').val(response.chart_of_account_id).change();
                 $('#nominal').val(response.nominal);
-                $('#limit_blud').val(response.limit_blud);
                 $('#date').val(response.date);
                 $('#description').val(response.description);
-                $('input[name="status"][value="' + response.status + '"]').prop('checked', true);
+                $('input[name="type"][value="' + response.type + '"]').prop('checked', true);
             },
             error: function(response) {
                 onLoading('close', '.modal-content');
@@ -313,7 +304,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("finance/budget/update-data") }}',
+            url: '{{ url("finance/cash-bank/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -368,7 +359,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("finance/budget/destroy-data") }}',
+                        url: '{{ url("finance/cash-bank/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

@@ -512,6 +512,13 @@ return [
                 'link' => 'finance/budget',
                 'sub' => null
             ],
+            [
+                'name' => 'cash-bank',
+                'menu' => 'Kas & bank',
+                'icon' => null,
+                'link' => 'finance/cash-bank',
+                'sub' => null
+            ],
         ]
     ],
     [

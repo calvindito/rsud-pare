@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\Finance;
 
-use App\Models\Budget;
+use App\Helpers\Simrs;
+use App\Models\CashBank;
 use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class BudgetController extends Controller
+class CashBankController extends Controller
 {
     public function index()
     {
         $data = [
             'chartOfAccount' => ChartOfAccount::where('status', true)->orderBy('code')->get(),
-            'content' => 'finance.budget'
+            'content' => 'finance.cash-bank'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -24,7 +25,7 @@ class BudgetController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Budget::query();
+        $data = CashBank::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -42,11 +43,7 @@ class BudgetController extends Controller
                 }
             })
             ->editColumn('nominal', '{{ Simrs::formatRupiah($nominal) }}')
-            ->editColumn('limit_blud', '{{ Simrs::formatRupiah($limit_blud) }}')
-            ->editColumn('status', function (Budget $query) {
-                return $query->status();
-            })
-            ->addColumn('chart_of_account_code', function (Budget $query) {
+            ->addColumn('chart_of_account_code', function (CashBank $query) {
                 $chartOfAccountCode = null;
 
                 if (isset($query->chartOfAccount->code)) {
@@ -55,7 +52,7 @@ class BudgetController extends Controller
 
                 return $chartOfAccountCode;
             })
-            ->addColumn('chart_of_account_name', function (Budget $query) {
+            ->addColumn('chart_of_account_name', function (CashBank $query) {
                 $chartOfAccountName = null;
 
                 if (isset($query->chartOfAccount->name)) {
@@ -64,7 +61,7 @@ class BudgetController extends Controller
 
                 return $chartOfAccountName;
             })
-            ->addColumn('employee_name', function (Budget $query) {
+            ->addColumn('employee_name', function (CashBank $query) {
                 $employeeName = null;
 
                 if (isset($query->user->employee->name)) {
@@ -73,28 +70,22 @@ class BudgetController extends Controller
 
                 return $employeeName;
             })
-            ->addColumn('action', function (Budget $query) {
-                if ($query->status == 1 || $query->status == 3) {
-                    $action = '
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
-                            <div class="dropdown-menu">
-                                <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="showDataUpdate(' . $query->id . ')">
-                                    <i class="ph-pen me-2"></i>
-                                    Ubah Data
-                                </a>
-                                <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="destroyData(' . $query->id . ')">
-                                    <i class="ph-trash-simple me-2"></i>
-                                    Hapus Data
-                                </a>
-                            </div>
+            ->addColumn('action', function (CashBank $query) {
+                return '
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
+                        <div class="dropdown-menu">
+                            <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="showDataUpdate(' . $query->id . ')">
+                                <i class="ph-pen me-2"></i>
+                                Ubah Data
+                            </a>
+                            <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="destroyData(' . $query->id . ')">
+                                <i class="ph-trash-simple me-2"></i>
+                                Hapus Data
+                            </a>
                         </div>
-                    ';
-                } else {
-                    $action = '<button type="button" class="btn btn-light text-primary btn-sm fw-semibold" disabled>Tidak Ada Aksi</button>';
-                }
-
-                return $action;
+                    </div>
+                ';
             })
             ->rawColumns(['action', 'status'])
             ->addIndexColumn()
@@ -107,14 +98,11 @@ class BudgetController extends Controller
         $validation = Validator::make($request->all(), [
             'chart_of_account_id' => 'required',
             'nominal' => 'required|numeric',
-            'limit_blud' => 'required|numeric',
             'date' => 'required'
         ], [
             'chart_of_account_id.required' => 'mohon memilih bagan akun',
             'nominal.required' => 'nominal tidak boleh kosong',
             'nominal.numeric' => 'nominal harus angka yang valid',
-            'limit_blud.required' => 'batas blud tidak boleh kosong',
-            'limit_blud.required' => 'batas blud harus angka yang valid',
             'date.required' => 'tanggal tidak boleh kosong'
         ]);
 
@@ -125,14 +113,13 @@ class BudgetController extends Controller
             ];
         } else {
             try {
-                $createData = Budget::create([
+                $createData = CashBank::create([
                     'chart_of_account_id' => $request->chart_of_account_id,
                     'user_id' => auth()->id(),
                     'nominal' => $request->nominal,
-                    'limit_blud' => $request->limit_blud,
                     'date' => $request->date,
-                    'description' => $request->description,
-                    'status' => $request->status
+                    'type' => $request->type,
+                    'description' => $request->description
                 ]);
 
                 $response = [
@@ -153,7 +140,7 @@ class BudgetController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = Budget::findOrFail($id);
+        $data = CashBank::findOrFail($id);
 
         return response()->json($data);
     }
@@ -164,14 +151,11 @@ class BudgetController extends Controller
         $validation = Validator::make($request->all(), [
             'chart_of_account_id' => 'required',
             'nominal' => 'required|numeric',
-            'limit_blud' => 'required|numeric',
             'date' => 'required'
         ], [
             'chart_of_account_id.required' => 'mohon memilih bagan akun',
             'nominal.required' => 'nominal tidak boleh kosong',
             'nominal.numeric' => 'nominal harus angka yang valid',
-            'limit_blud.required' => 'batas blud tidak boleh kosong',
-            'limit_blud.required' => 'batas blud harus angka yang valid',
             'date.required' => 'tanggal tidak boleh kosong'
         ]);
 
@@ -182,13 +166,13 @@ class BudgetController extends Controller
             ];
         } else {
             try {
-                $updateData = Budget::findOrFail($id)->update([
+                $updateData = CashBank::findOrFail($id)->update([
                     'chart_of_account_id' => $request->chart_of_account_id,
+                    'user_id' => auth()->id(),
                     'nominal' => $request->nominal,
-                    'limit_blud' => $request->limit_blud,
                     'date' => $request->date,
-                    'description' => $request->description,
-                    'status' => $request->status
+                    'type' => $request->type,
+                    'description' => $request->description
                 ]);
 
                 $response = [
@@ -211,7 +195,7 @@ class BudgetController extends Controller
         $id = $request->id;
 
         try {
-            Budget::destroy($id);
+            CashBank::destroy($id);
 
             $response = [
                 'code' => 200,

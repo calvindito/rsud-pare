@@ -465,6 +465,15 @@ Route::middleware('auth')->group(function () {
                 Route::patch('update-data', 'BudgetController@updateData');
                 Route::delete('destroy-data', 'BudgetController@destroyData');
             });
+
+            Route::prefix('cash-bank')->group(function () {
+                Route::get('/', 'CashBankController@index');
+                Route::get('datatable', 'CashBankController@datatable');
+                Route::post('create-data', 'CashBankController@createData');
+                Route::get('show-data', 'CashBankController@showData');
+                Route::patch('update-data', 'CashBankController@updateData');
+                Route::delete('destroy-data', 'CashBankController@destroyData');
+            });
         });
 
         Route::prefix('setting')->namespace('Setting')->group(function () {
