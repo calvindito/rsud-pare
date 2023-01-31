@@ -35,7 +35,7 @@ class Patient extends Model
      *
      * @var array
      */
-    protected $appends = ['gender_format_result', 'type_format_result'];
+    protected $appends = ['gender_format_result', 'type_format_result', 'no_medical_record'];
 
     /**
      * getGenderAttribute
@@ -75,6 +75,14 @@ class Patient extends Model
         }
 
         return $text;
+    }
+
+    protected function getNoMedicalRecordAttribute()
+    {
+        $totalData = strlen(Patient::count());
+        $id = isset($this->attributes['id']) ? $this->attributes['id'] : null;
+
+        return sprintf('%0' . $totalData . 's', $id);
     }
 
     /**

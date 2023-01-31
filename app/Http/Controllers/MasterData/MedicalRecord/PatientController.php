@@ -165,11 +165,11 @@ class PatientController extends Controller
         if ($request->has('slug')) {
             if ($request->slug == 'card') {
                 $view = 'pdf.patient-card';
-                $pageSize = [85, 54];
+                $pageSize = [78, 75];
                 $title = 'Kartu Pasien';
             } else if ($request->slug == 'ticket') {
                 $view = 'pdf.patient-ticket';
-                $pageSize = [68, 43];
+                $pageSize = [60, 43];
                 $title = 'E-Tiket Pasien';
             } else {
                 abort(404);
@@ -183,15 +183,11 @@ class PatientController extends Controller
                 'mode' => 'utf-8',
                 'format' => $pageSize,
                 'display_mode' => 'fullwidth',
-                'margin_top' => 3,
-                'margin_right' => 3,
-                'margin_bottom' => 3,
-                'margin_left' => 3,
                 'author' => auth()->user()->employee->name,
                 'subject' => $title,
             ]);
 
-            return $pdf->download($title . ' - ' . $data->id . '.pdf');
+            return $pdf->stream($title . ' - ' . $data->id . '.pdf');
         }
 
         abort(404);

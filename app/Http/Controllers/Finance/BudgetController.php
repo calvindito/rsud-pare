@@ -30,7 +30,7 @@ class BudgetController extends Controller
             ->filter(function ($query) use ($search) {
                 if ($search) {
                     $query->where('description', 'like', "%$search%")
-                        ->whereHas('budget', function ($query) use ($search) {
+                        ->whereHas('chartOfAccount', function ($query) use ($search) {
                             $query->where('code', 'like', "%$search%")
                                 ->orWhere('name', 'like', "%$search%");
                         });

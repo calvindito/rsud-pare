@@ -7,61 +7,55 @@
     <title>{{ $title }}</title>
 
     <style>
-        body {
-            text-align: center;
+        @page {
+            margin: 0;
         }
 
-        .fs-13 {
-            font-size: 13px;
-        }
-
-        .fs-11 {
-            font-size: 11px;
-        }
-
-        .fw-bold {
-            font-weight: bold;
-        }
-
-        .fw-200 {
-            font-weight: 200;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mb-10 {
-            margin-bottom: 10px;
-        }
-
-        .mt-0 {
-            margin-top: 0;
-        }
-
-        .mb-0 {
-            margin-bottom: 0;
-        }
-
-        .mb-8 {
-            margin-bottom: 8px;
-        }
-
-        .mb-2 {
-            margin-bottom: 2px;
-        }
-
-        img {
-            max-height: 50px;
-        }
+		.id-card {
+            border: 4px solid #86c1ff;
+            shadow: none;
+			padding: 10px;
+			text-align: center;
+            height: 100%;
+		}
     </style>
 </head>
 <body>
-    <h4 class="text-center mb-8 fw-bold">Kartu Pasien</h4>
-    <hr class="mt-0">
-    <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG("$data->id", 'QRCODE') }}" class="mb-10">
-    <div class="fw-bold fs-13 mb-2">{{ $data->id }}</div>
-    <div class="fw-200 fs-11 mb-2">{{ $data->name }}</div>
-    <div class="fw-200 fs-11">{{ $data->address }}</div>
+    <div class="id-card">
+        <div class="header">
+            <img src="{{ asset('assets/icon.png') }}" style="max-width:70px;">
+        </div>
+        <h2 style="margin-top:7px; margin-bottom:7px; font-size:12px; color:#06407d;">{{ $data->name }}</h2>
+        <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG("$data->id", 'QRCODE', 3.5, 3.5, [12, 131, 255]) }}" style="margin-bottom:5px;">
+        <div style="margin-top:5px; margin-bottom:5px; font-size:12px; color:#06407d;">https://rsud.kedirikab.go.id/</div>
+        <hr style="margin-top:5px; margin-bottom:5px;">
+        <table style="width:100px;">
+            <tr>
+                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">No RM</th>
+                <td style="font-size:9px;">:</td>
+                <td style="font-size:9px; color:#064a8f;">{{ $data->no_medical_record }}</td>
+            </tr>
+            <tr>
+                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Lahir</th>
+                <td style="font-size:9px;">:</td>
+                <td style="font-size:9px; color:#064a8f;">{{ $data->date_of_birth ? date('d-m-Y', strtotime($data->date_of_birth)) : '-' }}</td>
+            </tr>
+            <tr>
+                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Alamat</th>
+                <td style="font-size:9px;">:</td>
+                <td style="font-size:9px; color:#064a8f;">
+                    @if(isset($data->district) && isset($data->village))
+                        {{ $data->district->name . ' ' . $data->village }}
+                    @elseif(isset($data->district))
+                        {{ $data->district->name }}
+                    @elseif(isset($data->village))
+                        {{ $data->village }}
+                    @else
+                        -
+                    @endif
+                </td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
