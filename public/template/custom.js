@@ -109,7 +109,7 @@ function select2Ajax(selector, endpoint, onModal = true) {
         allowClear: true,
         cache: true,
         ajax: {
-            url: window.gBaseUrl + 'serverside/' + endpoint,
+            url: window.gBaseUrl + '/serverside/' + endpoint,
             type: 'GET',
             dataType: 'JSON',
             delay: 250,

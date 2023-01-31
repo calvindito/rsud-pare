@@ -202,11 +202,7 @@
                             <th nowrap>Poli</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="bg-light">
-                            <td class="text-center" colspan="4">Belum ada kunjungan</td>
-                        </tr>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -224,11 +220,7 @@
                             <th nowrap>UPF</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="bg-light">
-                            <td class="text-center" colspan="4">Belum ada kunjungan</td>
-                        </tr>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -298,23 +290,25 @@
                 <div class="form-group"><hr></div>
                 <div id="plus-destroy-item">
                     @foreach($outpatient->outpatientPoly as $op)
-                        <div class="form-group">
-                            <input type="hidden" name="item[]" value="{{ true }}">
-                            <div class="form-group row">
-                                <label class="col-form-label col-lg-3">Poli <span class="text-danger fw-bold">*</span></label>
-                                <div class="col-md-9">
-                                    <div class="input-group">
-                                        <select class="form-select" name="unit_id[]" id="unit_id[]">
-                                            <option value="">-- Pilih --</option>
-                                            @foreach($unit as $u)
-                                                <option value="{{ $u->id }}" {{ $op->unit_id == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                        @if($u->status == 1)
+                            <div class="form-group">
+                                <input type="hidden" name="item[]" value="{{ true }}">
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-3">Poli <span class="text-danger fw-bold">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="input-group">
+                                            <select class="form-select" name="unit_id[]" id="unit_id[]">
+                                                <option value="">-- Pilih --</option>
+                                                @foreach($unit as $u)
+                                                    <option value="{{ $u->id }}" {{ $op->unit_id == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     @endforeach
                 </div>
                 <div class="form-group row">
@@ -391,22 +385,8 @@
     }
 
     function clearTableHistory(emptyTable = false) {
-        if(emptyTable == false) {
-            $('#table-history-poly tbody').html(`
-                <tr>
-                    <td class="text-center" colspan="5">Belum ada kunjungan</td>
-                </tr>
-            `);
-
-            $('#table-history-inpatient tbody').html(`
-                <tr>
-                    <td class="text-center" colspan="5">Belum ada kunjungan</td>
-                </tr>
-            `);
-        } else {
-            $('#table-history-poly tbody').html('');
-            $('#table-history-inpatient tbody').html('');
-        }
+        $('#table-history-poly tbody').html('');
+        $('#table-history-inpatient tbody').html('');
     }
 
     function loadPatient() {
@@ -423,7 +403,6 @@
             },
             success: function(response) {
                 onLoading('close', '.content');
-                clearTableHistory(true);
 
                 $('#table_id').val(response.id);
                 $('#identity_number').val(response.identity_number);

@@ -7,7 +7,7 @@
 				</button>
 			</div>
 			<div class="navbar-brand flex-1">
-				<a href="{{ url('dashboard/general') }}" class="d-inline-flex align-items-center fw-bold text-white">
+				<a href="{{ url('index') }}" class="d-inline-flex align-items-center fw-bold text-white">
                     <i class="ph-leaf me-2"></i>
                     SIMRS KAB KEDIRI
 				</a>

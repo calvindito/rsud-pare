@@ -5,6 +5,15 @@ use Illuminate\Support\Facades\Route;
 Route::match(['get', 'post'], '/', 'AuthController@login');
 
 Route::middleware('auth')->group(function () {
+    Route::get('index', function () {
+        return view('layouts.index', [
+            'data' => [
+                'time' => date('G', time()),
+                'content' => 'index'
+            ]
+        ]);
+    });
+
     Route::prefix('auth')->group(function () {
         Route::match(['get', 'patch'], 'profile', 'AuthController@profile');
         Route::match(['get', 'patch'], 'change-password', 'AuthController@changePassword');
@@ -17,9 +26,13 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('verify.permission')->group(function () {
-        Route::prefix('dashboard')->group(function () {
+        Route::prefix('dashboard')->namespace('Dashboard')->group(function () {
             Route::prefix('general')->group(function () {
                 Route::get('/', 'DashboardController@general');
+            });
+
+            Route::prefix('poly')->group(function () {
+                Route::get('/', 'PolyController@general');
             });
         });
 

@@ -15,7 +15,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (auth()->check()) {
-            return redirect('dashboard/general');
+            return redirect('index');
         }
 
         if ($request->_token == csrf_token()) {

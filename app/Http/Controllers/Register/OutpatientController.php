@@ -133,7 +133,8 @@ class OutpatientController extends Controller
                         $unitId = $request->unit_id[$key];
 
                         $createOutpatient->outpatientPoly()->create([
-                            'unit_id' => $unitId
+                            'unit_id' => $unitId,
+                            'status' => 1
                         ]);
                     }
                 });

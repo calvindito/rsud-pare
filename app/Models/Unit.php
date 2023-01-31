@@ -58,4 +58,14 @@ class Unit extends Model
 
         return $text;
     }
+
+    /**
+     * outpatientPoly
+     *
+     * @return void
+     */
+    public function outpatientPoly()
+    {
+        return $this->hasMany(OutpatientPoly::class);
+    }
 }

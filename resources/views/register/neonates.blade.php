@@ -136,11 +136,7 @@
                             <th nowrap>UPF</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr class="bg-light">
-                            <td class="text-center" colspan="4">Belum ada kunjungan</td>
-                        </tr>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -255,15 +251,7 @@
     }
 
     function clearTableHistory(emptyTable = false) {
-        if(emptyTable == false) {
-            $('#table-history-inpatient tbody').html(`
-                <tr>
-                    <td class="text-center" colspan="5">Belum ada kunjungan</td>
-                </tr>
-            `);
-        } else {
-            $('#table-history-inpatient tbody').html('');
-        }
+        $('#table-history-inpatient tbody').html('');
     }
 
     function loadPatient() {
@@ -280,7 +268,6 @@
             },
             success: function(response) {
                 onLoading('close', '.content');
-                clearTableHistory(true);
 
                 $('#table_id').val(response.id);
                 $('#identity_number').val(response.identity_number);

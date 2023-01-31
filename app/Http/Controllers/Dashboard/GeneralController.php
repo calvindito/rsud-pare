@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
-class DashboardController extends Controller
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
+class GeneralController extends Controller
 {
-
     public function general()
     {
         $data = [
-            'title' => 'Dashboard Umum',
             'content' => 'dashboard.general'
         ];
 

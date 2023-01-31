@@ -13,7 +13,14 @@ return [
                 'icon' => null,
                 'link' => 'dashboard/general',
                 'sub' => null
-            ]
+            ],
+            [
+                'name' => 'poly',
+                'menu' => 'Poli',
+                'icon' => null,
+                'link' => 'dashboard/poly',
+                'sub' => null
+            ],
         ]
     ],
     [

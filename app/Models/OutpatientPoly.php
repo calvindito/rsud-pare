@@ -49,4 +49,23 @@ class OutpatientPoly extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function status()
+    {
+        $status = $this->status;
+
+        if ($status == 1) {
+            $text = 'Dalam Antrian';
+        } else if ($status == 2) {
+            $text = 'Pasien Tidak Ada';
+        } else if ($status == 3) {
+            $text = 'Sedang Ditangani';
+        } else if ($status == 4) {
+            $text = 'Selesai / Pulang';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
 }
