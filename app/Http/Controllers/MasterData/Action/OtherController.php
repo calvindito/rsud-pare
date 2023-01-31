@@ -35,6 +35,10 @@ class OtherController extends Controller
                         });
                 }
             })
+            ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
+            ->editColumn('consumables', '{{ Simrs::formatRupiah($consumables) }}')
+            ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
+            ->editColumn('service', '{{ Simrs::formatRupiah($service) }}')
             ->addColumn('class_type_name', function (ActionOther $query) {
                 $classTypeName = null;
 

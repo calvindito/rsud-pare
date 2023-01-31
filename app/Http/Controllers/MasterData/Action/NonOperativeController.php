@@ -36,6 +36,8 @@ class NonOperativeController extends Controller
                         });
                 }
             })
+            ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
+            ->editColumn('doctor_operating', '{{ Simrs::formatRupiah($doctor_operating) }}')
             ->addColumn('class_type_name', function (ActionNonOperative $query) {
                 $classTypeName = null;
 

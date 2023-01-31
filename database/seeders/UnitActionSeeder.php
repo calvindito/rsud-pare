@@ -24,7 +24,7 @@ class UnitActionSeeder extends Seeder
                     'id' => $q->id,
                     'unit_id' => $dataUnit ? $dataUnit->id : null,
                     'action_id' => $q->dm_tindakan_id,
-                    'bhp' => $q->akhp,
+                    'consumables' => $q->akhp,
                     'hospital_service' => $q->jrs,
                     'service' => $q->jaspel,
                     'created_at' => $q->created_at ? $q->created_at : now(),

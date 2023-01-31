@@ -30,6 +30,7 @@ class OperatingGroupController extends Controller
                     $query->where('name', 'like', "%$search%");
                 }
             })
+            ->editColumn('fee_cssd', '{{ Simrs::formatRupiah($fee_cssd) }}')
             ->addColumn('action', function (OperatingRoomGroup $query) {
                 return '
                     <div class="btn-group">

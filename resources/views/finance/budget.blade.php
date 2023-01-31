@@ -27,6 +27,7 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
+                        <th nowrap>Kode</th>
                         <th nowrap>Bagan Akun</th>
                         <th nowrap>Nominal</th>
                         <th nowrap>Batas BLUD</th>
@@ -217,7 +218,8 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'chart_of_account_name', name: 'chart_of_account_name', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'chart_of_account_code', name: 'chart_of_account_code', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'chart_of_account_name', name: 'chart_of_account_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'nominal', name: 'nominal', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'limit_blud', name: 'limit_blud', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'date', name: 'date', orderable: true, searchable: false, className: 'align-middle' },

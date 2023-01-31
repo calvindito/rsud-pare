@@ -83,7 +83,7 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Bhp</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="bhp" id="bhp" placeholder="Masukan bhp">
+                            <input type="number" class="form-control" name="consumables" id="consumables" placeholder="Masukan bhp">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -207,7 +207,7 @@
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'unit_name', name: 'unit_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'action_name', name: 'action_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'bhp', name: 'bhp', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'consumables', name: 'consumables', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'hospital_service', name: 'hospital_service', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'service', name: 'service', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action_fee', name: 'action_fee', orderable: false, searchable: false, className: 'align-middle' },
@@ -279,7 +279,7 @@
                 $('#table_id').val(response.id);
                 $('#unit_id').val(response.unit_id);
                 $('#action_id').val(response.action_id);
-                $('#bhp').val(response.bhp);
+                $('#consumables').val(response.consumables);
                 $('#hospital_service').val(response.hospital_service);
                 $('#service').val(response.service);
             },

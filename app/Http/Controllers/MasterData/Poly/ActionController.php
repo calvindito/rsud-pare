@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\MasterData\Poly;
 
 use App\Models\Unit;
+use App\Helpers\Simrs;
 use App\Models\Action;
 use App\Models\UnitAction;
 use Illuminate\Http\Request;
@@ -40,6 +41,9 @@ class ActionController extends Controller
                     });
                 }
             })
+            ->editColumn('consumables', '{{ Simrs::formatRupiah($consumables) }}')
+            ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
+            ->editColumn('service', '{{ Simrs::formatRupiah($service) }}')
             ->editColumn('created_at', '{{ date("Y-m-d H:i:s", strtotime($created_at)) }}')
             ->editColumn('updated_at', '{{ date("Y-m-d H:i:s", strtotime($updated_at)) }}')
             ->addColumn('unit_name', function (UnitAction $query) {
@@ -61,13 +65,13 @@ class ActionController extends Controller
                 return $actionName;
             })
             ->addColumn('action_fee', function (UnitAction $query) {
-                $actionFee = null;
+                $actionFee = 0;
 
                 if (isset($query->action)) {
                     $actionFee = $query->action->fee;
                 }
 
-                return $actionFee;
+                return Simrs::formatRupiah($actionFee);
             })
             ->addColumn('action', function (UnitAction $query) {
                 return '
@@ -112,7 +116,7 @@ class ActionController extends Controller
                 $createData = UnitAction::create([
                     'unit_id' => $request->unit_id,
                     'action_id' => $request->action_id,
-                    'bhp' => $request->bhp,
+                    'consumables' => $request->consumables,
                     'hospital_service' => $request->hospital_service,
                     'service' => $request->service
                 ]);
@@ -161,7 +165,7 @@ class ActionController extends Controller
                 $updateData = UnitAction::findOrFail($id)->update([
                     'unit_id' => $request->unit_id,
                     'action_id' => $request->action_id,
-                    'bhp' => $request->bhp,
+                    'consumables' => $request->consumables,
                     'hospital_service' => $request->hospital_service,
                     'service' => $request->service
                 ]);

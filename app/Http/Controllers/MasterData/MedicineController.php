@@ -32,6 +32,8 @@ class MedicineController extends Controller
                         ->orWhere('name_generic', 'like', "%$search%");
                 }
             })
+            ->editColumn('price_purchase', '{{ Simrs::formatRupiah($price_purchase) }}')
+            ->editColumn('price', '{{ Simrs::formatRupiah($price) }}')
             ->addColumn('action', function (Medicine $query) {
                 return '
                     <div class="btn-group">

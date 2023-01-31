@@ -47,6 +47,10 @@ class RoomClassController extends Controller
                         });
                 }
             })
+            ->editColumn('fee_room', '{{ Simrs::formatRupiah($fee_room) }}')
+            ->editColumn('fee_meal', '{{ Simrs::formatRupiah($fee_meal) }}')
+            ->editColumn('fee_nursing_care', '{{ Simrs::formatRupiah($fee_nursing_care) }}')
+            ->editColumn('fee_nutritional_care', '{{ Simrs::formatRupiah($fee_nutritional_care) }}')
             ->editColumn('status', function (RoomType $query) {
                 return $query->status();
             })

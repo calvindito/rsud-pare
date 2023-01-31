@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CitySeeder::class);
         $this->call(DistrictSeeder::class);
         $this->call(DTDSeeder::class);
+        $this->call(ICDSeeder::class);
         $this->call(RoomSeeder::class);
         $this->call(RoomTypeSeeder::class);
         $this->call(RoomSpaceSeeder::class);

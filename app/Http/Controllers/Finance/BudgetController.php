@@ -36,17 +36,25 @@ class BudgetController extends Controller
                         });
                 }
             })
+            ->editColumn('nominal', '{{ Simrs::formatRupiah($nominal) }}')
+            ->editColumn('limit_blud', '{{ Simrs::formatRupiah($limit_blud) }}')
             ->editColumn('status', function (Budget $query) {
                 return $query->status();
+            })
+            ->addColumn('chart_of_account_code', function (Budget $query) {
+                $chartOfAccountCode = null;
+
+                if (isset($query->chartOfAccount->code)) {
+                    $chartOfAccountCode = $query->chartOfAccount->code;
+                }
+
+                return $chartOfAccountCode;
             })
             ->addColumn('chart_of_account_name', function (Budget $query) {
                 $chartOfAccountName = null;
 
                 if (isset($query->chartOfAccount->name)) {
-                    $code = $query->chartOfAccount->code;
-                    $name = $query->chartOfAccount->name;
-
-                    $chartOfAccountName = "$code&nbsp;&nbsp;$name";
+                    $chartOfAccountName = $query->chartOfAccount->name;
                 }
 
                 return $chartOfAccountName;
@@ -74,7 +82,7 @@ class BudgetController extends Controller
 
                 return $action;
             })
-            ->rawColumns(['action', 'status', 'chart_of_account_name'])
+            ->rawColumns(['action', 'status'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();

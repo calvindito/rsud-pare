@@ -30,6 +30,10 @@ class EmergencyCareController extends Controller
                     $query->where('name', 'like', "%$search%");
                 }
             })
+            ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
+            ->editColumn('service_doctor', '{{ Simrs::formatRupiah($service_doctor) }}')
+            ->editColumn('service_nursing_care', '{{ Simrs::formatRupiah($service_nursing_care) }}')
+            ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
             ->addColumn('action', function (ActionEmergencyCare $query) {
                 return '
                     <div class="btn-group">

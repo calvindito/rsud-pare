@@ -40,6 +40,9 @@ class FeeController extends Controller
                     });
                 }
             })
+            ->editColumn('consumables', '{{ Simrs::formatRupiah($consumables) }}')
+            ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
+            ->editColumn('service', '{{ Simrs::formatRupiah($service) }}')
             ->editColumn('status', function (LabFee $query) {
                 return $query->status();
             })

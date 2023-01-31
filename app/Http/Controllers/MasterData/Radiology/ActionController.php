@@ -42,6 +42,10 @@ class ActionController extends Controller
                     });
                 }
             })
+            ->editColumn('consumables', '{{ Simrs::formatRupiah($consumables) }}')
+            ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
+            ->editColumn('service', '{{ Simrs::formatRupiah($service) }}')
+            ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
             ->addColumn('radiology_type', function (RadiologyAction $query) {
                 $radiologyType = null;
 

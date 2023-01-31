@@ -46,6 +46,9 @@ class ActionController extends Controller
                     });
                 }
             })
+            ->editColumn('fee_hospital_service', '{{ Simrs::formatRupiah($fee_hospital_service) }}')
+            ->editColumn('fee_doctor_operating_room', '{{ Simrs::formatRupiah($fee_doctor_operating_room) }}')
+            ->editColumn('fee_doctor_anesthetist', '{{ Simrs::formatRupiah($fee_doctor_anesthetist) }}')
             ->editColumn('status', function (OperatingRoomAction $query) {
                 return $query->status();
             })

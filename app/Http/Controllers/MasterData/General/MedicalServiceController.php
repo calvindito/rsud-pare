@@ -35,6 +35,7 @@ class MedicalServiceController extends Controller
                         });
                 }
             })
+            ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
             ->editColumn('status', function (MedicalService $query) {
                 return $query->status();
             })
