@@ -522,6 +522,29 @@ return [
         ]
     ],
     [
+        'name' => 'report',
+        'menu' => 'Laporan',
+        'icon' => 'ph-newspaper',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'finance',
+                'menu' => 'Keuangan',
+                'icon' => null,
+                'link' => 'javascript:void(0);',
+                'sub' => [
+                    [
+                        'name' => 'budget',
+                        'menu' => 'Anggaran',
+                        'icon' => null,
+                        'link' => 'report/finance/budget',
+                        'sub' => null
+                    ],
+                ]
+            ],
+        ]
+    ],
+    [
         'name' => 'setting',
         'menu' => 'Pengaturan',
         'icon' => 'ph-gear',

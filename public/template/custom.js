@@ -1,4 +1,5 @@
-window.baseUrl = '/';
+window.gBaseUrl = '/';
+window.gDataTable = '';
 
 const swalInit = Swal.mixin({
     buttonsStyling: false,
@@ -22,7 +23,9 @@ $(function() {
     setBaseUrl();
 
     $('.sidebar-control').on('click', function() {
-        gDataTable.columns.adjust().draw();
+        if(window.gDataTable) {
+            gDataTable.columns.adjust().draw();
+        }
     });
 });
 
@@ -30,12 +33,12 @@ function setBaseUrl() {
     var fileSrc = $('meta[name="url"]').attr('content');
 
     if(fileSrc) {
-        window.baseUrl = fileSrc;
+        window.gBaseUrl = fileSrc;
     }
 }
 
 function configDataTable() {
-    $.extend( $.fn.dataTable.defaults, {
+    $.extend($.fn.dataTable.defaults, {
         autoWidth: false,
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
@@ -106,7 +109,7 @@ function select2Ajax(selector, endpoint, onModal = true) {
         allowClear: true,
         cache: true,
         ajax: {
-            url: window.baseUrl + 'serverside/' + endpoint,
+            url: window.gBaseUrl + 'serverside/' + endpoint,
             type: 'GET',
             dataType: 'JSON',
             delay: 250,
@@ -123,5 +126,5 @@ function select2Ajax(selector, endpoint, onModal = true) {
 }
 
 function sidebarMini() {
-    $('.sidebar-control').click();
+    $('.sidebar-main').addClass('sidebar-main-resized');
 }

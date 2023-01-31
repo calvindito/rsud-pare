@@ -1,5 +1,5 @@
 <div class="page-content">
-    <div class="sidebar sidebar-main sidebar-expand-xl">
+    <div class="sidebar sidebar-main sidebar-expand-lg">
         <div class="sidebar-content">
             <div class="sidebar-section">
                 <div class="sidebar-section-body d-flex justify-content-center pb-1">

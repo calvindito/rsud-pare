@@ -476,6 +476,14 @@ Route::middleware('auth')->group(function () {
             });
         });
 
+        Route::prefix('report')->namespace('Report')->group(function () {
+            Route::prefix('finance')->namespace('Finance')->group(function () {
+                Route::prefix('budget')->group(function () {
+                    Route::get('/', 'BudgetController@index');
+                });
+            });
+        });
+
         Route::prefix('setting')->namespace('Setting')->group(function () {
             Route::prefix('role')->group(function () {
                 Route::get('/', 'RoleController@index');

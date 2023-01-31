@@ -63,6 +63,16 @@ class ChartOfAccount extends Model
     }
 
     /**
+     * budget
+     *
+     * @return void
+     */
+    public function budget()
+    {
+        return $this->hasMany(Budget::class);
+    }
+
+    /**
      * fullname
      *
      * @param  mixed $id
