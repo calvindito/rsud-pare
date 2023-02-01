@@ -62,9 +62,7 @@ class ServerSideController extends Controller
         $data = Patient::selectRaw('id, name as text')
             ->whereNotNull('verified_at')
             ->where(function ($query) use ($search) {
-                $query->where('id', 'like', "%$search%")
-                    ->orWhere('identity_number', 'like', "%$search%")
-                    ->orWhere('name', 'like', "%$search%");
+                $query->where('name', 'like', "%$search%");
             })
             ->get()
             ->toArray();
