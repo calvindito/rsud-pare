@@ -94,6 +94,7 @@ class OutpatientController extends Controller
                         'district_id' => $locationId ? $location->id : null,
                         'religion_id' => $request->religion_id,
                         'identity_number' => $request->identity_number,
+                        'name' => $request->name,
                         'greeted' => $request->greeted,
                         'gender' => $request->gender,
                         'place_of_birth' => $request->place_of_birth,
