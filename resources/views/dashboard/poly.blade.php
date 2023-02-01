@@ -6,10 +6,11 @@
         <div class="card-body">
             <table class="table">
                 @foreach($unit as $u)
+                    @php $longLine = Simrs::todayLongLinePoly($u->id); @endphp
                     <tr>
                         <td>{{ $u->name }}</td>
                         <td>
-                            Total Antrian : <a href="javascript:void(0);" class="fw-bold" data-bs-toggle="modal" data-bs-target="#modal-{{ $u->id }}">{{ $u->outpatientPoly->count() }}</a>
+                            Total Antrian : <a href="javascript:void(0);" class="fw-bold" data-bs-toggle="modal" data-bs-target="#modal-{{ $u->id }}">{{ $longLine->total }}</a>
                             <div id="modal-{{ $u->id }}" class="modal fade" tabindex="-1">
                                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                     <div class="modal-content">
@@ -27,11 +28,11 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @if($u->outpatientPoly->count() > 0)
-                                                        @foreach($u->outpatientPoly as $key => $op)
+                                                    @if($longLine->total > 0)
+                                                        @foreach($longLine->data as $key => $d)
                                                             <tr>
-                                                                <td>{{ $op->outpatient->patient->name }}</td>
-                                                                <td>{{ $op->status() }}</td>
+                                                                <td>{{ $d->outpatient->patient->name }}</td>
+                                                                <td>{{ $d->status() }}</td>
                                                                 <td>{{ $key + 1 }}</td>
                                                             </tr>
                                                         @endforeach

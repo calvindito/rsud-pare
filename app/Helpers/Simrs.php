@@ -8,6 +8,7 @@ use App\Models\Patient;
 use App\Models\District;
 use App\Models\Province;
 use App\Models\RoleAccess;
+use App\Models\OutpatientPoly;
 
 class Simrs
 {
@@ -46,5 +47,19 @@ class Simrs
     public static function formatRupiah($number)
     {
         return 'Rp ' . number_format($number, 2, ',', '.');
+    }
+
+    public static function todayLongLinePoly($unitId)
+    {
+        $data = OutpatientPoly::where('unit_id', $unitId)
+            ->whereHas('outpatient', function ($query) {
+                $query->whereDate('date_of_entry', date('Y-m-d'));
+            })
+            ->get();
+
+        return (object)[
+            'total' => $data->count(),
+            'data' => $data
+        ];
     }
 }
