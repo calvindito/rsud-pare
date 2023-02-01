@@ -82,7 +82,8 @@ class InpatientController extends Controller
                         'greeted' => $request->greeted,
                         'gender' => $request->gender,
                         'date_of_birth' => $request->date_of_birth,
-                        'religion_id' => $request->religion_id
+                        'religion_id' => $request->religion_id,
+                        'verified_at' => now()
                     ]);
 
                     Inpatient::create([

@@ -97,7 +97,8 @@ class NeonatesController extends Controller
                         'rt' => $request->rt,
                         'rw' => $request->rw,
                         'village' => $request->village,
-                        'address' => $request->address
+                        'address' => $request->address,
+                        'verified_at' => now()
                     ];
 
                     if ($hasDataPatient) {

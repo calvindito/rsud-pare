@@ -110,7 +110,8 @@ class OutpatientController extends Controller
                         'job' => $request->job,
                         'phone' => $request->phone,
                         'parent_name' => $request->parent_name,
-                        'partner_name' => $request->partner_name
+                        'partner_name' => $request->partner_name,
+                        'verified_at' => now()
                     ];
 
                     if ($hasDataPatient) {

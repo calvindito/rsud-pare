@@ -6,12 +6,19 @@
         <div class="card-body">
             <table class="table">
                 @foreach($unit as $u)
-                    @php $currentLongLine = Simrs::currentLongLine($u->id); @endphp
+                    {{-- @php $currentLongLine = Simrs::currentLongLine($u->id); @endphp
                     <tr>
                         <td>{{ $u->name }}</td>
                         <td>Pasien : <b>{{ isset($currentLongLine->patient) ? $currentLongLine->patient->name : '-' }}</b></td>
                         <td>Antrian Ke : <b>{{ $currentLongLine->active }}</b></td>
-                    </tr>
+                    </tr> --}}
+                    @foreach($u->outpatientPoly as $key => $op)
+                        <tr>
+                            <td>{{ $u->name }}</td>
+                            <td>Pasien : <b>{{ $op->outpatient->patient->name }}</b></td>
+                            <td>Antrian Ke : <b>{{ $key + 1 }}</b></td>
+                        </tr>
+                    @endforeach
                 @endforeach
             </table>
         </div>
