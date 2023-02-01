@@ -385,13 +385,15 @@ Route::middleware('auth')->group(function () {
                 });
             });
 
-            Route::prefix('medicine')->group(function () {
-                Route::get('/', 'MedicineController@index');
-                Route::get('datatable', 'MedicineController@datatable');
-                Route::post('create-data', 'MedicineController@createData');
-                Route::get('show-data', 'MedicineController@showData');
-                Route::patch('update-data', 'MedicineController@updateData');
-                Route::delete('destroy-data', 'MedicineController@destroyData');
+            Route::prefix('pharmacy')->namespace('Pharmacy')->group(function () {
+                Route::prefix('medicine')->group(function () {
+                    Route::get('/', 'MedicineController@index');
+                    Route::get('datatable', 'MedicineController@datatable');
+                    Route::post('create-data', 'MedicineController@createData');
+                    Route::get('show-data', 'MedicineController@showData');
+                    Route::patch('update-data', 'MedicineController@updateData');
+                    Route::delete('destroy-data', 'MedicineController@destroyData');
+                });
             });
 
             Route::prefix('radiology')->namespace('Radiology')->group(function () {

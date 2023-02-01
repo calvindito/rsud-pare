@@ -243,10 +243,10 @@
 </div>
 
 <script>
-    window.gDataTable;
-
     $(function() {
         loadData();
+        sidebarMini();
+
         select2Ajax('#location_id', 'location?show=district');
     });
 

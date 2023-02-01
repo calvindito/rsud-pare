@@ -177,8 +177,6 @@
 </div>
 
 <script>
-    window.gDataTable;
-
     $(function() {
         loadData();
     });

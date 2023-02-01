@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - <span class="fw-normal">Obat</span>
+                Master Data - Farmasi - <span class="fw-normal">Obat</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -28,6 +28,8 @@
                     <tr>
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Kode Barang</th>
+                        <th nowrap>Kode T</th>
+                        <th nowrap>Kode Jenis</th>
                         <th nowrap>Nama Barang</th>
                         <th nowrap>Nama Generik</th>
                         <th nowrap>Kekuatan</th>
@@ -197,10 +199,9 @@
 </div>
 
 <script>
-    window.gDataTable;
-
     $(function() {
         loadData();
+        sidebarMini();
     });
 
     function onReloadTable() {
@@ -263,7 +264,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("master-data/medicine/datatable") }}',
+                url: '{{ url("master-data/pharmacy/medicine/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -284,6 +285,8 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'code_t', name: 'code_t', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'code_type', name: 'code_type', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name_generic', name: 'name_generic', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'power', name: 'power', orderable: true, searchable: false, className: 'align-middle' },
@@ -296,7 +299,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/medicine/create-data") }}',
+            url: '{{ url("master-data/pharmacy/medicine/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -339,7 +342,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/medicine/show-data") }}',
+            url: '{{ url("master-data/pharmacy/medicine/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -388,7 +391,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/medicine/update-data") }}',
+            url: '{{ url("master-data/pharmacy/medicine/update-data") }}',
             type: 'PATCH',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -443,7 +446,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/medicine/destroy-data") }}',
+                        url: '{{ url("master-data/pharmacy/medicine/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

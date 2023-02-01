@@ -339,11 +339,19 @@ return [
                 ]
             ],
             [
-                'name' => 'medicine',
-                'menu' => 'Obat',
+                'name' => 'pharmacy',
+                'menu' => 'Farmasi',
                 'icon' => null,
-                'link' => 'master-data/medicine',
-                'sub' => null
+                'link' => 'javascript:void(0);',
+                'sub' => [
+                    [
+                        'name' => 'medicine',
+                        'menu' => 'Obat',
+                        'icon' => null,
+                        'link' => 'master-data/pharmacy/medicine',
+                        'sub' => null
+                    ]
+                ]
             ],
             [
                 'name' => 'radiology',

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\MasterData;
+namespace App\Http\Controllers\MasterData\Pharmacy;
 
 use App\Models\Medicine;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class MedicineController extends Controller
     public function index()
     {
         $data = [
-            'content' => 'master-data.medicine'
+            'content' => 'master-data.pharmacy.medicine'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -28,6 +28,8 @@ class MedicineController extends Controller
             ->filter(function ($query) use ($search) {
                 if ($search) {
                     $query->where('code', 'like', "%$search%")
+                        ->orWhere('code_t', 'like', "%$search%")
+                        ->orWhere('code_type', 'like', "%$search%")
                         ->orWhere('name', 'like', "%$search%")
                         ->orWhere('name_generic', 'like', "%$search%");
                 }

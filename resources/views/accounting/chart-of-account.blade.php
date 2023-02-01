@@ -101,10 +101,9 @@
 </div>
 
 <script>
-    window.gDataTable;
-
     $(function() {
         loadData();
+        sidebarMini();
     });
 
     function loadParent() {
