@@ -30,7 +30,6 @@ class InpatientController extends Controller
     {
         $id = $request->id;
         $data = Patient::with([
-            'outpatient.outpatientPoly.unit',
             'inpatient' => fn ($q) => $q->with(['roomType.classType', 'pharmacyProduction'])
         ])->whereNotNull('verified_at')->findOrFail($id);
 
@@ -73,9 +72,10 @@ class InpatientController extends Controller
             try {
                 DB::transaction(function () use ($request, $patientId) {
                     $userId = auth()->id();
+                    $hasDataPatient = Patient::find($patientId);
                     $dateOfEntry = date('Y-m-d H:i:s', strtotime($request->date_of_entry));
 
-                    Patient::find($patientId)->update([
+                    $fillPatient = [
                         'religion_id' => $request->religion_id,
                         'identity_number' => $request->identity_number,
                         'name' => $request->name,
@@ -84,7 +84,15 @@ class InpatientController extends Controller
                         'date_of_birth' => $request->date_of_birth,
                         'religion_id' => $request->religion_id,
                         'verified_at' => now()
-                    ]);
+                    ];
+
+                    if ($hasDataPatient) {
+                        $hasDataPatient->update($fillPatient);
+                        $patientId = $hasDataPatient->id;
+                    } else {
+                        $createPatient = Patient::create($fillPatient);
+                        $patientId = $createPatient->id;
+                    }
 
                     Inpatient::create([
                         'user_id' => $userId,

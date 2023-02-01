@@ -15,7 +15,7 @@
                                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h6 class="modal-title">{{ $u->name }}</h6>
+                                            <h6 class="modal-title">Antrian {{ $u->name }}</h6>
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                                         </div>
                                         <div class="modal-body">

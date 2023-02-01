@@ -23,184 +23,164 @@
                 <select class="form-select" name="patient_id" id="patient_id" onchange="loadPatient()"></select>
             </div>
         </div>
-        <div id="content-inpatient" style="display:none;">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Data Pasien</h5>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Data Pasien</h5>
+            </div>
+            <div class="card-body border-top">
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3">No Identitas</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="identity_number" id="identity_number" placeholder="Masukan no identitas (KTP)">
+                    </div>
                 </div>
-                <div class="card-body border-top">
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">No Identitas</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="identity_number" id="identity_number" placeholder="Masukan no identitas (KTP)">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <div class="input-group">
-                                <select class="form-select w-auto flex-grow-0" name="greeted" id="greeted">
-                                    <option value="">-- Pilih --</option>
-                                    <option value="1">Tuan</option>
-                                    <option value="2">Nyonya</option>
-                                    <option value="3">Saudara</option>
-                                    <option value="4">Nona</option>
-                                    <option value="5">Anak</option>
-                                </select>
-                                <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Jenis Kelamin <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="gender" id="gender">
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <select class="form-select w-auto flex-grow-0" name="greeted" id="greeted">
                                 <option value="">-- Pilih --</option>
-                                <option value="1">Laki - Laki</option>
-                                <option value="2">Perempuan</option>
+                                <option value="1">Tuan</option>
+                                <option value="2">Nyonya</option>
+                                <option value="3">Saudara</option>
+                                <option value="4">Nona</option>
+                                <option value="5">Anak</option>
                             </select>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Tanggal Lahir</label>
-                        <div class="col-md-9">
-                            <input type="date" class="form-control" name="date_of_birth" id="date_of_birth">
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3">Jenis Kelamin <span class="text-danger fw-bold">*</span></label>
+                    <div class="col-md-9">
+                        <select class="form-select" name="gender" id="gender">
+                            <option value="">-- Pilih --</option>
+                            <option value="1">Laki - Laki</option>
+                            <option value="2">Perempuan</option>
+                        </select>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Agama <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="religion_id" id="religion_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($religion as $r)
-                                    <option value="{{ $r->id }}">{{ $r->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3">Tanggal Lahir</label>
+                    <div class="col-md-9">
+                        <input type="date" class="form-control" name="date_of_birth" id="date_of_birth">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3">Agama <span class="text-danger fw-bold">*</span></label>
+                    <div class="col-md-9">
+                        <select class="form-select" name="religion_id" id="religion_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach($religion as $r)
+                                <option value="{{ $r->id }}">{{ $r->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Riwayat Kunjungan Poli</h5>
-                </div>
-                <div class="card-body border-top">
-                    <table class="table table-bordered table-hover table-xs" id="table-history-poly">
-                        <thead>
-                            <tr>
-                                <th nowrap>Tanggal Masuk</th>
-                                <th nowrap>Golongan</th>
-                                <th nowrap>Keterangan</th>
-                                <th nowrap>Poli</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Riwayat Kunjungan Rawat Inap</h5>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Riwayat Kunjungan Rawat Inap</h5>
-                </div>
-                <div class="card-body border-top">
-                    <table class="table table-bordered table-hover table-xs" id="table-history-inpatient">
-                        <thead>
-                            <tr>
-                                <th nowrap>Tanggal Masuk</th>
-                                <th nowrap>Golongan</th>
-                                <th nowrap>Kamar Tujuan</th>
-                                <th nowrap>UPF</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+            <div class="card-body border-top">
+                <table class="table table-bordered table-hover table-xs" id="table-history-inpatient">
+                    <thead>
+                        <tr>
+                            <th nowrap>Tanggal Masuk</th>
+                            <th nowrap>Golongan</th>
+                            <th nowrap>Kamar Tujuan</th>
+                            <th nowrap>UPF</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
             </div>
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Kamar Tujuan</h5>
-                </div>
-                <div class="card-body border-top">
-                    <div class="form-group mb-4 text-center">
-                        <div class="btn-group">
-                            <div class="me-2">
-                                <input type="radio" class="btn-check" name="type" id="type-general" value="1" autocomplete="off">
-                                <label class="btn btn-outline-primary rounded-pill" for="type-general">Umum</label>
-                            </div>
-                            <div class="me-2">
-                                <input type="radio" class="btn-check" name="type" id="type-jamkesda" value="2" autocomplete="off">
-                                <label class="btn btn-outline-primary rounded-pill" for="type-jamkesda">Jamkesda</label>
-                            </div>
-                            <div class="me-2">
-                                <input type="radio" class="btn-check" name="type" id="type-bpjs-labor" value="3" autocomplete="off">
-                                <label class="btn btn-outline-primary rounded-pill" for="type-bpjs-labor">BPJS Tenaga Kerja</label>
-                            </div>
-                            <div class="me-2">
-                                <input type="radio" class="btn-check" name="type" id="type-in-health" value="4" autocomplete="off">
-                                <label class="btn btn-outline-primary rounded-pill" for="type-in-health">In Health</label>
-                            </div>
-                            <div class="me-2">
-                                <input type="radio" class="btn-check" name="type" id="type-jr-jamkesda" value="5" autocomplete="off">
-                                <label class="btn btn-outline-primary rounded-pill" for="type-jr-jamkesda">JR Jamkesda</label>
-                            </div>
-                            <div class="me-2">
-                                <input type="radio" class="btn-check" name="type" id="type-jr-bpjs" value="6" autocomplete="off">
-                                <label class="btn btn-outline-primary rounded-pill" for="type-jr-bpjs">JR BPJS</label>
-                            </div>
-                            <div class="me-2">
-                                <input type="radio" class="btn-check" name="type" id="type-jr-general" value="7" autocomplete="off">
-                                <label class="btn btn-outline-primary rounded-pill" for="type-jr-general">JR Umum</label>
-                            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Kamar Tujuan</h5>
+            </div>
+            <div class="card-body border-top">
+                <div class="form-group mb-4 text-center">
+                    <div class="btn-group">
+                        <div class="me-2">
+                            <input type="radio" class="btn-check" name="type" id="type-general" value="1" autocomplete="off">
+                            <label class="btn btn-outline-primary rounded-pill" for="type-general">Umum</label>
+                        </div>
+                        <div class="me-2">
+                            <input type="radio" class="btn-check" name="type" id="type-jamkesda" value="2" autocomplete="off">
+                            <label class="btn btn-outline-primary rounded-pill" for="type-jamkesda">Jamkesda</label>
+                        </div>
+                        <div class="me-2">
+                            <input type="radio" class="btn-check" name="type" id="type-bpjs-labor" value="3" autocomplete="off">
+                            <label class="btn btn-outline-primary rounded-pill" for="type-bpjs-labor">BPJS Tenaga Kerja</label>
+                        </div>
+                        <div class="me-2">
+                            <input type="radio" class="btn-check" name="type" id="type-in-health" value="4" autocomplete="off">
+                            <label class="btn btn-outline-primary rounded-pill" for="type-in-health">In Health</label>
+                        </div>
+                        <div class="me-2">
+                            <input type="radio" class="btn-check" name="type" id="type-jr-jamkesda" value="5" autocomplete="off">
+                            <label class="btn btn-outline-primary rounded-pill" for="type-jr-jamkesda">JR Jamkesda</label>
+                        </div>
+                        <div class="me-2">
+                            <input type="radio" class="btn-check" name="type" id="type-jr-bpjs" value="6" autocomplete="off">
+                            <label class="btn btn-outline-primary rounded-pill" for="type-jr-bpjs">JR BPJS</label>
+                        </div>
+                        <div class="me-2">
+                            <input type="radio" class="btn-check" name="type" id="type-jr-general" value="7" autocomplete="off">
+                            <label class="btn btn-outline-primary rounded-pill" for="type-jr-general">JR Umum</label>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Tanggal Masuk / Daftar <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <div class="input-group">
-                                <input type="datetime-local" class="form-control" name="date_of_entry" id="date_of_entry" value="{{ date('Y-m-d H:i') }}">
-                            </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3">Tanggal Masuk / Daftar <span class="text-danger fw-bold">*</span></label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <input type="datetime-local" class="form-control" name="date_of_entry" id="date_of_entry" value="{{ date('Y-m-d H:i') }}">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kamar <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="room_type_id" id="room_type_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($roomType as $rt)
-                                    <option value="{{ $rt->id }}">
-                                        {{ $rt->name }}
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3">Kamar <span class="text-danger fw-bold">*</span></label>
+                    <div class="col-md-9">
+                        <select class="form-select" name="room_type_id" id="room_type_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach($roomType as $rt)
+                                <option value="{{ $rt->id }}">
+                                    {{ $rt->name }}
 
-                                        @if($rt->classType)
-                                            - {{ $rt->classType->name }}
-                                        @endif
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                                    @if($rt->classType)
+                                        - {{ $rt->classType->name }}
+                                    @endif
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">UPF <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="pharmacy_production_id" id="pharmacy_production_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($pharmacyProduction as $pp)
-                                    <option value="{{ $rt->id }}">
-                                        {{ $pp->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-lg-3">UPF <span class="text-danger fw-bold">*</span></label>
+                    <div class="col-md-9">
+                        <select class="form-select" name="pharmacy_production_id" id="pharmacy_production_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach($pharmacyProduction as $pp)
+                                <option value="{{ $rt->id }}">
+                                    {{ $pp->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <div class="text-end">
-                        <button type="button" class="btn btn-primary" onclick="registerPatient()">
-                            <i class="ph-checks me-2"></i>
-                            Daftarkan Pasien Sekarang
-                        </button>
-                    </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="text-end">
+                    <button type="button" class="btn btn-primary" onclick="registerPatient()">
+                        <i class="ph-checks me-2"></i>
+                        Daftarkan Pasien Sekarang
+                    </button>
                 </div>
             </div>
         </div>
@@ -241,11 +221,9 @@
             beforeSend: function() {
                 onLoading('show', '.content');
                 clearTableHistory();
-                $('#content-inpatient').hide();
             },
             success: function(response) {
                 onLoading('close', '.content');
-                $('#content-inpatient').fadeIn(500);
 
                 $('#table_id').val(response.id);
                 $('#identity_number').val(response.identity_number);
@@ -254,19 +232,6 @@
                 $('#gender').val(response.gender);
                 $('#date_of_birth').val(response.date_of_birth);
                 $('#religion_id').val(response.religion_id);
-
-                $.each(response.outpatient, function(io, o) {
-                    $.each(o.outpatient_poly, function(iop, op) {
-                        $('#table-history-poly tbody').append(`
-                            <tr>
-                                <td nowrap>` + o.date_of_entry + `</td>
-                                <td nowrap>` + o.type + `</td>
-                                <td nowrap>` + o.presence_format_result + `</td>
-                                <td nowrap>` + op.unit.name + `</td>
-                            </tr>
-                        `);
-                    });
-                });
 
                 $.each(response.inpatient, function(i, val) {
                     $('#table-history-inpatient tbody').append(`
