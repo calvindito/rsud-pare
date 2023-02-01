@@ -32,7 +32,7 @@
                                                             <tr>
                                                                 <td>{{ $op->outpatient->patient->name }}</td>
                                                                 <td>{{ $op->status() }}</td>
-                                                                <td>{{ $key + 1 }}</td>
+                                                                <td>Ke : {{ $key + 1 }}</td>
                                                             </tr>
                                                         @endforeach
                                                     @else
