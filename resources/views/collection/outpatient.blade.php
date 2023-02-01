@@ -29,6 +29,7 @@
                         <th nowrap>Golongan</th>
                         <th nowrap>Tanggal Masuk</th>
                         <th nowrap>Poli</th>
+                        <th nowrap>Status</th>
                         <th nowrap>Kehadiran</th>
                         <th nowrap>Keterangan</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
@@ -85,6 +86,7 @@
                 { data: 'outpatient_type', name: 'outpatient_type', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'outpatient_date_of_entry', name: 'outpatient_date_of_entry', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'unit_name', name: 'unit_name', orderable: false, searchable: false, className: 'align-middle nowrap' },
+                { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'outpatient_presence', name: 'outpatient_presence', orderable: false, searchable: false, className: 'align-middle nowrap' },
                 { data: 'outpatient_description', name: 'outpatient_description', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },

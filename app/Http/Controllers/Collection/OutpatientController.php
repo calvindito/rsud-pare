@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Collection;
 use PDF;
 use App\Models\Unit;
 use App\Helpers\Simrs;
+use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Religion;
-use App\Models\Outpatient;
+use App\Models\Operation;
 use Illuminate\Http\Request;
 use App\Models\OutpatientPoly;
+use App\Models\PharmacyProduction;
 use Illuminate\Support\Facades\DB;
+use App\Models\OperatingRoomAction;
 use App\Http\Controllers\Controller;
+use App\Models\OperatingRoomAnesthetist;
+use App\Models\OperationDoctorAssistant;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
@@ -47,6 +52,9 @@ class OutpatientController extends Controller
                             });
                     });
                 }
+            })
+            ->editColumn('status', function (OutpatientPoly $query) {
+                return $query->status();
             })
             ->addColumn('patient_id', function (OutpatientPoly $query) {
                 $patientId = null;
@@ -125,13 +133,13 @@ class OutpatientController extends Controller
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
                         <div class="dropdown-menu">
-                            <a href="' . url('collection/outpatient/update-data/' . $query->outpatient->id) . '" class="dropdown-item fs-13">
+                            <a href="' . url('collection/outpatient/update-data/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-pen me-2"></i>
                                 Edit Data
                             </a>
-                            <a href="' . url('collection/outpatient/entry-operating-room/' . $query->outpatient->id) . '" class="dropdown-item fs-13">
+                            <a href="' . url('collection/outpatient/operating-room/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-bed me-2"></i>
-                                Entry Kamar Operasi
+                                Kamar Operasi
                             </a>
                             <a href="' . url('collection/outpatient/print/' . $query->id) . '?slug=ticket" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-ticket me-2"></i>
@@ -169,9 +177,10 @@ class OutpatientController extends Controller
         return response()->json($data);
     }
 
-    public function updateData(Request $request, $outpatient_id)
+    public function updateData(Request $request, $outpatientPolyId)
     {
-        $outpatient = Outpatient::findOrFail($outpatient_id);
+        $outpatientPoly = OutpatientPoly::findOrFail($outpatientPolyId);
+        $outpatient = $outpatientPoly->outpatient;
         $patientId = $outpatient->patient->id;
 
         if ($request->ajax()) {
@@ -186,11 +195,11 @@ class OutpatientController extends Controller
                 'type' => 'required',
                 'date_of_entry' => 'required',
                 'presence' => 'required',
-                'item' => 'required',
-                'unit_id.*' => 'required',
+                'unit_id' => 'required',
+                'status' => 'required'
             ], [
-                'identity_number.required' => 'no identitas tidak boleh kosong',
                 'identity_number.digits' => 'no identitas harus 16 karakter',
+                'identity_number.numeric' => 'no identitas harus angka',
                 'identity_number.unique' => 'no identitas telah digunakan',
                 'name.required' => 'nama tidak boleh kosong',
                 'village.required' => 'nama tidak boleh kosong',
@@ -203,8 +212,8 @@ class OutpatientController extends Controller
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'presence.required' => 'mohon memilih kehadiran',
-                'item.required' => 'poli tujuan harus ada minimal 1 data',
-                'unit_id.*.required' => 'poli tidak boleh ada yang kosong'
+                'unit_id.required' => 'mohon memilih poli',
+                'status.required' => 'mohon memilih status'
             ]);
 
             if ($validation->fails()) {
@@ -214,7 +223,7 @@ class OutpatientController extends Controller
                 ];
             } else {
                 try {
-                    DB::transaction(function () use ($request, $patientId, $outpatient) {
+                    DB::transaction(function () use ($request, $patientId, $outpatient, $outpatientPoly) {
                         $userId = auth()->id();
                         $locationId = $request->location_id;
                         $location = Simrs::locationById($locationId);
@@ -255,19 +264,14 @@ class OutpatientController extends Controller
                             'description' => $request->description
                         ];
 
+                        $fillOutpatientPoly = [
+                            'unit_id' => $request->unit_id,
+                            'status' => $request->status
+                        ];
+
                         $outpatient->patient()->update($fillPatient);
                         $outpatient->fill($fillOutpatient)->save();
-                        $outpatient->outpatientPoly()->delete();
-                        $outpatient->fresh();
-
-                        foreach ($request->item as $key => $i) {
-                            $unitId = $request->unit_id[$key];
-
-                            $outpatient->outpatientPoly()->create([
-                                'unit_id' => $unitId,
-                                'status' => 1
-                            ]);
-                        }
+                        $outpatientPoly->fill($fillOutpatientPoly)->save();
                     });
 
                     $response = [
@@ -286,9 +290,139 @@ class OutpatientController extends Controller
         } else {
             $data = [
                 'outpatient' => $outpatient,
+                'outpatientPoly' => $outpatientPoly,
                 'religion' => Religion::all(),
                 'unit' => Unit::where('type', 2)->orderBy('name')->get(),
                 'content' => 'collection.outpatient-update'
+            ];
+        }
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function operatingRoom(Request $request, $outpatientPolyId)
+    {
+        $outpatientPoly = OutpatientPoly::findOrFail($outpatientPolyId);
+        $outpatient = $outpatientPoly->outpatient;
+        $patientId = $outpatient->patient->id;
+        $operation = $outpatientPoly->operation;
+
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'identity_number' => 'nullable|digits:16|numeric|unique:patients,identity_number,' . $patientId,
+                'name' => 'required',
+                'gender' => 'required',
+                'date_of_birth' => 'required',
+                'village' => 'required',
+                'address' => 'required',
+                'unit_id' => 'required',
+                'date_of_entry' => 'required',
+                'operating_room_action_id' => 'required',
+                'pharmacy_production_id' => 'required',
+                'operating_room_anesthetist_id' => 'required',
+                'doctor_id' => 'required'
+            ], [
+                'identity_number.digits' => 'no identitas harus 16 karakter',
+                'identity_number.numeric' => 'no identitas harus angka',
+                'identity_number.unique' => 'no identitas telah digunakan',
+                'name.required' => 'nama tidak boleh kosong',
+                'gender.required' => 'mohon memilih jenis kelamin',
+                'date_of_birth.required' => 'tanggal lahir tidak boleh kosong',
+                'village.required' => 'nama tidak boleh kosong',
+                'address.required' => 'alamat tidak boleh kosong',
+                'unit_id.required' => 'mohon memilih poli',
+                'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
+                'operating_room_action_id.required' => 'mohon memilih operasi',
+                'pharmacy_production_id.required' => 'mohon memilih upf',
+                'operating_room_anesthetist_id.required' => 'mohon memilih jenis anestesi',
+                'doctor_id.required' => 'mohon memilih dokter anestesi'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $patientId, $outpatient, $outpatientPoly, $operation) {
+                        $userId = auth()->id();
+                        $dateOfEntry = date('Y-m-d H:i:s', strtotime($request->date_of_entry));
+
+                        $fillPatient = [
+                            'identity_number' => $request->identity_number,
+                            'name' => $request->name,
+                            'greeted' => $request->greeted,
+                            'gender' => $request->gender,
+                            'date_of_birth' => $request->date_of_birth,
+                            'village' => $request->village,
+                            'address' => $request->address,
+                            'verified_at' => now()
+                        ];
+
+                        $fillOperation = [
+                            'user_id' => $userId,
+                            'patient_id' => $patientId,
+                            'operating_room_action_id' => $request->operating_room_action_id,
+                            'pharmacy_production_id' => $request->pharmacy_production_id,
+                            'operating_room_anesthetist_id' => $request->operating_room_anesthetist_id,
+                            'doctor_id' => $request->doctor_id,
+                            'operationable_type' => OutpatientPoly::class,
+                            'operationable_id' => $outpatientPoly->id,
+                            'date_of_entry' => $dateOfEntry,
+                            'diagnosis' => $request->diagnosis,
+                            'specimen' => $request->specimen
+                        ];
+
+                        if ($operation) {
+                            $operation->operationDoctorAssistant()->delete();
+                            $operation->fill($fillOperation)->save();
+                            $operationId = $operation->id;
+                        } else {
+                            $operation = Operation::create($fillOperation);
+                            $operationId = $operation->id;
+                        }
+
+                        if ($request->has('item')) {
+                            foreach ($request->item as $key => $i) {
+                                $name = $request->operation_doctor_assistant_name[$key];
+
+                                if ($name) {
+                                    OperationDoctorAssistant::create([
+                                        'operation_id' => $operationId,
+                                        'name' => $name
+                                    ]);
+                                }
+                            }
+                        }
+
+                        $outpatient->patient()->update($fillPatient);
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Data berhasil diubah'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        } else {
+            $data = [
+                'outpatient' => $outpatient,
+                'outpatientPoly' => $outpatientPoly,
+                'operation' => $operation,
+                'unit' => Unit::where('type', 2)->orderBy('name')->get(),
+                'operatingRoomAction' => OperatingRoomAction::orderBy('operating_room_group_id')->orderBy('operating_room_action_type_id')->get(),
+                'pharmacyProduction' => PharmacyProduction::all(),
+                'operatingRoomAnesthetist' => OperatingRoomAnesthetist::all(),
+                'doctor' => Doctor::all(),
+                'content' => 'collection.outpatient-operating-room'
             ];
         }
 

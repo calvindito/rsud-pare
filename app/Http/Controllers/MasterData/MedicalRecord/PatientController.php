@@ -96,8 +96,8 @@ class PatientController extends Controller
             'religion_id' => 'required',
             'phone' => 'nullable|digits_between:8,13|numeric',
         ], [
-            'identity_number.required' => 'no identitas tidak boleh kosong',
             'identity_number.digits' => 'no identitas harus 16 karakter',
+            'identity_number.numeric' => 'no identitas harus angka',
             'identity_number.unique' => 'no identitas telah digunakan',
             'name.required' => 'nama tidak boleh kosong',
             'village.required' => 'nama tidak boleh kosong',

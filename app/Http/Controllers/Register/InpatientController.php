@@ -51,8 +51,8 @@ class InpatientController extends Controller
             'pharmacy_production_id' => 'required'
         ], [
             'patient_id' => 'mohon memilih pasien',
-            'identity_number.required' => 'no identitas tidak boleh kosong',
             'identity_number.digits' => 'no identitas harus 16 karakter',
+            'identity_number.numeric' => 'no identitas harus angka',
             'identity_number.unique' => 'no identitas telah digunakan',
             'name.required' => 'nama tidak boleh kosong',
             'gender.required' => 'mohon memilih jenis kelamin',

@@ -50,6 +50,16 @@ class OutpatientPoly extends Model
         return $this->belongsTo(Unit::class);
     }
 
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->morphOne(Operation::class, 'operationable');
+    }
+
     public function status()
     {
         $status = $this->status;

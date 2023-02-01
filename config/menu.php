@@ -223,7 +223,7 @@ return [
                     ],
                     [
                         'name' => 'operating-group',
-                        'menu' => 'Golongan Pasien',
+                        'menu' => 'Golongan Operasi',
                         'icon' => null,
                         'link' => 'master-data/operating-room/operating-group',
                         'sub' => null
