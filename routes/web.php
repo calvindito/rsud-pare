@@ -386,6 +386,24 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::prefix('pharmacy')->namespace('Pharmacy')->group(function () {
+                Route::prefix('distributor')->group(function () {
+                    Route::get('/', 'DistributorController@index');
+                    Route::get('datatable', 'DistributorController@datatable');
+                    Route::post('create-data', 'DistributorController@createData');
+                    Route::get('show-data', 'DistributorController@showData');
+                    Route::patch('update-data', 'DistributorController@updateData');
+                    Route::delete('destroy-data', 'DistributorController@destroyData');
+                });
+
+                Route::prefix('factory')->group(function () {
+                    Route::get('/', 'FactoryController@index');
+                    Route::get('datatable', 'FactoryController@datatable');
+                    Route::post('create-data', 'FactoryController@createData');
+                    Route::get('show-data', 'FactoryController@showData');
+                    Route::patch('update-data', 'FactoryController@updateData');
+                    Route::delete('destroy-data', 'FactoryController@destroyData');
+                });
+
                 Route::prefix('medicine')->group(function () {
                     Route::get('/', 'MedicineController@index');
                     Route::get('datatable', 'MedicineController@datatable');

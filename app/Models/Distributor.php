@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Medicine extends Model
+class Distributor extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Medicine extends Model
      *
      * @var string
      */
-    protected $table = 'medicines';
+    protected $table = 'distributors';
 
     /**
      * The primary key associated with the table.
@@ -29,14 +29,4 @@ class Medicine extends Model
      * @var array
      */
     protected $guarded = ['id'];
-
-    /**
-     * factory
-     *
-     * @return void
-     */
-    public function factory()
-    {
-        return $this->belongsTo(Factory::class);
-    }
 }

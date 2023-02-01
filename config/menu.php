@@ -345,12 +345,26 @@ return [
                 'link' => 'javascript:void(0);',
                 'sub' => [
                     [
+                        'name' => 'distributor',
+                        'menu' => 'Distributor',
+                        'icon' => null,
+                        'link' => 'master-data/pharmacy/distributor',
+                        'sub' => null
+                    ],
+                    [
+                        'name' => 'factory',
+                        'menu' => 'Pabrik',
+                        'icon' => null,
+                        'link' => 'master-data/pharmacy/factory',
+                        'sub' => null
+                    ],
+                    [
                         'name' => 'medicine',
                         'menu' => 'Obat',
                         'icon' => null,
                         'link' => 'master-data/pharmacy/medicine',
                         'sub' => null
-                    ]
+                    ],
                 ]
             ],
             [

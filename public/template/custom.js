@@ -128,3 +128,18 @@ function select2Ajax(selector, endpoint, onModal = true) {
 function sidebarMini() {
     $('.sidebar-main').addClass('sidebar-main-resized');
 }
+
+function onPopover(selector, content, title = '') {
+    if($('.popover').length == 0) {
+        var myPopover = new bootstrap.Popover($(selector), {
+            container: 'body',
+            trigger: 'focus',
+            html: true,
+            content: content,
+            title: title
+        });
+
+        myPopover.enable();
+        myPopover.show();
+    }
+}

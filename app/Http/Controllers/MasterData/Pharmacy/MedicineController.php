@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\MasterData\Pharmacy;
 
+use App\Models\Factory;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -13,6 +14,7 @@ class MedicineController extends Controller
     public function index()
     {
         $data = [
+            'factory' => Factory::all(),
             'content' => 'master-data.pharmacy.medicine'
         ];
 
@@ -36,6 +38,36 @@ class MedicineController extends Controller
             })
             ->editColumn('price_purchase', '{{ Simrs::formatRupiah($price_purchase) }}')
             ->editColumn('price', '{{ Simrs::formatRupiah($price) }}')
+            ->addColumn('factory_name', function (Medicine $query) {
+                $factoryName = null;
+
+                if (isset($query->factory)) {
+                    $factoryName = $query->factory->name;
+                }
+
+                return $factoryName;
+            })
+            ->editColumn('distributor_name', function (Medicine $query) {
+                $distributorName = '';
+
+                if ($query->factory) {
+                    if ($query->factory->factoryDistributor->count() > 0) {
+                        foreach ($query->factory->factoryDistributor as $fd) {
+                            $distributorName .= '<div><small>- ' . $fd->distributor->name . '</small></div>';
+                        }
+                    }
+                }
+
+                if ($distributorName) {
+                    $implodeName = $distributorName;
+                } else {
+                    $implodeName = 'Tidak ada data';
+                }
+
+                return '
+                    <button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$implodeName'" . ')">Klik Disini</button>
+                ';
+            })
             ->addColumn('action', function (Medicine $query) {
                 return '
                     <div class="btn-group">
@@ -53,7 +85,7 @@ class MedicineController extends Controller
                     </div>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'distributor_name'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
@@ -62,12 +94,14 @@ class MedicineController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
+            'factory_id' => 'required',
             'code' => 'required|unique:medicines,code',
             'code_type' => 'required|unique:medicines,code_type',
             'name' => 'required',
             'name_generic' => 'required',
             'price' => 'required'
         ], [
+            'factory_id.required' => 'mohon memilih pabrik',
             'code.required' => 'kode t tidak boleh kosong',
             'code.unique' => 'kode t telah digunakan',
             'code_type.required' => 'kode jenis tidak boleh kosong',
@@ -85,6 +119,7 @@ class MedicineController extends Controller
         } else {
             try {
                 $createData = Medicine::create([
+                    'factory_id' => $request->factory_id,
                     'code' => $request->code,
                     'code_item' => $request->code_item,
                     'code_type' => $request->code_type,
@@ -134,12 +169,14 @@ class MedicineController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
+            'factory_id' => 'required',
             'code' => 'required|unique:medicines,code,' . $id,
             'code_type' => 'required|unique:medicines,code_type,' . $id,
             'name' => 'required',
             'name_generic' => 'required',
             'price' => 'required'
         ], [
+            'factory_id.required' => 'mohon memilih pabrik',
             'code.required' => 'kode t tidak boleh kosong',
             'code.unique' => 'kode t telah digunakan',
             'code_type.required' => 'kode jenis tidak boleh kosong',
@@ -157,6 +194,7 @@ class MedicineController extends Controller
         } else {
             try {
                 $updateData = Medicine::findOrFail($id)->update([
+                    'factory_id' => $request->factory_id,
                     'code' => $request->code,
                     'code_item' => $request->code_item,
                     'code_type' => $request->code_type,
