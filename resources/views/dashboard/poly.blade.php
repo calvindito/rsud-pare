@@ -23,7 +23,7 @@
                                                     <tr>
                                                         <th>Pasien</th>
                                                         <th>Status</th>
-                                                        <th>Antrian</th>
+                                                        <th>Antrian Ke</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -32,7 +32,7 @@
                                                             <tr>
                                                                 <td>{{ $op->outpatient->patient->name }}</td>
                                                                 <td>{{ $op->status() }}</td>
-                                                                <td>Ke : {{ $key + 1 }}</td>
+                                                                <td>{{ $key + 1 }}</td>
                                                             </tr>
                                                         @endforeach
                                                     @else
