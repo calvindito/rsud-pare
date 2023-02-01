@@ -47,39 +47,4 @@ class Simrs
     {
         return 'Rp ' . number_format($number, 2, ',', '.');
     }
-
-    public static function currentLongLine($unitId)
-    {
-        $now = date('Y-m-d');
-        $unit = Unit::withCount([
-            'outpatientPoly as total_long_line' => function ($query) use ($now) {
-                $query->whereIn('status', [1, 3])
-                    ->whereHas('outpatient', function ($query) use ($now) {
-                        $query->whereDate('date_of_entry', $now);
-                    });
-            },
-            'outpatientPoly as total_long_line_done' => function ($query) use ($now) {
-                $query->whereIn('status', [2, 4])
-                    ->whereHas('outpatient', function ($query) use ($now) {
-                        $query->whereDate('date_of_entry', $now);
-                    });
-            }
-        ])->find($unitId);
-
-        $totalLongLine = $unit->total_long_line;
-        $totalLongLineDone = $unit->total_long_line_done;
-        $patient = null;
-
-        $patient = Patient::whereHas('outpatient', function ($query) use ($now, $unitId) {
-            $query->whereDate('date_of_entry', $now)
-                ->whereHas('outpatientPoly', function ($query) use ($unitId) {
-                    $query->where('unit_id', $unitId);
-                });
-        })->first();
-
-        return (object)[
-            'patient' => $patient,
-            'active' => $totalLongLine == 0 ? $totalLongLineDone : abs($totalLongLine - $totalLongLineDone)
-        ];
-    }
 }

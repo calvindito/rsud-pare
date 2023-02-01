@@ -6,12 +6,10 @@
         <div class="card-body">
             <table class="table">
                 @foreach($unit as $u)
-                    @php $currentLongLine = Simrs::currentLongLine($u->id); @endphp
                     <tr>
                         <td>{{ $u->name }}</td>
-                        <td>Pasien : <b>{{ isset($currentLongLine->patient) ? $currentLongLine->patient->name : '-' }}</b></td>
                         <td>
-                            Antrian Ke : <a href="javascript:void(0);" class="fw-bold" data-bs-toggle="modal" data-bs-target="#modal-{{ $u->id }}">{{ $currentLongLine->active }}</a>
+                            Total Antrian : <a href="javascript:void(0);" class="fw-bold" data-bs-toggle="modal" data-bs-target="#modal-{{ $u->id }}">{{ $u->outpatientPoly->count() }}</a>
                             <div id="modal-{{ $u->id }}" class="modal fade" tabindex="-1">
                                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
                                     <div class="modal-content">
