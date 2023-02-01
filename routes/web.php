@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('verify.permission')->group(function () {
         Route::prefix('dashboard')->namespace('Dashboard')->group(function () {
             Route::prefix('general')->group(function () {
-                Route::get('/', 'DashboardController@general');
+                Route::get('/', 'GeneralController@general');
             });
 
             Route::prefix('poly')->group(function () {
