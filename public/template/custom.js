@@ -136,7 +136,8 @@ function onPopover(selector, content, title = '') {
             trigger: 'focus',
             html: true,
             content: content,
-            title: title
+            title: title,
+            placement: 'auto'
         });
 
         myPopover.enable();

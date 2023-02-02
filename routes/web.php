@@ -475,6 +475,11 @@ Route::middleware('auth')->group(function () {
                 Route::delete('destroy-data', 'OutpatientController@destroyData');
                 Route::get('print/{outpatient_id}', 'OutpatientController@print');
             });
+
+            Route::prefix('visit-window')->group(function () {
+                Route::get('/', 'VisitWindowController@index');
+                Route::get('datatable', 'VisitWindowController@datatable');
+            });
         });
 
         Route::prefix('accounting')->namespace('Accounting')->group(function () {
