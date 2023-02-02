@@ -165,11 +165,11 @@ class PatientController extends Controller
         if ($request->has('slug')) {
             if ($request->slug == 'card') {
                 $view = 'pdf.patient-card';
-                $pageSize = [78, 75];
+                $pageSize = [78, 78];
                 $title = 'Kartu Pasien';
             } else if ($request->slug == 'ticket') {
                 $view = 'pdf.patient-ticket';
-                $pageSize = [60, 43];
+                $pageSize = [78, 82];
                 $title = 'E-Tiket Pasien';
             } else {
                 abort(404);

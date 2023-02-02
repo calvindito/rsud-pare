@@ -436,7 +436,7 @@ class OutpatientController extends Controller
         if ($request->has('slug')) {
             if ($request->slug == 'ticket') {
                 $view = 'pdf.patient-ticket';
-                $pageSize = [68, 43];
+                $pageSize = [78, 82];
                 $title = 'E-Tiket Pasien';
             } else if ($request->slug == 'bracelet') {
                 $view = 'pdf.patient-bracelet';
@@ -462,7 +462,7 @@ class OutpatientController extends Controller
                 'subject' => $title,
             ]);
 
-            return $pdf->download($title . ' - ' . $data->id . '.pdf');
+            return $pdf->stream($title . ' - ' . $data->id . '.pdf');
         }
 
         abort(404);

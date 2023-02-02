@@ -25,25 +25,25 @@
         <div class="header">
             <img src="{{ asset('assets/icon.png') }}" style="max-width:70px;">
         </div>
-        <h2 style="margin-top:7px; margin-bottom:7px; font-size:12px; color:#06407d;">{{ $data->name }}</h2>
+        <h2 style="margin-top:7px; margin-bottom:7px; font-size:14px; color:#06407d;">KARTU PASIEN</h2>
         <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG("$data->id", 'QRCODE', 3.5, 3.5, [12, 131, 255]) }}" style="margin-bottom:5px;">
-        <div style="margin-top:5px; margin-bottom:5px; font-size:12px; color:#06407d;">https://rsud.kedirikab.go.id/</div>
+        <div style="margin-top:5px; margin-bottom:5px; font-size:12px; color:#06407d;">{{ $data->name }}</div>
         <hr style="margin-top:5px; margin-bottom:5px;">
         <table style="width:100px;">
             <tr>
                 <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">No RM</th>
                 <td style="font-size:9px;">:</td>
-                <td style="font-size:9px; color:#064a8f;">{{ $data->no_medical_record }}</td>
+                <td style="font-size:9px; color:#064a8f; width:100%;">{{ $data->no_medical_record }}</td>
             </tr>
             <tr>
-                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Lahir</th>
+                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Tanggal Lahir</th>
                 <td style="font-size:9px;">:</td>
-                <td style="font-size:9px; color:#064a8f;">{{ $data->date_of_birth ? date('d-m-Y', strtotime($data->date_of_birth)) : '-' }}</td>
+                <td style="font-size:9px; color:#064a8f; width:100%;">{{ $data->date_of_birth ? date('d-m-Y', strtotime($data->date_of_birth)) : '-' }}</td>
             </tr>
             <tr>
                 <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Alamat</th>
                 <td style="font-size:9px;">:</td>
-                <td style="font-size:9px; color:#064a8f;">
+                <td style="font-size:9px; color:#064a8f; width:100%;">
                     @if(isset($data->district) && isset($data->village))
                         {{ $data->district->name . ' ' . $data->village }}
                     @elseif(isset($data->district))

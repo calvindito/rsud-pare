@@ -7,80 +7,60 @@
     <title>{{ $title }}</title>
 
     <style>
-        body {
-            text-align: center;
+        @page {
+            margin: 0;
         }
 
-        .fs-9 {
-            font-size: 9px;
-        }
-
-        .fw-bold {
-            font-weight: bold;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .mb-5 {
-            margin-bottom: 5px;
-        }
-
-        .mt-0 {
-            margin-top: 0;
-        }
-
-        .mb-0 {
-            margin-bottom: 0;
-        }
-
-        .mb-8 {
-            margin-bottom: 8px;
-        }
-
-        img {
-            max-height: 30px;
-        }
+		.id-card {
+            border: 4px solid #86c1ff;
+            shadow: none;
+			padding: 10px;
+			text-align: center;
+            height: 100%;
+		}
     </style>
 </head>
 <body>
-    <h5 class="text-center mb-5 fw-bold">E-Tiket Pasien</h5>
-    <hr class="mt-0">
-    <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG("$data->id", 'QRCODE') }}" class="mb-5">
-    <table width="100%">
-        <tr>
-            <td class="fs-9 fw-bold text-center" colspan="3">{{ $data->name }}</td>
-        </tr>
-        <tr>
-            <td class="fs-9">Tanggal Lahir</td>
-            <td class="fs-9">:</td>
-            <td class="fs-9">{{ $data->date_of_birth ? \Carbon\Carbon::parse($data->date_of_birth)->isoFormat('D MMMM Y') : '-' }}</td>
-        </tr>
-        <tr>
-            <td class="fs-9">Jenis Kelamin</td>
-            <td class="fs-9">:</td>
-            <td class="fs-9">{{ $data->gender ? $data->gender_format_result : '-' }}</td>
-        </tr>
-        <tr>
-            <td class="fs-9">Alamat</td>
-            <td class="fs-9">:</td>
-            <td class="fs-9">
-                @if(isset($data->district) && isset($data->village))
-                    {{ $data->district->name . ' ' . $data->village }}
-                @elseif(isset($data->district))
-                    {{ $data->district->name }}
-                @elseif(isset($data->village))
-                    {{ $data->village }}
-                @else
-                    -
-                @endif
-            </td>
-        </tr>
-    </table>
+    <div class="id-card">
+        <div class="header">
+            <img src="{{ asset('assets/icon.png') }}" style="max-width:70px;">
+        </div>
+        <h2 style="margin-top:7px; margin-bottom:7px; font-size:14px; color:#06407d;">E-TICKET PASIEN</h2>
+        <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG("$data->id", 'QRCODE', 3.5, 3.5, [12, 131, 255]) }}" style="margin-bottom:5px;">
+        <div style="margin-top:5px; margin-bottom:5px; font-size:12px; color:#06407d;">{{ $data->name }}</div>
+        <hr style="margin-top:5px; margin-bottom:5px;">
+        <table style="width:100px;">
+            <tr>
+                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">No RM</th>
+                <td style="font-size:9px;">:</td>
+                <td style="font-size:9px; color:#064a8f; width:100%;">{{ $data->no_medical_record }}</td>
+            </tr>
+            <tr>
+                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Jenis Kelamin</th>
+                <td style="font-size:9px;">:</td>
+                <td style="font-size:9px; color:#064a8f; width:100%;">{{ $data->gender_format_result }}</td>
+            </tr>
+            <tr>
+                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Tanggal Lahir</th>
+                <td style="font-size:9px;">:</td>
+                <td style="font-size:9px; color:#064a8f; width:100%;">{{ $data->date_of_birth ? date('d-m-Y', strtotime($data->date_of_birth)) : '-' }}</td>
+            </tr>
+            <tr>
+                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Alamat</th>
+                <td style="font-size:9px;">:</td>
+                <td style="font-size:9px; color:#064a8f; width:100%;">
+                    @if(isset($data->district) && isset($data->village))
+                        {{ $data->district->name . ' ' . $data->village }}
+                    @elseif(isset($data->district))
+                        {{ $data->district->name }}
+                    @elseif(isset($data->village))
+                        {{ $data->village }}
+                    @else
+                        -
+                    @endif
+                </td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
