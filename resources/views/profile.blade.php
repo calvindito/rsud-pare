@@ -2,7 +2,6 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <form method="POST">
-                @method('PATCH')
                 @csrf
                 <div class="card">
                     <div class="card-header">

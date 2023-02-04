@@ -267,7 +267,7 @@
     function updateData() {
         $.ajax({
             url: '{{ url("master-data/lab/item-option/update-data") }}',
-            type: 'PATCH',
+            type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
             headers: {

@@ -271,7 +271,7 @@
     function updateData() {
         $.ajax({
             url: '{{ url("master-data/medical-record/icd/update-data") }}',
-            type: 'PATCH',
+            type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
             headers: {

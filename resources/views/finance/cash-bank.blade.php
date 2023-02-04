@@ -303,7 +303,7 @@
     function updateData() {
         $.ajax({
             url: '{{ url("finance/cash-bank/update-data") }}',
-            type: 'PATCH',
+            type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
             headers: {

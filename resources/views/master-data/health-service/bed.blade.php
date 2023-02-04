@@ -283,7 +283,7 @@
     function updateData() {
         $.ajax({
             url: '{{ url("master-data/health-service/bed/update-data") }}',
-            type: 'PATCH',
+            type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
             headers: {

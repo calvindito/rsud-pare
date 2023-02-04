@@ -312,7 +312,7 @@
     function updateData() {
         $.ajax({
             url: '{{ url("accounting/chart-of-account/update-data") }}',
-            type: 'PATCH',
+            type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
             headers: {

@@ -337,7 +337,7 @@
     function updateData() {
         $.ajax({
             url: '{{ url("setting/role/update-data") }}',
-            type: 'PATCH',
+            type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
             headers: {

@@ -334,7 +334,7 @@
     function updateData() {
         $.ajax({
             url: '{{ url("master-data/operating-room/action/update-data") }}',
-            type: 'PATCH',
+            type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
             headers: {

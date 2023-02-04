@@ -460,7 +460,7 @@
     function updatePatient() {
         $.ajax({
             url: '{{ url("collection/outpatient/update-data/$outpatient->id") }}',
-            type: 'PATCH',
+            type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
             headers: {

@@ -15,8 +15,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('auth')->group(function () {
-        Route::match(['get', 'patch'], 'profile', 'AuthController@profile');
-        Route::match(['get', 'patch'], 'change-password', 'AuthController@changePassword');
+        Route::match(['get', 'post'], 'profile', 'AuthController@profile');
+        Route::match(['get', 'post'], 'change-password', 'AuthController@changePassword');
         Route::get('logout', 'AuthController@logout');
     });
 
@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ClassTypeController@datatable');
                     Route::post('create-data', 'ClassTypeController@createData');
                     Route::get('show-data', 'ClassTypeController@showData');
-                    Route::patch('update-data', 'ClassTypeController@updateData');
+                    Route::post('update-data', 'ClassTypeController@updateData');
                     Route::delete('destroy-data', 'ClassTypeController@destroyData');
                 });
 
@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'DoctorController@datatable');
                     Route::post('create-data', 'DoctorController@createData');
                     Route::get('show-data', 'DoctorController@showData');
-                    Route::patch('update-data', 'DoctorController@updateData');
+                    Route::post('update-data', 'DoctorController@updateData');
                     Route::delete('destroy-data', 'DoctorController@destroyData');
                 });
 
@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'EmployeeController@datatable');
                     Route::post('create-data', 'EmployeeController@createData');
                     Route::get('show-data', 'EmployeeController@showData');
-                    Route::patch('update-data', 'EmployeeController@updateData');
+                    Route::post('update-data', 'EmployeeController@updateData');
                     Route::delete('destroy-data', 'EmployeeController@destroyData');
                 });
 
@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'MedicalServiceController@datatable');
                     Route::post('create-data', 'MedicalServiceController@createData');
                     Route::get('show-data', 'MedicalServiceController@showData');
-                    Route::patch('update-data', 'MedicalServiceController@updateData');
+                    Route::post('update-data', 'MedicalServiceController@updateData');
                     Route::delete('destroy-data', 'MedicalServiceController@destroyData');
                 });
 
@@ -79,7 +79,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'PatientGroupController@datatable');
                     Route::post('create-data', 'PatientGroupController@createData');
                     Route::get('show-data', 'PatientGroupController@showData');
-                    Route::patch('update-data', 'PatientGroupController@updateData');
+                    Route::post('update-data', 'PatientGroupController@updateData');
                     Route::delete('destroy-data', 'PatientGroupController@destroyData');
                 });
 
@@ -88,7 +88,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ReligionController@datatable');
                     Route::post('create-data', 'ReligionController@createData');
                     Route::get('show-data', 'ReligionController@showData');
-                    Route::patch('update-data', 'ReligionController@updateData');
+                    Route::post('update-data', 'ReligionController@updateData');
                     Route::delete('destroy-data', 'ReligionController@destroyData');
                 });
 
@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'UnitController@datatable');
                     Route::post('create-data', 'UnitController@createData');
                     Route::get('show-data', 'UnitController@showData');
-                    Route::patch('update-data', 'UnitController@updateData');
+                    Route::post('update-data', 'UnitController@updateData');
                     Route::delete('destroy-data', 'UnitController@destroyData');
                 });
             });
@@ -124,7 +124,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('/', 'PatientController@index');
                     Route::get('datatable', 'PatientController@datatable');
                     Route::get('show-data', 'PatientController@showData');
-                    Route::patch('update-data', 'PatientController@updateData');
+                    Route::post('update-data', 'PatientController@updateData');
                     Route::delete('destroy-data', 'PatientController@destroyData');
                     Route::get('print/{id}', 'PatientController@print');
                 });
@@ -134,7 +134,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'DTDController@datatable');
                     Route::post('create-data', 'DTDController@createData');
                     Route::get('show-data', 'DTDController@showData');
-                    Route::patch('update-data', 'DTDController@updateData');
+                    Route::post('update-data', 'DTDController@updateData');
                     Route::delete('destroy-data', 'DTDController@destroyData');
                 });
 
@@ -143,7 +143,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ICDController@datatable');
                     Route::post('create-data', 'ICDController@createData');
                     Route::get('show-data', 'ICDController@showData');
-                    Route::patch('update-data', 'ICDController@updateData');
+                    Route::post('update-data', 'ICDController@updateData');
                     Route::delete('destroy-data', 'ICDController@destroyData');
                 });
             });
@@ -154,7 +154,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'DataController@datatable');
                     Route::post('create-data', 'DataController@createData');
                     Route::get('show-data', 'DataController@showData');
-                    Route::patch('update-data', 'DataController@updateData');
+                    Route::post('update-data', 'DataController@updateData');
                     Route::delete('destroy-data', 'DataController@destroyData');
                 });
 
@@ -163,7 +163,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'RoomClassController@datatable');
                     Route::post('create-data', 'RoomClassController@createData');
                     Route::get('show-data', 'RoomClassController@showData');
-                    Route::patch('update-data', 'RoomClassController@updateData');
+                    Route::post('update-data', 'RoomClassController@updateData');
                     Route::delete('destroy-data', 'RoomClassController@destroyData');
                 });
 
@@ -172,7 +172,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'RoomSpaceController@datatable');
                     Route::post('create-data', 'RoomSpaceController@createData');
                     Route::get('show-data', 'RoomSpaceController@showData');
-                    Route::patch('update-data', 'RoomSpaceController@updateData');
+                    Route::post('update-data', 'RoomSpaceController@updateData');
                     Route::delete('destroy-data', 'RoomSpaceController@destroyData');
                 });
 
@@ -181,7 +181,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'BedController@datatable');
                     Route::post('create-data', 'BedController@createData');
                     Route::get('show-data', 'BedController@showData');
-                    Route::patch('update-data', 'BedController@updateData');
+                    Route::post('update-data', 'BedController@updateData');
                     Route::delete('destroy-data', 'BedController@destroyData');
                 });
             });
@@ -192,7 +192,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'DataController@datatable');
                     Route::post('create-data', 'DataController@createData');
                     Route::get('show-data', 'DataController@showData');
-                    Route::patch('update-data', 'DataController@updateData');
+                    Route::post('update-data', 'DataController@updateData');
                     Route::delete('destroy-data', 'DataController@destroyData');
                 });
 
@@ -201,7 +201,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'OtherController@datatable');
                     Route::post('create-data', 'OtherController@createData');
                     Route::get('show-data', 'OtherController@showData');
-                    Route::patch('update-data', 'OtherController@updateData');
+                    Route::post('update-data', 'OtherController@updateData');
                     Route::delete('destroy-data', 'OtherController@destroyData');
                 });
 
@@ -210,7 +210,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'OperativeController@datatable');
                     Route::post('create-data', 'OperativeController@createData');
                     Route::get('show-data', 'OperativeController@showData');
-                    Route::patch('update-data', 'OperativeController@updateData');
+                    Route::post('update-data', 'OperativeController@updateData');
                     Route::delete('destroy-data', 'OperativeController@destroyData');
                 });
 
@@ -219,7 +219,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'NonOperativeController@datatable');
                     Route::post('create-data', 'NonOperativeController@createData');
                     Route::get('show-data', 'NonOperativeController@showData');
-                    Route::patch('update-data', 'NonOperativeController@updateData');
+                    Route::post('update-data', 'NonOperativeController@updateData');
                     Route::delete('destroy-data', 'NonOperativeController@destroyData');
                 });
 
@@ -228,7 +228,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'SupportingController@datatable');
                     Route::post('create-data', 'SupportingController@createData');
                     Route::get('show-data', 'SupportingController@showData');
-                    Route::patch('update-data', 'SupportingController@updateData');
+                    Route::post('update-data', 'SupportingController@updateData');
                     Route::delete('destroy-data', 'SupportingController@destroyData');
                 });
 
@@ -237,7 +237,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'EmergencyCareController@datatable');
                     Route::post('create-data', 'EmergencyCareController@createData');
                     Route::get('show-data', 'EmergencyCareController@showData');
-                    Route::patch('update-data', 'EmergencyCareController@updateData');
+                    Route::post('update-data', 'EmergencyCareController@updateData');
                     Route::delete('destroy-data', 'EmergencyCareController@destroyData');
                 });
             });
@@ -248,7 +248,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ActionController@datatable');
                     Route::post('create-data', 'ActionController@createData');
                     Route::get('show-data', 'ActionController@showData');
-                    Route::patch('update-data', 'ActionController@updateData');
+                    Route::post('update-data', 'ActionController@updateData');
                     Route::delete('destroy-data', 'ActionController@destroyData');
                 });
 
@@ -257,7 +257,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ActionTypeController@datatable');
                     Route::post('create-data', 'ActionTypeController@createData');
                     Route::get('show-data', 'ActionTypeController@showData');
-                    Route::patch('update-data', 'ActionTypeController@updateData');
+                    Route::post('update-data', 'ActionTypeController@updateData');
                     Route::delete('destroy-data', 'ActionTypeController@destroyData');
                 });
 
@@ -266,7 +266,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'OperatingGroupController@datatable');
                     Route::post('create-data', 'OperatingGroupController@createData');
                     Route::get('show-data', 'OperatingGroupController@showData');
-                    Route::patch('update-data', 'OperatingGroupController@updateData');
+                    Route::post('update-data', 'OperatingGroupController@updateData');
                     Route::delete('destroy-data', 'OperatingGroupController@destroyData');
                 });
 
@@ -275,7 +275,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'AnesthetistController@datatable');
                     Route::post('create-data', 'AnesthetistController@createData');
                     Route::get('show-data', 'AnesthetistController@showData');
-                    Route::patch('update-data', 'AnesthetistController@updateData');
+                    Route::post('update-data', 'AnesthetistController@updateData');
                     Route::delete('destroy-data', 'AnesthetistController@destroyData');
                 });
             });
@@ -286,7 +286,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'PharmacyProductionController@datatable');
                     Route::post('create-data', 'PharmacyProductionController@createData');
                     Route::get('show-data', 'PharmacyProductionController@showData');
-                    Route::patch('update-data', 'PharmacyProductionController@updateData');
+                    Route::post('update-data', 'PharmacyProductionController@updateData');
                     Route::delete('destroy-data', 'PharmacyProductionController@destroyData');
                 });
 
@@ -295,7 +295,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'BedController@datatable');
                     Route::post('create-data', 'BedController@createData');
                     Route::get('show-data', 'BedController@showData');
-                    Route::patch('update-data', 'BedController@updateData');
+                    Route::post('update-data', 'BedController@updateData');
                     Route::delete('destroy-data', 'BedController@destroyData');
                 });
             });
@@ -306,7 +306,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'DataController@datatable');
                     Route::post('create-data', 'DataController@createData');
                     Route::get('show-data', 'DataController@showData');
-                    Route::patch('update-data', 'DataController@updateData');
+                    Route::post('update-data', 'DataController@updateData');
                     Route::delete('destroy-data', 'DataController@destroyData');
                 });
 
@@ -315,7 +315,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ActionController@datatable');
                     Route::post('create-data', 'ActionController@createData');
                     Route::get('show-data', 'ActionController@showData');
-                    Route::patch('update-data', 'ActionController@updateData');
+                    Route::post('update-data', 'ActionController@updateData');
                     Route::delete('destroy-data', 'ActionController@destroyData');
                 });
             });
@@ -326,7 +326,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'CategoryController@datatable');
                     Route::post('create-data', 'CategoryController@createData');
                     Route::get('show-data', 'CategoryController@showData');
-                    Route::patch('update-data', 'CategoryController@updateData');
+                    Route::post('update-data', 'CategoryController@updateData');
                     Route::delete('destroy-data', 'CategoryController@destroyData');
                 });
 
@@ -335,7 +335,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ItemController@datatable');
                     Route::post('create-data', 'ItemController@createData');
                     Route::get('show-data', 'ItemController@showData');
-                    Route::patch('update-data', 'ItemController@updateData');
+                    Route::post('update-data', 'ItemController@updateData');
                     Route::delete('destroy-data', 'ItemController@destroyData');
                 });
 
@@ -344,7 +344,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ItemParentController@datatable');
                     Route::post('create-data', 'ItemParentController@createData');
                     Route::get('show-data', 'ItemParentController@showData');
-                    Route::patch('update-data', 'ItemParentController@updateData');
+                    Route::post('update-data', 'ItemParentController@updateData');
                     Route::delete('destroy-data', 'ItemParentController@destroyData');
                 });
 
@@ -353,7 +353,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ItemOptionController@datatable');
                     Route::post('create-data', 'ItemOptionController@createData');
                     Route::get('show-data', 'ItemOptionController@showData');
-                    Route::patch('update-data', 'ItemOptionController@updateData');
+                    Route::post('update-data', 'ItemOptionController@updateData');
                     Route::delete('destroy-data', 'ItemOptionController@destroyData');
                 });
 
@@ -362,7 +362,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ItemGroupController@datatable');
                     Route::post('create-data', 'ItemGroupController@createData');
                     Route::get('show-data', 'ItemGroupController@showData');
-                    Route::patch('update-data', 'ItemGroupController@updateData');
+                    Route::post('update-data', 'ItemGroupController@updateData');
                     Route::delete('destroy-data', 'ItemGroupController@destroyData');
                 });
 
@@ -371,7 +371,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'FeeController@datatable');
                     Route::post('create-data', 'FeeController@createData');
                     Route::get('show-data', 'FeeController@showData');
-                    Route::patch('update-data', 'FeeController@updateData');
+                    Route::post('update-data', 'FeeController@updateData');
                     Route::delete('destroy-data', 'FeeController@destroyData');
                 });
 
@@ -380,7 +380,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ConditionController@datatable');
                     Route::post('create-data', 'ConditionController@createData');
                     Route::get('show-data', 'ConditionController@showData');
-                    Route::patch('update-data', 'ConditionController@updateData');
+                    Route::post('update-data', 'ConditionController@updateData');
                     Route::delete('destroy-data', 'ConditionController@destroyData');
                 });
             });
@@ -391,7 +391,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'DistributorController@datatable');
                     Route::post('create-data', 'DistributorController@createData');
                     Route::get('show-data', 'DistributorController@showData');
-                    Route::patch('update-data', 'DistributorController@updateData');
+                    Route::post('update-data', 'DistributorController@updateData');
                     Route::delete('destroy-data', 'DistributorController@destroyData');
                 });
 
@@ -400,7 +400,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'FactoryController@datatable');
                     Route::post('create-data', 'FactoryController@createData');
                     Route::get('show-data', 'FactoryController@showData');
-                    Route::patch('update-data', 'FactoryController@updateData');
+                    Route::post('update-data', 'FactoryController@updateData');
                     Route::delete('destroy-data', 'FactoryController@destroyData');
                 });
 
@@ -409,7 +409,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'MedicineController@datatable');
                     Route::post('create-data', 'MedicineController@createData');
                     Route::get('show-data', 'MedicineController@showData');
-                    Route::patch('update-data', 'MedicineController@updateData');
+                    Route::post('update-data', 'MedicineController@updateData');
                     Route::delete('destroy-data', 'MedicineController@destroyData');
                 });
             });
@@ -420,7 +420,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'DataController@datatable');
                     Route::post('create-data', 'DataController@createData');
                     Route::get('show-data', 'DataController@showData');
-                    Route::patch('update-data', 'DataController@updateData');
+                    Route::post('update-data', 'DataController@updateData');
                     Route::delete('destroy-data', 'DataController@destroyData');
                 });
 
@@ -429,7 +429,7 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'ActionController@datatable');
                     Route::post('create-data', 'ActionController@createData');
                     Route::get('show-data', 'ActionController@showData');
-                    Route::patch('update-data', 'ActionController@updateData');
+                    Route::post('update-data', 'ActionController@updateData');
                     Route::delete('destroy-data', 'ActionController@destroyData');
                 });
             });
@@ -470,7 +470,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', 'OutpatientController@index');
                 Route::get('datatable', 'OutpatientController@datatable');
                 Route::get('load-patient', 'OutpatientController@loadPatient');
-                Route::match(['get', 'patch'], 'update-data/{outpatient_poly_id}', 'OutpatientController@updateData');
+                Route::match(['get', 'post'], 'update-data/{outpatient_poly_id}', 'OutpatientController@updateData');
                 Route::match(['get', 'post'], 'operating-room/{outpatient_poly_id}', 'OutpatientController@operatingRoom');
                 Route::delete('destroy-data', 'OutpatientController@destroyData');
                 Route::get('print/{outpatient_id}', 'OutpatientController@print');
@@ -489,7 +489,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('datatable', 'ChartOfAccountController@datatable');
                 Route::post('create-data', 'ChartOfAccountController@createData');
                 Route::get('show-data', 'ChartOfAccountController@showData');
-                Route::patch('update-data', 'ChartOfAccountController@updateData');
+                Route::post('update-data', 'ChartOfAccountController@updateData');
                 Route::delete('destroy-data', 'ChartOfAccountController@destroyData');
             });
         });
@@ -500,7 +500,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('datatable', 'BudgetController@datatable');
                 Route::post('create-data', 'BudgetController@createData');
                 Route::get('show-data', 'BudgetController@showData');
-                Route::patch('update-data', 'BudgetController@updateData');
+                Route::post('update-data', 'BudgetController@updateData');
                 Route::delete('destroy-data', 'BudgetController@destroyData');
             });
 
@@ -509,7 +509,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('datatable', 'CashBankController@datatable');
                 Route::post('create-data', 'CashBankController@createData');
                 Route::get('show-data', 'CashBankController@showData');
-                Route::patch('update-data', 'CashBankController@updateData');
+                Route::post('update-data', 'CashBankController@updateData');
                 Route::delete('destroy-data', 'CashBankController@destroyData');
             });
         });
@@ -528,7 +528,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('datatable', 'RoleController@datatable');
                 Route::post('create-data', 'RoleController@createData');
                 Route::get('show-data', 'RoleController@showData');
-                Route::patch('update-data', 'RoleController@updateData');
+                Route::post('update-data', 'RoleController@updateData');
                 Route::delete('destroy-data', 'RoleController@destroyData');
             });
 
@@ -537,7 +537,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('datatable', 'UserController@datatable');
                 Route::post('create-data', 'UserController@createData');
                 Route::get('show-data', 'UserController@showData');
-                Route::patch('update-data', 'UserController@updateData');
+                Route::post('update-data', 'UserController@updateData');
                 Route::delete('destroy-data', 'UserController@destroyData');
             });
         });
