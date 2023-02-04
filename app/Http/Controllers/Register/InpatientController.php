@@ -7,7 +7,7 @@ use App\Models\Religion;
 use App\Models\RoomType;
 use App\Models\Inpatient;
 use Illuminate\Http\Request;
-use App\Models\PharmacyProduction;
+use App\Models\FunctionalService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +18,7 @@ class InpatientController extends Controller
     {
         $data = [
             'roomType' => RoomType::where('status', true)->orderBy('name')->get(),
-            'pharmacyProduction' => PharmacyProduction::where('status', true)->orderBy('name')->get(),
+            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
             'content' => 'register.inpatient'
         ];
@@ -30,7 +30,7 @@ class InpatientController extends Controller
     {
         $id = $request->id;
         $data = Patient::with([
-            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'pharmacyProduction'])
+            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'functionalService'])
         ])->whereNotNull('verified_at')->findOrFail($id);
 
         return response()->json($data);
@@ -48,7 +48,7 @@ class InpatientController extends Controller
             'type' => 'required',
             'date_of_entry' => 'required',
             'room_type_id' => 'required',
-            'pharmacy_production_id' => 'required'
+            'functional_service_id' => 'required'
         ], [
             'patient_id' => 'mohon memilih pasien',
             'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -60,7 +60,7 @@ class InpatientController extends Controller
             'type.required' => 'mohon memilih golongan pasien',
             'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
             'room_type_id.required' => 'mohon memilih kamar',
-            'pharmacy_production_id.required' => 'mohon memilih upf'
+            'functional_service_id.required' => 'mohon memilih upf'
         ]);
 
         if ($validation->fails()) {
@@ -98,7 +98,7 @@ class InpatientController extends Controller
                         'user_id' => $userId,
                         'patient_id' => $patientId,
                         'room_type_id' => $request->room_type_id,
-                        'pharmacy_production_id' => $request->pharmacy_production_id,
+                        'functional_service_id' => $request->functional_service_id,
                         'type' => $request->type,
                         'date_of_entry' => $dateOfEntry
                     ]);

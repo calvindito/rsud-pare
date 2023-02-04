@@ -33,7 +33,7 @@ class OutpatientController extends Controller
             'city',
             'district',
             'outpatient.outpatientPoly.unit',
-            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'pharmacyProduction'])
+            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'functionalService'])
         ])->whereNotNull('verified_at')->findOrFail($id);
 
         return response()->json($data);

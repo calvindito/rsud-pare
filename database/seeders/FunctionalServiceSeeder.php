@@ -3,10 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\PharmacyProduction;
+use App\Models\FunctionalService;
 use Illuminate\Support\Facades\DB;
 
-class PharmacyProductionSeeder extends Seeder
+class FunctionalServiceSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class PharmacyProductionSeeder extends Seeder
     {
         DB::connection('clone')->table('td_upf')->orderBy('id')->chunk(1000, function ($query) {
             foreach ($query as $q) {
-                PharmacyProduction::insert([
+                FunctionalService::insert([
                     'id' => $q->id,
                     'name' => $q->nama,
                     'status' => $q->is_removed == 1 ? 0 : 1,

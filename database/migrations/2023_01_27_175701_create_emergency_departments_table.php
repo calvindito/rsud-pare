@@ -17,7 +17,7 @@ class CreateEmergencyDepartmentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('patient_id')->nullable();
-            $table->unsignedBigInteger('pharmacy_production_id')->nullable();
+            $table->unsignedBigInteger('functional_service_id')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->char('type', 1)->nullable();
             $table->timestamp('date_of_entry')->nullable();

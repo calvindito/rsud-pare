@@ -16,7 +16,7 @@ class CreateHealthServiceBedsTable extends Migration
         Schema::create('health_service_beds', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('class_type_id')->nullable();
-            $table->unsignedBigInteger('pharmacy_production_id')->nullable();
+            $table->unsignedBigInteger('functional_service_id')->nullable();
             $table->integer('qty_man')->nullable();
             $table->integer('qty_woman')->nullable();
             $table->timestamps();

@@ -281,13 +281,13 @@ Route::middleware('auth')->group(function () {
             });
 
             Route::prefix('health-service')->namespace('HealthService')->group(function () {
-                Route::prefix('pharmacy-production')->group(function () {
-                    Route::get('/', 'PharmacyProductionController@index');
-                    Route::get('datatable', 'PharmacyProductionController@datatable');
-                    Route::post('create-data', 'PharmacyProductionController@createData');
-                    Route::get('show-data', 'PharmacyProductionController@showData');
-                    Route::post('update-data', 'PharmacyProductionController@updateData');
-                    Route::delete('destroy-data', 'PharmacyProductionController@destroyData');
+                Route::prefix('functional-service')->group(function () {
+                    Route::get('/', 'FunctionalServiceController@index');
+                    Route::get('datatable', 'FunctionalServiceController@datatable');
+                    Route::post('create-data', 'FunctionalServiceController@createData');
+                    Route::get('show-data', 'FunctionalServiceController@showData');
+                    Route::post('update-data', 'FunctionalServiceController@updateData');
+                    Route::delete('destroy-data', 'FunctionalServiceController@destroyData');
                 });
 
                 Route::prefix('bed')->group(function () {

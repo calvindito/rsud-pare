@@ -157,7 +157,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("master-data/health-service/pharmacy-production/datatable") }}',
+                url: '{{ url("master-data/health-service/functional-service/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -188,7 +188,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/health-service/pharmacy-production/create-data") }}',
+            url: '{{ url("master-data/health-service/functional-service/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -231,7 +231,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/health-service/pharmacy-production/show-data") }}',
+            url: '{{ url("master-data/health-service/functional-service/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -262,7 +262,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/health-service/pharmacy-production/update-data") }}',
+            url: '{{ url("master-data/health-service/functional-service/update-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -317,7 +317,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/health-service/pharmacy-production/destroy-data") }}',
+                        url: '{{ url("master-data/health-service/functional-service/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

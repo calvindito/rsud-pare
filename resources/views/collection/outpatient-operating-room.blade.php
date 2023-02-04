@@ -141,10 +141,10 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">UPF <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="pharmacy_production_id" id="pharmacy_production_id">
+                        <select class="form-select" name="functional_service_id" id="functional_service_id">
                             <option value="">-- Pilih --</option>
-                            @foreach($pharmacyProduction as $pp)
-                                <option value="{{ $pp->id }}" {{ $operation ? $operation->pharmacy_production_id == $pp->id ? 'selected' : '' : '' }}>{{ $pp->name }}</option>
+                            @foreach($functionalService as $fs)
+                                <option value="{{ $fs->id }}" {{ $operation ? $operation->functional_service_id == $fs->id ? 'selected' : '' : '' }}>{{ $fs->name }}</option>
                             @endforeach
                         </select>
                     </div>

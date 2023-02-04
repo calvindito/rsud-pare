@@ -8,7 +8,7 @@ use App\Models\Neonates;
 use App\Models\Religion;
 use App\Models\RoomType;
 use Illuminate\Http\Request;
-use App\Models\PharmacyProduction;
+use App\Models\FunctionalService;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +19,7 @@ class NeonatesController extends Controller
     {
         $data = [
             'roomType' => RoomType::where('status', true)->orderBy('name')->get(),
-            'pharmacyProduction' => PharmacyProduction::where('status', true)->orderBy('name')->get(),
+            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
             'content' => 'register.neonates'
         ];
@@ -34,7 +34,7 @@ class NeonatesController extends Controller
             'province',
             'city',
             'district',
-            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'pharmacyProduction'])
+            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'functionalService'])
         ])->whereNotNull('verified_at')->findOrFail($id);
 
         return response()->json($data);
@@ -53,7 +53,7 @@ class NeonatesController extends Controller
             'type' => 'required',
             'date_of_entry' => 'required',
             'room_type_id' => 'required',
-            'pharmacy_production_id' => 'required'
+            'functional_service_id' => 'required'
         ], [
             'identity_number.digits' => 'no identitas harus 16 karakter',
             'identity_number.numeric' => 'no identitas harus angka',
@@ -66,7 +66,7 @@ class NeonatesController extends Controller
             'type.required' => 'mohon memilih golongan pasien',
             'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
             'room_type_id.required' => 'mohon memilih kamar',
-            'pharmacy_production_id.required' => 'mohon memilih upf'
+            'functional_service_id.required' => 'mohon memilih upf'
         ]);
 
         if ($validation->fails()) {
@@ -113,7 +113,7 @@ class NeonatesController extends Controller
                         'user_id' => $userId,
                         'patient_id' => $patientId,
                         'room_type_id' => $request->room_type_id,
-                        'pharmacy_production_id' => $request->pharmacy_production_id,
+                        'functional_service_id' => $request->functional_service_id,
                         'type' => $request->type,
                         'date_of_entry' => $dateOfEntry
                     ]);

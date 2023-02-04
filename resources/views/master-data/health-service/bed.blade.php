@@ -69,10 +69,10 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">UPF <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <select class="form-select" name="pharmacy_production_id" id="pharmacy_production_id">
+                            <select class="form-select" name="functional_service_id" id="functional_service_id">
                                 <option value="">-- Pilih --</option>
-                                @foreach($pharmacyProduction as $pp)
-                                    <option value="{{ $pp->id }}">{{ $pp->name }}</option>
+                                @foreach($functionalService as $fs)
+                                    <option value="{{ $fs->id }}">{{ $fs->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -195,7 +195,7 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'class_type_name', name: 'class_type_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'pharmacy_production_name', name: 'pharmacy_production_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'functional_service_name', name: 'functional_service_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'qty_man', name: 'qty_man', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'qty_woman', name: 'qty_woman', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'total', name: 'total', orderable: false, searchable: false, className: 'align-middle' },
@@ -264,7 +264,7 @@
 
                 $('#table_id').val(response.id);
                 $('#class_type_id').val(response.class_type_id);
-                $('#pharmacy_production_id').val(response.pharmacy_production_id);
+                $('#functional_service_id').val(response.functional_service_id);
                 $('#qty_man').val(response.qty_man);
                 $('#qty_woman').val(response.qty_woman);
             },

@@ -162,11 +162,11 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">UPF <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="pharmacy_production_id" id="pharmacy_production_id">
+                        <select class="form-select" name="functional_service_id" id="functional_service_id">
                             <option value="">-- Pilih --</option>
-                            @foreach($pharmacyProduction as $pp)
-                                <option value="{{ $rt->id }}">
-                                    {{ $pp->name }}
+                            @foreach($functionalService as $fs)
+                                <option value="{{ $fs->id }}">
+                                    {{ $fs->name }}
                                 </option>
                             @endforeach
                         </select>
@@ -239,7 +239,7 @@
                             <td nowrap>` + val.date_of_entry + `</td>
                             <td nowrap>` + val.type_format_result + `</td>
                             <td nowrap>` + val.room_type.name + ` - ` + val.room_type.class_type.name + `</td>
-                            <td nowrap>` + val.pharmacy_production.name + `</td>
+                            <td nowrap>` + val.functional_service.name + `</td>
                         </tr>
                     `);
                 });

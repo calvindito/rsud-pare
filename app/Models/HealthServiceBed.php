@@ -41,12 +41,12 @@ class HealthServiceBed extends Model
     }
 
     /**
-     * pharmacyProduction
+     * functionalService
      *
      * @return void
      */
-    public function pharmacyProduction()
+    public function functionalService()
     {
-        return $this->belongsTo(PharmacyProduction::class);
+        return $this->belongsTo(FunctionalService::class);
     }
 }

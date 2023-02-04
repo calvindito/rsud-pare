@@ -244,10 +244,10 @@ return [
                 'link' => 'javascript:void(0);',
                 'sub' => [
                     [
-                        'name' => 'pharmacy-production',
+                        'name' => 'functional-service',
                         'menu' => 'UPF',
                         'icon' => null,
-                        'link' => 'master-data/health-service/pharmacy-production',
+                        'link' => 'master-data/health-service/functional-service',
                         'sub' => null
                     ],
                     [

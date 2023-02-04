@@ -18,7 +18,7 @@ class CreateOperationsTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('patient_id')->nullable();
             $table->unsignedBigInteger('operating_room_action_id')->nullable();
-            $table->unsignedBigInteger('pharmacy_production_id')->nullable();
+            $table->unsignedBigInteger('functional_service_id')->nullable();
             $table->unsignedBigInteger('operating_room_anesthetist_id')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->nullableMorphs('operationable');

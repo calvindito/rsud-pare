@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\MasterData\HealthService;
 
 use Illuminate\Http\Request;
-use App\Models\PharmacyProduction;
+use App\Models\FunctionalService;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class PharmacyProductionController extends Controller
+class FunctionalServiceController extends Controller
 {
     public function index()
     {
         $data = [
-            'content' => 'master-data.health-service.pharmacy-production'
+            'content' => 'master-data.health-service.functional-service'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -22,7 +22,7 @@ class PharmacyProductionController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = PharmacyProduction::query();
+        $data = FunctionalService::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -30,12 +30,12 @@ class PharmacyProductionController extends Controller
                     $query->where('name', 'like', "%$search%");
                 }
             })
-            ->editColumn('status', function (PharmacyProduction $query) {
+            ->editColumn('status', function (FunctionalService $query) {
                 return $query->status();
             })
             ->editColumn('created_at', '{{ date("Y-m-d H:i:s", strtotime($created_at)) }}')
             ->editColumn('updated_at', '{{ date("Y-m-d H:i:s", strtotime($updated_at)) }}')
-            ->addColumn('action', function (PharmacyProduction $query) {
+            ->addColumn('action', function (FunctionalService $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -73,7 +73,7 @@ class PharmacyProductionController extends Controller
             ];
         } else {
             try {
-                $createData = PharmacyProduction::create([
+                $createData = FunctionalService::create([
                     'name' => $request->name
                 ]);
 
@@ -95,7 +95,7 @@ class PharmacyProductionController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = PharmacyProduction::findOrFail($id);
+        $data = FunctionalService::findOrFail($id);
 
         return response()->json($data);
     }
@@ -116,7 +116,7 @@ class PharmacyProductionController extends Controller
             ];
         } else {
             try {
-                $updateData = PharmacyProduction::findOrFail($id)->update([
+                $updateData = FunctionalService::findOrFail($id)->update([
                     'name' => $request->name,
                     'status' => $request->status
                 ]);
@@ -141,7 +141,7 @@ class PharmacyProductionController extends Controller
         $id = $request->id;
 
         try {
-            PharmacyProduction::destroy($id);
+            FunctionalService::destroy($id);
 
             $response = [
                 'code' => 200,

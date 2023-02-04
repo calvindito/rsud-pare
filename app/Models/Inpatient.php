@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\RoomType;
-use App\Models\PharmacyProduction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -80,12 +78,12 @@ class Inpatient extends Model
     }
 
     /**
-     * pharmacyProduction
+     * functionalService
      *
      * @return void
      */
-    public function pharmacyProduction()
+    public function functionalService()
     {
-        return $this->belongsTo(PharmacyProduction::class);
+        return $this->belongsTo(FunctionalService::class);
     }
 }

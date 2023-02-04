@@ -5,7 +5,7 @@ namespace App\Http\Controllers\MasterData\HealthService;
 use App\Models\ClassType;
 use Illuminate\Http\Request;
 use App\Models\HealthServiceBed;
-use App\Models\PharmacyProduction;
+use App\Models\FunctionalService;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +16,7 @@ class BedController extends Controller
     {
         $data = [
             'classType' => ClassType::all(),
-            'pharmacyProduction' => PharmacyProduction::where('status', 1)->get(),
+            'functionalService' => FunctionalService::where('status', 1)->get(),
             'content' => 'master-data.health-service.bed'
         ];
 
@@ -35,7 +35,7 @@ class BedController extends Controller
                         $query->where('name', 'like', "%$search%");
                     });
 
-                    $query->orWhereHas('pharmacyProduction', function ($query) use ($search) {
+                    $query->orWhereHas('functionalService', function ($query) use ($search) {
                         $query->where('name', 'like', "%$search%");
                     });
                 }
@@ -49,14 +49,14 @@ class BedController extends Controller
 
                 return $classTypeName;
             })
-            ->addColumn('pharmacy_production_name', function (HealthServiceBed $query) {
-                $pharmacyProductionName = null;
+            ->addColumn('functional_service_name', function (HealthServiceBed $query) {
+                $functionalServiceName = null;
 
-                if (isset($query->pharmacyProduction)) {
-                    $pharmacyProductionName = $query->pharmacyProduction->name;
+                if (isset($query->functionalService)) {
+                    $functionalServiceName = $query->functionalService->name;
                 }
 
-                return $pharmacyProductionName;
+                return $functionalServiceName;
             })
             ->addColumn('total', function (HealthServiceBed $query) {
                 $total = $query->qty_man + $query->qty_woman;
@@ -90,10 +90,10 @@ class BedController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'class_type_id' => 'required',
-            'pharmacy_production_id' => 'required'
+            'functional_service_id' => 'required'
         ], [
             'class_type_id.required' => 'mohon memilih kelas',
-            'pharmacy_production_id.required' => 'mohon memilih upf'
+            'functional_service_id.required' => 'mohon memilih upf'
         ]);
 
         if ($validation->fails()) {
@@ -105,7 +105,7 @@ class BedController extends Controller
             try {
                 $createData = HealthServiceBed::create([
                     'class_type_id' => $request->class_type_id,
-                    'pharmacy_production_id' => $request->pharmacy_production_id,
+                    'functional_service_id' => $request->functional_service_id,
                     'qty_man' => $request->qty_man,
                     'qty_woman' => $request->qty_woman
                 ]);
@@ -138,10 +138,10 @@ class BedController extends Controller
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
             'class_type_id' => 'required',
-            'pharmacy_production_id' => 'required'
+            'functional_service_id' => 'required'
         ], [
             'class_type_id.required' => 'mohon memilih kelas',
-            'pharmacy_production_id.required' => 'mohon memilih upf'
+            'functional_service_id.required' => 'mohon memilih upf'
         ]);
 
         if ($validation->fails()) {
@@ -153,7 +153,7 @@ class BedController extends Controller
             try {
                 $updateData = HealthServiceBed::findOrFail($id)->update([
                     'class_type_id' => $request->class_type_id,
-                    'pharmacy_production_id' => $request->pharmacy_production_id,
+                    'functional_service_id' => $request->functional_service_id,
                     'qty_man' => $request->qty_man,
                     'qty_woman' => $request->qty_woman
                 ]);

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePharmacyProductionsTable extends Migration
+class CreateFunctionalServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePharmacyProductionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pharmacy_productions', function (Blueprint $table) {
+        Schema::create('functional_services', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->boolean('status')->default(true);
@@ -28,6 +28,6 @@ class CreatePharmacyProductionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pharmacy_productions');
+        Schema::dropIfExists('functional_services');
     }
 }

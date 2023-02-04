@@ -18,7 +18,7 @@ class CreateNeonatesTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('patient_id')->nullable();
             $table->unsignedBigInteger('room_type_id')->nullable();
-            $table->unsignedBigInteger('pharmacy_production_id')->nullable();
+            $table->unsignedBigInteger('functional_service_id')->nullable();
             $table->char('type', 1)->nullable();
             $table->timestamp('date_of_entry')->nullable();
             $table->timestamps();

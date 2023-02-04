@@ -20,7 +20,7 @@ class HealthServiceBedSeeder extends Seeder
                 HealthServiceBed::insert([
                     'id' => $q->id,
                     'class_type_id' => $q->kelas_id,
-                    'pharmacy_production_id' => $q->upf_id,
+                    'functional_service_id' => $q->upf_id,
                     'qty_man' => $q->jumlah_l,
                     'qty_woman' => $q->jumlah_p,
                     'created_at' => $q->created_at ? $q->created_at : now(),

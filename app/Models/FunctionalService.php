@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PharmacyProduction extends Model
+class FunctionalService extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class PharmacyProduction extends Model
      *
      * @var string
      */
-    protected $table = 'pharmacy_productions';
+    protected $table = 'functional_services';
 
     /**
      * The primary key associated with the table.

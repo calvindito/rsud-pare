@@ -11,7 +11,7 @@ use App\Models\Religion;
 use App\Models\Operation;
 use Illuminate\Http\Request;
 use App\Models\OutpatientPoly;
-use App\Models\PharmacyProduction;
+use App\Models\FunctionalService;
 use Illuminate\Support\Facades\DB;
 use App\Models\OperatingRoomAction;
 use App\Http\Controllers\Controller;
@@ -171,7 +171,7 @@ class OutpatientController extends Controller
             'city',
             'district',
             'outpatient.outpatientPoly.unit',
-            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'pharmacyProduction'])
+            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'functionalService'])
         ])->whereNotNull('verified_at')->findOrFail($id);
 
         return response()->json($data);
@@ -318,7 +318,7 @@ class OutpatientController extends Controller
                 'unit_id' => 'required',
                 'date_of_entry' => 'required',
                 'operating_room_action_id' => 'required',
-                'pharmacy_production_id' => 'required',
+                'functional_service_id' => 'required',
                 'operating_room_anesthetist_id' => 'required',
                 'doctor_id' => 'required'
             ], [
@@ -333,7 +333,7 @@ class OutpatientController extends Controller
                 'unit_id.required' => 'mohon memilih poli',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'operating_room_action_id.required' => 'mohon memilih operasi',
-                'pharmacy_production_id.required' => 'mohon memilih upf',
+                'functional_service_id.required' => 'mohon memilih upf',
                 'operating_room_anesthetist_id.required' => 'mohon memilih jenis anestesi',
                 'doctor_id.required' => 'mohon memilih dokter anestesi'
             ]);
@@ -364,7 +364,7 @@ class OutpatientController extends Controller
                             'user_id' => $userId,
                             'patient_id' => $patientId,
                             'operating_room_action_id' => $request->operating_room_action_id,
-                            'pharmacy_production_id' => $request->pharmacy_production_id,
+                            'functional_service_id' => $request->functional_service_id,
                             'operating_room_anesthetist_id' => $request->operating_room_anesthetist_id,
                             'doctor_id' => $request->doctor_id,
                             'operationable_type' => OutpatientPoly::class,
@@ -419,7 +419,7 @@ class OutpatientController extends Controller
                 'operation' => $operation,
                 'unit' => Unit::where('type', 2)->orderBy('name')->get(),
                 'operatingRoomAction' => OperatingRoomAction::orderBy('operating_room_group_id')->orderBy('operating_room_action_type_id')->get(),
-                'pharmacyProduction' => PharmacyProduction::all(),
+                'functionalService' => FunctionalService::all(),
                 'operatingRoomAnesthetist' => OperatingRoomAnesthetist::all(),
                 'doctor' => Doctor::all(),
                 'content' => 'collection.outpatient-operating-room'

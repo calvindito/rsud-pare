@@ -438,7 +438,7 @@
                             <td nowrap>` + val.date_of_entry + `</td>
                             <td nowrap>` + val.type_format_result + `</td>
                             <td nowrap>` + val.room_type.name + ` - ` + val.room_type.class_type.name + `</td>
-                            <td nowrap>` + val.pharmacy_production.name + `</td>
+                            <td nowrap>` + val.functional_service.name + `</td>
                         </tr>
                     `);
                 });
