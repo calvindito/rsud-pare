@@ -240,6 +240,11 @@ class InpatientController extends Controller
                         }
                     }
                 });
+
+                $response = [
+                    'code' => 200,
+                    'message' => 'Tindakan berhasil disimpan'
+                ];
             } catch (\Exception $e) {
                 $response = [
                     'code' => $e->getCode(),
@@ -247,10 +252,7 @@ class InpatientController extends Controller
                 ];
             }
 
-            return response()->json([
-                'code' => 200,
-                'message' => 'Tindakan berhasil disimpan'
-            ]);
+            return response()->json($response);
         }
 
         $data = [
@@ -318,6 +320,60 @@ class InpatientController extends Controller
             'recipe' => $inpatient->recipe,
             'medicine' => Medicine::where('stock', '>', 0)->get(),
             'content' => 'collection.inpatient-recipe'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function diagnosis(Request $request, $id)
+    {
+        $inpatient = Inpatient::findOrFail($id);
+
+        if ($request->ajax()) {
+            try {
+                $inpatient->inpatientDiagnosis()->delete();
+
+                if ($request->has('diagnosis')) {
+                    foreach ($request->diagnosis as $d) {
+                        if (!empty($d)) {
+                            $inpatient->inpatientDiagnosis()->create([
+                                'type' => 1,
+                                'value' => $d
+                            ]);
+                        }
+                    }
+                }
+
+                if ($request->has('action')) {
+                    foreach ($request->action as $a) {
+                        if (!empty($a)) {
+                            $inpatient->inpatientDiagnosis()->create([
+                                'type' => 2,
+                                'value' => $a
+                            ]);
+                        }
+                    }
+                }
+
+                $response = [
+                    'code' => 200,
+                    'message' => 'Diagnosa berhasil disimpan'
+                ];
+            } catch (\Exception $e) {
+                $response = [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ];
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'inpatient' => $inpatient,
+            'patient' => $inpatient->patient,
+            'inpatientDiagnosis' => $inpatient->inpatientDiagnosis,
+            'content' => 'collection.inpatient-diagnosis'
         ];
 
         return view('layouts.index', ['data' => $data]);

@@ -264,4 +264,14 @@ class Inpatient extends Model
     {
         return $this->morphMany(Recipe::class, 'recipeable');
     }
+
+    /**
+     * inpatientDiagnosis
+     *
+     * @return void
+     */
+    public function inpatientDiagnosis()
+    {
+        return $this->hasMany(InpatientDiagnosis::class);
+    }
 }
