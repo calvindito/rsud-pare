@@ -480,6 +480,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', 'InpatientController@index');
                 Route::get('datatable', 'InpatientController@datatable');
                 Route::match(['get', 'post'], 'action/{id}', 'InpatientController@action');
+                Route::match(['get', 'post'], 'recipe/{id}', 'InpatientController@recipe');
             });
 
             Route::prefix('visit-window')->group(function () {

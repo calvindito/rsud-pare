@@ -148,3 +148,9 @@ function onPopover(selector, content, title = '') {
 function fullWidthAllDevice() {
     $('meta[name="viewport"]').attr('content', 'width=1920, initial-scale=1, shrink-to-fit=no');
 }
+
+function listBox(selector, config = {}) {
+    const listboxButtonsHiddenElement = document.querySelector(selector);
+
+    new DualListbox(listboxButtonsHiddenElement, config);
+}

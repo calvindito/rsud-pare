@@ -25,10 +25,10 @@
                         <tr>
                             <th class="align-middle">Nama Pasien</th>
                             <th class="align-middle" width="1%">:</th>
-                            <td class="align-middle" width="30%">{{ $inpatient->patient->name }}</td>
+                            <td class="align-middle" width="30%">{{ $patient->name }}</td>
                             <th class="align-middle">No RM</th>
                             <th class="align-middle" width="1%">:</th>
-                            <td class="align-middle" width="30%">{{ $inpatient->patient->id }}</td>
+                            <td class="align-middle" width="30%">{{ $patient->id }}</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Tanggal Masuk</th>
@@ -51,7 +51,7 @@
                         <tr>
                             <th class="align-middle">Alamat</th>
                             <th class="align-middle" width="1%">:</th>
-                            <td class="align-middle" width="30%">{{ $inpatient->patient->address }}</td>
+                            <td class="align-middle" width="30%">{{ $patient->address }}</td>
                             <th class="align-middle">Dokter</th>
                             <th class="align-middle" width="1%">:</th>
                             <td class="align-middle" width="30%">

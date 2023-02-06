@@ -83,7 +83,7 @@
                     <div class="card-footer">
                         <div class="form-group mb-0">
                             <div class="text-end">
-                                <button type="submit" class="btn btn-warning">
+                                <button type="submit" class="btn btn-warning" onclick="onLoading('show', '.content')">
                                     <i class="ph-floppy-disk me-1"></i>
                                     Simpan Perubahan Profil
                                 </button>

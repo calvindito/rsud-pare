@@ -93,7 +93,7 @@ class AuthController extends Controller
                         'success' => 'Profil berhasil diganti'
                     ]);
                 } catch (\Exception $e) {
-                    return redirect('auth/profile')->with([
+                    return redirect()->back()->with([
                         'error' => $e->getMessage()
                     ]);
                 }
@@ -145,7 +145,7 @@ class AuthController extends Controller
                         'success' => 'Password berhasil diganti'
                     ]);
                 } catch (\Exception $e) {
-                    return redirect('auth/change-password')->with([
+                    return redirect()->back()->with([
                         'error' => $e->getMessage()
                     ]);
                 }

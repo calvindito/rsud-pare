@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Collection;
 
 use App\Helpers\Simrs;
 use App\Models\Doctor;
+use App\Models\Medicine;
 use App\Models\Inpatient;
 use App\Models\ActionOther;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ use App\Models\ActionNonOperative;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Validator;
 
 class InpatientController extends Controller
 {
@@ -124,119 +126,126 @@ class InpatientController extends Controller
         $classType = $roomType->classType;
 
         if ($request->ajax()) {
-            DB::transaction(function () use ($request, $inpatient, $roomType, $classType) {
-                $observation = [
-                    'action_emergency_care_id' => (int) $request->observation_action_emergency_care_id,
-                    'nominal' => Simrs::numberable($request->observation_nominal)
+            try {
+                DB::transaction(function () use ($request, $inpatient) {
+                    $observation = [
+                        'action_emergency_care_id' => (int) $request->observation_action_emergency_care_id,
+                        'nominal' => Simrs::numberable($request->observation_nominal)
+                    ];
+
+                    $supervisionDoctor = [
+                        'action_emergency_care_id' => (int) $request->supervision_doctor_action_emergency_care_id,
+                        'doctor_id' => (int) $request->supervision_doctor_doctor_id,
+                        'nominal' => Simrs::numberable($request->supervision_doctor_nominal)
+                    ];
+
+                    $inpatient->update([
+                        'doctor_id' => $request->doctor_id,
+                        'date_of_out' => date('Y-m-d H:i:s', strtotime($request->date_of_out)),
+                        'observation' => $observation,
+                        'supervision_doctor' => $supervisionDoctor,
+                        'fee_room' => $request->fee_room,
+                        'fee_nursing_care' => $request->fee_nursing_care,
+                        'fee_nutritional_care' => $request->fee_nutritional_care,
+                        'fee_nutritional_care_qty' => $request->fee_nutritional_care_qty,
+                        'ending' => $request->ending
+                    ]);
+
+                    $inpatient->inpatientHealth()->delete();
+                    $inpatient->inpatientNonOperative()->delete();
+                    $inpatient->inpatientOperative()->delete();
+                    $inpatient->inpatientOther()->delete();
+                    $inpatient->inpatientPackage()->delete();
+                    $inpatient->inpatientService()->delete();
+                    $inpatient->inpatientSupporting()->delete();
+
+                    if ($request->has('inpatient_health')) {
+                        foreach ($request->inpatient_health as $key => $ih) {
+                            $inpatient->inpatientHealth()->create([
+                                'tool_id' => $request->ih_tool_id[$key],
+                                'emergency_care' => $request->ih_emergency_care[$key],
+                                'hospitalization' => $request->ih_hospitalization[$key]
+                            ]);
+                        }
+                    }
+
+                    if ($request->has('inpatient_non_operative')) {
+                        foreach ($request->inpatient_non_operative as $key => $ino) {
+                            $inpatient->inpatientNonOperative()->create([
+                                'action_non_operative_id' => $request->ino_action_non_operative_id[$key],
+                                'emergency_care' => $request->ino_emergency_care[$key],
+                                'hospitalization' => $request->ino_hospitalization[$key]
+                            ]);
+                        }
+                    }
+
+                    if ($request->has('inpatient_operative')) {
+                        foreach ($request->inpatient_operative as $key => $io) {
+                            $inpatient->inpatientOperative()->create([
+                                'action_operative_id' => $request->io_action_operative_id[$key],
+                                'nominal' => $request->io_nominal[$key]
+                            ]);
+                        }
+                    }
+
+                    if ($request->has('inpatient_other')) {
+                        foreach ($request->inpatient_other as $key => $io) {
+                            $inpatient->inpatientOther()->create([
+                                'action_other_id' => $request->io_action_other_id[$key],
+                                'emergency_care' => $request->io_emergency_care[$key],
+                                'hospitalization' => $request->io_hospitalization[$key],
+                                'hospitalization_qty' => $request->io_hospitalization_qty[$key]
+                            ]);
+                        }
+                    }
+
+                    if ($request->has('inpatient_package')) {
+                        foreach ($request->inpatient_package as $ip) {
+                            $inpatient->inpatientPackage()->create([
+                                'nominal' => $ip
+                            ]);
+                        }
+                    }
+
+                    if ($request->has('inpatient_service')) {
+                        foreach ($request->inpatient_service as $key => $is) {
+                            $emergencyCare = [
+                                'doctor_id' => (int) $request->is_emergency_care_doctor_id[$key],
+                                'nominal' => Simrs::numberable($request->is_emergency_care_nominal[$key]),
+                                'qty' => Simrs::numberable($request->is_emergency_care_qty[$key])
+                            ];
+
+                            $hospitalization = [
+                                'doctor_id' => (int) $request->is_hospitalization_doctor_id[$key],
+                                'nominal' => Simrs::numberable($request->is_hospitalization_nominal[$key]),
+                                'qty' => Simrs::numberable($request->is_hospitalization_qty[$key])
+                            ];
+
+                            $inpatient->inpatientService()->create([
+                                'medical_service_id' => $request->is_medical_service_id[$key],
+                                'emergency_care' => $emergencyCare,
+                                'hospitalization' => $hospitalization
+                            ]);
+                        }
+                    }
+
+                    if ($request->has('inpatient_supporting')) {
+                        foreach ($request->inpatient_supporting as $key => $is) {
+                            $inpatient->inpatientSupporting()->create([
+                                'action_supporting_id' => $request->is_action_supporting_id[$key],
+                                'doctor_id' => $request->is_doctor_id[$key],
+                                'emergency_care' => $request->is_emergency_care[$key],
+                                'hospitalization' => $request->is_hospitalization[$key]
+                            ]);
+                        }
+                    }
+                });
+            } catch (\Exception $e) {
+                $response = [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
                 ];
-
-                $supervisionDoctor = [
-                    'action_emergency_care_id' => (int) $request->supervision_doctor_action_emergency_care_id,
-                    'doctor_id' => (int) $request->supervision_doctor_doctor_id,
-                    'nominal' => Simrs::numberable($request->supervision_doctor_nominal)
-                ];
-
-                $inpatient->update([
-                    'doctor_id' => $request->doctor_id,
-                    'date_of_out' => date('Y-m-d H:i:s', strtotime($request->date_of_out)),
-                    'observation' => $observation,
-                    'supervision_doctor' => $supervisionDoctor,
-                    'fee_room' => $request->fee_room,
-                    'fee_nursing_care' => $request->fee_nursing_care,
-                    'fee_nutritional_care' => $request->fee_nutritional_care,
-                    'fee_nutritional_care_qty' => $request->fee_nutritional_care_qty,
-                    'ending' => $request->ending
-                ]);
-
-                $inpatient->inpatientHealth()->delete();
-                $inpatient->inpatientNonOperative()->delete();
-                $inpatient->inpatientOperative()->delete();
-                $inpatient->inpatientOther()->delete();
-                $inpatient->inpatientPackage()->delete();
-                $inpatient->inpatientService()->delete();
-                $inpatient->inpatientSupporting()->delete();
-
-                if ($request->has('inpatient_health')) {
-                    foreach ($request->inpatient_health as $key => $ih) {
-                        $inpatient->inpatientHealth()->create([
-                            'tool_id' => $request->ih_tool_id[$key],
-                            'emergency_care' => $request->ih_emergency_care[$key],
-                            'hospitalization' => $request->ih_hospitalization[$key]
-                        ]);
-                    }
-                }
-
-                if ($request->has('inpatient_non_operative')) {
-                    foreach ($request->inpatient_non_operative as $key => $ino) {
-                        $inpatient->inpatientNonOperative()->create([
-                            'action_non_operative_id' => $request->ino_action_non_operative_id[$key],
-                            'emergency_care' => $request->ino_emergency_care[$key],
-                            'hospitalization' => $request->ino_hospitalization[$key]
-                        ]);
-                    }
-                }
-
-                if ($request->has('inpatient_operative')) {
-                    foreach ($request->inpatient_operative as $key => $io) {
-                        $inpatient->inpatientOperative()->create([
-                            'action_operative_id' => $request->io_action_operative_id[$key],
-                            'nominal' => $request->io_nominal[$key]
-                        ]);
-                    }
-                }
-
-                if ($request->has('inpatient_other')) {
-                    foreach ($request->inpatient_other as $key => $io) {
-                        $inpatient->inpatientOther()->create([
-                            'action_other_id' => $request->io_action_other_id[$key],
-                            'emergency_care' => $request->io_emergency_care[$key],
-                            'hospitalization' => $request->io_hospitalization[$key],
-                            'hospitalization_qty' => $request->io_hospitalization_qty[$key]
-                        ]);
-                    }
-                }
-
-                if ($request->has('inpatient_package')) {
-                    foreach ($request->inpatient_package as $ip) {
-                        $inpatient->inpatientPackage()->create([
-                            'nominal' => $ip
-                        ]);
-                    }
-                }
-
-                if ($request->has('inpatient_service')) {
-                    foreach ($request->inpatient_service as $key => $is) {
-                        $emergencyCare = [
-                            'doctor_id' => (int) $request->is_emergency_care_doctor_id[$key],
-                            'nominal' => Simrs::numberable($request->is_emergency_care_nominal[$key]),
-                            'qty' => Simrs::numberable($request->is_emergency_care_qty[$key])
-                        ];
-
-                        $hospitalization = [
-                            'doctor_id' => (int) $request->is_hospitalization_doctor_id[$key],
-                            'nominal' => Simrs::numberable($request->is_hospitalization_nominal[$key]),
-                            'qty' => Simrs::numberable($request->is_hospitalization_qty[$key])
-                        ];
-
-                        $inpatient->inpatientService()->create([
-                            'medical_service_id' => $request->is_medical_service_id[$key],
-                            'emergency_care' => $emergencyCare,
-                            'hospitalization' => $hospitalization
-                        ]);
-                    }
-                }
-
-                if ($request->has('inpatient_supporting')) {
-                    foreach ($request->inpatient_supporting as $key => $is) {
-                        $inpatient->inpatientSupporting()->create([
-                            'action_supporting_id' => $request->is_action_supporting_id[$key],
-                            'doctor_id' => $request->is_doctor_id[$key],
-                            'emergency_care' => $request->is_emergency_care[$key],
-                            'hospitalization' => $request->is_hospitalization[$key]
-                        ]);
-                    }
-                }
-            });
+            }
 
             return response()->json([
                 'code' => 200,
@@ -246,6 +255,7 @@ class InpatientController extends Controller
 
         $data = [
             'inpatient' => $inpatient,
+            'patient' => $inpatient->patient,
             'doctor' => Doctor::all(),
             'medicalService' => MedicalService::where('status', true)->where('class_type_id', $classType->id)->get(),
             'actionOperative' => ActionOperative::where('class_type_id', $classType->id)->get(),
@@ -263,6 +273,51 @@ class InpatientController extends Controller
             'inpatientService' => $inpatient->inpatientService,
             'inpatientSupporting' => $inpatient->inpatientSupporting,
             'content' => 'collection.inpatient-action'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function recipe(Request $request, $id)
+    {
+        $inpatient = Inpatient::findOrFail($id);
+
+        if ($request->_token == csrf_token()) {
+            $validation = Validator::make($request->all(), [
+                'recipe' => 'required',
+            ], [
+                'recipe.required' => 'Mohon memilih salah satu obat',
+            ]);
+
+            if ($validation->fails()) {
+                return redirect()->back()->withErrors($validation);
+            } else {
+                try {
+                    $inpatient->recipe()->delete();
+
+                    foreach ($request->recipe as $r) {
+                        $inpatient->recipe()->create([
+                            'medicine_id' => $r
+                        ]);
+                    }
+
+                    return redirect('collection/inpatient/recipe/' . $id)->with([
+                        'success' => 'Data berhasil di submit'
+                    ]);
+                } catch (\Exception $e) {
+                    return redirect()->back()->with([
+                        'error' => $e->getMessage()
+                    ]);
+                }
+            }
+        }
+
+        $data = [
+            'inpatient' => $inpatient,
+            'patient' => $inpatient->patient,
+            'recipe' => $inpatient->recipe,
+            'medicine' => Medicine::where('stock', '>', 0)->get(),
+            'content' => 'collection.inpatient-recipe'
         ];
 
         return view('layouts.index', ['data' => $data]);

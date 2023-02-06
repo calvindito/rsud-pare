@@ -80,7 +80,7 @@
                 { data: 'patient_name', name: 'patient_name', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'room_type_name', name: 'room_type_name', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'date_of_entry', name: 'date_of_entry', orderable: true, searchable: false, className: 'align-middle nowrap' },
-                { data: 'ending_format_result', name: 'ending_format_result', orderable: true, searchable: false, className: 'align-middle nowrap' },
+                { data: 'ending_format_result', name: 'ending', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'status', name: 'status', orderable: true, searchable: true, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
