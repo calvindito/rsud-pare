@@ -26,10 +26,10 @@ class CreateLabItemParentsTable extends Migration
             $table->double('limit_critical_lower_patient')->nullable();
             $table->double('limit_upper_patient')->nullable();
             $table->double('limit_critical_upper_patient')->nullable();
-            $table->boolean('dropdown')->default(true);
+            $table->boolean('dropdown')->default(1);
             $table->string('method')->nullable();
             $table->string('unit')->nullable();
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

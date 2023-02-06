@@ -56,15 +56,6 @@ class OutpatientController extends Controller
             ->editColumn('status', function (OutpatientPoly $query) {
                 return $query->status();
             })
-            ->addColumn('patient_id', function (OutpatientPoly $query) {
-                $patientId = null;
-
-                if (isset($query->outpatient->patient)) {
-                    $patientId = $query->outpatient->patient->id;
-                }
-
-                return $patientId;
-            })
             ->addColumn('patient_name', function (OutpatientPoly $query) {
                 $patientName = null;
 

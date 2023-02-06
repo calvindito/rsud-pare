@@ -24,7 +24,7 @@ class CreateOperationsTable extends Migration
             $table->nullableMorphs('operationable');
             $table->timestamp('date_of_entry')->nullable();
             $table->string('diagnosis')->nullable();
-            $table->boolean('specimen')->default(false);
+            $table->boolean('specimen')->default(0);
             $table->timestamps();
         });
     }

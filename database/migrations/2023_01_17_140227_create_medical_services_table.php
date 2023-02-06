@@ -19,7 +19,7 @@ class CreateMedicalServicesTable extends Migration
             $table->char('code', 1)->nullable();
             $table->string('name')->nullable();
             $table->double('fee')->nullable();
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

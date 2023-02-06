@@ -18,7 +18,7 @@ class CreateLabItemConditionDetailsTable extends Migration
             $table->unsignedBigInteger('lab_item_condition_id')->nullable();
             $table->string('slug')->nullable();
             $table->string('name')->nullable();
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

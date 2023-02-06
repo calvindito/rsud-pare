@@ -23,7 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->string('phone')->nullable();
             $table->string('cellphone')->nullable();
             $table->string('email')->nullable();
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

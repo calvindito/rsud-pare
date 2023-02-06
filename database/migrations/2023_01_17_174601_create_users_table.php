@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('role_id')->nullable();
             $table->string('username')->nullable();
             $table->string('password')->nullable();
-            $table->char('status', 1)->default(true);
+            $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

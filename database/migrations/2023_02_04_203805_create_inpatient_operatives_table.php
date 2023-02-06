@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFunctionalServicesTable extends Migration
+class CreateInpatientOperativesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateFunctionalServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('functional_services', function (Blueprint $table) {
+        Schema::create('inpatient_operatives', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->boolean('status')->default(1);
+            $table->unsignedBigInteger('inpatient_id')->nullable();
+            $table->unsignedBigInteger('action_operative_id')->nullable();
+            $table->double('nominal')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateFunctionalServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('functional_services');
+        Schema::dropIfExists('inpatient_operatives');
     }
 }

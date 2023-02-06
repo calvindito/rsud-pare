@@ -62,4 +62,27 @@ class Simrs
             'data' => $data
         ];
     }
+
+    public static function tool($id = null)
+    {
+        $collect = ['Obat-Obatan', 'Infus', 'Alkes & BHP', 'Bank Darah', 'O2'];
+        $data = $collect;
+
+        if ($id) {
+            $data = $collect[$id - 1];
+        }
+
+        return $data;
+    }
+
+    public static function numberable($value)
+    {
+        $number = 0;
+
+        if (is_numeric($value)) {
+            $number += $value;
+        }
+
+        return $number;
+    }
 }

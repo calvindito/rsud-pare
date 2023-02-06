@@ -20,7 +20,7 @@ class CreateLabFeesTable extends Migration
             $table->double('consumables')->nullable();
             $table->double('hospital_service')->nullable();
             $table->double('service')->nullable();
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

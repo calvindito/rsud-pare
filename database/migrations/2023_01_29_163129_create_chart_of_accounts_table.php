@@ -18,7 +18,7 @@ class CreateChartOfAccountsTable extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('code')->nullable();
             $table->string('name')->nullable();
-            $table->char('status', 1)->default(true);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

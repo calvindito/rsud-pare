@@ -18,7 +18,7 @@ class CreateLabItemsTable extends Migration
             $table->unsignedBigInteger('lab_category_id')->nullable();
             $table->unsignedBigInteger('lab_item_group_id')->nullable();
             $table->string('name')->nullable();
-            $table->boolean('status')->default(true);
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

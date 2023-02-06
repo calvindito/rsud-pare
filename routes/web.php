@@ -476,6 +476,12 @@ Route::middleware('auth')->group(function () {
                 Route::get('print/{outpatient_id}', 'OutpatientController@print');
             });
 
+            Route::prefix('inpatient')->group(function () {
+                Route::get('/', 'InpatientController@index');
+                Route::get('datatable', 'InpatientController@datatable');
+                Route::match(['get', 'post'], 'action/{id}', 'InpatientController@action');
+            });
+
             Route::prefix('visit-window')->group(function () {
                 Route::get('/', 'VisitWindowController@index');
                 Route::get('datatable', 'VisitWindowController@datatable');

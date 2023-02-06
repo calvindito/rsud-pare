@@ -144,3 +144,7 @@ function onPopover(selector, content, title = '') {
         myPopover.show();
     }
 }
+
+function fullWidthAllDevice() {
+    $('meta[name="viewport"]').attr('content', 'width=1920, initial-scale=1, shrink-to-fit=no');
+}
