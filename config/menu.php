@@ -514,6 +514,13 @@ return [
         ]
     ],
     [
+        'name' => 'lab',
+        'menu' => 'Laboratorium',
+        'icon' => 'ph-flask',
+        'link' => 'lab',
+        'sub' => null
+    ],
+    [
         'name' => 'accounting',
         'menu' => 'Akuntansi',
         'icon' => 'ph-books',

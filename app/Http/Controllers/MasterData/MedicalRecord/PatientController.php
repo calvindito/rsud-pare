@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\MasterData\MedicalRecord;
 
-use PDF;
 use App\Helpers\Simrs;
 use App\Models\Patient;
 use App\Models\Religion;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -165,29 +165,23 @@ class PatientController extends Controller
         if ($request->has('slug')) {
             if ($request->slug == 'card') {
                 $view = 'pdf.patient-card';
-                $pageSize = [78, 78];
                 $title = 'Kartu Pasien';
             } else if ($request->slug == 'ticket') {
                 $view = 'pdf.patient-ticket';
-                $pageSize = [78, 82];
                 $title = 'E-Tiket Pasien';
             } else {
                 abort(404);
             }
 
-            $pdf = PDF::loadView($view, [
-                'title' => $title . ' - ' . $data->name . ' (' . $data->id . ')',
-                'data' => $data,
-                'barcode' => $data->id
-            ], [], [
-                'mode' => 'utf-8',
-                'format' => $pageSize,
-                'display_mode' => 'fullwidth',
-                'author' => auth()->user()->employee->name,
-                'subject' => $title,
-            ]);
+            $pdf = Pdf::setOptions([
+                'dpi' => 102,
+                'adminUsername' => auth()->user()->username
+            ])->loadView($view, [
+                'title' => $title,
+                'data' => $data
+            ])->setPaper([0, 0, 221.102, 255.118], 'portrait');
 
-            return $pdf->stream($title . ' - ' . $data->id . '.pdf');
+            return $pdf->download($title . ' - ' . date('YmdHis') . '.pdf');
         }
 
         abort(404);

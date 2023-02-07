@@ -113,6 +113,7 @@
                                                                         <th nowrap>Grup</th>
                                                                         <th nowrap>Item</th>
                                                                         <th nowrap>Hasil</th>
+                                                                        <th nowrap>Normal</th>
                                                                         <th nowrap>Satuan</th>
                                                                         <th nowrap>Kondisi</th>
                                                                         <th nowrap>Metode</th>
@@ -121,18 +122,45 @@
                                                                 <tbody>
                                                                     @foreach($lr->labRequestDetail as $lrd)
                                                                         <tr>
-                                                                            <td class="align-middle" nowrap>{{ $lrd->labItem->labItemGroup->name }}</td>
-                                                                            <td class="align-middle" nowrap>{{ $lrd->labItem->name }}</td>
-                                                                            <td class="align-middle">{{ $lrd->result }}</td>
-                                                                            <td class="align-middle">{{ $lrd->labItemParent->unit ?? '-' }}</td>
-                                                                            <td class="align-middle">{{ $lrd->labItemCondition->name ?? '-' }}</td>
-                                                                            <td class="align-middle">{{ $lrd->result ?? '-' }}</td>
+                                                                            <td class="align-middle">{{ $lrd->labItem->labItemGroup->name }}</td>
+                                                                            <td class="align-middle">{{ $lrd->labItem->name }}</td>
+                                                                            <td class="align-middle" nowrap>{{ $lrd->result }}</td>
+                                                                            <td class="align-middle" nowrap>
+                                                                                @isset($lrd->labItemParent)
+                                                                                    @if($lrd->labItemParent->limit_lower && $lrd->labItemParent->limit_upper)
+                                                                                        {{ $lrd->labItemParent->limit_lower . ' - ' . $lrd->labItemParent->limit_upper }}
+                                                                                    @elseif($lrd->labItemParent->limit_upper)
+                                                                                        {{ $lrd->labItemParent->limit_upper }}
+                                                                                    @elseif($lrd->labItemParent->limit_lower)
+                                                                                        {{ $lrd->labItemParent->limit_lower }}
+                                                                                    @else
+                                                                                        -
+                                                                                    @endif
+                                                                                @else
+                                                                                    -
+                                                                                @endif
+                                                                            </td>
+                                                                            <td class="align-middle" nowrap>{{ $lrd->labItemParent->unit ?? '-' }}</td>
+                                                                            <td class="align-middle" nowrap>{{ $lrd->labItemCondition->name ?? '-' }}</td>
+                                                                            <td class="align-middle" nowrap>{{ $lrd->result ?? '-' }}</td>
                                                                         </tr>
                                                                     @endforeach
                                                                 </tbody>
                                                             </table>
                                                         @endif
                                                     </div>
+                                                    @if($lr->status == 3)
+                                                        <div class="modal-footer justify-content-end">
+                                                            <a href="{{ url('collection/inpatient/lab/print/' . $lr->id . '?slug=result') }}" target="_blank" class="btn btn-teal">
+                                                                <i class="ph-printer me-1"></i>
+                                                                Cetak Hasil
+                                                            </a>
+                                                            <a href="{{ url('collection/inpatient/lab/print/' . $lr->id . '?slug=detail') }}" target="_blank" class="btn btn-teal">
+                                                                <i class="ph-money me-1"></i>
+                                                                Cetak Rincian Biaya
+                                                            </a>
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -148,7 +176,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">

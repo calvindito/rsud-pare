@@ -61,6 +61,44 @@ class LabRequest extends Model
     }
 
     /**
+     * patient
+     *
+     * @return void
+     */
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    /**
+     * doctor
+     *
+     * @return void
+     */
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
+
+    /**
+     * ref
+     *
+     * @return void
+     */
+    public function ref()
+    {
+        $model = $this->lab_requestable_type;
+
+        if ($model == 'App\Models\Inpatient') {
+            $text = 'Rawat Inap';
+        } else {
+            $text = 'Tidak Ada';
+        }
+
+        return $text;
+    }
+
+    /**
      * status
      *
      * @return void

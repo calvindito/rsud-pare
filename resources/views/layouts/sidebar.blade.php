@@ -58,8 +58,8 @@
                             </li>
                         @else
                             @if($checkAccessM1 != false)
-                                <li class="nav-item {{ Request::segment(1) == $m1['name'] }}">
-                                    <a href="{{ url($m1['link']) }}" class="nav-link">
+                                <li class="nav-item">
+                                    <a href="{{ url($m1['link']) }}" class="nav-link {{ Request::segment(1) == $m1['name'] ? 'active' : '' }}">
                                         <i class="{{ $m1['icon'] }}"></i>
                                         <span>{{ $m1['menu'] }}</span>
                                     </a>

@@ -35,7 +35,9 @@ class Simrs
     {
         $user = auth()->user();
         $role = $user->role;
-        $roleAccess = RoleAccess::where('role_id', $role->id)->whereRaw("LOCATE('$menu', menu)")->count();
+        $strLength = strlen($menu);
+
+        $roleAccess = RoleAccess::where('role_id', $role->id)->whereRaw("LEFT(menu, $strLength) = '$menu'")->count();
 
         if ($roleAccess > 0) {
             return true;

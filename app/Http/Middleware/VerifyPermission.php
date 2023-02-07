@@ -18,7 +18,7 @@ class VerifyPermission
     public function handle(Request $request, Closure $next)
     {
         $prefix = $request->route()->getPrefix();
-        $menu = str_replace('/', '.', $prefix);
+        $menu = str_replace('/', '.', ltrim($prefix, '/'));
 
         if (!Simrs::hasPermission($menu)) {
             abort(403);

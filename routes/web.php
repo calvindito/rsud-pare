@@ -483,12 +483,20 @@ Route::middleware('auth')->group(function () {
                 Route::match(['get', 'post'], 'recipe/{id}', 'InpatientController@recipe');
                 Route::match(['get', 'post'], 'diagnosis/{id}', 'InpatientController@diagnosis');
                 Route::match(['get', 'post'], 'lab/{id}', 'InpatientController@lab');
+                Route::get('lab/print/{id}', 'InpatientController@labPrint');
             });
 
             Route::prefix('visit-window')->group(function () {
                 Route::get('/', 'VisitWindowController@index');
                 Route::get('datatable', 'VisitWindowController@datatable');
             });
+        });
+
+        Route::prefix('lab')->group(function () {
+            Route::get('/', 'LabController@index');
+            Route::get('datatable', 'LabController@datatable');
+            Route::match(['get', 'post'], 'process/{id}', 'LabController@process');
+            Route::get('print/{id}', 'LabController@print');
         });
 
         Route::prefix('accounting')->namespace('Accounting')->group(function () {

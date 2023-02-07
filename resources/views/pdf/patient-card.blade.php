@@ -1,61 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{{ $title }}</title>
 
     <style>
         @page {
-            margin: 0;
+            margin: 10px;
         }
-
-		.id-card {
-            border: 4px solid #86c1ff;
-            shadow: none;
-			padding: 10px;
-			text-align: center;
-            height: 100%;
-		}
     </style>
 </head>
 <body>
-    <div class="id-card">
-        <div class="header">
-            <img src="{{ asset('assets/icon.png') }}" style="max-width:70px;">
-        </div>
-        <h2 style="margin-top:7px; margin-bottom:7px; font-size:14px; color:#06407d;">KARTU PASIEN</h2>
-        <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG("$data->id", 'QRCODE', 3.5, 3.5, [12, 131, 255]) }}" style="margin-bottom:5px;">
-        <div style="margin-top:5px; margin-bottom:5px; font-size:12px; color:#06407d;">{{ $data->name }}</div>
-        <hr style="margin-top:5px; margin-bottom:5px;">
-        <table style="width:100px;">
-            <tr>
-                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">No RM</th>
-                <td style="font-size:9px;">:</td>
-                <td style="font-size:9px; color:#064a8f; width:100%;">{{ $data->no_medical_record }}</td>
-            </tr>
-            <tr>
-                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Tanggal Lahir</th>
-                <td style="font-size:9px;">:</td>
-                <td style="font-size:9px; color:#064a8f; width:100%;">{{ $data->date_of_birth ? date('d-m-Y', strtotime($data->date_of_birth)) : '-' }}</td>
-            </tr>
-            <tr>
-                <th style="font-size:9px; text-align:left; white-space:nowrap; color:#06407d;">Alamat</th>
-                <td style="font-size:9px;">:</td>
-                <td style="font-size:9px; color:#064a8f; width:100%;">
-                    @if(isset($data->district) && isset($data->village))
-                        {{ $data->district->name . ' ' . $data->village }}
-                    @elseif(isset($data->district))
-                        {{ $data->district->name }}
-                    @elseif(isset($data->village))
-                        {{ $data->village }}
-                    @else
-                        -
-                    @endif
-                </td>
-            </tr>
-        </table>
-    </div>
+    <center>
+        <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/icon.png'))) }}" style="max-width:100px; margin-bottom:10px;">
+        <div style="font-size:18px; font-weight:bold; text-transform:uppercase; margin-bottom:10px;">{{ $title }}</div>
+        <img src="data:image/png;base64,{{ DNS2D::getBarcodePNG("$data->id", 'QRCODE', 3.5, 3.5) }}" style="margin-bottom:10px;">
+        <div style="font-size:14px; font-weight:bold; text-transform:uppercase;">{{ $data->name }}</div>
+        <hr style="margin:10px 0 10px 0; width:100%;">
+    </center>
+    <table style="width:100%;">
+        <tr style="font-size:12px;">
+            <td style="font-weight:bold;">No RM</td>
+            <td>:</td>
+            <td>{{ $data->id }}</td>
+        </tr>
+        <tr style="font-size:12px;">
+            <td style="font-weight:bold;">Jenis Kelamin</td>
+            <td>:</td>
+            <td>{{ $data->gender_format_result }}</td>
+        </tr>
+        <tr style="font-size:12px;">
+            <td style="font-weight:bold;">Tanggal Lahir</td>
+            <td>:</td>
+            <td>{{ $data->date_of_birth }}</td>
+        </tr>
+        <tr style="font-size:12px;">
+            <td style="font-weight:bold;">Agama</td>
+            <td>:</td>
+            <td>{{ $data->religion->name ?? '-' }}</td>
+        </tr>
+    </table>
 </body>
 </html>

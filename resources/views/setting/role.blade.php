@@ -68,8 +68,8 @@
                             <tr class="table-primary">
                                 <th class="align-middle w-100">Berikan Semua Akses</th>
                                 <td class="align-middle">
-                                    <div class="form-check justify-content-center">
-                                        <input type="checkbox" class="form-check-input" onclick="checkUncheckAllAccess(this)">
+                                    <div class="form-check form-switch justify-content-center">
+                                        <input type="checkbox" class="form-check-input form-check-input-success" onclick="checkUncheckAllAccess(this)">
                                     </div>
                                 </td>
                             </tr>

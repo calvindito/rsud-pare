@@ -13,6 +13,7 @@ use App\Models\LabItemGroup;
 use Illuminate\Http\Request;
 use App\Models\MedicalService;
 use App\Models\ActionOperative;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ActionSupporting;
 use App\Models\ActionNonOperative;
 use Illuminate\Support\Facades\DB;
@@ -404,6 +405,8 @@ class InpatientController extends Controller
                 try {
                     DB::transaction(function () use ($request, $inpatient) {
                         $createLabRequest = LabRequest::create([
+                            'patient_id' => $inpatient->patient_id,
+                            'doctor_id' => $inpatient->doctor_id,
                             'lab_requestable_type' => Inpatient::class,
                             'lab_requestable_id' => $inpatient->id,
                             'date_of_request' => $request->date_of_request,
@@ -451,5 +454,33 @@ class InpatientController extends Controller
         ];
 
         return view('layouts.index', ['data' => $data]);
+    }
+
+    public function labPrint(Request $request, $id)
+    {
+        $data = LabRequest::where('status', 3)->where('id', $id)->firstOrFail();
+
+        if ($request->has('slug')) {
+            if ($request->slug == 'result') {
+                $view = 'pdf.lab-result';
+                $title = 'Hasil Laboratorium';
+            } else if ($request->slug == 'detail') {
+                $view = 'pdf.lab-detail';
+                $title = 'Rincian Biaya Hasil Cek Laboratorium';
+            } else {
+                abort(404);
+            }
+
+            $pdf = Pdf::setOptions([
+                'adminUsername' => auth()->user()->username
+            ])->loadView($view, [
+                'title' => $title,
+                'data' => $data
+            ]);
+
+            return $pdf->stream($title . ' - ' . date('YmdHis') . '.pdf');
+        }
+
+        abort(404);
     }
 }

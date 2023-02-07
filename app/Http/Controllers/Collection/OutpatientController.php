@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Collection;
 
-use PDF;
 use App\Models\Unit;
 use App\Helpers\Simrs;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Religion;
 use App\Models\Operation;
+use App\Models\Outpatient;
 use Illuminate\Http\Request;
 use App\Models\OutpatientPoly;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\FunctionalService;
 use Illuminate\Support\Facades\DB;
 use App\Models\OperatingRoomAction;
@@ -55,6 +56,15 @@ class OutpatientController extends Controller
             })
             ->editColumn('status', function (OutpatientPoly $query) {
                 return $query->status();
+            })
+            ->addColumn('patient_id', function (OutpatientPoly $query) {
+                $patientId = null;
+
+                if (isset($query->outpatient)) {
+                    $patientId = $query->outpatient->patient_id;
+                }
+
+                return $patientId;
             })
             ->addColumn('patient_name', function (OutpatientPoly $query) {
                 $patientName = null;
@@ -422,38 +432,32 @@ class OutpatientController extends Controller
 
     public function print(Request $request, $id)
     {
-        $data = OutpatientPoly::findOrFail($id);
+        $data = Outpatient::findOrFail($id);
 
         if ($request->has('slug')) {
             if ($request->slug == 'ticket') {
                 $view = 'pdf.patient-ticket';
-                $pageSize = [78, 82];
+                $pageSize = [0, 0, 221.102, 255.118];
                 $title = 'E-Tiket Pasien';
+                $dpi = 102;
             } else if ($request->slug == 'bracelet') {
                 $view = 'pdf.patient-bracelet';
-                $pageSize = [39, 373];
+                $pageSize = [0, 0, 90.7087, 907.087];
                 $title = 'Gelang Pasien';
+                $dpi = 80;
             } else {
                 abort(404);
             }
 
-            $pdf = PDF::loadView($view, [
-                'title' => $title . ' - ' . $data->outpatient->patient->name . ' (' . $data->outpatient->patient->id . ')',
-                'data' => $data->outpatient->patient,
-                'barcode' => $data->id
-            ], [], [
-                'mode' => 'utf-8',
-                'format' => $pageSize,
-                'display_mode' => 'fullwidth',
-                'margin_top' => 3,
-                'margin_right' => 3,
-                'margin_bottom' => 3,
-                'margin_left' => 3,
-                'author' => auth()->user()->employee->name,
-                'subject' => $title,
-            ]);
+            $pdf = Pdf::setOptions([
+                'dpi' => $dpi,
+                'adminUsername' => auth()->user()->username
+            ])->loadView($view, [
+                'title' => $title,
+                'data' => $data->patient
+            ])->setPaper($pageSize, 'portrait');
 
-            return $pdf->stream($title . ' - ' . $data->id . '.pdf');
+            return $pdf->download($title . ' - ' . date('YmdHis') . '.pdf');
         }
 
         abort(404);
