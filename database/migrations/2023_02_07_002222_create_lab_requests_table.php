@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLabItemConditionDetailsTable extends Migration
+class CreateLabRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateLabItemConditionDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('lab_item_condition_details', function (Blueprint $table) {
+        Schema::create('lab_requests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('lab_item_condition_id')->nullable();
-            $table->string('slug')->nullable();
-            $table->string('name')->nullable();
-            $table->boolean('status')->default(1);
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->nullableMorphs('lab_requestable');
+            $table->timestamp('date_of_request')->nullable();
+            $table->char('status', 1)->default(1);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateLabItemConditionDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lab_item_condition_details');
+        Schema::dropIfExists('lab_requests');
     }
 }

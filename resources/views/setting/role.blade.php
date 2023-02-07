@@ -99,8 +99,8 @@
                                                         <small class="fst-italic float-end">level 3</small>
                                                     </td>
                                                     <td class="align-middle">
-                                                        <div class="form-check justify-content-center">
-                                                            <input type="checkbox" class="form-check-input" name="role_access_menu[]" value="{{ $m1['name'] . '.' . $m2['name'] . '.' . $m3['name'] }}">
+                                                        <div class="form-check form-switch justify-content-center">
+                                                            <input type="checkbox" class="form-check-input form-check-input-success" name="role_access_menu[]" value="{{ $m1['name'] . '.' . $m2['name'] . '.' . $m3['name'] }}">
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -113,8 +113,8 @@
                                                     <small class="fst-italic float-end">level 2</small>
                                                 </td>
                                                 <td class="align-middle">
-                                                    <div class="form-check justify-content-center">
-                                                        <input type="checkbox" class="form-check-input" name="role_access_menu[]" value="{{ $m1['name'] . '.' . $m2['name'] }}">
+                                                    <div class="form-check form-switch justify-content-center">
+                                                        <input type="checkbox" class="form-check-input form-check-input-success" name="role_access_menu[]" value="{{ $m1['name'] . '.' . $m2['name'] }}">
                                                     </div>
                                                 </td>
                                             </tr>
@@ -127,8 +127,8 @@
                                             <small class="fst-italic float-end">level 1</small>
                                         </td>
                                         <td class="align-middle">
-                                            <div class="form-check justify-content-center">
-                                                <input type="checkbox" class="form-check-input" name="role_access_menu[]" value="{{ $m1['menu'] }}">
+                                            <div class="form-check form-switch justify-content-center">
+                                                <input type="checkbox" class="form-check-input form-check-input-success" name="role_access_menu[]" value="{{ $m1['menu'] }}">
                                             </div>
                                         </td>
                                     </tr>

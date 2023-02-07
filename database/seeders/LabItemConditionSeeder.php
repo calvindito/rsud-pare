@@ -15,7 +15,7 @@ class LabItemConditionSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('clone')->table('dm_lab_kondisi')->orderBy('id')->chunk(1000, function ($query) {
+        DB::connection('clone')->table('dm_lab_kondisi_item')->whereNotNull('kondisi_id')->orderBy('id')->chunk(1000, function ($query) {
             foreach ($query as $q) {
                 LabItemCondition::insert([
                     'id' => $q->id,

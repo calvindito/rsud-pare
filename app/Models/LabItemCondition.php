@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LabItemCondition extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -29,26 +30,4 @@ class LabItemCondition extends Model
      * @var array
      */
     protected $guarded = ['id'];
-
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    public static function booted()
-    {
-        static::deleting(function ($query) {
-            $query->labItemConditionDetail()->delete();
-        });
-    }
-
-    /**
-     * labItemConditionDetail
-     *
-     * @return void
-     */
-    public function labItemConditionDetail()
-    {
-        return $this->hasMany(LabItemConditionDetail::class);
-    }
 }

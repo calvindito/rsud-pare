@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class LabItemGroup extends Model
+class LabRequestDetail extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class LabItemGroup extends Model
      *
      * @var string
      */
-    protected $table = 'lab_item_groups';
+    protected $table = 'lab_request_details';
 
     /**
      * The primary key associated with the table.
@@ -31,12 +31,32 @@ class LabItemGroup extends Model
     protected $guarded = ['id'];
 
     /**
-     * item
+     * labItem
      *
      * @return void
      */
-    public function item()
+    public function labItem()
     {
-        return $this->hasMany(LabItem::class);
+        return $this->belongsTo(LabItem::class);
+    }
+
+    /**
+     * labItemParent
+     *
+     * @return void
+     */
+    public function labItemParent()
+    {
+        return $this->belongsTo(LabItemParent::class);
+    }
+
+    /**
+     * labItemCondition
+     *
+     * @return void
+     */
+    public function labItemCondition()
+    {
+        return $this->belongsTo(LabItemCondition::class);
     }
 }

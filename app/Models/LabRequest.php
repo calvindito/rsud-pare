@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class LabItem extends Model
+class LabRequest extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class LabItem extends Model
      *
      * @var string
      */
-    protected $table = 'lab_items';
+    protected $table = 'lab_requests';
 
     /**
      * The primary key associated with the table.
@@ -31,43 +31,33 @@ class LabItem extends Model
     protected $guarded = ['id'];
 
     /**
-     * labCategory
+     * labRequestable
      *
      * @return void
      */
-    public function labCategory()
+    public function labRequestable()
     {
-        return $this->belongsTo(LabCategory::class);
+        return $this->morphTo();
     }
 
     /**
-     * labItemGroup
+     * user
      *
      * @return void
      */
-    public function labItemGroup()
+    public function user()
     {
-        return $this->belongsTo(LabItemGroup::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * labItemParent
+     * labRequestDetail
      *
      * @return void
      */
-    public function labItemParent()
+    public function labRequestDetail()
     {
-        return $this->hasOne(LabItemParent::class);
-    }
-
-    /**
-     * labFee
-     *
-     * @return void
-     */
-    public function labFee()
-    {
-        return $this->hasOne(LabFee::class);
+        return $this->hasMany(LabRequestDetail::class);
     }
 
     /**
@@ -80,9 +70,13 @@ class LabItem extends Model
         $status = $this->status;
 
         if ($status == 1) {
-            $html = '<span class="badge bg-success">Aktif</span>';
-        } else if ($status == 0) {
-            $html = '<span class="badge bg-danger">Tidak Aktif</span>';
+            $html = '<span class="badge bg-secondary">Menunggu Diproses</span>';
+        } else if ($status == 2) {
+            $html = '<span class="badge bg-primary">Sedang Diproses</span>';
+        } else if ($status == 3) {
+            $html = '<span class="badge bg-success">Selesai</span>';
+        } else if ($status == 4) {
+            $html = '<span class="badge bg-danger">Ditolak</span>';
         } else {
             $html = '<span class="badge bg-warning">Invalid</span>';
         }

@@ -274,4 +274,14 @@ class Inpatient extends Model
     {
         return $this->hasMany(InpatientDiagnosis::class);
     }
+
+    /**
+     * labRequest
+     *
+     * @return void
+     */
+    public function labRequest()
+    {
+        return $this->morphMany(LabRequest::class, 'lab_requestable');
+    }
 }

@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Collection;
 
 use App\Helpers\Simrs;
 use App\Models\Doctor;
+use App\Models\LabItem;
 use App\Models\Medicine;
 use App\Models\Inpatient;
+use App\Models\LabRequest;
 use App\Models\ActionOther;
+use App\Models\LabItemGroup;
 use Illuminate\Http\Request;
 use App\Models\MedicalService;
 use App\Models\ActionOperative;
@@ -374,6 +377,77 @@ class InpatientController extends Controller
             'patient' => $inpatient->patient,
             'inpatientDiagnosis' => $inpatient->inpatientDiagnosis,
             'content' => 'collection.inpatient-diagnosis'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function lab(Request $request, $id)
+    {
+        $inpatient = Inpatient::findOrFail($id);
+
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'date_of_request' => 'required',
+                'lrd_item_id' => 'required'
+            ], [
+                'date_of_request.required' => 'tanggal permintaan tidak boleh kosong',
+                'lrd_item_id.required' => 'mohon memilih salah satu item'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $inpatient) {
+                        $createLabRequest = LabRequest::create([
+                            'lab_requestable_type' => Inpatient::class,
+                            'lab_requestable_id' => $inpatient->id,
+                            'date_of_request' => $request->date_of_request,
+                            'status' => 1
+                        ]);
+
+                        foreach ($request->lrd_item_id as $lii) {
+                            $labItem = LabItem::find($lii);
+                            $labParent = $labItem ? $labItem->labItemParent : null;
+                            $labFee = $labItem ? $labItem->labFee : null;
+
+                            if ($labItem) {
+                                $createLabRequest->labRequestDetail()->create([
+                                    'lab_item_id' => $labItem->id,
+                                    'lab_item_parent_id' => $labParent ? $labParent->id : null,
+                                    'consumables' => $labFee ? $labFee->consumables : null,
+                                    'hospital_service' => $labFee ? $labFee->hospital_service : null,
+                                    'service' => $labFee ? $labFee->service : null
+                                ]);
+                            }
+                        }
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Data berhasil dikirim di laboratorium'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'inpatient' => $inpatient,
+            'patient' => $inpatient->patient,
+            'labRequest' => $inpatient->labRequest,
+            'labItemGroup' => LabItemGroup::orderBy('name')->get(),
+            'content' => 'collection.inpatient-lab'
         ];
 
         return view('layouts.index', ['data' => $data]);

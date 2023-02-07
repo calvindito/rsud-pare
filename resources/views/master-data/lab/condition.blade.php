@@ -59,14 +59,6 @@
                             <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
                         </div>
                     </div>
-                    <div class="form-group mb-2"><hr class="mb-0"></div>
-                    <legend class="fs-base fw-bold border-bottom pb-2 mb-3">
-                        Silahkan menambah / menghapus detail item kondisi dibawah ini :
-                    </legend>
-                    <div id="plus-destroy-item"></div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-teal col-12" onclick="addItem()"><i class="ph-plus"></i></button>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer justify-content-end">
@@ -92,24 +84,6 @@
         loadData();
     });
 
-    function addItem() {
-        var formElement = $(`
-            <div class="form-group">
-                <div class="input-group">
-                    <input type="hidden" name="item[]" value="{{ true }}">
-                    <input type="text" name="lab_item_conditional_detail_name[]" class="form-control" placeholder="Masukan nama">
-                    <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
-                </div>
-            </div>
-        `).hide().fadeIn(500);
-
-        $('#plus-destroy-item').append(formElement);
-    }
-
-    function removeItem(paramObj) {
-        $(paramObj).parents('.form-group').remove();
-    }
-
     function onReloadTable() {
         window.gDataTable.ajax.reload(null, false);
     }
@@ -121,7 +95,6 @@
         $('#btn-create').removeClass('d-none');
         $('#btn-update').addClass('d-none');
         $('#btn-cancel').addClass('d-none');
-        $('#plus-destroy-item').html('');
     }
 
     function onCreate() {
@@ -258,20 +231,6 @@
 
                 $('#table_id').val(response.id);
                 $('#name').val(response.name);
-
-                $.each(response.lab_item_condition_detail, function(i, val) {
-                    var formElement = $(`
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="hidden" name="item[]" value="{{ true }}">
-                                <input type="text" name="lab_item_conditional_detail_name[]" class="form-control" value="` + val.name + `" placeholder="Masukan nama">
-                                <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
-                            </div>
-                        </div>
-                    `).hide().fadeIn(500);;
-
-                    $('#plus-destroy-item').append(formElement);
-                });
             },
             error: function(response) {
                 onLoading('close', '.modal-content');

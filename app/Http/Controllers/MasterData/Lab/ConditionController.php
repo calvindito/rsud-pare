@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\LabItemCondition;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\LabItemConditionDetail;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
@@ -73,27 +72,9 @@ class ConditionController extends Controller
             ];
         } else {
             try {
-                DB::transaction(function () use ($request) {
-                    $createData = LabItemCondition::create([
-                        'name' => $request->name
-                    ]);
-
-                    if ($request->has('item')) {
-                        if (count($request->item) > 0) {
-                            foreach ($request->item as $key => $i) {
-                                $name = $request->lab_item_conditional_detail_name[$key];
-
-                                LabItemConditionDetail::updateOrCreate([
-                                    'lab_item_condition_id' => $createData->id,
-                                    'slug' => Str::slug($name, '-')
-                                ], [
-                                    'name' => $name,
-                                    'status' => true
-                                ]);
-                            }
-                        }
-                    }
-                });
+                $createData = LabItemCondition::create([
+                    'name' => $request->name
+                ]);
 
                 $response = [
                     'code' => 200,
@@ -113,11 +94,7 @@ class ConditionController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = LabItemCondition::with([
-            'labItemConditionDetail' => function ($query) {
-                $query->where('status', true);
-            }
-        ])->findOrFail($id);
+        $data = LabItemCondition::findOrFail($id);
 
         return response()->json($data);
     }
@@ -138,29 +115,9 @@ class ConditionController extends Controller
             ];
         } else {
             try {
-                DB::transaction(function () use ($request, $id) {
-                    $updateData = LabItemCondition::findOrFail($id)->update([
-                        'name' => $request->name
-                    ]);
-
-                    LabItemConditionDetail::where('lab_item_condition_id', $id)->update(['status' => false]);
-
-                    if ($request->has('item')) {
-                        if (count($request->item) > 0) {
-                            foreach ($request->item as $key => $i) {
-                                $name = $request->lab_item_conditional_detail_name[$key];
-
-                                LabItemConditionDetail::updateOrCreate([
-                                    'lab_item_condition_id' => $id,
-                                    'slug' => Str::slug($name, '-')
-                                ], [
-                                    'name' => $name,
-                                    'status' => true
-                                ]);
-                            }
-                        }
-                    }
-                });
+                $updateData = LabItemCondition::findOrFail($id)->update([
+                    'name' => $request->name
+                ]);
 
                 $response = [
                     'code' => 200,
