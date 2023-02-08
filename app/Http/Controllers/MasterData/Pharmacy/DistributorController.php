@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\MasterData\Pharmacy;
 
+use App\Models\Factory;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +15,7 @@ class DistributorController extends Controller
     public function index()
     {
         $data = [
+            'factory' => Factory::all(),
             'content' => 'master-data.pharmacy.distributor'
         ];
 
@@ -27,8 +30,32 @@ class DistributorController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('name', 'like', "%$search%");
+                    $query->where('name', 'like', "%$search%")
+                        ->whereHas('factoryDistributor', function ($query) use ($search) {
+                            $query->whereHas('distributor', function ($query) use ($search) {
+                                $query->where('name', 'like', "%$search%");
+                            });
+                        });
                 }
+            })
+            ->editColumn('factory_name', function (Distributor $query) {
+                $factoryName = '';
+
+                if ($query->distributorFactory->count() > 0) {
+                    foreach ($query->distributorFactory as $df) {
+                        $factoryName .= '<div><small>- ' . $df->factory->name . '</small></div>';
+                    }
+                }
+
+                if ($factoryName) {
+                    $implodeName = $factoryName;
+                } else {
+                    $implodeName = 'Tidak ada data';
+                }
+
+                return '
+                    <button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$implodeName'" . ')">Klik Disini</button>
+                ';
             })
             ->addColumn('action', function (Distributor $query) {
                 return '
@@ -47,7 +74,7 @@ class DistributorController extends Controller
                     </div>
                 ';
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'factory_name'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
@@ -68,9 +95,19 @@ class DistributorController extends Controller
             ];
         } else {
             try {
-                $createData = Distributor::create([
-                    'name' => $request->name
-                ]);
+                DB::transaction(function () use ($request) {
+                    $createData = Distributor::create([
+                        'name' => $request->name
+                    ]);
+
+                    if ($request->has('distributor_factory_factory_id')) {
+                        foreach ($request->distributor_factory_factory_id as $dffi) {
+                            $createData->distributorFactory()->create([
+                                'factory_id' => $dffi
+                            ]);
+                        }
+                    }
+                });
 
                 $response = [
                     'code' => 200,
@@ -90,7 +127,7 @@ class DistributorController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = Distributor::findOrFail($id);
+        $data = Distributor::with('factoryDistributor')->findOrFail($id);
 
         return response()->json($data);
     }
@@ -111,9 +148,23 @@ class DistributorController extends Controller
             ];
         } else {
             try {
-                $updateData = Distributor::findOrFail($id)->update([
-                    'name' => $request->name
-                ]);
+                DB::transaction(function () use ($request, $id) {
+                    $updateData = Factory::findOrFail($id);
+
+                    $updateData->update([
+                        'name' => $request->name
+                    ]);
+
+                    $updateData->distributorFactory()->delete();
+
+                    if ($request->has('distributor_factory_factory_id')) {
+                        foreach ($request->distributor_factory_factory_id as $dffi) {
+                            $updateData->distributorFactory()->create([
+                                'factory_id' => $dffi
+                            ]);
+                        }
+                    }
+                });
 
                 $response = [
                     'code' => 200,

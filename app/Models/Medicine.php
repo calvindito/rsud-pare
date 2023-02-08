@@ -31,12 +31,12 @@ class Medicine extends Model
     protected $guarded = ['id'];
 
     /**
-     * factory
+     * distributor
      *
      * @return void
      */
-    public function factory()
+    public function distributor()
     {
-        return $this->belongsTo(Factory::class);
+        return $this->belongsTo(Distributor::class);
     }
 }

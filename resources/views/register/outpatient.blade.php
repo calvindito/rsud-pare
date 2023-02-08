@@ -263,6 +263,10 @@
                             <input type="radio" class="btn-check" name="type" id="type-jr-general" value="7" autocomplete="off">
                             <label class="btn btn-outline-primary rounded-pill" for="type-jr-general">JR Umum</label>
                         </div>
+                        <div class="me-2">
+                            <input type="radio" class="btn-check" name="type" id="type-bpjs-health" value="8" autocomplete="off">
+                            <label class="btn btn-outline-primary rounded-pill" for="type-bpjs-health">BPJS Kesehatan</label>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">

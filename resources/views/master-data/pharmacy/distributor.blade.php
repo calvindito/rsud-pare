@@ -28,6 +28,7 @@
                     <tr>
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Nama</th>
+                        <th class="text-center" nowrap>Pabrik</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -55,6 +56,16 @@
                         <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Pabrik <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <select class="form-select select2-basic" name="distributor_factory_factory_id[]" id="distributor_factory_factory_id" multiple>
+                                @foreach($factory as $f)
+                                    <option value="{{ $f->id }}">{{ $f->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -93,6 +104,7 @@
         $('#btn-create').removeClass('d-none');
         $('#btn-update').addClass('d-none');
         $('#btn-cancel').addClass('d-none');
+        $('.select2-basic').val('').change();
     }
 
     function onCreate() {
@@ -163,6 +175,7 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'factory_name', name: 'factory_name', orderable: false, searchable: true, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -228,6 +241,13 @@
 
                 $('#table_id').val(response.id);
                 $('#name').val(response.name);
+
+                var factoryId = new Array();
+                $.each(response.distributor_factory, function(i, val) {
+                    factoryId[i] = val.factory_id;
+                });
+
+                $('#distributor_factory_factory_id').val(factoryId).change();
             },
             error: function(response) {
                 onLoading('close', '.modal-content');

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFactoryDistributorsTable extends Migration
+class CreateDistributorFactoriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateFactoryDistributorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('factory_distributors', function (Blueprint $table) {
+        Schema::create('distributor_factories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('factory_id')->nullable();
             $table->unsignedBigInteger('distributor_id')->nullable();
+            $table->unsignedBigInteger('factory_id')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateFactoryDistributorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('factory_distributors');
+        Schema::dropIfExists('distributor_factories');
     }
 }

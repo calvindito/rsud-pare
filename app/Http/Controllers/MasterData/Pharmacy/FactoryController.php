@@ -4,7 +4,6 @@ namespace App\Http\Controllers\MasterData\Pharmacy;
 
 use App\Models\City;
 use App\Models\Factory;
-use App\Models\Distributor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -17,7 +16,6 @@ class FactoryController extends Controller
     {
         $data = [
             'city' => City::all(),
-            'distributor' => Distributor::all(),
             'content' => 'master-data.pharmacy.factory'
         ];
 
@@ -37,30 +35,8 @@ class FactoryController extends Controller
                         ->orWhere('address', 'like', "%$search%")
                         ->whereHas('city', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
-                        })
-                        ->whereHas('distributor', function ($query) use ($search) {
-                            $query->where('name', 'like', "%$search%");
                         });
                 }
-            })
-            ->editColumn('distributor_name', function (Factory $query) {
-                $distributorName = '';
-
-                if ($query->factoryDistributor->count() > 0) {
-                    foreach ($query->factoryDistributor as $fd) {
-                        $distributorName .= '<div><small>- ' . $fd->distributor->name . '</small></div>';
-                    }
-                }
-
-                if ($distributorName) {
-                    $implodeName = $distributorName;
-                } else {
-                    $implodeName = 'Tidak ada data';
-                }
-
-                return '
-                    <button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$implodeName'" . ')">Klik Disini</button>
-                ';
             })
             ->addColumn('city_name', function (Factory $query) {
                 $cityName = null;
@@ -120,23 +96,13 @@ class FactoryController extends Controller
             ];
         } else {
             try {
-                DB::transaction(function () use ($request) {
-                    $createData = Factory::create([
-                        'city_id' => $request->city_id,
-                        'name' => $request->name,
-                        'phone' => $request->phone,
-                        'email' => $request->email,
-                        'address' => $request->address
-                    ]);
-
-                    if ($request->has('factory_distributor_distributor_id')) {
-                        foreach ($request->factory_distributor_distributor_id as $fddi) {
-                            $createData->factoryDistributor()->create([
-                                'distributor_id' => $fddi
-                            ]);
-                        }
-                    }
-                });
+                $createData = Factory::create([
+                    'city_id' => $request->city_id,
+                    'name' => $request->name,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'address' => $request->address
+                ]);
 
                 $response = [
                     'code' => 200,
@@ -156,7 +122,7 @@ class FactoryController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = Factory::with('factoryDistributor')->findOrFail($id);
+        $data = Factory::findOrFail($id);
 
         return response()->json($data);
     }
@@ -188,27 +154,13 @@ class FactoryController extends Controller
             ];
         } else {
             try {
-                DB::transaction(function () use ($request, $id) {
-                    $updateData = Factory::findOrFail($id);
-
-                    $updateData->update([
-                        'city_id' => $request->city_id,
-                        'name' => $request->name,
-                        'phone' => $request->phone,
-                        'email' => $request->email,
-                        'address' => $request->address
-                    ]);
-
-                    $updateData->factoryDistributor()->delete();
-
-                    if ($request->has('factory_distributor_distributor_id')) {
-                        foreach ($request->factory_distributor_distributor_id as $fddi) {
-                            $updateData->factoryDistributor()->create([
-                                'distributor_id' => $fddi
-                            ]);
-                        }
-                    }
-                });
+                Factory::findOrFail($id)->update([
+                    'city_id' => $request->city_id,
+                    'name' => $request->name,
+                    'phone' => $request->phone,
+                    'email' => $request->email,
+                    'address' => $request->address
+                ]);
 
                 $response = [
                     'code' => 200,

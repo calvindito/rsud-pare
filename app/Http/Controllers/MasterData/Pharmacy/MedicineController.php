@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\MasterData\Pharmacy;
 
-use App\Models\Factory;
 use App\Models\Medicine;
+use App\Models\Distributor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -14,7 +14,7 @@ class MedicineController extends Controller
     public function index()
     {
         $data = [
-            'factory' => Factory::all(),
+            'distributor' => Distributor::all(),
             'content' => 'master-data.pharmacy.medicine'
         ];
 
@@ -38,28 +38,28 @@ class MedicineController extends Controller
             })
             ->editColumn('price_purchase', '{{ Simrs::formatRupiah($price_purchase) }}')
             ->editColumn('price', '{{ Simrs::formatRupiah($price) }}')
-            ->addColumn('factory_name', function (Medicine $query) {
-                $factoryName = null;
+            ->addColumn('distributor_name', function (Medicine $query) {
+                $distributorName = null;
 
-                if (isset($query->factory)) {
-                    $factoryName = $query->factory->name;
+                if (isset($query->distributor)) {
+                    $distributorName = $query->distributor->name;
                 }
 
-                return $factoryName;
+                return $distributorName;
             })
-            ->editColumn('distributor_name', function (Medicine $query) {
-                $distributorName = '';
+            ->editColumn('factory_name', function (Medicine $query) {
+                $factoryName = '';
 
-                if ($query->factory) {
-                    if ($query->factory->factoryDistributor->count() > 0) {
-                        foreach ($query->factory->factoryDistributor as $fd) {
-                            $distributorName .= '<div><small>- ' . $fd->distributor->name . '</small></div>';
+                if ($query->distributor) {
+                    if ($query->distributor->distributorFactory->count() > 0) {
+                        foreach ($query->distributor->distributorFactory as $df) {
+                            $factoryName .= '<div><small>- ' . $df->factory->name . '</small></div>';
                         }
                     }
                 }
 
-                if ($distributorName) {
-                    $implodeName = $distributorName;
+                if ($factoryName) {
+                    $implodeName = $factoryName;
                 } else {
                     $implodeName = 'Tidak ada data';
                 }
@@ -85,7 +85,7 @@ class MedicineController extends Controller
                     </div>
                 ';
             })
-            ->rawColumns(['action', 'distributor_name'])
+            ->rawColumns(['action', 'factory_name'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
@@ -94,14 +94,14 @@ class MedicineController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'factory_id' => 'required',
+            'distributor_id' => 'required',
             'code' => 'required|unique:medicines,code',
             'code_type' => 'required|unique:medicines,code_type',
             'name' => 'required',
             'name_generic' => 'required',
             'price' => 'required'
         ], [
-            'factory_id.required' => 'mohon memilih pabrik',
+            'distributor_id.required' => 'mohon memilih distributor',
             'code.required' => 'kode t tidak boleh kosong',
             'code.unique' => 'kode t telah digunakan',
             'code_type.required' => 'kode jenis tidak boleh kosong',
@@ -119,7 +119,7 @@ class MedicineController extends Controller
         } else {
             try {
                 $createData = Medicine::create([
-                    'factory_id' => $request->factory_id,
+                    'distributor_id' => $request->distributor_id,
                     'code' => $request->code,
                     'code_item' => $request->code_item,
                     'code_type' => $request->code_type,
@@ -169,14 +169,14 @@ class MedicineController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'factory_id' => 'required',
+            'distributor_id' => 'required',
             'code' => 'required|unique:medicines,code,' . $id,
             'code_type' => 'required|unique:medicines,code_type,' . $id,
             'name' => 'required',
             'name_generic' => 'required',
             'price' => 'required'
         ], [
-            'factory_id.required' => 'mohon memilih pabrik',
+            'distributor_id.required' => 'mohon memilih distributor',
             'code.required' => 'kode t tidak boleh kosong',
             'code.unique' => 'kode t telah digunakan',
             'code_type.required' => 'kode jenis tidak boleh kosong',
@@ -194,7 +194,7 @@ class MedicineController extends Controller
         } else {
             try {
                 $updateData = Medicine::findOrFail($id)->update([
-                    'factory_id' => $request->factory_id,
+                    'distributor_id' => $request->distributor_id,
                     'code' => $request->code,
                     'code_item' => $request->code_item,
                     'code_type' => $request->code_type,

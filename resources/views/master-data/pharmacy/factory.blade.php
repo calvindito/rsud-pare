@@ -29,7 +29,6 @@
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Kota</th>
                         <th nowrap>Nama</th>
-                        <th class="text-center" nowrap>Distributor</th>
                         <th nowrap>No HP</th>
                         <th nowrap>Email</th>
                         <th nowrap>Alamat</th>
@@ -88,16 +87,6 @@
                         <label class="col-form-label col-lg-3">Alamat <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <textarea class="form-control" name="address" id="address" style="resize:none;" placeholder="Masukan alamat"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Distributor <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select select2-basic" name="factory_distributor_distributor_id[]" id="factory_distributor_distributor_id" multiple>
-                                @foreach($distributor as $d)
-                                    <option value="{{ $d->id }}">{{ $d->name }}</option>
-                                @endforeach
-                            </select>
                         </div>
                     </div>
                 </form>
@@ -208,7 +197,6 @@
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'city_name', name: 'city_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'distributor_name', name: 'distributor_name', orderable: false, searchable: true, className: 'align-middle text-center' },
                 { data: 'phone', name: 'phone', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'email', name: 'email', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'address', name: 'address', orderable: true, searchable: true, className: 'align-middle' },
@@ -281,13 +269,6 @@
                 $('#phone').val(response.phone);
                 $('#email').val(response.email);
                 $('#address').val(response.address);
-
-                var distributorId = new Array();
-                $.each(response.factory_distributor, function(i, val) {
-                    distributorId[i] = val.distributor_id;
-                });
-
-                $('#factory_distributor_distributor_id').val(distributorId).change();
             },
             error: function(response) {
                 onLoading('close', '.modal-content');

@@ -61,11 +61,11 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Pabrik <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Distributor <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <select class="form-select select2-basic" name="factory_id" id="factory_id">
-                                @foreach($factory as $f)
-                                    <option value="{{ $f->id }}">{{ $f->name }}</option>
+                            <select class="form-select select2-basic" name="distributor_id" id="distributor_id">
+                                @foreach($distributor as $d)
+                                    <option value="{{ $d->id }}">{{ $d->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -371,7 +371,7 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#factory_id').val(response.factory_id).change();
+                $('#distributor_id').val(response.distributor_id).change();
                 $('#code').val(response.code);
                 $('#code_t').val(response.code_t);
                 $('#code_type').val(response.code_type);

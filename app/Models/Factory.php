@@ -39,14 +39,4 @@ class Factory extends Model
     {
         return $this->belongsTo(City::class);
     }
-
-    /**
-     * factoryDistributor
-     *
-     * @return void
-     */
-    public function factoryDistributor()
-    {
-        return $this->hasMany(FactoryDistributor::class);
-    }
 }

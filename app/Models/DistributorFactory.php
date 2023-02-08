@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class FactoryDistributor extends Model
+class DistributorFactory extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class FactoryDistributor extends Model
      *
      * @var string
      */
-    protected $table = 'factory_distributors';
+    protected $table = 'distributor_factories';
 
     /**
      * The primary key associated with the table.
@@ -35,8 +35,8 @@ class FactoryDistributor extends Model
      *
      * @return void
      */
-    public function distributor()
+    public function factory()
     {
-        return $this->belongsTo(Distributor::class);
+        return $this->belongsTo(Factory::class);
     }
 }

@@ -29,4 +29,14 @@ class Distributor extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * distributorFactory
+     *
+     * @return void
+     */
+    public function distributorFactory()
+    {
+        return $this->hasMany(DistributorFactory::class);
+    }
 }

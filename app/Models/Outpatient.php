@@ -60,6 +60,8 @@ class Outpatient extends Model
             $text = 'JR BPJS';
         } else if ($type == 7) {
             $text = 'JR Umum';
+        } else if ($type == 8) {
+            $text = 'BPJS Kesehatan';
         } else {
             $text = 'Invalid';
         }
