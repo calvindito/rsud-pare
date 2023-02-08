@@ -162,3 +162,81 @@ function lightBox() {
         loop: false
     });
 }
+
+function dragAndDropFile(config = {}) {
+    const previewZoomButtonClasses = {
+        rotate: 'btn btn-light btn-icon btn-sm',
+        toggleheader: 'btn btn-light btn-icon btn-header-toggle btn-sm',
+        fullscreen: 'btn btn-light btn-icon btn-sm',
+        borderless: 'btn btn-light btn-icon btn-sm',
+        close: 'btn btn-light btn-icon btn-sm'
+    };
+
+    const previewZoomButtonIcons = {
+        prev: document.dir == 'rtl' ? '<i class="ph-arrow-right"></i>' : '<i class="ph-arrow-left"></i>',
+        next: document.dir == 'rtl' ? '<i class="ph-arrow-left"></i>' : '<i class="ph-arrow-right"></i>',
+        rotate: '<i class="ph-arrow-clockwise"></i>',
+        toggleheader: '<i class="ph-arrows-down-up"></i>',
+        fullscreen: '<i class="ph-corners-out"></i>',
+        borderless: '<i class="ph-frame-corners"></i>',
+        close: '<i class="ph-x"></i>'
+    };
+
+    const fileActionSettings = {
+        zoomClass: '',
+        zoomIcon: '<i class="ph-magnifying-glass-plus"></i>',
+        dragClass: 'p-2',
+        dragIcon: '<i class="ph-dots-six"></i>',
+        removeClass: '',
+        removeErrorClass: 'text-danger',
+        removeIcon: '<i class="ph-trash"></i>',
+        indicatorNew: '<i class="ph-file-plus text-success"></i>',
+        indicatorSuccess: '<i class="ph-check file-icon-large text-success"></i>',
+        indicatorError: '<i class="ph-x text-danger"></i>',
+        indicatorLoading: '<i class="ph-spinner spinner text-muted"></i>'
+    };
+
+    $('.file-input').fileinput({
+        browseLabel: 'Browse',
+        browseOnZoneClick: true,
+        autoReplace: true,
+        maxFileCount: config.maxFile,
+        allowedFileExtensions: config.allowFile,
+        browseIcon: '<i class="ph-file-plus me-2"></i>',
+        uploadIcon: '<i class="ph-file-arrow-up me-2"></i>',
+        removeIcon: '<i class="ph-x fs-base me-2"></i>',
+        layoutTemplates: {
+            icon: '<i class="ph-check"></i>'
+        },
+        uploadClass: 'btn btn-light',
+        removeClass: 'btn btn-light',
+        initialCaption: "No file selected",
+        initialPreview: config.preview,
+        initialPreviewConfig: config.previewConfig,
+        initialPreviewAsData: true,
+        overwriteInitial: true,
+        previewZoomButtonClasses: previewZoomButtonClasses,
+        previewZoomButtonIcons: previewZoomButtonIcons,
+        fileActionSettings: fileActionSettings
+    });
+}
+
+function textEditor(selector, placeholder = 'Masukan sesuatu ...') {
+    $(selector).summernote({
+        placeholder: placeholder,
+        tabsize: 2,
+        height: 400,
+        lang: 'id-ID',
+        fontNames: ['Arial', 'Arial Black'],
+        addDefaultFonts: false,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline', 'clear']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['table', ['table']],
+            ['insert', ['link', 'picture', 'video']],
+            ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+    });
+}

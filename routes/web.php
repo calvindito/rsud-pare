@@ -501,6 +501,13 @@ Route::middleware('auth')->group(function () {
             Route::get('print/{id}', 'LabController@print');
         });
 
+        Route::prefix('radiology')->group(function () {
+            Route::get('/', 'RadiologyController@index');
+            Route::get('datatable', 'RadiologyController@datatable');
+            Route::match(['get', 'post'], 'process/{id}', 'RadiologyController@process');
+            Route::get('print/{id}', 'RadiologyController@print');
+        });
+
         Route::prefix('accounting')->namespace('Accounting')->group(function () {
             Route::prefix('chart-of-account')->group(function () {
                 Route::get('/', 'ChartOfAccountController@index');

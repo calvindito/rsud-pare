@@ -521,6 +521,13 @@ return [
         'sub' => null
     ],
     [
+        'name' => 'radiology',
+        'menu' => 'Radiologi',
+        'icon' => 'ph-monitor',
+        'link' => 'radiology',
+        'sub' => null
+    ],
+    [
         'name' => 'accounting',
         'menu' => 'Akuntansi',
         'icon' => 'ph-books',

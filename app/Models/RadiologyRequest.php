@@ -138,4 +138,20 @@ class RadiologyRequest extends Model
 
         return $html;
     }
+
+    /**
+     * total
+     *
+     * @return void
+     */
+    public function total()
+    {
+        $consumables = $this->consumables;
+        $hospitalService = $this->hospital_service;
+        $service = $this->service;
+        $fee = $this->fee;
+        $total = $consumables + $hospitalService + $service + $fee;
+
+        return $total;
+    }
 }
