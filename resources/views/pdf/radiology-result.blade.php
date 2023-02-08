@@ -57,6 +57,14 @@
             <td>{{ $data->doctor->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
+            <td style="font-weight:bold;">Jenis Kelamin</td>
+            <td>:</td>
+            <td>{{ $data->patient->gender_format_result }}</td>
+            <td style="font-weight:bold;">Golongan</td>
+            <td>:</td>
+            <td>{{ $data->radiologyRequestable->type_format_result ?? '-' }}</td>
+        </tr>
+        <tr style="font-size:14px;">
             <td style="font-weight:bold;">Tanggal Permintaan</td>
             <td>:</td>
             <td>{{ date('d-m-Y', strtotime($data->date_of_request)) }}</td>
@@ -72,56 +80,41 @@
             <td>:</td>
             <td>{{ $data->user->employee->name ?? '-' }}</td>
         </tr>
+        <tr style="font-size:14px;">
+            <td style="font-weight:bold;">Tangal Lahir</td>
+            <td>:</td>
+            <td>{{ $data->patient->date_of_birth }}</td>
+            <td style="font-weight:bold;">Tindakan</td>
+            <td>:</td>
+            <td>{{ $data->radiology->type . ' - ' . $data->radiology->object . ' - ' . $data->radiology->projection }}</td>
+        </tr>
+        <tr style="font-size:14px;">
+            <td style="font-weight:bold;">Klinis</td>
+            <td>:</td>
+            <td>{{ $data->clinical }}</td>
+            <td style="font-weight:bold;">Kritis</td>
+            <td>:</td>
+            <td>{{ $data->critical ? 'Ya' : 'Tidak' }}</td>
+        </tr>
     </table>
     <table class="table" style="margin-bottom:20px;">
         <thead style="background:#E5E7EB;">
             <tr>
-                <th>Grup</th>
-                <th>Item</th>
-                <th>BHP</th>
-                <th>JRS</th>
-                <th>JASPEL</th>
-                <th>Subtotal</th>
+                <th>Expertise</th>
             </tr>
         </thead>
         <tbody>
-            @php $total = 0; @endphp
-            @foreach($data->labRequestDetail as $lrd)
-                @php
-                    $consumables = $lrd->consumables;
-                    $hospitalService = $lrd->hospital_service;
-                    $service = $lrd->service;
-                    $subtotal = $consumables + $hospitalService + $service;
-                    $total += $subtotal;
-                @endphp
-                <tr>
-                    <td>{{ $lrd->labItem->labItemGroup->name }}</td>
-                    <td>{{ $lrd->labItem->name }}</td>
-                    <td nowrap>Rp {{ number_format($consumables, 0, '.', '.') }}</td>
-                    <td nowrap>Rp {{ number_format($hospitalService, 0, '.', '.') }}</td>
-                    <td nowrap>Rp {{ number_format($service, 0, '.', '.') }}</td>
-                    <td nowrap>Rp {{ number_format($subtotal, 0, '.', '.') }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-        <tfoot style="background:#E5E7EB;">
             <tr>
-                <td style="font-weight:bold;" colspan="5">TOTAL KESELURUHAN</td>
-                <td style="font-weight:bold;">Rp {{ number_format($total, 0, '.', '.') }}</td>
+                <td>{!! $data->expertise ?? '<div style="text-align:center !important;">Belum ada</div>' !!}</td>
             </tr>
-        </tfoot>
+        </tbody>
     </table>
     <table style="width:100%;">
         <tr style="text-align:center;">
-            <td>
-                <div style="font-size:14px; margin-bottom:60px;">Petugas Pelaksana</div>
-                <div style="font-size:14px; margin-bottom:3px; text-decoration:underline;">{{ $data->user->employee->name }}</div>
-                <div style="font-size:12px; letter-spacing:0.5px;">NIP. -</div>
-            </td>
-            <td>
-                <div style="font-size:14px; margin-bottom:60px;">Ka. Ins. Laboratorium</div>
-                <div style="font-size:14px; margin-bottom:3px; text-decoration:underline;">dr. Erwin Ichsan</div>
-                <div style="font-size:12px; letter-spacing:0.5px;">NIP. 196411151990031011</div>
+            <td style="text-align:right;">
+                <div style="font-size:14px; margin-bottom:60px;">Dokter Spesialis Radiologi</div>
+                <div style="font-size:14px; margin-bottom:3px; text-decoration:underline;">dr. Nanik Yuliana, Sp. Rad.</div>
+                <div style="font-size:12px; letter-spacing:0.5px;">NIP. 197707102003122005</div>
             </td>
         </tr>
     </table>

@@ -21,6 +21,7 @@ $(function() {
     formatNumber();
     select2Basic();
     setBaseUrl();
+    lightBox();
 
     $('.sidebar-control').on('click', function() {
         if(window.gDataTable) {
@@ -153,4 +154,11 @@ function listBox(selector, config = {}) {
     const listboxButtonsHiddenElement = document.querySelector(selector);
 
     new DualListbox(listboxButtonsHiddenElement, config);
+}
+
+function lightBox() {
+    GLightbox({
+        selector: '[data-bs-popup="lightbox"]',
+        loop: false
+    });
 }

@@ -76,4 +76,14 @@ class Radiology extends Model
     {
         return $this->belongsTo(ActionSupporting::class);
     }
+
+    /**
+     * radiologyAction
+     *
+     * @return void
+     */
+    public function radiologyAction()
+    {
+        return $this->hasOne(RadiologyAction::class);
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\LabItem;
 use App\Models\Medicine;
 use App\Models\Inpatient;
+use App\Models\Radiology;
 use App\Models\LabRequest;
 use App\Models\ActionOther;
 use App\Models\LabItemGroup;
@@ -15,6 +16,7 @@ use App\Models\MedicalService;
 use App\Models\ActionOperative;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ActionSupporting;
+use App\Models\RadiologyRequest;
 use App\Models\ActionNonOperative;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -482,5 +484,86 @@ class InpatientController extends Controller
         }
 
         abort(404);
+    }
+
+    public function radiology(Request $request, $id)
+    {
+        $inpatient = Inpatient::findOrFail($id);
+
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'date_of_request' => 'required',
+                'radiology_id' => 'required'
+            ], [
+                'date_of_request.required' => 'tanggal permintaan tidak boleh kosong',
+                'radiology_id.required' => 'mohon memilih tindakan'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $inpatient) {
+                        $radiology = Radiology::find($request->radiology_id);
+
+                        RadiologyRequest::create([
+                            'doctor_id' => $inpatient->doctor_id,
+                            'patient_id' => $inpatient->patient_id,
+                            'radiology_id' => $request->radiology_id,
+                            'radiology_requestable_type' => Inpatient::class,
+                            'radiology_requestable_id' => $inpatient->id,
+                            'date_of_request' => $request->date_of_request,
+                            'consumables' => $radiology->radiologyAction->consumables ?? 0,
+                            'hospital_service' => $radiology->radiologyAction->hospital_service ?? 0,
+                            'service' => $radiology->radiologyAction->service ?? 0,
+                            'fee' => $radiology->radiologyAction->fee ?? 0,
+                            'status' => 1
+                        ]);
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Data berhasil dikirim di radiologi'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $radiology = Radiology::whereHas('radiologyAction', function ($query) use ($inpatient) {
+            $query->where('class_type_id', $inpatient->roomType->class_type_id);
+        })->orderBy('type')->get();
+
+        $data = [
+            'inpatient' => $inpatient,
+            'patient' => $inpatient->patient,
+            'radiologyRequest' => $inpatient->radiologyRequest,
+            'radiology' => $radiology,
+            'content' => 'collection.inpatient-radiology'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function radiologyPrint(Request $request, $id)
+    {
+        $data = RadiologyRequest::where('status', 3)->where('id', $id)->firstOrFail();
+        $pdf = Pdf::setOptions([
+            'adminUsername' => auth()->user()->username
+        ])->loadView('pdf.radiology-result', [
+            'title' => 'Hasil Pemeriksaan Radiologi',
+            'data' => $data
+        ]);
+
+        return $pdf->stream('Hasil Pemeriksaan Radiologi - ' . date('YmdHis') . '.pdf');
     }
 }

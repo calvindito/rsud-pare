@@ -484,6 +484,8 @@ Route::middleware('auth')->group(function () {
                 Route::match(['get', 'post'], 'diagnosis/{id}', 'InpatientController@diagnosis');
                 Route::match(['get', 'post'], 'lab/{id}', 'InpatientController@lab');
                 Route::get('lab/print/{id}', 'InpatientController@labPrint');
+                Route::match(['get', 'post'], 'radiology/{id}', 'InpatientController@radiology');
+                Route::get('radiology/print/{id}', 'InpatientController@radiologyPrint');
             });
 
             Route::prefix('visit-window')->group(function () {

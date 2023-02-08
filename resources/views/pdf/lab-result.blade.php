@@ -32,7 +32,7 @@
     <table style="width:100%;">
         <tr>
             <td style="vertical-align:middle; text-align:center;" width="10%">
-                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/icon.png'))) }}" style="max-width:100px;">
+                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/logo-kab.png'))) }}" style="max-width:80px;">
             </td>
             <td style="vertical-align:middle; text-align:center;" width="80%;">
                 <div style="font-size:18px; font-weight:400; letter-spacing:1px; text-transform:uppercase;">Pemerintahan Kabupaten Kediri</div>
@@ -41,7 +41,7 @@
                 <div style="font-size:13px;">Faksimile (0354) 391833 | email : rsud_pare@kedirikab.go.id</div>
             </td>
             <td style="vertical-align:middle; text-align:center;" width="10%">
-                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/logo-kab.png'))) }}" style="max-width:80px;">
+                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/icon.png'))) }}" style="max-width:100px;">
             </td>
         </tr>
     </table>

@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendataan - Rawat Inap - <span class="fw-normal">Laboratorium</span>
+                Pendataan - Rawat Inap - <span class="fw-normal">Radiologi</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -10,7 +10,7 @@
             <a href="{{ url()->full() }}" class="btn btn-flat-primary">Refresh</a>
             <button type="button" class="btn btn-flat-primary" data-bs-toggle="modal" data-bs-target="#modal-form" onclick="onReset()">
                 <i class="ph-plus-circle me-1"></i>
-                Permintaan Cek
+                Permintaan
             </button>
         </div>
     </div>
@@ -47,6 +47,14 @@
                         <td class="align-middle" width="1%">:</td>
                         <td class="align-middle">{{ $inpatient->roomType->name . ' | ' . $inpatient->roomType->classType->name }}</td>
                     </tr>
+                    <tr>
+                        <th class="align-middle">Dokter</th>
+                        <td class="align-middle" width="1%">:</td>
+                        <td class="align-middle">{{ $inpatient->doctor->name ?? '-' }}</td>
+                        <th class="align-middle">Golongan</th>
+                        <td class="align-middle" width="1%">:</td>
+                        <td class="align-middle">{{ $inpatient->type_format_result }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -60,20 +68,28 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
+                        <th class="text-center" nowrap>Hasil</th>
                         <th nowrap>User</th>
+                        <th nowrap>Tindakan</th>
                         <th nowrap>Tanggal Permintaan</th>
                         <th class="text-center" nowrap>Status</th>
-                        <th class="text-center" nowrap>Hasil</th>
+                        <th class="text-center" nowrap>Detail</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if($labRequest->count() > 0)
-                        @foreach($labRequest as $key => $lr)
+                    @if($radiologyRequest->count() > 0)
+                        @foreach($radiologyRequest as $key => $rr)
                             <tr>
                                 <td class="text-center align-middle">{{ $key + 1 }}</td>
-                                <td class="align-middle">{{ $lr->user ? $lr->user->employee->name : 'Belum Ada' }}</td>
-                                <td class="align-middle">{{ $lr->date_of_request }}</td>
-                                <td class="text-center align-middle">{!! $lr->status() !!}</td>
+                                <td class="text-center align-middle">
+                                    <a href="{{ $rr->image() }}" data-bs-popup="lightbox">
+                                        <img src="{{ $rr->image() }}" class="img-preview rounded">
+                                    </a>
+                                </td>
+                                <td class="align-middle">{{ $rr->user ? $rr->user->employee->name : 'Belum Ada' }}</td>
+                                <td class="align-middle">{{ $rr->radiology->type . ' - ' . $rr->radiology->object . ' - ' . $rr->radiology->projection }}</td>
+                                <td class="align-middle">{{ $rr->date_of_request }}</td>
+                                <td class="text-center align-middle">{!! $rr->status() !!}</td>
                                 <td class="align-middle">
                                     <div class="text-center">
                                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $key }}">
@@ -85,78 +101,77 @@
                                         <div class="modal-dialog modal-fullscreen modal-xl">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title">Hasil Cek</h5>
+                                                    <h5 class="modal-title">Hasil Radiologi</h5>
                                                     <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
                                                         <i class="ph-x"></i>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    @if($lr->status == 1)
+                                                    @if($rr->status == 1)
                                                         <div class="alert alert-secondary">
                                                             Mohon bersabar, permintaan anda akan segera diproses
                                                         </div>
-                                                    @elseif($lr->status == 2)
+                                                    @elseif($rr->status == 2)
                                                         <div class="alert alert-primary">
                                                             Permintaan anda saat ini sedang diproses
-                                                            <span class="float-end fst-italic"><b>diproses oleh : {{ $lr->user->employee->name }}</b></span>
+                                                            <span class="float-end fst-italic"><b>diproses oleh : {{ $rr->user->employee->name }}</b></span>
                                                         </div>
-                                                    @elseif($lr->status == 4)
+                                                    @elseif($rr->status == 4)
                                                         <div class="alert alert-danger">
                                                             Mohon maaf sekali, permintaan anda saat ini ditolak
-                                                            <span class="float-end fst-italic"><b>ditolak oleh : {{ $lr->user->employee->name }}</b></span>
+                                                            <span class="float-end fst-italic"><b>ditolak oleh : {{ $rr->user->employee->name }}</b></span>
                                                         </div>
                                                     @else
-                                                        <table class="table table-bordered table-xs">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th nowrap>Grup</th>
-                                                                    <th nowrap>Item</th>
-                                                                    <th nowrap>Hasil</th>
-                                                                    <th nowrap>Normal</th>
-                                                                    <th nowrap>Satuan</th>
-                                                                    <th nowrap>Kondisi</th>
-                                                                    <th nowrap>Metode</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach($lr->labRequestDetail as $lrd)
-                                                                    <tr>
-                                                                        <td class="align-middle">{{ $lrd->labItem->labItemGroup->name }}</td>
-                                                                        <td class="align-middle">{{ $lrd->labItem->name }}</td>
-                                                                        <td class="align-middle" nowrap>{{ $lrd->result }}</td>
-                                                                        <td class="align-middle" nowrap>
-                                                                            @isset($lrd->labItemParent)
-                                                                                @if($lrd->labItemParent->limit_lower && $lrd->labItemParent->limit_upper)
-                                                                                    {{ $lrd->labItemParent->limit_lower . ' - ' . $lrd->labItemParent->limit_upper }}
-                                                                                @elseif($lrd->labItemParent->limit_upper)
-                                                                                    {{ $lrd->labItemParent->limit_upper }}
-                                                                                @elseif($lrd->labItemParent->limit_lower)
-                                                                                    {{ $lrd->labItemParent->limit_lower }}
-                                                                                @else
-                                                                                    -
-                                                                                @endif
-                                                                            @else
-                                                                                -
-                                                                            @endif
-                                                                        </td>
-                                                                        <td class="align-middle" nowrap>{{ $lrd->labItemParent->unit ?? '-' }}</td>
-                                                                        <td class="align-middle" nowrap>{{ $lrd->labItemCondition->name ?? '-' }}</td>
-                                                                        <td class="align-middle" nowrap>{{ $lrd->result ?? '-' }}</td>
-                                                                    </tr>
-                                                                @endforeach
-                                                            </tbody>
+                                                        <table class="table">
+                                                            <tr class="bg-light">
+                                                                <th colspan="3">Data</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Pemeriksa</td>
+                                                                <td width="1%">:</td>
+                                                                <td>{{ $rr->user->employee->name ?? '-' }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Tindakan</td>
+                                                                <td width="1%">:</td>
+                                                                <td>{{ $rr->radiology->type . ' - ' . $rr->radiology->object . ' - ' . $rr->radiology->projection }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Foto</td>
+                                                                <td width="1%">:</td>
+                                                                <td><a href="{{ $rr->image() }}" data-bs-popup="lightbox">Lihat Hasil Foto</a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Tanggal Permintaan</td>
+                                                                <td width="1%">:</td>
+                                                                <td>{{ $rr->date_of_request }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Klinis</td>
+                                                                <td width="1%">:</td>
+                                                                <td>{{ $rr->clinical }}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Kritis</td>
+                                                                <td width="1%">:</td>
+                                                                <td>{{ $rr->critical ? 'Ya' : 'Tidak' }}</td>
+                                                            </tr>
+                                                            <tr class="bg-light">
+                                                                <th colspan="3">Expertise</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3">
+                                                                    {!! $rr->expertise !!}
+                                                                </td>
+                                                            </tr>
                                                         </table>
                                                     @endif
                                                 </div>
-                                                @if($lr->status == 3)
+                                                @if($rr->status == 3)
                                                     <div class="modal-footer justify-content-end">
-                                                        <a href="{{ url('collection/inpatient/lab/print/' . $lr->id . '?slug=result') }}" target="_blank" class="btn btn-teal">
+                                                        <a href="{{ url('collection/inpatient/radiology/print/' . $rr->id) }}" target="_blank" class="btn btn-teal">
                                                             <i class="ph-printer me-1"></i>
                                                             Cetak Hasil
-                                                        </a>
-                                                        <a href="{{ url('collection/inpatient/lab/print/' . $lr->id . '?slug=detail') }}" target="_blank" class="btn btn-teal">
-                                                            <i class="ph-money me-1"></i>
-                                                            Cetak Rincian Biaya
                                                         </a>
                                                     </div>
                                                 @endif
@@ -168,7 +183,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td class="text-center" colspan="5">Belum ada permintaan</td>
+                            <td class="text-center" colspan="7">Belum ada permintaan</td>
                         </tr>
                     @endif
                 </tbody>
@@ -178,7 +193,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Form Permintaan</h5>
@@ -197,28 +212,19 @@
                             <input type="datetime-local" class="form-control" name="date_of_request" id="date_of_request">
                         </div>
                     </div>
-                    <div class="form-group"><hr></div>
-                    <table class="table table-bordered table-hover table-xs">
-                        <tbody>
-                            @foreach($labItemGroup as $lig)
-                                @if($lig->item->count() > 0)
-                                    <tr class="bg-light">
-                                        <th class="align-middle" colspan="2">{{ $lig->name }}</th>
-                                    </tr>
-                                    @foreach($lig->item as $i)
-                                        <tr>
-                                            <td class="align-middle w-100">{{ $i->name }}</td>
-                                            <td class="align-middle">
-                                                <div class="form-check form-switch justify-content-center">
-                                                    <input type="checkbox" class="form-check-input form-check-input-success" name="lrd_item_id[]" value="{{ $i->id }}">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Tindakan <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <select class="form-select select2-basic" name="radiology_id" id="radiology_id">
+                                <option value="">-- Pilih --</option>
+                                @foreach($radiology as $r)
+                                    <option value="{{ $r->id }}">
+                                        {{ $r->type . ' - ' . $r->object . ' - ' . $r->projection }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer justify-content-end">
@@ -240,7 +246,7 @@
         clearValidation();
         $('#form-data').trigger('reset');
         $('#date_of_request').val('{{ date("Y-m-d H:i") }}');
-        $('input[name="lrd_item_id[]"]').prop('checked', false);
+        $('#radiology_id').val('').change();
     }
 
     function clearValidation() {
@@ -259,7 +265,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("collection/inpatient/lab/" . $inpatient->id) }}',
+            url: '{{ url("collection/inpatient/radiology/" . $inpatient->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -295,7 +301,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/inpatient/lab/" . $inpatient->id) }}');
+                        window.location.replace('{{ url("collection/inpatient/radiology/" . $inpatient->id) }}');
                     });
                 } else if(response.code == 400) {
                     $('#modal-form .modal-body').scrollTop(0);
