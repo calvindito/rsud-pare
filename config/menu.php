@@ -441,13 +441,6 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'neonates',
-                'menu' => 'Neonatus',
-                'icon' => null,
-                'link' => 'register/neonates',
-                'sub' => null
-            ],
-            [
                 'name' => 'online',
                 'menu' => 'Online',
                 'icon' => null,

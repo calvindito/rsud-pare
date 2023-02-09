@@ -32,6 +32,7 @@ class CreateInpatientsTable extends Migration
             $table->integer('fee_nutritional_care_qty')->nullable();
             $table->char('status', 1)->default(1);
             $table->char('ending', 1)->nullable();
+            $table->$table->softDeletes('deleted_at');
             $table->timestamps();
         });
     }

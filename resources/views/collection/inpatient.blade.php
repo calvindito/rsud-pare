@@ -23,6 +23,8 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
+                        <th nowrap>Kode</th>
+                        <th nowrap>Ref</th>
                         <th nowrap>No RM</th>
                         <th nowrap>Pasien</th>
                         <th nowrap>Kamar</th>
@@ -76,6 +78,8 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
+                { data: 'code', name: 'id', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'parentable', name: 'parent_id', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'patient_id', name: 'patient_id', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'patient_name', name: 'patient_name', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'room_type_name', name: 'room_type_name', orderable: false, searchable: false, className: 'align-middle' },
@@ -85,5 +89,62 @@
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
+    }
+
+    function destroyData(id) {
+        var notyConfirm = new Noty({
+            text: '<div class="mb-3"><h5 class="text-dark">Hapus Data?</h5><span class="text-muted">Data yang telah dihapus tidak bisa dikembalikan lagi</span></div>',
+            timeout: false,
+            modal: true,
+            layout: 'center',
+            closeWith: 'button',
+            type: 'confirm',
+            buttons: [
+                Noty.button('Tidak', 'btn btn-light', function () {
+                    notyConfirm.close();
+                }),
+                Noty.button('Hapus', 'btn btn-danger ms-2', function () {
+                    $.ajax({
+                        url: '{{ url("collection/inpatient/destroy-data") }}',
+                        type: 'DELETE',
+                        dataType: 'JSON',
+                        data: {
+                            id: id
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        beforeSend: function() {
+                            onLoading('show', '.noty_bar');
+                        },
+                        success: function(response) {
+                            onLoading('close', '.noty_bar');
+
+                            if(response.code == 200) {
+                                notyConfirm.close();
+                                onReloadTable();
+                                notification('success', response.message);
+                            } else {
+                                swalInit.fire({
+                                    title: 'Error',
+                                    text: response.message,
+                                    icon: 'error',
+                                    showCloseButton: true
+                                });
+                            }
+                        },
+                        error: function(response) {
+                            onLoading('close', '.noty_bar');
+
+                            swalInit.fire({
+                                html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
+                                icon: 'error',
+                                showCloseButton: true
+                            });
+                        }
+                    });
+                })
+            ]
+        }).show();
     }
 </script>

@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Inpatient extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -134,6 +135,16 @@ class Inpatient extends Model
     }
 
     /**
+     * parent
+     *
+     * @return void
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Inpatient::class, 'parent_id');
+    }
+
+    /**
      * patient
      *
      * @return void
@@ -185,6 +196,16 @@ class Inpatient extends Model
         }
 
         return $html;
+    }
+
+    /**
+     * code
+     *
+     * @return void
+     */
+    public function code()
+    {
+        return sprintf('%06s', $this->id);
     }
 
     /**

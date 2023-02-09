@@ -448,12 +448,6 @@ Route::middleware('auth')->group(function () {
                 Route::post('register-patient', 'InpatientController@registerPatient');
             });
 
-            Route::prefix('neonates')->group(function () {
-                Route::get('/', 'NeonatesController@index');
-                Route::get('load-patient', 'NeonatesController@loadPatient');
-                Route::post('register-patient', 'NeonatesController@registerPatient');
-            });
-
             Route::prefix('online')->group(function () {
                 Route::get('/', 'OnlineController@index');
             });
@@ -486,6 +480,8 @@ Route::middleware('auth')->group(function () {
                 Route::get('lab/print/{id}', 'InpatientController@labPrint');
                 Route::match(['get', 'post'], 'radiology/{id}', 'InpatientController@radiology');
                 Route::get('radiology/print/{id}', 'InpatientController@radiologyPrint');
+                Route::match(['get', 'post'], 'checkout/{id}', 'InpatientController@checkout');
+                Route::delete('destroy-data', 'InpatientController@destroyData');
             });
 
             Route::prefix('visit-window')->group(function () {

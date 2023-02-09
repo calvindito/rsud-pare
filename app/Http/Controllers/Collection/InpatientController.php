@@ -6,6 +6,7 @@ use App\Helpers\Simrs;
 use App\Models\Doctor;
 use App\Models\LabItem;
 use App\Models\Medicine;
+use App\Models\RoomType;
 use App\Models\Inpatient;
 use App\Models\Radiology;
 use App\Models\LabRequest;
@@ -17,6 +18,7 @@ use App\Models\ActionOperative;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ActionSupporting;
 use App\Models\RadiologyRequest;
+use App\Models\FunctionalService;
 use App\Models\ActionNonOperative;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -42,19 +44,31 @@ class InpatientController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->whereHas('patient', function ($query) use ($search) {
-                        $query->where('id', 'like', "%$search%")
-                            ->orWhere('name', 'like', "%$search%");
-                    });
-
-                    $query->whereHas('roomType', function ($query) use ($search) {
-                        $query->where('name', 'like', "%$search%");
-                    });
+                    $query->whereRaw("LPAD(id, 6, 0) LIKE '%$search%'")
+                        ->orWhereHas('patient', function ($query) use ($search) {
+                            $query->where('id', 'like', "$search%")
+                                ->orWhere('name', 'like', "%$search%");
+                        })
+                        ->orWhereHas('roomType', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        });
                 }
             })
             ->editColumn('date_of_entry', '{{ date("Y-m-d H:i:s", strtotime($date_of_entry)) }}')
             ->editColumn('status', function (Inpatient $query) {
                 return $query->status();
+            })
+            ->addColumn('code', function (Inpatient $query) {
+                return $query->code();
+            })
+            ->addColumn('parentable', function (Inpatient $query) {
+                $parentable = 'Tidak Ada';
+
+                if ($query->parent) {
+                    $parentable = $query->parent->code();
+                }
+
+                return $parentable;
             })
             ->addColumn('patient_name', function (Inpatient $query) {
                 $patientName = null;
@@ -75,9 +89,21 @@ class InpatientController extends Controller
                 return $roomTypeName;
             })
             ->addColumn('action', function (Inpatient $query) {
+                $fullAction = '';
+                if ($query->status == 1) {
+                    $fullAction = '
+                        <a href="' . url('collection/inpatient/checkout/' . $query->id) . '" class="btn btn-light text-secondary btn-sm fw-semibold">
+                            Check-Out
+                        </a>
+                        <a href="javascript:void(0);" class="btn btn-light text-danger btn-sm fw-semibold" onclick="destroyData(' . $query->id . ')">
+                            Hapus Data
+                        </a>
+                    ';
+                }
+
                 return '
                     <div class="btn-group">
-                        <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
+                        <button type="button" class="btn btn-light text-primary btn-sm btn-block fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
                         <div class="dropdown-menu">
                             <a href="' . url('collection/inpatient/action/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-person-simple-run me-2"></i>
@@ -99,24 +125,26 @@ class InpatientController extends Controller
                                 <i class="ph-wheelchair me-2"></i>
                                 Radiologi
                             </a>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light text-success btn-sm btn-block fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Cetak</button>
+                        <div class="dropdown-menu">
                             <a href="' . url('collection/inpatient/print/' . $query->id) . '?slug=receipt" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-newspaper-clipping me-2"></i>
-                                Cetak Kwitansi
+                                Kwitansi
                             </a>
                             <a href="' . url('collection/inpatient/print/' . $query->id) . '?slug=detail" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-clipboard-text me-2"></i>
-                                Cetak Rincian
+                                Rincian
                             </a>
                             <a href="' . url('collection/inpatient/print/' . $query->id) . '?slug=bpjs" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-shield-plus me-2"></i>
-                                Cetak BPJS
-                            </a>
-                            <a href="' . url('collection/inpatient/checkout/' . $query->id) . '" class="dropdown-item fs-13">
-                                <i class="ph-sign-out me-2"></i>
-                                Check-Out
+                                BPJS
                             </a>
                         </div>
                     </div>
+                    ' . $fullAction . '
                 ';
             })
             ->rawColumns(['action', 'status'])
@@ -554,7 +582,7 @@ class InpatientController extends Controller
         return view('layouts.index', ['data' => $data]);
     }
 
-    public function radiologyPrint(Request $request, $id)
+    public function radiologyPrint($id)
     {
         $data = RadiologyRequest::where('status', 3)->where('id', $id)->firstOrFail();
         $pdf = Pdf::setOptions([
@@ -565,5 +593,127 @@ class InpatientController extends Controller
         ]);
 
         return $pdf->stream('Hasil Pemeriksaan Radiologi - ' . date('YmdHis') . '.pdf');
+    }
+
+    public function checkout(Request $request, $id)
+    {
+        $inpatient = Inpatient::where('status', 1)->findOrFail($id);
+
+        if ($request->ajax()) {
+            $status = $request->status;
+            $ruleMessage = [
+                'rule' => [
+                    'status' => 'required'
+                ],
+                'message' => [
+                    'status.required' => 'mohon memilih status'
+                ]
+            ];
+
+            if ($status == 2) {
+                $ruleMessage = [
+                    'rule' => [
+                        'room_type_id' => 'required',
+                        'type' => 'required',
+                        'functional_service_id' => 'required',
+                    ],
+                    'message' => [
+                        'room_type_id.required' => 'mohon memilih kelas kamar baru',
+                        'type.required' => 'mohon memilih golongan baru',
+                        'functional_service_id.required' => 'mohon memilih upf baru'
+                    ]
+                ];
+            } else if ($status == 3 || $status == 4) {
+                $ruleMessage = [
+                    'rule' => [
+                        'ending' => 'required',
+                        'date_of_out' => 'required'
+                    ],
+                    'message' => [
+                        'ending.required' => 'mohon memilih hasil',
+                        'date_of_out.required' => 'tanggal keluar tidak boleh kosong'
+                    ]
+                ];
+            }
+
+            $validation = Validator::make($request->all(), $ruleMessage['rule'], $ruleMessage['message']);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    if ($status == 2) {
+                        Inpatient::create([
+                            'user_id' => auth()->id(),
+                            'patient_id' => $inpatient->patient_id,
+                            'room_type_id' => $request->room_type_id,
+                            'functional_service_id' => $request->functional_service_id,
+                            'parent_id' => $inpatient->id,
+                            'type' => $request->type,
+                            'date_of_entry' => now()
+                        ]);
+
+                        $inpatient->update([
+                            'date_of_out' => now()
+                        ]);
+                    } else if ($status == 3 || $status == 4) {
+                        $inpatient->update([
+                            'date_of_out' => $request->date_of_out,
+                            'ending' => $request->ending
+                        ]);
+                    }
+
+                    $inpatient->update([
+                        'status' => $status
+                    ]);
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Rawat inap berhasil di checkout'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'inpatient' => $inpatient,
+            'patient' => $inpatient->patient,
+            'roomType' => RoomType::where('status', true)->orderBy('class_type_id')->get(),
+            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
+            'content' => 'collection.inpatient-checkout'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function destroyData(Request $request)
+    {
+        $id = $request->id;
+
+        try {
+            Inpatient::destroy($id);
+
+            $response = [
+                'code' => 200,
+                'message' => 'Data telah dihapus'
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response);
     }
 }
