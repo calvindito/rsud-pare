@@ -441,13 +441,6 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'online',
-                'menu' => 'Online',
-                'icon' => null,
-                'link' => 'register/online',
-                'sub' => null
-            ],
-            [
                 'name' => 'emergency-department',
                 'menu' => 'IGD',
                 'icon' => null,
@@ -477,15 +470,8 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'visit-window',
-                'menu' => 'Kunjungan Loket',
-                'icon' => null,
-                'link' => 'collection/visit-window',
-                'sub' => null
-            ],
-            [
                 'name' => 'emergency-department',
-                'menu' => 'Kunjungn IGD',
+                'menu' => 'IGD',
                 'icon' => null,
                 'link' => 'collection/emergency-department',
                 'sub' => null

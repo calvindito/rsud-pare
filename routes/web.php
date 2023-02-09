@@ -448,10 +448,6 @@ Route::middleware('auth')->group(function () {
                 Route::post('register-patient', 'InpatientController@registerPatient');
             });
 
-            Route::prefix('online')->group(function () {
-                Route::get('/', 'OnlineController@index');
-            });
-
             Route::prefix('emergency-department')->group(function () {
                 Route::get('/', 'EmergencyDepartmentController@index');
                 Route::get('load-patient', 'EmergencyDepartmentController@loadPatient');
@@ -482,11 +478,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('radiology/print/{id}', 'InpatientController@radiologyPrint');
                 Route::match(['get', 'post'], 'checkout/{id}', 'InpatientController@checkout');
                 Route::delete('destroy-data', 'InpatientController@destroyData');
-            });
-
-            Route::prefix('visit-window')->group(function () {
-                Route::get('/', 'VisitWindowController@index');
-                Route::get('datatable', 'VisitWindowController@datatable');
             });
         });
 
