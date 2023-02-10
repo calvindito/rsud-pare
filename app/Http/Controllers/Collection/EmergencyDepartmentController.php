@@ -6,31 +6,29 @@ use App\Helpers\Simrs;
 use App\Models\Doctor;
 use App\Models\LabItem;
 use App\Models\Medicine;
-use App\Models\RoomType;
-use App\Models\Inpatient;
 use App\Models\Radiology;
 use App\Models\LabRequest;
 use App\Models\ActionOther;
 use App\Models\LabItemGroup;
 use Illuminate\Http\Request;
 use App\Models\MedicalService;
-use App\Models\ActionOperative;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ActionSupporting;
 use App\Models\RadiologyRequest;
 use App\Models\FunctionalService;
 use App\Models\ActionNonOperative;
 use Illuminate\Support\Facades\DB;
+use App\Models\EmergencyDepartment;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class InpatientController extends Controller
+class EmergencyDepartmentController extends Controller
 {
     public function index()
     {
         $data = [
-            'content' => 'collection.inpatient'
+            'content' => 'collection.emergency-department'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -39,7 +37,7 @@ class InpatientController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Inpatient::query();
+        $data = EmergencyDepartment::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -48,29 +46,17 @@ class InpatientController extends Controller
                         ->orWhereHas('patient', function ($query) use ($search) {
                             $query->where('id', 'like', "$search%")
                                 ->orWhere('name', 'like', "%$search%");
-                        })
-                        ->orWhereHas('roomType', function ($query) use ($search) {
-                            $query->where('name', 'like', "%$search%");
                         });
                 }
             })
             ->editColumn('date_of_entry', '{{ date("Y-m-d H:i:s", strtotime($date_of_entry)) }}')
-            ->editColumn('status', function (Inpatient $query) {
+            ->editColumn('status', function (EmergencyDepartment $query) {
                 return $query->status();
             })
-            ->addColumn('code', function (Inpatient $query) {
+            ->addColumn('code', function (EmergencyDepartment $query) {
                 return $query->code();
             })
-            ->addColumn('parentable', function (Inpatient $query) {
-                $parentable = 'Tidak Ada';
-
-                if ($query->parent) {
-                    $parentable = $query->parent->code();
-                }
-
-                return $parentable;
-            })
-            ->addColumn('patient_name', function (Inpatient $query) {
+            ->addColumn('patient_name', function (EmergencyDepartment $query) {
                 $patientName = null;
 
                 if (isset($query->patient)) {
@@ -79,20 +65,20 @@ class InpatientController extends Controller
 
                 return $patientName;
             })
-            ->addColumn('room_type_name', function (Inpatient $query) {
-                $roomTypeName = null;
+            ->addColumn('functional_service_name', function (EmergencyDepartment $query) {
+                $functionalServiceName = null;
 
-                if (isset($query->roomType)) {
-                    $roomTypeName = $query->roomType->name . ' | ' . $query->roomType->classType->name;
+                if (isset($query->functionalService)) {
+                    $functionalServiceName = $query->functionalService->name;
                 }
 
-                return $roomTypeName;
+                return $functionalServiceName;
             })
-            ->addColumn('action', function (Inpatient $query) {
+            ->addColumn('action', function (EmergencyDepartment $query) {
                 $fullAction = '';
                 if ($query->status == 1) {
                     $fullAction = '
-                        <a href="' . url('collection/inpatient/checkout/' . $query->id) . '" class="btn btn-light text-secondary btn-sm fw-semibold">
+                        <a href="' . url('collection/emergency-department/checkout/' . $query->id) . '" class="btn btn-light text-secondary btn-sm fw-semibold">
                             Check-Out
                         </a>
                         <a href="javascript:void(0);" class="btn btn-light text-danger btn-sm fw-semibold" onclick="destroyData(' . $query->id . ')">
@@ -105,23 +91,23 @@ class InpatientController extends Controller
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm btn-block fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
                         <div class="dropdown-menu">
-                            <a href="' . url('collection/inpatient/action/' . $query->id) . '" class="dropdown-item fs-13">
+                            <a href="' . url('collection/emergency-department/action/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-person-simple-run me-2"></i>
                                 Tindakan
                             </a>
-                            <a href="' . url('collection/inpatient/recipe/' . $query->id) . '" class="dropdown-item fs-13">
+                            <a href="' . url('collection/emergency-department/recipe/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-drop-half-bottom me-2"></i>
                                 E-Resep
                             </a>
-                            <a href="' . url('collection/inpatient/diagnosis/' . $query->id) . '" class="dropdown-item fs-13">
+                            <a href="' . url('collection/emergency-department/diagnosis/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-bezier-curve me-2"></i>
                                 Diagnosa
                             </a>
-                            <a href="' . url('collection/inpatient/lab/' . $query->id) . '" class="dropdown-item fs-13">
+                            <a href="' . url('collection/emergency-department/lab/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-flask me-2"></i>
                                 Laboratorium
                             </a>
-                            <a href="' . url('collection/inpatient/radiology/' . $query->id) . '" class="dropdown-item fs-13">
+                            <a href="' . url('collection/emergency-department/radiology/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-wheelchair me-2"></i>
                                 Radiologi
                             </a>
@@ -130,15 +116,15 @@ class InpatientController extends Controller
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-success btn-sm btn-block fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Cetak</button>
                         <div class="dropdown-menu">
-                            <a href="' . url('collection/inpatient/print/' . $query->id) . '?slug=receipt" target="_blank" class="dropdown-item fs-13">
+                            <a href="' . url('collection/emergency-department/print/' . $query->id) . '?slug=receipt" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-newspaper-clipping me-2"></i>
                                 Kwitansi
                             </a>
-                            <a href="' . url('collection/inpatient/print/' . $query->id) . '?slug=detail" target="_blank" class="dropdown-item fs-13">
+                            <a href="' . url('collection/emergency-department/print/' . $query->id) . '?slug=detail" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-clipboard-text me-2"></i>
                                 Rincian
                             </a>
-                            <a href="' . url('collection/inpatient/print/' . $query->id) . '?slug=bpjs" target="_blank" class="dropdown-item fs-13">
+                            <a href="' . url('collection/emergency-department/print/' . $query->id) . '?slug=bpjs" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-shield-plus me-2"></i>
                                 BPJS
                             </a>
@@ -155,13 +141,11 @@ class InpatientController extends Controller
 
     public function action(Request $request, $id)
     {
-        $inpatient = Inpatient::findOrFail($id);
-        $roomType = $inpatient->roomType;
-        $classType = $roomType->classType;
+        $emergencyDepartment = EmergencyDepartment::findOrFail($id);
 
         if ($request->ajax()) {
             try {
-                DB::transaction(function () use ($request, $inpatient) {
+                DB::transaction(function () use ($request, $emergencyDepartment) {
                     $observation = [
                         'action_emergency_care_id' => (int) $request->observation_action_emergency_care_id ?? null,
                         'nominal' => Simrs::numberable($request->observation_nominal ?? null)
@@ -173,103 +157,73 @@ class InpatientController extends Controller
                         'nominal' => Simrs::numberable($request->supervision_doctor_nominal ?? null)
                     ];
 
-                    $inpatient->update([
+                    $emergencyDepartment->update([
                         'doctor_id' => $request->doctor_id,
                         'date_of_out' => date('Y-m-d H:i:s', strtotime($request->date_of_out)),
                         'observation' => $observation,
                         'supervision_doctor' => $supervisionDoctor,
-                        'fee_room' => $request->fee_room,
-                        'fee_nursing_care' => $request->fee_nursing_care,
-                        'fee_nutritional_care' => $request->fee_nutritional_care,
-                        'fee_nutritional_care_qty' => $request->fee_nutritional_care_qty,
                         'ending' => $request->ending
                     ]);
 
-                    $inpatient->inpatientHealth()->delete();
-                    $inpatient->inpatientNonOperative()->delete();
-                    $inpatient->inpatientOperative()->delete();
-                    $inpatient->inpatientOther()->delete();
-                    $inpatient->inpatientPackage()->delete();
-                    $inpatient->inpatientService()->delete();
-                    $inpatient->inpatientSupporting()->delete();
+                    $emergencyDepartment->emergencyDepartmentHealth()->delete();
+                    $emergencyDepartment->emergencyDepartmentNonOperative()->delete();
+                    $emergencyDepartment->emergencyDepartmentOther()->delete();
+                    $emergencyDepartment->emergencyDepartmentPackage()->delete();
+                    $emergencyDepartment->emergencyDepartmentService()->delete();
+                    $emergencyDepartment->emergencyDepartmentSupporting()->delete();
 
-                    if ($request->has('inpatient_health')) {
-                        foreach ($request->inpatient_health as $key => $ih) {
-                            $inpatient->inpatientHealth()->create([
-                                'tool_id' => $request->ih_tool_id[$key] ?? null,
-                                'emergency_care' => $request->ih_emergency_care[$key] ?? null,
-                                'hospitalization' => $request->ih_hospitalization[$key] ?? null
+                    if ($request->has('emergency_department_health')) {
+                        foreach ($request->emergency_department_health as $key => $edh) {
+                            $emergencyDepartment->emergencyDepartmentHealth()->create([
+                                'tool_id' => $request->edh_tool_id[$key] ?? null,
+                                'nominal' => $request->edh_nominal[$key] ?? null
                             ]);
                         }
                     }
 
-                    if ($request->has('inpatient_non_operative')) {
-                        foreach ($request->inpatient_non_operative as $key => $ino) {
-                            $inpatient->inpatientNonOperative()->create([
-                                'action_non_operative_id' => $request->ino_action_non_operative_id[$key] ?? null,
-                                'emergency_care' => $request->ino_emergency_care[$key] ?? null,
-                                'hospitalization' => $request->ino_hospitalization[$key] ?? null
+                    if ($request->has('emergency_department_non_operative')) {
+                        foreach ($request->emergency_department_non_operative as $key => $edno) {
+                            $emergencyDepartment->emergencyDepartmentNonOperative()->create([
+                                'action_non_operative_id' => $request->edno_action_non_operative_id[$key] ?? null,
+                                'nominal' => $request->edno_nominal[$key] ?? null
                             ]);
                         }
                     }
 
-                    if ($request->has('inpatient_operative')) {
-                        foreach ($request->inpatient_operative as $key => $io) {
-                            $inpatient->inpatientOperative()->create([
-                                'action_operative_id' => $request->io_action_operative_id[$key] ?? null,
-                                'nominal' => $request->io_nominal[$key] ?? null
+                    if ($request->has('emergency_department_other')) {
+                        foreach ($request->emergency_department_other as $key => $edo) {
+                            $emergencyDepartment->emergencyDepartmentOther()->create([
+                                'action_other_id' => $request->edo_action_other_id[$key] ?? null,
+                                'nominal' => $request->edo_nominal[$key] ?? null
                             ]);
                         }
                     }
 
-                    if ($request->has('inpatient_other')) {
-                        foreach ($request->inpatient_other as $key => $io) {
-                            $inpatient->inpatientOther()->create([
-                                'action_other_id' => $request->io_action_other_id[$key] ?? null,
-                                'emergency_care' => $request->io_emergency_care[$key] ?? null,
-                                'hospitalization' => $request->io_hospitalization[$key] ?? null,
-                                'hospitalization_qty' => $request->io_hospitalization_qty[$key] ?? null
+                    if ($request->has('emergency_department_package')) {
+                        foreach ($request->emergency_department_package as $edp) {
+                            $emergencyDepartment->emergencyDepartmentPackage()->create([
+                                'nominal' => $edp ?? null
                             ]);
                         }
                     }
 
-                    if ($request->has('inpatient_package')) {
-                        foreach ($request->inpatient_package as $ip) {
-                            $inpatient->inpatientPackage()->create([
-                                'nominal' => $ip ?? null
+                    if ($request->has('emergency_department_service')) {
+                        foreach ($request->emergency_department_service as $key => $eds) {
+                            $emergencyDepartment->emergencyDepartmentService()->create([
+                                'medical_service_id' => $request->eds_medical_service_id[$key] ?? null,
+                                'doctor_id' => $request->eds_doctor_id[$key] ?? null,
+                                'nominal' => $request->eds_nominal[$key] ?? null,
+                                'qty' => $request->eds_qty[$key] ?? null,
                             ]);
                         }
                     }
 
-                    if ($request->has('inpatient_service')) {
-                        foreach ($request->inpatient_service as $key => $is) {
-                            $emergencyCare = [
-                                'doctor_id' => (int) $request->is_emergency_care_doctor_id[$key] ?? null,
-                                'nominal' => Simrs::numberable($request->is_emergency_care_nominal[$key]) ?? null,
-                                'qty' => Simrs::numberable($request->is_emergency_care_qty[$key]) ?? null
-                            ];
-
-                            $hospitalization = [
-                                'doctor_id' => (int) $request->is_hospitalization_doctor_id[$key] ?? null,
-                                'nominal' => Simrs::numberable($request->is_hospitalization_nominal[$key]) ?? null,
-                                'qty' => Simrs::numberable($request->is_hospitalization_qty[$key]) ?? null
-                            ];
-
-                            $inpatient->inpatientService()->create([
-                                'medical_service_id' => $request->is_medical_service_id[$key] ?? null,
-                                'emergency_care' => $emergencyCare,
-                                'hospitalization' => $hospitalization
-                            ]);
-                        }
-                    }
-
-                    if ($request->has('inpatient_supporting')) {
-                        foreach ($request->inpatient_supporting as $key => $is) {
-                            $inpatient->inpatientSupporting()->create([
-                                'action_supporting_id' => $request->is_action_supporting_id[$key] ?? null,
-                                'doctor_id' => $request->is_doctor_id[$key] ?? null,
-                                'emergency_care' => $request->is_emergency_care[$key] ?? null,
-                                'hospitalization' => $request->is_hospitalization[$key] ?? null
+                    if ($request->has('emergency_department_supporting')) {
+                        foreach ($request->emergency_department_supporting as $key => $edss) {
+                            $emergencyDepartment->emergencyDepartmentSupporting()->create([
+                                'action_supporting_id' => $request->edss_action_supporting_id[$key] ?? null,
+                                'doctor_id' => $request->edss_doctor_id[$key] ?? null,
+                                'nominal' => $request->edss_nominal[$key] ?? null
                             ]);
                         }
                     }
@@ -290,25 +244,22 @@ class InpatientController extends Controller
         }
 
         $data = [
-            'inpatient' => $inpatient,
-            'patient' => $inpatient->patient,
+            'emergencyDepartment' => $emergencyDepartment,
+            'functionalService' => $emergencyDepartment->functionalService,
+            'patient' => $emergencyDepartment->patient,
             'doctor' => Doctor::all(),
-            'medicalService' => MedicalService::where('status', true)->where('class_type_id', $classType->id)->get(),
-            'actionOperative' => ActionOperative::where('class_type_id', $classType->id)->get(),
-            'actionNonOperative' => ActionNonOperative::where('class_type_id', $classType->id)->get(),
-            'actionSupporting' => ActionSupporting::where('class_type_id', $classType->id)->get(),
+            'medicalService' => MedicalService::where('status', true)->where('class_type_id', 7)->get(),
+            'actionNonOperative' => ActionNonOperative::where('class_type_id', 7)->get(),
+            'actionSupporting' => ActionSupporting::where('class_type_id', 7)->get(),
             'tool' => Simrs::tool(),
-            'actionOther' => ActionOther::where('class_type_id', $classType->id)->get(),
-            'roomType' => $roomType,
-            'classType' => $classType,
-            'inpatientHealth' => $inpatient->inpatientHealth,
-            'inpatientNonOperative' => $inpatient->inpatientNonOperative,
-            'inpatientOperative' => $inpatient->inpatientOperative,
-            'inpatientOther' => $inpatient->inpatientOther,
-            'inpatientPackage' => $inpatient->inpatientPackage,
-            'inpatientService' => $inpatient->inpatientService,
-            'inpatientSupporting' => $inpatient->inpatientSupporting,
-            'content' => 'collection.inpatient-action'
+            'actionOther' => ActionOther::where('class_type_id', 7)->get(),
+            'emergencyDepartmentHealth' => $emergencyDepartment->emergencyDepartmentHealth,
+            'emergencyDepartmentNonOperative' => $emergencyDepartment->emergencyDepartmentNonOperative,
+            'emergencyDepartmentOther' => $emergencyDepartment->emergencyDepartmentOther,
+            'emergencyDepartmentPackage' => $emergencyDepartment->emergencyDepartmentPackage,
+            'emergencyDepartmentService' => $emergencyDepartment->emergencyDepartmentService,
+            'emergencyDepartmentSupporting' => $emergencyDepartment->emergencyDepartmentSupporting,
+            'content' => 'collection.emergency-department-action'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -316,7 +267,7 @@ class InpatientController extends Controller
 
     public function recipe(Request $request, $id)
     {
-        $inpatient = Inpatient::findOrFail($id);
+        $emergencyDepartment = EmergencyDepartment::findOrFail($id);
 
         if ($request->_token == csrf_token()) {
             $validation = Validator::make($request->all(), [
@@ -329,15 +280,15 @@ class InpatientController extends Controller
                 return redirect()->back()->withErrors($validation);
             } else {
                 try {
-                    $inpatient->recipe()->delete();
+                    $emergencyDepartment->recipe()->delete();
 
                     foreach ($request->recipe as $r) {
-                        $inpatient->recipe()->create([
+                        $emergencyDepartment->recipe()->create([
                             'medicine_id' => $r
                         ]);
                     }
 
-                    return redirect('collection/inpatient/recipe/' . $id)->with([
+                    return redirect('collection/emergency-department/recipe/' . $id)->with([
                         'success' => 'Data berhasil di submit'
                     ]);
                 } catch (\Exception $e) {
@@ -349,11 +300,12 @@ class InpatientController extends Controller
         }
 
         $data = [
-            'inpatient' => $inpatient,
-            'patient' => $inpatient->patient,
-            'recipe' => $inpatient->recipe,
+            'emergencyDepartment' => $emergencyDepartment,
+            'functionalService' => $emergencyDepartment->functionalService,
+            'patient' => $emergencyDepartment->patient,
+            'recipe' => $emergencyDepartment->recipe,
             'medicine' => Medicine::where('stock', '>', 0)->get(),
-            'content' => 'collection.inpatient-recipe'
+            'content' => 'collection.emergency-department-recipe'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -361,16 +313,16 @@ class InpatientController extends Controller
 
     public function diagnosis(Request $request, $id)
     {
-        $inpatient = Inpatient::findOrFail($id);
+        $emergencyDepartment = EmergencyDepartment::findOrFail($id);
 
         if ($request->ajax()) {
             try {
-                $inpatient->inpatientDiagnosis()->delete();
+                $emergencyDepartment->emergencyDepartmentDiagnosis()->delete();
 
                 if ($request->has('diagnosis')) {
                     foreach ($request->diagnosis as $d) {
                         if (!empty($d)) {
-                            $inpatient->inpatientDiagnosis()->create([
+                            $emergencyDepartment->emergencyDepartmentDiagnosis()->create([
                                 'type' => 1,
                                 'value' => $d
                             ]);
@@ -381,7 +333,7 @@ class InpatientController extends Controller
                 if ($request->has('action')) {
                     foreach ($request->action as $a) {
                         if (!empty($a)) {
-                            $inpatient->inpatientDiagnosis()->create([
+                            $emergencyDepartment->emergencyDepartmentDiagnosis()->create([
                                 'type' => 2,
                                 'value' => $a
                             ]);
@@ -404,10 +356,11 @@ class InpatientController extends Controller
         }
 
         $data = [
-            'inpatient' => $inpatient,
-            'patient' => $inpatient->patient,
-            'inpatientDiagnosis' => $inpatient->inpatientDiagnosis,
-            'content' => 'collection.inpatient-diagnosis'
+            'emergencyDepartment' => $emergencyDepartment,
+            'functionalService' => $emergencyDepartment->functionalService,
+            'patient' => $emergencyDepartment->patient,
+            'emergencyDepartmentDiagnosis' => $emergencyDepartment->emergencyDepartmentDiagnosis,
+            'content' => 'collection.emergency-department-diagnosis'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -415,7 +368,7 @@ class InpatientController extends Controller
 
     public function lab(Request $request, $id)
     {
-        $inpatient = Inpatient::findOrFail($id);
+        $emergencyDepartment = EmergencyDepartment::findOrFail($id);
 
         if ($request->ajax()) {
             $validation = Validator::make($request->all(), [
@@ -433,12 +386,12 @@ class InpatientController extends Controller
                 ];
             } else {
                 try {
-                    DB::transaction(function () use ($request, $inpatient) {
+                    DB::transaction(function () use ($request, $emergencyDepartment) {
                         $createLabRequest = LabRequest::create([
-                            'patient_id' => $inpatient->patient_id,
-                            'doctor_id' => $inpatient->doctor_id,
-                            'lab_requestable_type' => Inpatient::class,
-                            'lab_requestable_id' => $inpatient->id,
+                            'patient_id' => $emergencyDepartment->patient_id,
+                            'doctor_id' => $emergencyDepartment->doctor_id,
+                            'lab_requestable_type' => EmergencyDepartment::class,
+                            'lab_requestable_id' => $emergencyDepartment->id,
                             'date_of_request' => $request->date_of_request,
                             'status' => 1
                         ]);
@@ -476,11 +429,12 @@ class InpatientController extends Controller
         }
 
         $data = [
-            'inpatient' => $inpatient,
-            'patient' => $inpatient->patient,
-            'labRequest' => $inpatient->labRequest,
+            'emergencyDepartment' => $emergencyDepartment,
+            'functionalService' => $emergencyDepartment->functionalService,
+            'patient' => $emergencyDepartment->patient,
+            'labRequest' => $emergencyDepartment->labRequest,
             'labItemGroup' => LabItemGroup::orderBy('name')->get(),
-            'content' => 'collection.inpatient-lab'
+            'content' => 'collection.emergency-department-lab'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -516,7 +470,7 @@ class InpatientController extends Controller
 
     public function radiology(Request $request, $id)
     {
-        $inpatient = Inpatient::findOrFail($id);
+        $emergencyDepartment = EmergencyDepartment::findOrFail($id);
 
         if ($request->ajax()) {
             $validation = Validator::make($request->all(), [
@@ -534,15 +488,15 @@ class InpatientController extends Controller
                 ];
             } else {
                 try {
-                    DB::transaction(function () use ($request, $inpatient) {
+                    DB::transaction(function () use ($request, $emergencyDepartment) {
                         $radiology = Radiology::find($request->radiology_id);
 
                         RadiologyRequest::create([
-                            'doctor_id' => $inpatient->doctor_id,
-                            'patient_id' => $inpatient->patient_id,
+                            'doctor_id' => $emergencyDepartment->doctor_id,
+                            'patient_id' => $emergencyDepartment->patient_id,
                             'radiology_id' => $request->radiology_id,
-                            'radiology_requestable_type' => Inpatient::class,
-                            'radiology_requestable_id' => $inpatient->id,
+                            'radiology_requestable_type' => EmergencyDepartment::class,
+                            'radiology_requestable_id' => $emergencyDepartment->id,
                             'date_of_request' => $request->date_of_request,
                             'consumables' => $radiology->radiologyAction->consumables ?? null,
                             'hospital_service' => $radiology->radiologyAction->hospital_service ?? null,
@@ -567,16 +521,17 @@ class InpatientController extends Controller
             return response()->json($response);
         }
 
-        $radiology = Radiology::whereHas('radiologyAction', function ($query) use ($inpatient) {
-            $query->where('class_type_id', $inpatient->roomType->class_type_id);
+        $radiology = Radiology::whereHas('radiologyAction', function ($query) use ($emergencyDepartment) {
+            $query->where('class_type_id', 7);
         })->orderBy('type')->get();
 
         $data = [
-            'inpatient' => $inpatient,
-            'patient' => $inpatient->patient,
-            'radiologyRequest' => $inpatient->radiologyRequest,
+            'emergencyDepartment' => $emergencyDepartment,
+            'functionalService' => $emergencyDepartment->functionalService,
+            'patient' => $emergencyDepartment->patient,
+            'radiologyRequest' => $emergencyDepartment->radiologyRequest,
             'radiology' => $radiology,
-            'content' => 'collection.inpatient-radiology'
+            'content' => 'collection.emergency-department-radiology'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -597,7 +552,7 @@ class InpatientController extends Controller
 
     public function checkout(Request $request, $id)
     {
-        $inpatient = Inpatient::where('status', 1)->findOrFail($id);
+        $emergencyDepartment = EmergencyDepartment::where('status', 1)->findOrFail($id);
 
         if ($request->ajax()) {
             $status = $request->status;
@@ -610,20 +565,7 @@ class InpatientController extends Controller
                 ]
             ];
 
-            if ($status == 2) {
-                $ruleMessage = [
-                    'rule' => [
-                        'room_type_id' => 'required',
-                        'type' => 'required',
-                        'functional_service_id' => 'required',
-                    ],
-                    'message' => [
-                        'room_type_id.required' => 'mohon memilih kelas kamar baru',
-                        'type.required' => 'mohon memilih golongan baru',
-                        'functional_service_id.required' => 'mohon memilih upf baru'
-                    ]
-                ];
-            } else if ($status == 3 || $status == 4) {
+            if ($status == 2 || $status == 3) {
                 $ruleMessage = [
                     'rule' => [
                         'ending' => 'required',
@@ -645,28 +587,14 @@ class InpatientController extends Controller
                 ];
             } else {
                 try {
-                    if ($status == 2) {
-                        Inpatient::create([
-                            'user_id' => auth()->id(),
-                            'patient_id' => $inpatient->patient_id,
-                            'room_type_id' => $request->room_type_id,
-                            'functional_service_id' => $request->functional_service_id,
-                            'parent_id' => $inpatient->id,
-                            'type' => $request->type,
-                            'date_of_entry' => now()
-                        ]);
-
-                        $inpatient->update([
-                            'date_of_out' => now()
-                        ]);
-                    } else if ($status == 3 || $status == 4) {
-                        $inpatient->update([
+                    if ($status == 2 || $status == 3) {
+                        $emergencyDepartment->update([
                             'date_of_out' => $request->date_of_out,
                             'ending' => $request->ending
                         ]);
                     }
 
-                    $inpatient->update([
+                    $emergencyDepartment->update([
                         'status' => $status
                     ]);
 
@@ -686,11 +614,9 @@ class InpatientController extends Controller
         }
 
         $data = [
-            'inpatient' => $inpatient,
-            'patient' => $inpatient->patient,
-            'roomType' => RoomType::where('status', true)->orderBy('class_type_id')->get(),
-            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
-            'content' => 'collection.inpatient-checkout'
+            'emergencyDepartment' => $emergencyDepartment,
+            'patient' => $emergencyDepartment->patient,
+            'content' => 'collection.emergency-department-checkout'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -701,7 +627,7 @@ class InpatientController extends Controller
         $id = $request->id;
 
         try {
-            Inpatient::destroy($id);
+            EmergencyDepartment::destroy($id);
 
             $response = [
                 'code' => 200,

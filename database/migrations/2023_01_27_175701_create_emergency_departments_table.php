@@ -20,8 +20,14 @@ class CreateEmergencyDepartmentsTable extends Migration
             $table->unsignedBigInteger('functional_service_id')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->char('type', 1)->nullable();
+            $table->json('observation')->nullable();
+            $table->json('supervision_doctor')->nullable();
             $table->timestamp('date_of_entry')->nullable();
+            $table->timestamp('date_of_out')->nullable();
+            $table->char('status', 1)->default(1);
+            $table->char('ending', 1)->nullable();
             $table->timestamps();
+            $table->softDeletes('deleted_at');
         });
     }
 
