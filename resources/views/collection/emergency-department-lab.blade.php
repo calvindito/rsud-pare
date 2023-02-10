@@ -8,10 +8,12 @@
         <div class="my-auto ms-auto">
             <a href="{{ url('collection/emergency-department') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
             <a href="{{ url()->full() }}" class="btn btn-flat-primary">Refresh</a>
-            <button type="button" class="btn btn-flat-primary" data-bs-toggle="modal" data-bs-target="#modal-form" onclick="onReset()">
-                <i class="ph-plus-circle me-1"></i>
-                Permintaan Cek
-            </button>
+            @if($emergencyDepartment->status == 1)
+                <button type="button" class="btn btn-flat-primary" data-bs-toggle="modal" data-bs-target="#modal-form" onclick="onReset()">
+                    <i class="ph-plus-circle me-1"></i>
+                    Permintaan Cek
+                </button>
+            @endif
         </div>
     </div>
 </div>
@@ -177,59 +179,61 @@
     </div>
 </div>
 
-<div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Form Permintaan</h5>
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
-                    <i class="ph-x"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger d-none" id="validation-element">
-                    <ul class="mb-0" id="validation-data"></ul>
+@if($emergencyDepartment->status == 1)
+    <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Form Permintaan</h5>
+                    <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
+                        <i class="ph-x"></i>
+                    </button>
                 </div>
-                <form id="form-data">
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Tanggal Permintaan <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="datetime-local" class="form-control" name="date_of_request" id="date_of_request">
-                        </div>
+                <div class="modal-body">
+                    <div class="alert alert-danger d-none" id="validation-element">
+                        <ul class="mb-0" id="validation-data"></ul>
                     </div>
-                    <div class="form-group"><hr></div>
-                    <table class="table table-bordered table-hover table-xs">
-                        <tbody>
-                            @foreach($labItemGroup as $lig)
-                                @if($lig->item->count() > 0)
-                                    <tr class="bg-light">
-                                        <th class="align-middle" colspan="2">{{ $lig->name }}</th>
-                                    </tr>
-                                    @foreach($lig->item as $i)
-                                        <tr>
-                                            <td class="align-middle w-100">{{ $i->name }}</td>
-                                            <td class="align-middle">
-                                                <div class="form-check form-switch justify-content-center">
-                                                    <input type="checkbox" class="form-check-input form-check-input-success" name="lrd_item_id[]" value="{{ $i->id }}">
-                                                </div>
-                                            </td>
+                    <form id="form-data">
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-3">Tanggal Permintaan <span class="text-danger fw-bold">*</span></label>
+                            <div class="col-md-9">
+                                <input type="datetime-local" class="form-control" name="date_of_request" id="date_of_request">
+                            </div>
+                        </div>
+                        <div class="form-group"><hr></div>
+                        <table class="table table-bordered table-hover table-xs">
+                            <tbody>
+                                @foreach($labItemGroup as $lig)
+                                    @if($lig->item->count() > 0)
+                                        <tr class="bg-light">
+                                            <th class="align-middle" colspan="2">{{ $lig->name }}</th>
                                         </tr>
-                                    @endforeach
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </form>
-            </div>
-            <div class="modal-footer justify-content-end">
-                <button class="btn btn-primary" onclick="createData()">
-                    <i class="ph-plus-circle me-1"></i>
-                    Submit
-                </button>
+                                        @foreach($lig->item as $i)
+                                            <tr>
+                                                <td class="align-middle w-100">{{ $i->name }}</td>
+                                                <td class="align-middle">
+                                                    <div class="form-check form-switch justify-content-center">
+                                                        <input type="checkbox" class="form-check-input form-check-input-success" name="lrd_item_id[]" value="{{ $i->id }}">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-end">
+                    <button class="btn btn-primary" onclick="createData()">
+                        <i class="ph-plus-circle me-1"></i>
+                        Submit
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+@endif
 
 <script>
     $(function() {

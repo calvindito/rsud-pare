@@ -18,7 +18,7 @@ Noty.overrideDefaults({
 
 $(function() {
     configDataTable();
-    formatNumber();
+    formatInputNumber();
     select2Basic();
     setBaseUrl();
     lightBox();
@@ -85,8 +85,8 @@ function notification(type, text, layout = 'topCenter') {
     }).show();
 }
 
-function formatNumber() {
-    $('.number-format').number(true, 2);
+function formatInputNumber() {
+    $('.number-format').number(true);
 }
 
 function select2Basic() {

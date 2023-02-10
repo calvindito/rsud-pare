@@ -39,4 +39,14 @@ class Recipe extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * medicine
+     *
+     * @return void
+     */
+    public function medicine()
+    {
+        return $this->belongsTo(Medicine::class);
+    }
 }

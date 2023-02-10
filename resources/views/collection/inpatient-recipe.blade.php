@@ -49,9 +49,11 @@
     <form action="" method="POST">
         @csrf
         <div class="card">
-            <div class="card-header">
-                <h6 class="hstack gap-2 mb-0">Pilih Obat</h6>
-            </div>
+            @if($inpatient->status == 1)
+                <div class="card-header">
+                    <h6 class="hstack gap-2 mb-0">Pilih Obat</h6>
+                </div>
+            @endif
             <div class="card-body">
                 @if($errors->any())
                     <div class="alert alert-danger">
@@ -70,20 +72,49 @@
                         {{ session('error') }}
                     </div>
                 @endif
-                <select class="form-control listbox" name="recipe[]" id="recipe" multiple>
-                    @foreach($medicine as $m)
-                        <option value="{{ $m->id }}" {{ $recipe->firstWhere('medicine_id', $m->id) ? 'selected' : '' }}>{{ $m->name }}</option>
-                    @endforeach
-                </select>
+                @if($inpatient->status == 1)
+                    <select class="form-control listbox" name="recipe[]" id="recipe" multiple>
+                        @foreach($medicine as $m)
+                            <option value="{{ $m->id }}" {{ $recipe->firstWhere('medicine_id', $m->id) ? 'selected' : '' }}>{{ $m->name }}</option>
+                        @endforeach
+                    </select>
+                @else
+                    <table class="table table-bordered table-hover table-xs">
+                        <thead>
+                            <tr>
+                                <th class="text-center" nowrap>No</th>
+                                <th nowrap>Obat</th>
+                                <th nowrap>Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if($recipe->count() > 0)
+                                @foreach($recipe as $key => $r)
+                                    <tr>
+                                        <td class="text-center align-middle">{{ $key + 1 }}</td>
+                                        <td class="align-middle">{{ $r->medicine->name }}</td>
+                                        <td class="align-middle">1</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td class="text-center" colspan="3">Tidak ada obat yang dipilih</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                @endif
             </div>
-            <div class="card-footer">
-                <div class="text-end">
-                    <button type="submit" class="btn btn-primary" onclick="onLoading('show', '.content')">
-                        <i class="ph-paper-plane-tilt me-2"></i>
-                        Submit
-                    </button>
+            @if($inpatient->status == 1)
+                <div class="card-footer">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary" onclick="onLoading('show', '.content')">
+                            <i class="ph-paper-plane-tilt me-2"></i>
+                            Submit
+                        </button>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 </div>

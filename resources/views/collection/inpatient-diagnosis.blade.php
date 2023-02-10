@@ -64,9 +64,11 @@
                         @endforeach
                     @endif
                 </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-teal col-12" onclick="addItem('diagnosis')"><i class="ph-plus me-2"></i> Tambah Diagnosa</button>
-                </div>
+                @if($inpatient->status == 1)
+                    <div class="form-group">
+                        <button type="button" class="btn btn-teal col-12" onclick="addItem('diagnosis')"><i class="ph-plus me-2"></i> Tambah Diagnosa</button>
+                    </div>
+                @endif
             </div>
         </div>
         <div class="card">
@@ -83,25 +85,45 @@
                         @endforeach
                     @endif
                 </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-teal col-12" onclick="addItem('action')"><i class="ph-plus me-2"></i> Tambah Tindakan</button>
-                </div>
+                @if($inpatient->status == 1)
+                    <div class="form-group">
+                        <button type="button" class="btn btn-teal col-12" onclick="addItem('action')"><i class="ph-plus me-2"></i> Tambah Tindakan</button>
+                    </div>
+                @endif
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="text-end">
-                    <button type="button" class="btn btn-warning" onclick="submitted()">
-                        <i class="ph-floppy-disk me-2"></i>
-                        Simpan Data
-                    </button>
+        @if($inpatient->status == 1)
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-end">
+                        <button type="button" class="btn btn-warning" onclick="submitted()">
+                            <i class="ph-floppy-disk me-2"></i>
+                            Simpan Data
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </form>
 </div>
 
 <script>
+    $(function() {
+        checkStatus();
+    });
+
+    function checkStatus() {
+        var status = '{{ $emergencyDepartment->status }}';
+
+        if(status == 1) {
+            $('.form-control').attr('disabled', false);
+            $('.form-select').attr('disabled', false);
+        } else {
+            $('.form-control').attr('disabled', true);
+            $('.form-select').attr('disabled', true);
+        }
+    }
+
     function addItem(param) {
         if(param == 'diagnosis') {
             var input = '<input type="text" class="form-control" name="diagnosis[]" placeholder="Masukan diagnosa">';

@@ -36,9 +36,7 @@
                             <td class="align-middle" width="30%">{{ $inpatient->date_of_entry }}</td>
                             <th class="align-middle">Tanggal Keluar</th>
                             <th class="align-middle" width="1%">:</th>
-                            <td class="align-middle" width="30%">
-                                <input type="datetime-local" class="form-control" name="date_of_out" id="date_of_out" value="{{ $inpatient->date_of_out }}">
-                            </td>
+                            <td class="align-middle" width="30%">{{ !empty($inpatient->date_of_out) ? $inpatient->date_of_out : '-' }}</td>
                         </tr>
                         <tr>
                             <th class="align-middle">Kamar</th>
@@ -54,30 +52,11 @@
                             <td class="align-middle" width="30%">{{ $patient->address }}</td>
                             <th class="align-middle">Dokter</th>
                             <th class="align-middle" width="1%">:</th>
-                            <td class="align-middle" width="30%">
-                                <select class="form-select" name="doctor_id" id="doctor_id">
-                                    <option value="">-- Pilih --</option>
-                                    @foreach($doctor as $d)
-                                        <option value="{{ $d->id }}" {{ $inpatient->doctor_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                        </tr>
+                            <td class="align-middle" width="30%">{{ $inpatient->doctor->name ?? '-' }}</tr>
                         <tr>
                             <th class="align-middle">Hasil</th>
                             <th class="align-middle" width="1%">:</th>
-                            <td class="align-middle" width="30%">
-                                <select class="form-select" name="ending" id="ending">
-                                    <option value="">Belum Ada Hasil</option>
-                                    <option value="1" {{ $inpatient->ending == 1 ? 'selected' : '' }}>Sembuh</option>
-                                    <option value="2" {{ $inpatient->ending == 2 ? 'selected' : '' }}>Rujuk</option>
-                                    <option value="3" {{ $inpatient->ending == 3 ? 'selected' : '' }}>Pulang Paksa</option>
-                                    <option value="4" {{ $inpatient->ending == 4 ? 'selected' : '' }}>Meninggal < 48 Jam</option>
-                                    <option value="5" {{ $inpatient->ending == 5 ? 'selected' : '' }}>Meninggal > 48 Jam</option>
-                                    <option value="6" {{ $inpatient->ending == 6 ? 'selected' : '' }}>Tidak Diketahui</option>
-                                    <option value="7" {{ $inpatient->ending == 7 ? 'selected' : '' }}>Konsul ke Poli Lain</option>
-                                </select>
-                            </td>
+                            <td class="align-middle" width="30%">{{ $inpatient->ending_format_result }}</td>
                             <th class="align-middle">Golongan</th>
                             <th class="align-middle" width="1%">:</th>
                             <td class="align-middle" width="30%">{{ $inpatient->type_format_result }}</td>
@@ -521,16 +500,18 @@
                 </table>
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="text-end">
-                    <button type="button" class="btn btn-warning" onclick="submitted()">
-                        <i class="ph-floppy-disk me-2"></i>
-                        Simpan Data
-                    </button>
+        @if($inpatient->status == 1)
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-end">
+                        <button type="button" class="btn btn-warning" onclick="submitted()">
+                            <i class="ph-floppy-disk me-2"></i>
+                            Simpan Data
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </form>
 </div>
 
@@ -539,7 +520,20 @@
         sidebarMini();
         fullWidthAllDevice();
         total();
+        checkStatus();
     });
+
+    function checkStatus() {
+        var status = '{{ $inpatient->status }}';
+
+        if(status == 1) {
+            $('.form-control').attr('disabled', false);
+            $('.form-select').attr('disabled', false);
+        } else {
+            $('.form-control').attr('disabled', true);
+            $('.form-select').attr('disabled', true);
+        }
+    }
 
     function total() {
         var observationNominal = numberable(parseFloat($('input[name="observation_nominal"]').val()));
