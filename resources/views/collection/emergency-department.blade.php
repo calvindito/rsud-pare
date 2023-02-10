@@ -13,6 +13,10 @@
                     <a href="{{ url()->full() }}" class="dropdown-item">Halaman</a>
                 </div>
             </div>
+            <a href="{{ url('collection/emergency-department/register-patient') }}" class="btn btn-flat-primary">
+                <i class="ph-plus-circle me-1"></i>
+                Registrasi Pasien
+            </a>
         </div>
     </div>
 </div>
@@ -28,6 +32,7 @@
                         <th nowrap>Pasien</th>
                         <th nowrap>UPF</th>
                         <th nowrap>Tanggal Masuk</th>
+                        <th nowrap>Tanggal Keluar</th>
                         <th nowrap>Hasil</th>
                         <th class="text-center" nowrap>Status</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
@@ -82,6 +87,7 @@
                 { data: 'patient_name', name: 'patient_name', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'functional_service_name', name: 'functional_service_name', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'date_of_entry', name: 'date_of_entry', orderable: true, searchable: false, className: 'align-middle nowrap' },
+                { data: 'date_of_out', name: 'date_of_out', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'ending_format_result', name: 'ending', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'status', name: 'status', orderable: true, searchable: true, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },

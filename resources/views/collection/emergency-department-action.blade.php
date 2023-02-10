@@ -109,7 +109,7 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control" name="observation_nominal" id="observation_nominal" value="{{ $emergencyDepartment->observation->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="observation_nominal" id="observation_nominal" value="{{ $emergencyDepartment->observation->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                         </div>
                                     </td>
                                 </tr>
@@ -128,7 +128,7 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $emergencyDepartment->supervision_doctor->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $emergencyDepartment->supervision_doctor->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                         </div>
                                     </td>
                                 </tr>
@@ -154,7 +154,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="eds_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="eds_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                                     <select class="form-select w-auto flex-grow-0" name="eds_qty[]" onchange="total()">
                                                         @for($i = 1; $i <= 100; $i++)
                                                             <option value="{{ $i }}" {{ ($check->qty ?? 1) == $i ? 'selected' : '' }}>{{ $i }}</option>
@@ -193,7 +193,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="edno_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edno_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -236,7 +236,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="edss_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edss_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -270,7 +270,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="edh_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edh_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -304,7 +304,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="edo_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edo_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -332,21 +332,21 @@
                                 <div class="input-group">
                                     <span class="input-group-text">1</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[0]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[0]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                 </div>
                             </td>
                             <td class="align-middle">
                                 <div class="input-group">
                                     <span class="input-group-text">2</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[1]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[1]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                 </div>
                             </td>
                             <td class="align-middle">
                                 <div class="input-group">
                                     <span class="input-group-text">3</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[2]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[2]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                 </div>
                             </td>
                         </tr>

@@ -81,43 +81,43 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Jrs <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="hospital_service" id="hospital_service" placeholder="Masukan jrs">
+                            <input type="text" class="form-control number-format" name="hospital_service" id="hospital_service" placeholder="Masukan jrs">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Dr Operasi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="doctor_operating" id="doctor_operating" placeholder="Masukan dr operasi">
+                            <input type="text" class="form-control number-format" name="doctor_operating" id="doctor_operating" placeholder="Masukan dr operasi">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Dr Anetesi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="doctor_anesthetist" id="doctor_anesthetist" placeholder="Masukan dr anestesi">
+                            <input type="text" class="form-control number-format" name="doctor_anesthetist" id="doctor_anesthetist" placeholder="Masukan dr anestesi">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Perawat Operasi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="nurse_operating_room" id="nurse_operating_room" placeholder="Masukan perawat operasi">
+                            <input type="text" class="form-control number-format" name="nurse_operating_room" id="nurse_operating_room" placeholder="Masukan perawat operasi">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Perawat Anestesi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="nurse_anesthetist" id="nurse_anesthetist" placeholder="Masukan perawat anestesi">
+                            <input type="text" class="form-control number-format" name="nurse_anesthetist" id="nurse_anesthetist" placeholder="Masukan perawat anestesi">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Total <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="total" id="total" placeholder="Masukan total">
+                            <input type="text" class="form-control number-format" name="total" id="total" placeholder="Masukan total">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Tarif <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee" id="fee" placeholder="Masukan tarif">
+                            <input type="text" class="form-control number-format" name="fee" id="fee" placeholder="Masukan tarif">
                         </div>
                     </div>
                 </form>

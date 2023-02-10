@@ -83,19 +83,19 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Bhp</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="consumables" id="consumables" placeholder="Masukan bhp">
+                            <input type="text" class="form-control number-format" name="consumables" id="consumables" placeholder="Masukan bhp">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Jrs</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="hospital_service" id="hospital_service" placeholder="Masukan jrs">
+                            <input type="text" class="form-control number-format" name="hospital_service" id="hospital_service" placeholder="Masukan jrs">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Jaspel</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="service" id="service" placeholder="Masukan jaspel">
+                            <input type="text" class="form-control number-format" name="service" id="service" placeholder="Masukan jaspel">
                         </div>
                     </div>
                 </form>

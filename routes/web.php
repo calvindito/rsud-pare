@@ -435,31 +435,12 @@ Route::middleware('auth')->group(function () {
             });
         });
 
-        Route::prefix('register')->namespace('Register')->group(function () {
-            Route::prefix('outpatient')->group(function () {
-                Route::get('/', 'OutpatientController@index');
-                Route::get('load-patient', 'OutpatientController@loadPatient');
-                Route::post('register-patient', 'OutpatientController@registerPatient');
-            });
-
-            Route::prefix('inpatient')->group(function () {
-                Route::get('/', 'InpatientController@index');
-                Route::get('load-patient', 'InpatientController@loadPatient');
-                Route::post('register-patient', 'InpatientController@registerPatient');
-            });
-
-            Route::prefix('emergency-department')->group(function () {
-                Route::get('/', 'EmergencyDepartmentController@index');
-                Route::get('load-patient', 'EmergencyDepartmentController@loadPatient');
-                Route::post('register-patient', 'EmergencyDepartmentController@registerPatient');
-            });
-        });
-
         Route::prefix('collection')->namespace('Collection')->group(function () {
             Route::prefix('outpatient')->group(function () {
                 Route::get('/', 'OutpatientController@index');
                 Route::get('datatable', 'OutpatientController@datatable');
                 Route::get('load-patient', 'OutpatientController@loadPatient');
+                Route::match(['get', 'post'], 'register-patient', 'OutpatientController@registerPatient');
                 Route::match(['get', 'post'], 'update-data/{outpatient_poly_id}', 'OutpatientController@updateData');
                 Route::match(['get', 'post'], 'operating-room/{outpatient_poly_id}', 'OutpatientController@operatingRoom');
                 Route::delete('destroy-data', 'OutpatientController@destroyData');
@@ -469,6 +450,8 @@ Route::middleware('auth')->group(function () {
             Route::prefix('inpatient')->group(function () {
                 Route::get('/', 'InpatientController@index');
                 Route::get('datatable', 'InpatientController@datatable');
+                Route::get('load-patient', 'InpatientController@loadPatient');
+                Route::match(['get', 'post'], 'register-patient', 'InpatientController@registerPatient');
                 Route::match(['get', 'post'], 'action/{id}', 'InpatientController@action');
                 Route::match(['get', 'post'], 'recipe/{id}', 'InpatientController@recipe');
                 Route::match(['get', 'post'], 'diagnosis/{id}', 'InpatientController@diagnosis');
@@ -477,12 +460,15 @@ Route::middleware('auth')->group(function () {
                 Route::match(['get', 'post'], 'radiology/{id}', 'InpatientController@radiology');
                 Route::get('radiology/print/{id}', 'InpatientController@radiologyPrint');
                 Route::match(['get', 'post'], 'checkout/{id}', 'InpatientController@checkout');
+                Route::match(['get', 'post'], 'update-data/{id}', 'InpatientController@updateData');
                 Route::delete('destroy-data', 'InpatientController@destroyData');
             });
 
             Route::prefix('emergency-department')->group(function () {
                 Route::get('/', 'EmergencyDepartmentController@index');
                 Route::get('datatable', 'EmergencyDepartmentController@datatable');
+                Route::get('load-patient', 'EmergencyDepartmentController@loadPatient');
+                Route::match(['get', 'post'], 'register-patient', 'EmergencyDepartmentController@registerPatient');
                 Route::match(['get', 'post'], 'action/{id}', 'EmergencyDepartmentController@action');
                 Route::match(['get', 'post'], 'recipe/{id}', 'EmergencyDepartmentController@recipe');
                 Route::match(['get', 'post'], 'diagnosis/{id}', 'EmergencyDepartmentController@diagnosis');
@@ -491,6 +477,7 @@ Route::middleware('auth')->group(function () {
                 Route::match(['get', 'post'], 'radiology/{id}', 'EmergencyDepartmentController@radiology');
                 Route::get('radiology/print/{id}', 'EmergencyDepartmentController@radiologyPrint');
                 Route::match(['get', 'post'], 'checkout/{id}', 'EmergencyDepartmentController@checkout');
+                Route::match(['get', 'post'], 'update-data/{id}', 'EmergencyDepartmentController@updateData');
                 Route::delete('destroy-data', 'EmergencyDepartmentController@destroyData');
             });
         });

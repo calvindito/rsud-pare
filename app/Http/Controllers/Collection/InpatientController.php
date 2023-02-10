@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Collection;
 use App\Helpers\Simrs;
 use App\Models\Doctor;
 use App\Models\LabItem;
+use App\Models\Patient;
 use App\Models\Medicine;
+use App\Models\Religion;
 use App\Models\RoomType;
 use App\Models\Inpatient;
 use App\Models\Radiology;
@@ -54,7 +56,6 @@ class InpatientController extends Controller
                         });
                 }
             })
-            ->editColumn('date_of_entry', '{{ date("Y-m-d H:i:s", strtotime($date_of_entry)) }}')
             ->editColumn('status', function (Inpatient $query) {
                 return $query->status();
             })
@@ -95,9 +96,19 @@ class InpatientController extends Controller
                         <a href="' . url('collection/inpatient/checkout/' . $query->id) . '" class="btn btn-light text-secondary btn-sm fw-semibold">
                             Check-Out
                         </a>
-                        <a href="javascript:void(0);" class="btn btn-light text-danger btn-sm fw-semibold" onclick="destroyData(' . $query->id . ')">
-                            Hapus Data
-                        </a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-light text-warning btn-sm btn-block fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Lainnya</button>
+                            <div class="dropdown-menu">
+                                <a href="' . url('collection/inpatient/update-data/' . $query->id) . '" class="dropdown-item fs-13">
+                                    <i class="ph-pen me-2"></i>
+                                    Edit Data
+                                </a>
+                                <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="destroyData(' . $query->id . ')">
+                                    <i class="ph-trash-simple me-2"></i>
+                                    Hapus Data
+                                </a>
+                            </div>
+                        </div>
                     ';
                 }
 
@@ -151,6 +162,113 @@ class InpatientController extends Controller
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
+    }
+
+    public function loadPatient(Request $request)
+    {
+        $id = $request->id;
+        $data = Patient::with([
+            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'functionalService'])
+        ])->whereNotNull('verified_at')->findOrFail($id);
+
+        return response()->json($data);
+    }
+
+    public function registerPatient(Request $request)
+    {
+        if ($request->ajax()) {
+            $patientId = $request->patient_id;
+            $validation = Validator::make($request->all(), [
+                'patient_id' => 'required',
+                'identity_number' => 'nullable|digits:16|numeric|unique:patients,identity_number,' . $patientId,
+                'name' => 'required',
+                'gender' => 'required',
+                'religion_id' => 'required',
+                'type' => 'required',
+                'date_of_entry' => 'required',
+                'room_type_id' => 'required',
+                'functional_service_id' => 'required',
+                'doctor_id' => 'required'
+            ], [
+                'patient_id' => 'mohon memilih pasien',
+                'identity_number.digits' => 'no identitas harus 16 karakter',
+                'identity_number.numeric' => 'no identitas harus angka',
+                'identity_number.unique' => 'no identitas telah digunakan',
+                'name.required' => 'nama tidak boleh kosong',
+                'gender.required' => 'mohon memilih jenis kelamin',
+                'religion_id.required' => 'mohon memilih agama',
+                'type.required' => 'mohon memilih golongan pasien',
+                'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
+                'room_type_id.required' => 'mohon memilih kamar',
+                'functional_service_id.required' => 'mohon memilih upf',
+                'doctor_id.required' => 'mohon memilih dokter'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $patientId) {
+                        $userId = auth()->id();
+                        $hasDataPatient = Patient::find($patientId);
+                        $dateOfEntry = date('Y-m-d H:i:s', strtotime($request->date_of_entry));
+
+                        $fillPatient = [
+                            'religion_id' => $request->religion_id,
+                            'identity_number' => $request->identity_number,
+                            'name' => $request->name,
+                            'greeted' => $request->greeted,
+                            'gender' => $request->gender,
+                            'date_of_birth' => $request->date_of_birth,
+                            'religion_id' => $request->religion_id,
+                            'verified_at' => now()
+                        ];
+
+                        if ($hasDataPatient) {
+                            $hasDataPatient->update($fillPatient);
+                            $patientId = $hasDataPatient->id;
+                        } else {
+                            $createPatient = Patient::create($fillPatient);
+                            $patientId = $createPatient->id;
+                        }
+
+                        Inpatient::create([
+                            'user_id' => $userId,
+                            'patient_id' => $patientId,
+                            'room_type_id' => $request->room_type_id,
+                            'functional_service_id' => $request->functional_service_id,
+                            'type' => $request->type,
+                            'date_of_entry' => $dateOfEntry
+                        ]);
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Pasien berhasil didaftarkan'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'roomType' => RoomType::where('status', true)->orderBy('name')->get(),
+            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
+            'religion' => Religion::all(),
+            'doctor' => Doctor::all(),
+            'content' => 'collection.inpatient-register-patient'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
     }
 
     public function action(Request $request, $id)
@@ -696,12 +814,97 @@ class InpatientController extends Controller
         return view('layouts.index', ['data' => $data]);
     }
 
+    public function updateData(Request $request, $id)
+    {
+        $inpatient = Inpatient::where('status', 1)->findOrFail($id);
+        $patient = $inpatient->patient;
+
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'identity_number' => 'nullable|digits:16|numeric|unique:patients,identity_number,' . $patient->id,
+                'name' => 'required',
+                'gender' => 'required',
+                'religion_id' => 'required',
+                'type' => 'required',
+                'date_of_entry' => 'required',
+                'room_type_id' => 'required',
+                'functional_service_id' => 'required',
+                'doctor_id' => 'required'
+            ], [
+                'identity_number.digits' => 'no identitas harus 16 karakter',
+                'identity_number.numeric' => 'no identitas harus angka',
+                'identity_number.unique' => 'no identitas telah digunakan',
+                'name.required' => 'nama tidak boleh kosong',
+                'gender.required' => 'mohon memilih jenis kelamin',
+                'religion_id.required' => 'mohon memilih agama',
+                'type.required' => 'mohon memilih golongan pasien',
+                'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
+                'room_type_id.required' => 'mohon memilih kamar',
+                'functional_service_id.required' => 'mohon memilih upf',
+                'doctor_id.required' => 'mohon memilih dokter'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $inpatient, $patient) {
+                        $patient->update([
+                            'religion_id' => $request->religion_id,
+                            'identity_number' => $request->identity_number,
+                            'name' => $request->name,
+                            'greeted' => $request->greeted,
+                            'gender' => $request->gender,
+                            'date_of_birth' => $request->date_of_birth
+                        ]);
+
+                        $inpatient->update([
+                            'user_id' => auth()->id(),
+                            'room_type_id' => $request->room_type_id,
+                            'functional_service_id' => $request->functional_service_id,
+                            'doctor_id' => $request->doctor_id,
+                            'type' => $request->type,
+                            'date_of_entry' => $request->date_of_entry
+                        ]);
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Data rawat inap berhasil diubah'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'inpatient' => $inpatient,
+            'patient' => $patient,
+            'roomType' => RoomType::where('status', true)->orderBy('name')->get(),
+            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
+            'religion' => Religion::all(),
+            'doctor' => Doctor::all(),
+            'content' => 'collection.inpatient-update'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
     public function destroyData(Request $request)
     {
         $id = $request->id;
 
         try {
-            Inpatient::destroy($id);
+            Inpatient::where('status', 1)->destroy($id);
 
             $response = [
                 'code' => 200,

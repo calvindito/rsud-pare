@@ -2,8 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendaftaran - <span class="fw-normal">IGD</span>
+                Pendataan - IGD - <span class="fw-normal">Registrasi Pasien</span>
             </h5>
+        </div>
+        <div class="my-auto ms-auto">
+            <a href="{{ url('collection/emergency-department') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
         </div>
     </div>
 </div>
@@ -124,15 +127,15 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Riwayat Kunjungan Rawat Inap</h5>
+                <h5 class="mb-0">Riwayat Kunjungan IGD</h5>
             </div>
             <div class="card-body border-top">
-                <table class="table table-bordered table-hover table-xs" id="table-history-inpatient">
+                <table class="table table-bordered table-hover table-xs" id="table-history-emergency-department">
                     <thead>
                         <tr>
                             <th nowrap>Tanggal Masuk</th>
                             <th nowrap>Golongan</th>
-                            <th nowrap>Kamar Tujuan</th>
+                            <th nowrap>Dokter</th>
                             <th nowrap>UPF</th>
                         </tr>
                     </thead>
@@ -190,7 +193,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-3">DPJP</label>
+                    <label class="col-form-label col-lg-3">Dokter <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
                         <select class="form-select" name="doctor_id" id="doctor_id">
                             <option value="">-- Pilih --</option>
@@ -251,12 +254,12 @@
     }
 
     function clearTableHistory(emptyTable = false) {
-        $('#table-history-inpatient tbody').html('');
+        $('#table-history-emergency-department tbody').html('');
     }
 
     function loadPatient() {
         $.ajax({
-            url: '{{ url("register/emergency-department/load-patient") }}',
+            url: '{{ url("collection/emergency-department/load-patient") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -294,12 +297,12 @@
                     `);
                 }
 
-                $.each(response.inpatient, function(i, val) {
-                    $('#table-history-inpatient tbody').append(`
+                $.each(response.emergency_department, function(i, val) {
+                    $('#table-history-emergency-department tbody').append(`
                         <tr>
                             <td nowrap>` + val.date_of_entry + `</td>
                             <td nowrap>` + val.type_format_result + `</td>
-                            <td nowrap>` + val.room_type.name + ` - ` + val.room_type.class_type.name + `</td>
+                            <td nowrap>` + val.doctor.name + `</td>
                             <td nowrap>` + val.functional_service.name + `</td>
                         </tr>
                     `);
@@ -319,7 +322,7 @@
 
     function registerPatient() {
         $.ajax({
-            url: '{{ url("register/emergency-department/register-patient") }}',
+            url: '{{ url("collection/emergency-department/register-patient") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -355,7 +358,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("register/emergency-department") }}');
+                        window.location.replace('{{ url("collection/emergency-department/register-patient") }}');
                     });
                 } else if(response.code == 400) {
                     $('.btn-to-top button').click();

@@ -169,25 +169,25 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Harga Jual <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="price" id="price" placeholder="Masukan harga jual">
+                            <input type="text" class="form-control number-format" name="price" id="price" placeholder="Masukan harga jual">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Harga Beli</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="price_purchase" id="price_purchase" placeholder="Masukan harga beli">
+                            <input type="text" class="form-control number-format" name="price_purchase" id="price_purchase" placeholder="Masukan harga beli">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Harga Nett</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="price_netto" id="price_netto" placeholder="Masukan harga nett">
+                            <input type="text" class="form-control number-format" name="price_netto" id="price_netto" placeholder="Masukan harga nett">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Diskon</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="discount" id="discount" placeholder="Masukan diskon">
+                            <input type="text" class="form-control number-format" name="discount" id="discount" placeholder="Masukan diskon">
                         </div>
                     </div>
                 </form>

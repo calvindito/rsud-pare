@@ -93,31 +93,31 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya Jrs <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_hospital_service" id="fee_hospital_service" placeholder="Masukan biaya jrs">
+                            <input type="text" class="form-control number-format" name="fee_hospital_service" id="fee_hospital_service" placeholder="Masukan biaya jrs">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya Dr Operasi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_doctor_operating_room" id="fee_doctor_operating_room" placeholder="Masukan biaya dr operasi">
+                            <input type="text" class="form-control number-format" name="fee_doctor_operating_room" id="fee_doctor_operating_room" placeholder="Masukan biaya dr operasi">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya Dr Anestesi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_doctor_anesthetist" id="fee_doctor_anesthetist" placeholder="Masukan biaya dr anestesi">
+                            <input type="text" class="form-control number-format" name="fee_doctor_anesthetist" id="fee_doctor_anesthetist" placeholder="Masukan biaya dr anestesi">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya Perawat Operasi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_nurse_operating_room" id="fee_nurse_operating_room" placeholder="Masukan biaya perawat operasi">
+                            <input type="text" class="form-control number-format" name="fee_nurse_operating_room" id="fee_nurse_operating_room" placeholder="Masukan biaya perawat operasi">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya Perawat Anestesi <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_nurse_anesthetist" id="fee_nurse_anesthetist" placeholder="Masukan biaya perawat anestesi">
+                            <input type="text" class="form-control number-format" name="fee_nurse_anesthetist" id="fee_nurse_anesthetist" placeholder="Masukan biaya perawat anestesi">
                         </div>
                     </div>
                     <div class="form-group row">

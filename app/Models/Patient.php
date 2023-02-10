@@ -134,4 +134,14 @@ class Patient extends Model
     {
         return $this->hasMany(Inpatient::class);
     }
+
+    /**
+     * emergencyDepartment
+     *
+     * @return void
+     */
+    public function emergencyDepartment()
+    {
+        return $this->hasMany(EmergencyDepartment::class);
+    }
 }

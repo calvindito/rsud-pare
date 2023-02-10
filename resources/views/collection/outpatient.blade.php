@@ -13,6 +13,10 @@
                     <a href="{{ url()->full() }}" class="dropdown-item">Halaman</a>
                 </div>
             </div>
+            <a href="{{ url('collection/outpatient/register-patient') }}" class="btn btn-flat-primary">
+                <i class="ph-plus-circle me-1"></i>
+                Registrasi Pasien
+            </a>
         </div>
     </div>
 </div>
@@ -23,11 +27,13 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
+                        <th nowrap>Kode</th>
                         <th nowrap>No RM</th>
                         <th nowrap>Pasien</th>
                         <th nowrap>Jenis Kelamin</th>
                         <th nowrap>Golongan</th>
                         <th nowrap>Tanggal Masuk</th>
+                        <th nowrap>Tanggal Keluar</th>
                         <th nowrap>Poli</th>
                         <th nowrap>Status</th>
                         <th nowrap>Kehadiran</th>
@@ -79,11 +85,13 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
+                { data: 'code', name: 'id', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'patient_id', name: 'patient_id', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'patient_name', name: 'patient_name', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'patient_gender', name: 'patient_gender', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'outpatient_type', name: 'outpatient_type', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'outpatient_date_of_entry', name: 'outpatient_date_of_entry', orderable: false, searchable: false, className: 'align-middle' },
+                { data: 'date_of_out', name: 'date_of_out', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'unit_name', name: 'unit_name', orderable: false, searchable: false, className: 'align-middle nowrap' },
                 { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'outpatient_presence', name: 'outpatient_presence', orderable: false, searchable: false, className: 'align-middle nowrap' },

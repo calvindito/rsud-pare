@@ -76,13 +76,13 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya RR Monitor <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_monitoring" id="fee_monitoring" placeholder="Masukan biaya rr monitor">
+                            <input type="text" class="form-control number-format" name="fee_monitoring" id="fee_monitoring" placeholder="Masukan biaya rr monitor">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya RR Askep <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_nursing_care" id="fee_nursing_care" placeholder="Masukan biaya rr askep">
+                            <input type="text" class="form-control number-format" name="fee_nursing_care" id="fee_nursing_care" placeholder="Masukan biaya rr askep">
                         </div>
                     </div>
                 </form>

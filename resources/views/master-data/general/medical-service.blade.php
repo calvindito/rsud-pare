@@ -87,7 +87,7 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee" id="fee" placeholder="Masukan biaya">
+                            <input type="text" class="form-control number-format" name="fee" id="fee" placeholder="Masukan biaya">
                         </div>
                     </div>
                     <div class="form-group row">

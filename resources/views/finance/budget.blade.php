@@ -76,13 +76,13 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Nominal <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="nominal" id="nominal" placeholder="Masukan nominal">
+                            <input type="text" class="form-control number-format" name="nominal" id="nominal" placeholder="Masukan nominal">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Batas BLUD <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="limit_blud" id="limit_blud" placeholder="Masukan batas blud">
+                            <input type="text" class="form-control number-format" name="limit_blud" id="limit_blud" placeholder="Masukan batas blud">
                         </div>
                     </div>
                     <div class="form-group row">

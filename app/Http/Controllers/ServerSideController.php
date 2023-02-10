@@ -66,6 +66,7 @@ class ServerSideController extends Controller
                     ->orWhere('identity_number', 'like', "%$search%")
                     ->orWhere('name', 'like', "%$search%");
             })
+            ->limit(100)
             ->get()
             ->toArray();
 

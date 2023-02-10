@@ -43,7 +43,6 @@ class LabController extends Controller
                         });
                 }
             })
-            ->editColumn('date_of_request', '{{ date("Y-m-d H:i:s", strtotime($date_of_request)) }}')
             ->addColumn('status', function (LabRequest $query) {
                 return $query->status();
             })

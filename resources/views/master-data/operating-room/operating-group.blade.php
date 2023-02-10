@@ -74,7 +74,7 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Biaya CSSD <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee_cssd" id="fee_cssd" placeholder="Masukan biaya cssd">
+                            <input type="text" class="form-control number-format" name="fee_cssd" id="fee_cssd" placeholder="Masukan biaya cssd">
                         </div>
                     </div>
                 </form>

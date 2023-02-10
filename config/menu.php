@@ -421,35 +421,6 @@ return [
         ]
     ],
     [
-        'name' => 'register',
-        'menu' => 'Registrasi',
-        'icon' => 'ph-user-circle-plus',
-        'link' => 'javascript:void(0);',
-        'sub' => [
-            [
-                'name' => 'outpatient',
-                'menu' => 'Rawat Jalan',
-                'icon' => null,
-                'link' => 'register/outpatient',
-                'sub' => null
-            ],
-            [
-                'name' => 'inpatient',
-                'menu' => 'Rawat Inap',
-                'icon' => null,
-                'link' => 'register/inpatient',
-                'sub' => null
-            ],
-            [
-                'name' => 'emergency-department',
-                'menu' => 'IGD',
-                'icon' => null,
-                'link' => 'register/emergency-department',
-                'sub' => null
-            ],
-        ]
-    ],
-    [
         'name' => 'collection',
         'menu' => 'Pendataan',
         'icon' => 'ph-folder-notch-open',

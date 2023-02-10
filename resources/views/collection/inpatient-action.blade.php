@@ -112,14 +112,14 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control" name="observation_nominal" id="observation_nominal" value="{{ $inpatient->observation->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="observation_nominal" id="observation_nominal" value="{{ $inpatient->observation->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                         </div>
                                     </td>
                                     <td class="align-middle" nowrap>Biaya Kamar</td>
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control" name="fee_room" id="fee_room" value="{{ $inpatient->fee_room ?? $roomType->fee_room }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="fee_room" id="fee_room" value="{{ $inpatient->fee_room ?? $roomType->fee_room }}" onkeyup="total()" placeholder="0">
                                         </div>
                                     </td>
                                 </tr>
@@ -138,14 +138,14 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $inpatient->supervision_doctor->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $inpatient->supervision_doctor->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                         </div>
                                     </td>
                                     <td class="align-middle" nowrap>Askep</td>
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control" name="fee_nursing_care" id="fee_nursing_care" value="{{ $inpatient->fee_nursing_care ?? $roomType->fee_nursing_care }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="fee_nursing_care" id="fee_nursing_care" value="{{ $inpatient->fee_nursing_care ?? $roomType->fee_nursing_care }}" onkeyup="total()" placeholder="0">
                                         </div>
                                     </td>
                                 </tr>
@@ -157,7 +157,7 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control" name="fee_nutritional_care" id="fee_nutritional_care" value="{{ $inpatient->fee_nutritional_care ?? $roomType->fee_nutritional_care }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="fee_nutritional_care" id="fee_nutritional_care" value="{{ $inpatient->fee_nutritional_care ?? $roomType->fee_nutritional_care }}" onkeyup="total()" placeholder="0">
                                             <select class="form-select w-auto flex-grow-0" name="fee_nutritional_care_qty" id="fee_nutritional_care_qty" onchange="total()">
                                                 @for($i = 1; $i <= 100; $i++)
 												    <option value="{{ $i }}" {{ ($inpatient->fee_nutritional_care_qty ?? 1) == $i ? 'selected' : '' }}>{{ $i }}</option>
@@ -188,7 +188,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="is_emergency_care_nominal[]" value="{{ $check->emergency_care->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="is_emergency_care_nominal[]" value="{{ $check->emergency_care->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                                     <select class="form-select w-auto flex-grow-0" name="is_emergency_care_qty[]" onchange="total()">
                                                         @for($i = 1; $i <= 100; $i++)
                                                             <option value="{{ $i }}" {{ ($check->emergency_care->qty ?? 1) == $i ? 'selected' : '' }}>{{ $i }}</option>
@@ -206,7 +206,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="is_hospitalization_nominal[]" value="{{ $check->hospitalization->nominal ?? $ms->fee }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="is_hospitalization_nominal[]" value="{{ $check->hospitalization->nominal ?? $ms->fee }}" onkeyup="total()" placeholder="0">
                                                     <select class="form-select w-auto flex-grow-0" name="is_hospitalization_qty[]" onchange="total()">
                                                         @for($i = 1; $i <= 100; $i++)
                                                             <option value="{{ $i }}" {{ ($check->hospitalization->qty ?? 1) == $i ? 'selected' : '' }}>{{ $i }}</option>
@@ -245,7 +245,7 @@
                                             <td class="align-middle" width="25%">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="io_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="io_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -280,13 +280,13 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="ino_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="ino_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="ino_hospitalization[]" value="{{ $check->hospitalization ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="ino_hospitalization[]" value="{{ $check->hospitalization ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -322,7 +322,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="is_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="is_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                             <td class="align-middle">
@@ -336,7 +336,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="is_hospitalization[]" value="{{ $check->hospitalization ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="is_hospitalization[]" value="{{ $check->hospitalization ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -371,13 +371,13 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="ih_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="ih_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="ih_hospitalization[]" value="{{ $check->hospitalization ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="ih_hospitalization[]" value="{{ $check->hospitalization ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -412,13 +412,13 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="io_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="io_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="number" class="form-control" name="io_hospitalization[]" value="{{ $check->hospitalization ?? $ao->fee }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="io_hospitalization[]" value="{{ $check->hospitalization ?? $ao->fee }}" onkeyup="total()" placeholder="0">
                                                     <select class="form-select w-auto flex-grow-0" name="io_hospitalization_qty[]" onchange="total()">
                                                         @for($i = 1; $i <= 100; $i++)
                                                             <option value="{{ $i }}" {{ ($check->hospitalization_qty ?? 1) == $i ? 'selected' : '' }}>{{ $i }}</option>
@@ -451,21 +451,21 @@
                                 <div class="input-group">
                                     <span class="input-group-text">1</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control" name="inpatient_package[]" value="{{ $inpatientPackage[0]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="inpatient_package[]" value="{{ $inpatientPackage[0]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                 </div>
                             </td>
                             <td class="align-middle">
                                 <div class="input-group">
                                     <span class="input-group-text">2</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control" name="inpatient_package[]" value="{{ $inpatientPackage[1]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="inpatient_package[]" value="{{ $inpatientPackage[1]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                 </div>
                             </td>
                             <td class="align-middle">
                                 <div class="input-group">
                                     <span class="input-group-text">3</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="number" class="form-control" name="inpatient_package[]" value="{{ $inpatientPackage[2]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="inpatient_package[]" value="{{ $inpatientPackage[2]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
                                 </div>
                             </td>
                         </tr>

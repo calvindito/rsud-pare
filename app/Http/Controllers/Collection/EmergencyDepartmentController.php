@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Collection;
 use App\Helpers\Simrs;
 use App\Models\Doctor;
 use App\Models\LabItem;
+use App\Models\Patient;
 use App\Models\Medicine;
+use App\Models\Religion;
 use App\Models\Radiology;
 use App\Models\LabRequest;
 use App\Models\ActionOther;
@@ -49,7 +51,6 @@ class EmergencyDepartmentController extends Controller
                         });
                 }
             })
-            ->editColumn('date_of_entry', '{{ date("Y-m-d H:i:s", strtotime($date_of_entry)) }}')
             ->editColumn('status', function (EmergencyDepartment $query) {
                 return $query->status();
             })
@@ -81,9 +82,19 @@ class EmergencyDepartmentController extends Controller
                         <a href="' . url('collection/emergency-department/checkout/' . $query->id) . '" class="btn btn-light text-secondary btn-sm fw-semibold">
                             Check-Out
                         </a>
-                        <a href="javascript:void(0);" class="btn btn-light text-danger btn-sm fw-semibold" onclick="destroyData(' . $query->id . ')">
-                            Hapus Data
-                        </a>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-light text-warning btn-sm btn-block fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Lainnya</button>
+                            <div class="dropdown-menu">
+                                <a href="' . url('collection/emergency-department/update-data/' . $query->id) . '" class="dropdown-item fs-13">
+                                    <i class="ph-pen me-2"></i>
+                                    Edit Data
+                                </a>
+                                <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="destroyData(' . $query->id . ')">
+                                    <i class="ph-trash-simple me-2"></i>
+                                    Hapus Data
+                                </a>
+                            </div>
+                        </div>
                     ';
                 }
 
@@ -137,6 +148,124 @@ class EmergencyDepartmentController extends Controller
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
+    }
+
+    public function loadPatient(Request $request)
+    {
+        $id = $request->id;
+        $data = Patient::with([
+            'province',
+            'city',
+            'district',
+            'emergencyDepartment' => fn ($q) => $q->with(['doctor', 'functionalService'])
+        ])->whereNotNull('verified_at')->findOrFail($id);
+
+        return response()->json($data);
+    }
+
+    public function registerPatient(Request $request)
+    {
+        if ($request->ajax()) {
+            $patientId = $request->patient_id;
+            $validation = Validator::make($request->all(), [
+                'identity_number' => 'nullable|digits:16|numeric|unique:patients,identity_number,' . $patientId,
+                'name' => 'required',
+                'village' => 'required',
+                'location_id' => 'required',
+                'address' => 'required',
+                'religion_id' => 'required',
+                'type' => 'required',
+                'date_of_entry' => 'required',
+                'functional_service_id' => 'required',
+                'doctor_id' => 'required'
+            ], [
+                'identity_number.digits' => 'no identitas harus 16 karakter',
+                'identity_number.numeric' => 'no identitas harus angka',
+                'identity_number.unique' => 'no identitas telah digunakan',
+                'name.required' => 'nama tidak boleh kosong',
+                'village.required' => 'desa tidak boleh kosong',
+                'location_id.required' => 'mohon memilih wilayah',
+                'address.required' => 'alamat tidak boleh kosong',
+                'religion_id.required' => 'mohon memilih agama',
+                'type.required' => 'mohon memilih golongan pasien',
+                'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
+                'functional_service_id.required' => 'mohon memilih upf',
+                'doctor_id.required' => 'mohon memilih dokter'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $patientId) {
+                        $userId = auth()->id();
+                        $locationId = $request->location_id;
+                        $location = Simrs::locationById($locationId);
+                        $hasDataPatient = Patient::find($patientId);
+                        $dateOfEntry = date('Y-m-d H:i:s', strtotime($request->date_of_entry));
+
+                        $fillPatient = [
+                            'province_id' => $locationId ? $location->city->province->id : null,
+                            'city_id' => $locationId ? $location->city->id : null,
+                            'district_id' => $locationId ? $location->id : null,
+                            'religion_id' => $request->religion_id,
+                            'identity_number' => $request->identity_number,
+                            'name' => $request->name,
+                            'greeted' => $request->greeted,
+                            'gender' => $request->gender,
+                            'place_of_birth' => $request->place_of_birth,
+                            'date_of_birth' => $request->date_of_birth,
+                            'rt' => $request->rt,
+                            'rw' => $request->rw,
+                            'village' => $request->village,
+                            'address' => $request->address,
+                            'verified_at' => now()
+                        ];
+
+                        if ($hasDataPatient) {
+                            $hasDataPatient->update($fillPatient);
+                            $patientId = $hasDataPatient->id;
+                        } else {
+                            $createPatient = Patient::create($fillPatient);
+                            $patientId = $createPatient->id;
+                        }
+
+                        EmergencyDepartment::create([
+                            'user_id' => $userId,
+                            'patient_id' => $patientId,
+                            'functional_service_id' => $request->functional_service_id,
+                            'doctor_id' => $request->doctor_id,
+                            'type' => $request->type,
+                            'date_of_entry' => $dateOfEntry
+                        ]);
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Pasien berhasil didaftarkan di IGD'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'doctor' => Doctor::all(),
+            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
+            'religion' => Religion::all(),
+            'content' => 'collection.emergency-department-register-patient'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
     }
 
     public function action(Request $request, $id)
@@ -622,12 +751,108 @@ class EmergencyDepartmentController extends Controller
         return view('layouts.index', ['data' => $data]);
     }
 
+    public function updateData(Request $request, $id)
+    {
+        $emergencyDepartment = EmergencyDepartment::where('status', 1)->findOrFail($id);
+        $patient = $emergencyDepartment->patient;
+
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'identity_number' => 'nullable|digits:16|numeric|unique:patients,identity_number,' . $patient->id,
+                'name' => 'required',
+                'village' => 'required',
+                'location_id' => 'required',
+                'address' => 'required',
+                'religion_id' => 'required',
+                'type' => 'required',
+                'date_of_entry' => 'required',
+                'functional_service_id' => 'required',
+                'doctor_id' => 'required'
+            ], [
+                'identity_number.digits' => 'no identitas harus 16 karakter',
+                'identity_number.numeric' => 'no identitas harus angka',
+                'identity_number.unique' => 'no identitas telah digunakan',
+                'name.required' => 'nama tidak boleh kosong',
+                'village.required' => 'desa tidak boleh kosong',
+                'location_id.required' => 'mohon memilih wilayah',
+                'address.required' => 'alamat tidak boleh kosong',
+                'religion_id.required' => 'mohon memilih agama',
+                'type.required' => 'mohon memilih golongan pasien',
+                'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
+                'functional_service_id.required' => 'mohon memilih upf',
+                'doctor_id.required' => 'mohon memilih dokter'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $emergencyDepartment, $patient) {
+                        $locationId = $request->location_id;
+                        $location = Simrs::locationById($locationId);
+
+                        $patient->update([
+                            'province_id' => $locationId ? $location->city->province->id : null,
+                            'city_id' => $locationId ? $location->city->id : null,
+                            'district_id' => $locationId ? $location->id : null,
+                            'religion_id' => $request->religion_id,
+                            'identity_number' => $request->identity_number,
+                            'name' => $request->name,
+                            'greeted' => $request->greeted,
+                            'gender' => $request->gender,
+                            'place_of_birth' => $request->place_of_birth,
+                            'date_of_birth' => $request->date_of_birth,
+                            'rt' => $request->rt,
+                            'rw' => $request->rw,
+                            'village' => $request->village,
+                            'address' => $request->address
+                        ]);
+
+                        $emergencyDepartment->update([
+                            'user_id' => auth()->id(),
+                            'functional_service_id' => $request->functional_service_id,
+                            'doctor_id' => $request->doctor_id,
+                            'type' => $request->type,
+                            'date_of_entry' => $request->date_of_entry
+                        ]);
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Data igd berhasil diubah'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'emergencyDepartment' => $emergencyDepartment,
+            'patient' => $emergencyDepartment->patient,
+            'doctor' => Doctor::all(),
+            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
+            'religion' => Religion::all(),
+            'content' => 'collection.emergency-department-update'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
     public function destroyData(Request $request)
     {
         $id = $request->id;
 
         try {
-            EmergencyDepartment::destroy($id);
+            EmergencyDepartment::where('status', 1)->destroy($id);
 
             $response = [
                 'code' => 200,

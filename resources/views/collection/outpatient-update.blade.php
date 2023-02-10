@@ -5,6 +5,9 @@
                 Pendaftaran - Rawat Jalan - <span class="fw-normal">Ubah Data</span>
             </h5>
         </div>
+        <div class="my-auto ms-auto">
+            <a href="{{ url('collection/outpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+        </div>
     </div>
 </div>
 <div class="content pt-0">
@@ -15,17 +18,14 @@
         <div class="card">
             <div class="card-body">
                 @if($outpatientPoly->status == 4)
-                    <div class="alert alert-success text-center">
+                    <div class="alert alert-success text-center mb-0">
                         Kunjungan Telah Selesai
                     </div>
                 @else
-                    <div class="alert alert-warning text-center">
+                    <div class="alert alert-warning text-center mb-0">
                         Ubah Data Rawat Jalan Pasien <b class="fst-italic">{{ $outpatient->patient->name }}</b>
                     </div>
                 @endif
-                <div class="text-center">
-                    <a href="{{ url('collection/outpatient') }}">Kembali ke Daftar</a>
-                </div>
             </div>
         </div>
         <div class="card">

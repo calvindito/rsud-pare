@@ -78,4 +78,14 @@ class OutpatientPoly extends Model
 
         return $text;
     }
+
+    /**
+     * code
+     *
+     * @return void
+     */
+    public function code()
+    {
+        return sprintf('%06s', $this->id);
+    }
 }

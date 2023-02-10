@@ -85,25 +85,25 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Bhp <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="consumables" id="consumables" placeholder="Masukan bhp">
+                            <input type="text" class="form-control number-format" name="consumables" id="consumables" placeholder="Masukan bhp">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Jrs <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="hospital_service" id="hospital_service" placeholder="Masukan jrs">
+                            <input type="text" class="form-control number-format" name="hospital_service" id="hospital_service" placeholder="Masukan jrs">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Jaspel <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="service" id="service" placeholder="Masukan jaspel">
+                            <input type="text" class="form-control number-format" name="service" id="service" placeholder="Masukan jaspel">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Tarif <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="fee" id="fee" placeholder="Masukan tarif">
+                            <input type="text" class="form-control number-format" name="fee" id="fee" placeholder="Masukan tarif">
                         </div>
                     </div>
                 </form>
