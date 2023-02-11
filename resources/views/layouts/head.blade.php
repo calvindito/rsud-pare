@@ -25,6 +25,7 @@
 	<script src="{{ asset('template/assets/js/vendor/media/glightbox.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/uploaders/fileinput/fileinput.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/uploaders/fileinput/plugins/sortable.min.js') }}"></script>
+	<script src="{{ asset('template/assets/js/vendor/forms/wizards/steps.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/ui/prism.min.js') }}"></script>
 	<script src="{{ asset('template/plugins/waitMe/waitMe.min.js') }}"></script>
 	<script src="{{ asset('template/plugins/number-format/jquery.number.min.js') }}"></script>

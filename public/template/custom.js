@@ -221,7 +221,7 @@ function dragAndDropFile(config = {}) {
     });
 }
 
-function textEditor(selector, placeholder = 'Masukan sesuatu ...') {
+function textEditor(selector = '.text-editor', placeholder = 'Masukan sesuatu ...') {
     $(selector).summernote({
         placeholder: placeholder,
         tabsize: 2,

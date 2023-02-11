@@ -384,6 +384,60 @@ class OutpatientController extends Controller
         abort(404);
     }
 
+    public function soap(Request $request, $id)
+    {
+        $outpatient = Outpatient::findOrFail($id);
+
+        if ($request->ajax()) {
+            $outpatient->outpatientSoap()->delete();
+
+            try {
+                $fill = [
+                    [
+                        'value' => $request->nursing_care_value,
+                        'subjective' => $request->nursing_care_subjective,
+                        'objective' => $request->nursing_care_objective,
+                        'assessment' => $request->nursing_care_assessment,
+                        'planning' => $request->nursing_care_planning,
+                        'type' => 1
+                    ],
+                    [
+                        'subjective' => $request->checkup_care_subjective,
+                        'objective' => $request->checkup_care_objective,
+                        'assessment' => $request->checkup_care_assessment,
+                        'planning' => $request->checkup_care_planning,
+                        'type' => 2
+                    ]
+                ];
+
+                foreach ($fill as $f) {
+                    $outpatient->outpatientSoap()->create($f);
+                }
+
+                $response = [
+                    'code' => 200,
+                    'message' => 'Data SOAP berhasil disimpan'
+                ];
+            } catch (\Exception $e) {
+                $response = [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ];
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'outpatient' => $outpatient,
+            'patient' => $outpatient->patient,
+            'outpatientSoap' => $outpatient->outpatientSoap,
+            'content' => 'collection.outpatient-soap'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
     public function updateData(Request $request, $id)
     {
         $outpatient = Outpatient::findOrFail($id);

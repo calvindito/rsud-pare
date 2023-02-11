@@ -29,4 +29,24 @@ class OutpatientSoap extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * type
+     *
+     * @return void
+     */
+    public function type()
+    {
+        $type = $this->type;
+
+        if ($type == 1) {
+            $text = 'Askep';
+        } else if ($type == 2) {
+            $text = 'Checkup';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
 }
