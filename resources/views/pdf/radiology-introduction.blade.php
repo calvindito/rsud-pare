@@ -75,7 +75,7 @@
     </table>
     <hr style="margin-top:20px; margin-bottom:20px;">
     <div style="text-align:center; margin-bottom:10px;">NOMINAL YANG HARUS DIBAYAR</div>
-    <div style="text-align:center; font-weight:bold; font-size:25px;">Rp {{ number_format($data->total(), 0, '.', '.') }}</div>
+    <div style="text-align:center; font-weight:bold; font-size:25px;">{{ Simrs::formatRupiah($data->total()) }}</div>
     <div style="text-align:center; font-weight:400; font-style:italic; margin-top:10px; font-size:14px;">
         Terbilang : {{ Simrs::numerator($data->total()) }}
     </div>

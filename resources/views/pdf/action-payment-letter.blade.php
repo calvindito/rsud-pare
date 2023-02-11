@@ -51,77 +51,58 @@
         <tr style="font-size:14px;">
             <td style="font-weight:bold;">Pasien</td>
             <td>:</td>
-            <td>{{ $data->patient->name }}</td>
+            <td>{{ $data->outpatient->patient->name }}</td>
             <td style="font-weight:bold;">Dokter</td>
             <td>:</td>
             <td>{{ $data->doctor->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Tanggal Permintaan</td>
+            <td style="font-weight:bold;">Jenis Kelamin</td>
             <td>:</td>
-            <td>{{ date('d-m-Y', strtotime($data->date_of_request)) }}</td>
-            <td style="font-weight:bold;">Ref</td>
+            <td>{{ $data->outpatient->patient->gender_format_result }}</td>
+            <td style="font-weight:bold;">Golongan</td>
             <td>:</td>
-            <td>{{ $data->ref() }}</td>
+            <td>{{ $data->outpatient->type_format_result ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Jam Permintaan</td>
+            <td style="font-weight:bold;">Poli</td>
             <td>:</td>
-            <td>{{ date('H:i:s', strtotime($data->date_of_request)) }}</td>
-            <td style="font-weight:bold;">Pemeriksa</td>
+            <td>{{ $data->outpatient->unit->name }}</td>
+            <td style="font-weight:bold;">Kehadiran</td>
             <td>:</td>
-            <td>{{ $data->user->employee->name ?? '-' }}</td>
+            <td>{{ $data->outpatient->presence_format_result }}</td>
+        </tr>
+        <tr style="font-size:14px;">
+            <td style="font-weight:bold;">Tanggal Masuk</td>
+            <td>:</td>
+            <td>{{ $data->outpatient->date_of_entry }}</td>
+            <td style="font-weight:bold;">Tanggal Cetak</td>
+            <td>:</td>
+            <td>{{ now() }}</td>
         </tr>
     </table>
     <table class="table" style="margin-bottom:20px;">
-        <thead style="background:#E5E7EB;">
-            <tr>
-                <th>Grup</th>
-                <th>Item</th>
-                <th>BHP</th>
-                <th>JRS</th>
-                <th>JASPEL</th>
-                <th>Subtotal</th>
-            </tr>
-        </thead>
         <tbody>
-            @php $total = 0; @endphp
-            @foreach($data->labRequestDetail as $lrd)
-                @php
-                    $consumables = $lrd->consumables;
-                    $hospitalService = $lrd->hospital_service;
-                    $service = $lrd->service;
-                    $subtotal = $consumables + $hospitalService + $service;
-                    $total += $subtotal;
-                @endphp
-                <tr>
-                    <td>{{ $lrd->labItem->labItemGroup->name }}</td>
-                    <td>{{ $lrd->labItem->name }}</td>
-                    <td nowrap>{{ Simrs::formatRupiah($consumables) }}</td>
-                    <td nowrap>{{ Simrs::formatRupiah($hospitalService) }}</td>
-                    <td nowrap>{{ Simrs::formatRupiah($service) }}</td>
-                    <td nowrap>{{ Simrs::formatRupiah($subtotal) }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-        <tfoot style="background:#E5E7EB;">
             <tr>
-                <td style="font-weight:bold;" colspan="5">TOTAL KESELURUHAN</td>
-                <td style="font-weight:bold;">{{ Simrs::formatRupiah($total) }}</td>
+                <td>
+                    <div style="text-align:center; margin-bottom:10px;">NOMINAL YANG HARUS DIBAYAR</div>
+                    <div style="text-align:center; font-weight:bold; font-size:25px;">{{ Simrs::formatRupiah($data->total()) }}</div>
+                    <div style="text-align:center; font-weight:400; font-style:italic; margin-top:10px; font-size:14px;">
+                        Terbilang : {{ Simrs::numerator($data->total()) }}
+                    </div>
+                </td>
             </tr>
-        </tfoot>
+            <tr>
+                <td style="text-align:center;">{{ $data->unitAction->action->name }}</td>
+            </tr>
+        </tbody>
     </table>
     <table style="width:100%;">
         <tr style="text-align:center;">
-            <td>
-                <div style="font-size:14px; margin-bottom:60px;">Petugas Pelaksana</div>
-                <div style="font-size:14px; margin-bottom:3px; text-decoration:underline;">{{ $data->user->employee->name }}</div>
-                <div style="font-size:12px; letter-spacing:0.5px;">NIP. -</div>
-            </td>
-            <td>
-                <div style="font-size:14px; margin-bottom:60px;">Ka. Ins. Laboratorium</div>
-                <div style="font-size:14px; margin-bottom:3px; text-decoration:underline;">dr. Erwin Ichsan</div>
-                <div style="font-size:12px; letter-spacing:0.5px;">NIP. 196411151990031011</div>
+            <td style="text-align:right;">
+                <div style="font-size:14px;">Pare, {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}</div>
+                <div style="font-size:14px; margin-bottom:60px;">Petugas Poli</div>
+                <div style="font-size:14px; text-decoration:underline;">(.............................)</div>
             </td>
         </tr>
     </table>

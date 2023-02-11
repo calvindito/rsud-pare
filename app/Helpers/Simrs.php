@@ -3,12 +3,10 @@
 namespace App\Helpers;
 
 use App\Models\City;
-use App\Models\Unit;
-use App\Models\Patient;
 use App\Models\District;
 use App\Models\Province;
+use App\Models\Outpatient;
 use App\Models\RoleAccess;
-use App\Models\OutpatientPoly;
 
 class Simrs
 {
@@ -53,11 +51,7 @@ class Simrs
 
     public static function todayLongLinePoly($unitId)
     {
-        $data = OutpatientPoly::where('unit_id', $unitId)
-            ->whereHas('outpatient', function ($query) {
-                $query->whereDate('date_of_entry', date('Y-m-d'));
-            })
-            ->get();
+        $data = Outpatient::where('unit_id', $unitId)->whereDate('date_of_entry', date('Y-m-d'))->get();
 
         return (object)[
             'total' => $data->count(),

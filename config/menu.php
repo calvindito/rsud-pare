@@ -448,17 +448,10 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'service',
-                'menu' => 'Pelayanan',
+                'name' => 'online',
+                'menu' => 'Online',
                 'icon' => null,
-                'link' => 'collection/service',
-                'sub' => null
-            ],
-            [
-                'name' => 'information',
-                'menu' => 'Informasi',
-                'icon' => null,
-                'link' => 'collection/information',
+                'link' => 'collection/online',
                 'sub' => null
             ],
         ]

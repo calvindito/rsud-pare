@@ -86,16 +86,16 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'id', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'patient_id', name: 'patient_id', orderable: false, searchable: false, className: 'align-middle' },
+                { data: 'patient_id', name: 'patient_id', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'patient_name', name: 'patient_name', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'patient_gender', name: 'patient_gender', orderable: false, searchable: false, className: 'align-middle' },
-                { data: 'outpatient_type', name: 'outpatient_type', orderable: false, searchable: false, className: 'align-middle' },
-                { data: 'outpatient_date_of_entry', name: 'outpatient_date_of_entry', orderable: false, searchable: false, className: 'align-middle' },
+                { data: 'type_format_result', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'date_of_entry', name: 'date_of_entry', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'date_of_out', name: 'date_of_out', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'unit_name', name: 'unit_name', orderable: false, searchable: false, className: 'align-middle nowrap' },
                 { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle nowrap' },
-                { data: 'outpatient_presence', name: 'outpatient_presence', orderable: false, searchable: false, className: 'align-middle nowrap' },
-                { data: 'outpatient_description', name: 'outpatient_description', orderable: false, searchable: false, className: 'align-middle' },
+                { data: 'presence_format_result', name: 'presence', orderable: true, searchable: false, className: 'align-middle nowrap' },
+                { data: 'description', name: 'description', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });

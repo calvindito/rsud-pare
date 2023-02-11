@@ -5,6 +5,9 @@
                 Pendaftaran - Rawat Jalan - <span class="fw-normal">Kamar Operasi</span>
             </h5>
         </div>
+        <div class="my-auto ms-auto">
+            <a href="{{ url('collection/outpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+        </div>
     </div>
 </div>
 <div class="content pt-0">
@@ -15,17 +18,14 @@
         <div class="card">
             <div class="card-body">
                 @if($operation)
-                    <div class="alert alert-warning text-center">
+                    <div class="alert alert-warning text-center mb-0">
                         Ubah Data Kamar Operasi Pasien <b class="fst-italic">{{ $operation->patient->name }}</b>
                     </div>
                 @else
-                    <div class="alert alert-primary text-center">
-                        Buat Data Rawat Jalan Pasien <b class="fst-italic">{{ $outpatient->patient->name }}</b>
+                    <div class="alert alert-primary text-center mb-0">
+                        Buat Data Kamar Operasi Pasien <b class="fst-italic">{{ $outpatient->patient->name }}</b>
                     </div>
                 @endif
-                <div class="text-center">
-                    <a href="{{ url('collection/outpatient') }}">Kembali ke Daftar</a>
-                </div>
             </div>
         </div>
         <div class="card">
@@ -102,7 +102,7 @@
                     <div class="col-md-9">
                         <select class="form-select" name="unit_id" id="unit_id">
                             @foreach($unit as $u)
-                                @if($u->id == $outpatientPoly->unit_id)
+                                @if($u->id == $outpatient->unit_id)
                                     <option value="{{ $u->id }}" selected>{{ $u->name }}</option>
                                 @endif
                             @endforeach
@@ -303,7 +303,7 @@
 
     function updatePatient() {
         $.ajax({
-            url: '{{ url("collection/outpatient/operating-room/$outpatientPoly->id") }}',
+            url: '{{ url("collection/outpatient/operating-room/" . $outpatient->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -339,7 +339,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/outpatient/operating-room/$outpatientPoly->id") }}');
+                        window.location.replace('{{ url("collection/outpatient/operating-room/" . $outpatient->id) }}');
                     });
                 } else if(response.code == 400) {
                     $('.btn-to-top button').click();

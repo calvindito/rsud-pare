@@ -197,10 +197,10 @@
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Riwayat Kunjungan Poli</h5>
+                <h5 class="mb-0">Riwayat Kunjungan Rawat Jalan</h5>
             </div>
             <div class="card-body border-top">
-                <table class="table table-bordered table-hover table-xs" id="table-history-poly">
+                <table class="table table-bordered table-hover table-xs" id="table-history-outpatient">
                     <thead>
                         <tr>
                             <th nowrap>Tanggal Masuk</th>
@@ -298,16 +298,24 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group"><hr></div>
-                <div id="plus-destroy-item"></div>
+                <div class="form-group">
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Poli <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="unit_id" id="unit_id">
+                                <option value="">-- Pilih --</option>
+                                @foreach($unit as $u)
+                                    <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Keterangan</label>
                     <div class="col-md-9">
                         <textarea class="form-control" name="description" id="description" style="resize:none;" placeholder="Masukan keterangan">LOKET</textarea>
                     </div>
-                </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-teal col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Poli</button>
                 </div>
             </div>
         </div>
@@ -330,34 +338,6 @@
         select2Ajax('#patient_id', 'patient', false);
     });
 
-    function addItem() {
-        var formElement = $(`
-            <div class="form-group">
-                <input type="hidden" name="item[]" value="{{ true }}">
-                <div class="form-group row">
-                    <label class="col-form-label col-lg-3">Poli <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-9">
-                        <div class="input-group">
-                            <select class="form-select" name="unit_id[]" id="unit_id[]">
-                                <option value="">-- Pilih --</option>
-                                @foreach($unit as $u)
-                                    <option value="{{ $u->id }}">{{ $u->name }}</option>
-                                @endforeach
-                            </select>
-                            <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `).hide().fadeIn(500);
-
-        $('#plus-destroy-item').append(formElement);
-    }
-
-    function removeItem(paramObj) {
-        $(paramObj).parents('.form-group').remove();
-    }
-
     function clearValidation() {
         $('#validation-element').addClass('d-none');
         $('#validation-data').html('');
@@ -373,7 +353,7 @@
     }
 
     function clearTableHistory(emptyTable = false) {
-        $('#table-history-poly tbody').html('');
+        $('#table-history-outpatient tbody').html('');
         $('#table-history-inpatient tbody').html('');
     }
 
@@ -426,17 +406,15 @@
                 $('#parent_name').val(response.parent_name);
                 $('#partner_name').val(response.partner_name);
 
-                $.each(response.outpatient, function(io, o) {
-                    $.each(o.outpatient_poly, function(iop, op) {
-                        $('#table-history-poly tbody').append(`
-                            <tr>
-                                <td nowrap>` + o.date_of_entry + `</td>
-                                <td nowrap>` + o.type_format_result + `</td>
-                                <td nowrap>` + o.presence_format_result + `</td>
-                                <td nowrap>` + op.unit.name + `</td>
-                            </tr>
-                        `);
-                    });
+                $.each(response.outpatient, function(i, val) {
+                    $('#table-history-outpatient tbody').append(`
+                        <tr>
+                            <td nowrap>` + val.date_of_entry + `</td>
+                            <td nowrap>` + val.type_format_result + `</td>
+                            <td nowrap>` + val.presence_format_result + `</td>
+                            <td nowrap>` + val.unit.name + `</td>
+                        </tr>
+                    `);
                 });
 
                 $.each(response.inpatient, function(i, val) {

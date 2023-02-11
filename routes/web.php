@@ -441,8 +441,10 @@ Route::middleware('auth')->group(function () {
                 Route::get('datatable', 'OutpatientController@datatable');
                 Route::get('load-patient', 'OutpatientController@loadPatient');
                 Route::match(['get', 'post'], 'register-patient', 'OutpatientController@registerPatient');
-                Route::match(['get', 'post'], 'update-data/{outpatient_poly_id}', 'OutpatientController@updateData');
-                Route::match(['get', 'post'], 'operating-room/{outpatient_poly_id}', 'OutpatientController@operatingRoom');
+                Route::match(['get', 'post'], 'action/{id}', 'OutpatientController@action');
+                Route::match(['get', 'post'], 'action/print/{id}', 'OutpatientController@actionPrint');
+                Route::match(['get', 'post'], 'operating-room/{id}', 'OutpatientController@operatingRoom');
+                Route::match(['get', 'post'], 'update-data/{id}', 'OutpatientController@updateData');
                 Route::delete('destroy-data', 'OutpatientController@destroyData');
                 Route::get('print/{outpatient_id}', 'OutpatientController@print');
             });

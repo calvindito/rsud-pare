@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOutpatientPoliesTable extends Migration
+class CreateOutpatientSoapTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateOutpatientPoliesTable extends Migration
      */
     public function up()
     {
-        Schema::create('outpatient_polies', function (Blueprint $table) {
+        Schema::create('outpatient_soap', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('outpatient_id')->nullable();
-            $table->unsignedBigInteger('unit_id')->nullable();
-            $table->timestamp('date_of_out')->nullable();
-            $table->char('status', 1)->nullable();
+            $table->text('value')->nullable();
+            $table->text('subjective')->nullable();
+            $table->text('objective')->nullable();
+            $table->text('assessment')->nullable();
+            $table->text('planning')->nullable();
+            $table->char('type', 1)->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreateOutpatientPoliesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outpatient_polies');
+        Schema::dropIfExists('outpatient_soap');
     }
 }

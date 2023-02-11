@@ -17,7 +17,7 @@
     <form id="form-data">
         <div class="card">
             <div class="card-body">
-                @if($outpatientPoly->status == 4)
+                @if($outpatient->status == 4)
                     <div class="alert alert-success text-center mb-0">
                         Kunjungan Telah Selesai
                     </div>
@@ -36,14 +36,14 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">No Identitas</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="identity_number" id="identity_number" placeholder="Masukan no identitas (KTP)" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="identity_number" id="identity_number" placeholder="Masukan no identitas (KTP)">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
                         <div class="input-group">
-                            <select class="form-select w-auto flex-grow-0" name="greeted" id="greeted" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <select class="form-select w-auto flex-grow-0" name="greeted" id="greeted">
                                 <option value="">-- Pilih --</option>
                                 <option value="1">Tuan</option>
                                 <option value="2">Nyonya</option>
@@ -51,14 +51,14 @@
                                 <option value="4">Nona</option>
                                 <option value="5">Anak</option>
                             </select>
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Jenis Kelamin <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="gender" id="gender" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <select class="form-select" name="gender" id="gender">
                             <option value="">-- Pilih --</option>
                             <option value="1">Laki - Laki</option>
                             <option value="2">Perempuan</option>
@@ -68,13 +68,13 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Tanggal Lahir</label>
                     <div class="col-md-9">
-                        <input type="date" class="form-control" name="date_of_birth" id="date_of_birth" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="date" class="form-control" name="date_of_birth" id="date_of_birth">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Agama <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="religion_id" id="religion_id" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <select class="form-select" name="religion_id" id="religion_id">
                             <option value="">-- Pilih --</option>
                             @foreach($religion as $r)
                                 <option value="{{ $r->id }}">{{ $r->name }}</option>
@@ -92,31 +92,31 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Wilayah <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="location_id" id="location_id" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}></select>
+                        <select class="form-select" name="location_id" id="location_id"></select>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Desa <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="village" id="village" placeholder="Masukan desa" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="village" id="village" placeholder="Masukan desa">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">RT</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="rt" id="rt" placeholder="Masukan rt" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="rt" id="rt" placeholder="Masukan rt">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">RW</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="rw" id="rw" placeholder="Masukan rw" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="rw" id="rw" placeholder="Masukan rw">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Alamat <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <textarea class="form-control" name="address" id="address" style="resize:none;" placeholder="Masukan alamat" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}></textarea>
+                        <textarea class="form-control" name="address" id="address" style="resize:none;" placeholder="Masukan alamat"></textarea>
                     </div>
                 </div>
             </div>
@@ -129,20 +129,20 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Tempat Lahir</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="place_of_birth" id="place_of_birth" placeholder="Masukan tempat lahir" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="place_of_birth" id="place_of_birth" placeholder="Masukan tempat lahir">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Suku</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="tribe" id="tribe" placeholder="Masukan suku" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="tribe" id="tribe" placeholder="Masukan suku">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Berat Badan</label>
                     <div class="col-md-9">
                         <div class="input-group">
-                            <input type="number" class="form-control" name="weight" id="weight" placeholder="Masukan berat badan" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="number" class="form-control" name="weight" id="weight" placeholder="Masukan berat badan">
                             <span class="input-group-text">Kg</span>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Golongan Darah</label>
                     <div class="col-md-9">
-                        <select class="form-select" name="blood_group" id="blood_group" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <select class="form-select" name="blood_group" id="blood_group">
                             <option value="">-- Pilih --</option>
                             <option value="1">A</option>
                             <option value="2">B</option>
@@ -162,7 +162,7 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Status Pernikahan</label>
                     <div class="col-md-9">
-                        <select class="form-select" name="marital_status" id="marital_status" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <select class="form-select" name="marital_status" id="marital_status">
                             <option value="">-- Pilih --</option>
                             <option value="1">Belum Menikah</option>
                             <option value="2">Menikah</option>
@@ -174,35 +174,35 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Pekerjaan</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="job" id="job" placeholder="Masukan pekerjaan" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="job" id="job" placeholder="Masukan pekerjaan">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">No Telp</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="phone" id="phone" placeholder="Masukan no telp" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="phone" id="phone" placeholder="Masukan no telp">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Nama Ortu</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="parent_name" id="parent_name" placeholder="Masukan nama ortu" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="parent_name" id="parent_name" placeholder="Masukan nama ortu">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Nama Suami / Istri</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" name="partner_name" id="partner_name" placeholder="Masukan nama suami / istri" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <input type="text" class="form-control" name="partner_name" id="partner_name" placeholder="Masukan nama suami / istri">
                     </div>
                 </div>
             </div>
         </div>
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Riwayat Kunjungan Poli</h5>
+                <h5 class="mb-0">Riwayat Kunjungan Rawat Jalan</h5>
             </div>
             <div class="card-body border-top">
-                <table class="table table-bordered table-hover table-xs" id="table-history-poly">
+                <table class="table table-bordered table-hover table-xs" id="table-history-outpatient">
                     <thead>
                         <tr>
                             <th nowrap>Tanggal Masuk</th>
@@ -241,31 +241,31 @@
                 <div class="form-group mb-4 text-center">
                     <div class="btn-group">
                         <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-general" value="1" autocomplete="off" {{ $outpatient->type == 1 ? 'checked' : '' }} {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="radio" class="btn-check" name="type" id="type-general" value="1" autocomplete="off" {{ $outpatient->type == 1 ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary rounded-pill" for="type-general">Umum</label>
                         </div>
                         <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-jamkesda" value="2" autocomplete="off" {{ $outpatient->type == 2 ? 'checked' : '' }} {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="radio" class="btn-check" name="type" id="type-jamkesda" value="2" autocomplete="off" {{ $outpatient->type == 2 ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary rounded-pill" for="type-jamkesda">Jamkesda</label>
                         </div>
                         <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-bpjs-labor" value="3" autocomplete="off" {{ $outpatient->type == 3 ? 'checked' : '' }} {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="radio" class="btn-check" name="type" id="type-bpjs-labor" value="3" autocomplete="off" {{ $outpatient->type == 3 ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary rounded-pill" for="type-bpjs-labor">BPJS Tenaga Kerja</label>
                         </div>
                         <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-in-health" value="4" autocomplete="off" {{ $outpatient->type == 4 ? 'checked' : '' }} {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="radio" class="btn-check" name="type" id="type-in-health" value="4" autocomplete="off" {{ $outpatient->type == 4 ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary rounded-pill" for="type-in-health">In Health</label>
                         </div>
                         <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-jr-jamkesda" value="5" autocomplete="off" {{ $outpatient->type == 5 ? 'checked' : '' }} {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="radio" class="btn-check" name="type" id="type-jr-jamkesda" value="5" autocomplete="off" {{ $outpatient->type == 5 ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary rounded-pill" for="type-jr-jamkesda">JR Jamkesda</label>
                         </div>
                         <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-jr-bpjs" value="6" autocomplete="off" {{ $outpatient->type == 6 ? 'checked' : '' }} {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="radio" class="btn-check" name="type" id="type-jr-bpjs" value="6" autocomplete="off" {{ $outpatient->type == 6 ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary rounded-pill" for="type-jr-bpjs">JR BPJS</label>
                         </div>
                         <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-jr-general" value="7" autocomplete="off" {{ $outpatient->type == 7 ? 'checked' : '' }} {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="radio" class="btn-check" name="type" id="type-jr-general" value="7" autocomplete="off" {{ $outpatient->type == 7 ? 'checked' : '' }}>
                             <label class="btn btn-outline-primary rounded-pill" for="type-jr-general">JR Umum</label>
                         </div>
                     </div>
@@ -274,14 +274,14 @@
                     <label class="col-form-label col-lg-3">Tanggal Masuk / Daftar <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
                         <div class="input-group">
-                            <input type="datetime-local" class="form-control" name="date_of_entry" id="date_of_entry" value="{{ $outpatient->date_of_entry }}" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                            <input type="datetime-local" class="form-control" name="date_of_entry" id="date_of_entry" value="{{ $outpatient->date_of_entry }}">
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Kehadiran <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="presence" id="presence" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <select class="form-select" name="presence" id="presence">
                             <option value="">-- Pilih --</option>
                             <option value="1" {{ $outpatient->presence == 1 ? 'selected' : '' }}>Datang Sendiri</option>
                             <option value="2" {{ $outpatient->presence == 2 ? 'selected' : '' }}>Rujukan Dari Puskesmas</option>
@@ -299,10 +299,10 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Poli <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="unit_id" id="unit_id" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <select class="form-select" name="unit_id" id="unit_id">
                             <option value="">-- Pilih --</option>
                             @foreach($unit as $u)
-                                <option value="{{ $u->id }}" {{ $outpatientPoly->unit_id == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
+                                <option value="{{ $u->id }}" {{ $outpatient->unit_id == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -310,24 +310,24 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Status <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="status" id="status" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>
+                        <select class="form-select" name="status" id="status">
                             <option value="">-- Pilih --</option>
-                            <option value="1" {{ $outpatientPoly->status == 1 ? 'selected' : '' }}>Dalam Antrian</option>
-                            <option value="2" {{ $outpatientPoly->status == 2 ? 'selected' : '' }}>Pasien Tidak Ada</option>
-                            <option value="3" {{ $outpatientPoly->status == 3 ? 'selected' : '' }}>Sedang Ditangani</option>
-                            <option value="4" {{ $outpatientPoly->status == 4 ? 'selected' : '' }}>Selesai / Pulang</option>
+                            <option value="1" {{ $outpatient->status == 1 ? 'selected' : '' }}>Dalam Antrian</option>
+                            <option value="2" {{ $outpatient->status == 2 ? 'selected' : '' }}>Pasien Tidak Ada</option>
+                            <option value="3" {{ $outpatient->status == 3 ? 'selected' : '' }}>Sedang Ditangani</option>
+                            <option value="4" {{ $outpatient->status == 4 ? 'selected' : '' }}>Selesai / Pulang</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Keterangan</label>
                     <div class="col-md-9">
-                        <textarea class="form-control" name="description" id="description" style="resize:none;" placeholder="Masukan keterangan" {{ $outpatientPoly->status == 4 ? 'disabled' : '' }}>{{ $outpatient->description }}</textarea>
+                        <textarea class="form-control" name="description" id="description" style="resize:none;" placeholder="Masukan keterangan">{{ $outpatient->description }}</textarea>
                     </div>
                 </div>
             </div>
         </div>
-        @if($outpatientPoly->status != 4)
+        @if($outpatient->status != 4)
             <div class="card">
                 <div class="card-body">
                     <div class="text-end">
@@ -351,7 +351,20 @@
         select2Ajax('#location_id', 'location?show=district', false);
         select2Ajax('#patient_id', 'patient', false);
         loadPatient();
+        checkStatus();
     });
+
+    function checkStatus() {
+        var status = '{{ $outpatient->status }}';
+
+        if(status != 4) {
+            $('.form-control').attr('disabled', false);
+            $('.form-select').attr('disabled', false);
+        } else {
+            $('.form-control').attr('disabled', true);
+            $('.form-select').attr('disabled', true);
+        }
+    }
 
     function clearValidation() {
         $('#validation-element').addClass('d-none');
@@ -368,7 +381,7 @@
     }
 
     function clearTableHistory(emptyTable = false) {
-        $('#table-history-poly tbody').html('');
+        $('#table-history-outpatient tbody').html('');
         $('#table-history-inpatient tbody').html('');
     }
 
@@ -421,17 +434,15 @@
                 $('#parent_name').val(response.parent_name);
                 $('#partner_name').val(response.partner_name);
 
-                $.each(response.outpatient, function(io, o) {
-                    $.each(o.outpatient_poly, function(iop, op) {
-                        $('#table-history-poly tbody').append(`
-                            <tr>
-                                <td nowrap>` + o.date_of_entry + `</td>
-                                <td nowrap>` + o.type_format_result + `</td>
-                                <td nowrap>` + o.presence_format_result + `</td>
-                                <td nowrap>` + op.unit.name + `</td>
-                            </tr>
-                        `);
-                    });
+                $.each(response.outpatient, function(i, val) {
+                    $('#table-history-outpatient tbody').append(`
+                        <tr>
+                            <td nowrap>` + val.date_of_entry + `</td>
+                            <td nowrap>` + val.type_format_result + `</td>
+                            <td nowrap>` + val.presence_format_result + `</td>
+                            <td nowrap>` + val.unit.name + `</td>
+                        </tr>
+                    `);
                 });
 
                 $.each(response.inpatient, function(i, val) {
@@ -459,7 +470,7 @@
 
     function updatePatient() {
         $.ajax({
-            url: '{{ url("collection/outpatient/update-data/$outpatient->id") }}',
+            url: '{{ url("collection/outpatient/update-data/" . $outpatient->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -495,7 +506,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/outpatient/update-data/$outpatient->id") }}');
+                        window.location.replace('{{ url("collection/outpatient/update-data/" . $outpatient->id) }}');
                     });
                 } else if(response.code == 400) {
                     $('.btn-to-top button').click();

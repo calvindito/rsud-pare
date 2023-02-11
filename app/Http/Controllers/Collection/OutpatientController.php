@@ -9,9 +9,10 @@ use App\Models\Patient;
 use App\Models\Religion;
 use App\Models\Operation;
 use App\Models\Outpatient;
+use App\Models\UnitAction;
 use Illuminate\Http\Request;
-use App\Models\OutpatientPoly;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\OutpatientAction;
 use App\Models\FunctionalService;
 use Illuminate\Support\Facades\DB;
 use App\Models\OperatingRoomAction;
@@ -35,78 +36,49 @@ class OutpatientController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = OutpatientPoly::has('outpatient');
+        $data = Outpatient::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
                     $query->whereRaw("LPAD(id, 6, 0) LIKE '%$search%'")
-                        ->orWhereHas('outpatient', function ($query) use ($search) {
-                            $query->where('description', 'like', "%$search%")
-                                ->whereHas('patient', function ($query) use ($search) {
-                                    $query->where('id', 'like', "%$search%")
-                                        ->orWhere('name', 'like', "%$search%")
-                                        ->orWhere('address', 'like', "%$search%")
-                                        ->orWhere('parent_name', 'like', "%$search%")
-                                        ->orWhereHas('district', function ($query) use ($search) {
-                                            $query->where('name', 'like', "%$search%");
-                                        });
+                        ->orWwhere('description', 'like', "%$search%")
+                        ->whereHas('patient', function ($query) use ($search) {
+                            $query->where('id', 'like', "%$search%")
+                                ->orWhere('name', 'like', "%$search%")
+                                ->orWhere('address', 'like', "%$search%")
+                                ->orWhere('parent_name', 'like', "%$search%")
+                                ->orWhereHas('district', function ($query) use ($search) {
+                                    $query->where('name', 'like', "%$search%");
                                 });
                         });
                 }
             })
-            ->editColumn('status', function (OutpatientPoly $query) {
+            ->editColumn('status', function (Outpatient $query) {
                 return $query->status();
             })
-            ->addColumn('code', function (OutpatientPoly $query) {
+            ->addColumn('code', function (Outpatient $query) {
                 return $query->code();
             })
-            ->addColumn('patient_id', function (OutpatientPoly $query) {
-                $patientId = null;
-
-                if (isset($query->outpatient)) {
-                    $patientId = $query->outpatient->patient_id;
-                }
-
-                return $patientId;
-            })
-            ->addColumn('patient_name', function (OutpatientPoly $query) {
+            ->addColumn('patient_name', function (Outpatient $query) {
                 $patientName = null;
 
-                if (isset($query->outpatient->patient)) {
-                    $patientName = $query->outpatient->patient->name;
+                if (isset($query->patient)) {
+                    $patientName = $query->patient->name;
                 }
 
                 return $patientName;
             })
-            ->addColumn('patient_gender', function (OutpatientPoly $query) {
+            ->addColumn('patient_gender', function (Outpatient $query) {
                 $patientGender = null;
 
-                if (isset($query->outpatient->patient)) {
-                    $patientGender = $query->outpatient->patient->gender_format_result;
+                if (isset($query->patient)) {
+                    $patientGender = $query->patient->gender_format_result;
                 }
 
                 return $patientGender;
             })
-            ->addColumn('outpatient_type', function (OutpatientPoly $query) {
-                $outpatientType = null;
-
-                if (isset($query->outpatient->type_format_result)) {
-                    $outpatientType = $query->outpatient->type_format_result;
-                }
-
-                return $outpatientType;
-            })
-            ->addColumn('outpatient_date_of_entry', function (OutpatientPoly $query) {
-                $outpatientDateOfEntry = null;
-
-                if (isset($query->outpatient->date_of_entry)) {
-                    $outpatientDateOfEntry = $query->outpatient->date_of_entry;
-                }
-
-                return $outpatientDateOfEntry;
-            })
-            ->addColumn('unit_name', function (OutpatientPoly $query) {
+            ->addColumn('unit_name', function (Outpatient $query) {
                 $unitName = null;
 
                 if (isset($query->unit->name)) {
@@ -115,51 +87,70 @@ class OutpatientController extends Controller
 
                 return $unitName;
             })
-            ->addColumn('outpatient_presence', function (OutpatientPoly $query) {
-                $outpatientPresence = null;
-
-                if (isset($query->outpatient->presence_format_result)) {
-                    $outpatientPresence = $query->outpatient->presence_format_result;
+            ->addColumn('action', function (Outpatient $query) {
+                $fullAction = '';
+                if ($query->status != 4) {
+                    $fullAction = '
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-light text-warning btn-sm btn-block fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Lainnya</button>
+                            <div class="dropdown-menu">
+                                <a href="' . url('collection/outpatient/update-data/' . $query->id) . '" class="dropdown-item fs-13">
+                                    <i class="ph-pen me-2"></i>
+                                    Edit Data
+                                </a>
+                                <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="destroyData(' . $query->id . ')">
+                                    <i class="ph-trash-simple me-2"></i>
+                                    Hapus Data
+                                </a>
+                            </div>
+                        </div>
+                    ';
                 }
 
-                return $outpatientPresence;
-            })
-            ->addColumn('outpatient_description', function (OutpatientPoly $query) {
-                $outpatientDescription = null;
-
-                if (isset($query->outpatient->description)) {
-                    $outpatientDescription = $query->outpatient->description;
-                }
-
-                return $outpatientDescription;
-            })
-            ->addColumn('action', function (OutpatientPoly $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
                         <div class="dropdown-menu">
-                            <a href="' . url('collection/outpatient/update-data/' . $query->id) . '" class="dropdown-item fs-13">
-                                <i class="ph-pen me-2"></i>
-                                Edit Data
+                            <a href="' . url('collection/outpatient/action/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-person-simple-run me-2"></i>
+                                Tindakan
+                            </a>
+                            <a href="' . url('collection/outpatient/soap/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-chat-centered-text me-2"></i>
+                                SOAP
+                            </a>
+                            <a href="' . url('collection/outpatient/diagnosis/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-bezier-curve me-2"></i>
+                                Diagnosa
+                            </a>
+                            <a href="' . url('collection/outpatient/lab/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-flask me-2"></i>
+                                Laboratorium
+                            </a>
+                            <a href="' . url('collection/outpatient/radiology/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-wheelchair me-2"></i>
+                                Radiologi
                             </a>
                             <a href="' . url('collection/outpatient/operating-room/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-bed me-2"></i>
                                 Kamar Operasi
                             </a>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light text-success btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Cetak</button>
+                        <div class="dropdown-menu">
                             <a href="' . url('collection/outpatient/print/' . $query->id) . '?slug=ticket" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-ticket me-2"></i>
-                                Cetak E-Tiket
+                                E-Tiket
                             </a>
                             <a href="' . url('collection/outpatient/print/' . $query->id) . '?slug=bracelet" target="_blank" class="dropdown-item fs-13">
                                 <i class="ph-circle-wavy me-2"></i>
-                                Cetak Gelang
-                            </a>
-                            <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="destroyData(' . $query->id . ')">
-                                <i class="ph-trash-simple me-2"></i>
-                                Hapus Data
+                                Gelang
                             </a>
                         </div>
                     </div>
+                    ' . $fullAction . '
                 ';
             })
             ->rawColumns(['action'])
@@ -175,7 +166,7 @@ class OutpatientController extends Controller
             'province',
             'city',
             'district',
-            'outpatient.outpatientPoly.unit',
+            'outpatient.unit',
             'inpatient' => fn ($q) => $q->with(['roomType.classType', 'functionalService'])
         ])->whereNotNull('verified_at')->findOrFail($id);
 
@@ -197,8 +188,7 @@ class OutpatientController extends Controller
                 'type' => 'required',
                 'date_of_entry' => 'required',
                 'presence' => 'required',
-                'item' => 'required',
-                'unit_id.*' => 'required',
+                'unit_id' => 'required',
             ], [
                 'identity_number.required' => 'no identitas tidak boleh kosong',
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -214,8 +204,7 @@ class OutpatientController extends Controller
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'presence.required' => 'mohon memilih kehadiran',
-                'item.required' => 'poli tujuan harus ada minimal 1 data',
-                'unit_id.*.required' => 'poli tidak boleh ada yang kosong'
+                'unit_id.required' => 'mohon memilih poli'
             ]);
 
             if ($validation->fails()) {
@@ -266,23 +255,15 @@ class OutpatientController extends Controller
                             $patientId = $createPatient->id;
                         }
 
-                        $createOutpatient = Outpatient::create([
+                        Outpatient::create([
                             'user_id' => $userId,
                             'patient_id' => $patientId,
+                            'unit_id' => $request->unit_id,
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry,
                             'presence' => $request->presence,
                             'description' => $request->description
                         ]);
-
-                        foreach ($request->item as $key => $i) {
-                            $unitId = $request->unit_id[$key];
-
-                            $createOutpatient->outpatientPoly()->create([
-                                'unit_id' => $unitId,
-                                'status' => 1
-                            ]);
-                        }
                     });
 
                     $response = [
@@ -309,10 +290,103 @@ class OutpatientController extends Controller
         return view('layouts.index', ['data' => $data]);
     }
 
-    public function updateData(Request $request, $outpatientPolyId)
+    public function action(Request $request, $id)
     {
-        $outpatientPoly = OutpatientPoly::findOrFail($outpatientPolyId);
-        $outpatient = $outpatientPoly->outpatient;
+        $outpatient = Outpatient::findOrFail($id);
+        $unit = $outpatient->unit;
+
+        if ($request->ajax()) {
+            $outpatient->outpatientAction()->delete();
+
+            try {
+                DB::transaction(function () use ($request, $outpatient) {
+                    if ($request->has('item')) {
+                        foreach ($request->item as $key => $i) {
+                            $doctorId = isset($request->doctor_id[$key]) ? $request->doctor_id[$key] : null;
+                            $unitActionId = isset($request->unit_action_id[$key]) ? $request->unit_action_id[$key] : null;
+                            $status = isset($request->status[$key]) ? $request->status[$key] : null;
+
+                            $consumables = 0;
+                            $hostpitalSevice = 0;
+                            $service = 0;
+
+                            if ($unitActionId) {
+                                $unitAction = UnitAction::find($unitActionId);
+                                $consumables = $unitAction->consumables ?? null;
+                                $hostpitalSevice = $unitAction->hospital_service ?? null;
+                                $service = $unitAction->service ?? null;
+                            }
+
+                            $outpatient->outpatientAction()->create([
+                                'doctor_id' => $doctorId,
+                                'unit_action_id' => $unitActionId,
+                                'consumables' => $consumables,
+                                'hospital_service' => $hostpitalSevice,
+                                'service' => $service,
+                                'status' => $status
+                            ]);
+                        }
+                    }
+                });
+
+                $response = [
+                    'code' => 200,
+                    'message' => 'Data tindakan berhasil disimpan'
+                ];
+            } catch (\Exception $e) {
+                $response = [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ];
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'outpatient' => $outpatient,
+            'patient' => $outpatient->patient,
+            'unit' => $unit,
+            'outpatientAction' => $outpatient->outpatientAction,
+            'doctor' => Doctor::all(),
+            'unitAction' => UnitAction::where('unit_id', $outpatient->unit_id)->orderBy('action_id')->get(),
+            'content' => 'collection.outpatient-action'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function actionPrint(Request $request, $id)
+    {
+        if ($request->has('slug')) {
+            if ($request->slug == 'payment-letter') {
+                $data = OutpatientAction::where('status', false)->findOrFail($id);
+                $view = 'pdf.action-payment-letter';
+                $title = 'Surat Pembayaran Tindakan';
+            } else if ($request->slug == 'proof-of-payment') {
+                $data = OutpatientAction::where('status', true)->findOrFail($id);
+                $view = 'pdf.action-proof-of-payment';
+                $title = 'Bukti Pembayaran Tindakan';
+            } else {
+                abort(404);
+            }
+
+            $pdf = Pdf::setOptions([
+                'adminUsername' => auth()->user()->username
+            ])->loadView($view, [
+                'title' => $title,
+                'data' => $data
+            ]);
+
+            return $pdf->stream($title . ' - ' . date('YmdHis') . '.pdf');
+        }
+
+        abort(404);
+    }
+
+    public function updateData(Request $request, $id)
+    {
+        $outpatient = Outpatient::findOrFail($id);
         $patientId = $outpatient->patient->id;
 
         if ($request->ajax()) {
@@ -355,7 +429,7 @@ class OutpatientController extends Controller
                 ];
             } else {
                 try {
-                    DB::transaction(function () use ($request, $patientId, $outpatient, $outpatientPoly) {
+                    DB::transaction(function () use ($request, $patientId, $outpatient) {
                         $userId = auth()->id();
                         $locationId = $request->location_id;
                         $location = Simrs::locationById($locationId);
@@ -390,21 +464,17 @@ class OutpatientController extends Controller
                         $fillOutpatient = [
                             'user_id' => $userId,
                             'patient_id' => $patientId,
+                            'unit_id' => $request->unit_id,
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry,
-                            'presence' => $request->presence,
-                            'description' => $request->description
-                        ];
-
-                        $fillOutpatientPoly = [
-                            'unit_id' => $request->unit_id,
                             'date_of_out' => in_array($request->status, [2, 4]) ? now() : null,
+                            'presence' => $request->presence,
+                            'description' => $request->description,
                             'status' => $request->status
                         ];
 
                         $outpatient->patient()->update($fillPatient);
                         $outpatient->fill($fillOutpatient)->save();
-                        $outpatientPoly->fill($fillOutpatientPoly)->save();
                     });
 
                     $response = [
@@ -423,7 +493,6 @@ class OutpatientController extends Controller
         } else {
             $data = [
                 'outpatient' => $outpatient,
-                'outpatientPoly' => $outpatientPoly,
                 'religion' => Religion::all(),
                 'unit' => Unit::where('type', 2)->orderBy('name')->get(),
                 'content' => 'collection.outpatient-update'
@@ -433,12 +502,11 @@ class OutpatientController extends Controller
         return view('layouts.index', ['data' => $data]);
     }
 
-    public function operatingRoom(Request $request, $outpatientPolyId)
+    public function operatingRoom(Request $request, $id)
     {
-        $outpatientPoly = OutpatientPoly::findOrFail($outpatientPolyId);
-        $outpatient = $outpatientPoly->outpatient;
+        $outpatient = Outpatient::findOrFail($id);
         $patientId = $outpatient->patient->id;
-        $operation = $outpatientPoly->operation;
+        $operation = $outpatient->operation;
 
         if ($request->ajax()) {
             $validation = Validator::make($request->all(), [
@@ -478,7 +546,7 @@ class OutpatientController extends Controller
                 ];
             } else {
                 try {
-                    DB::transaction(function () use ($request, $patientId, $outpatient, $outpatientPoly, $operation) {
+                    DB::transaction(function () use ($request, $patientId, $outpatient, $operation) {
                         $userId = auth()->id();
                         $dateOfEntry = date('Y-m-d H:i:s', strtotime($request->date_of_entry));
 
@@ -500,8 +568,8 @@ class OutpatientController extends Controller
                             'functional_service_id' => $request->functional_service_id,
                             'operating_room_anesthetist_id' => $request->operating_room_anesthetist_id,
                             'doctor_id' => $request->doctor_id,
-                            'operationable_type' => OutpatientPoly::class,
-                            'operationable_id' => $outpatientPoly->id,
+                            'operationable_type' => Outpatient::class,
+                            'operationable_id' => $outpatient->id,
                             'date_of_entry' => $dateOfEntry,
                             'diagnosis' => $request->diagnosis,
                             'specimen' => $request->specimen
@@ -548,7 +616,6 @@ class OutpatientController extends Controller
         } else {
             $data = [
                 'outpatient' => $outpatient,
-                'outpatientPoly' => $outpatientPoly,
                 'operation' => $operation,
                 'unit' => Unit::where('type', 2)->orderBy('name')->get(),
                 'operatingRoomAction' => OperatingRoomAction::orderBy('operating_room_group_id')->orderBy('operating_room_action_type_id')->get(),
@@ -600,7 +667,7 @@ class OutpatientController extends Controller
         $id = $request->id;
 
         try {
-            OutpatientPoly::destroy($id);
+            Outpatient::destroy($id);
 
             $response = [
                 'code' => 200,

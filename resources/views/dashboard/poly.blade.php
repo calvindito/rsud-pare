@@ -52,13 +52,6 @@
                             </div>
                         </td>
                     </tr>
-                    {{-- @foreach($u->outpatientPoly as $key => $op)
-                        <tr>
-                            <td>{{ $u->name }}</td>
-                            <td>Pasien : <b>{{ $op->outpatient->patient->name }}</b></td>
-                            <td>Antrian Ke : <b>{{ $key + 1 }}</b></td>
-                        </tr>
-                    @endforeach --}}
                 @endforeach
             </table>
         </div>

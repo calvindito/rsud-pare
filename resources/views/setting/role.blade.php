@@ -128,7 +128,7 @@
                                         </td>
                                         <td class="align-middle">
                                             <div class="form-check form-switch justify-content-center">
-                                                <input type="checkbox" class="form-check-input form-check-input-success" name="role_access_menu[]" value="{{ $m1['menu'] }}">
+                                                <input type="checkbox" class="form-check-input form-check-input-success" name="role_access_menu[]" value="{{ $m1['name'] }}">
                                             </div>
                                         </td>
                                     </tr>

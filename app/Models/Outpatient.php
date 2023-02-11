@@ -117,12 +117,71 @@ class Outpatient extends Model
     }
 
     /**
-     * outpatientPoly
+     * unit
      *
      * @return void
      */
-    public function outpatientPoly()
+    public function unit()
     {
-        return $this->hasMany(OutpatientPoly::class);
+        return $this->belongsTo(Unit::class);
+    }
+
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->morphOne(Operation::class, 'operationable');
+    }
+
+    public function status()
+    {
+        $status = $this->status;
+
+        if ($status == 1) {
+            $text = 'Dalam Antrian';
+        } else if ($status == 2) {
+            $text = 'Pasien Tidak Ada';
+        } else if ($status == 3) {
+            $text = 'Sedang Ditangani';
+        } else if ($status == 4) {
+            $text = 'Selesai / Pulang';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
+
+    /**
+     * code
+     *
+     * @return void
+     */
+    public function code()
+    {
+        return sprintf('%06s', $this->id);
+    }
+
+    /**
+     * outpatientAction
+     *
+     * @return void
+     */
+    public function outpatientAction()
+    {
+        return $this->hasMany(OutpatientAction::class);
+    }
+
+    /**
+     * user
+     *
+     * @return void
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
