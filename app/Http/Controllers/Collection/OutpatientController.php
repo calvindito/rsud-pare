@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Collection;
 use App\Models\Unit;
 use App\Helpers\Simrs;
 use App\Models\Doctor;
+use App\Models\LabItem;
 use App\Models\Patient;
 use App\Models\Religion;
 use App\Models\Operation;
+use App\Models\LabRequest;
 use App\Models\Outpatient;
 use App\Models\UnitAction;
+use App\Models\LabItemGroup;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\OutpatientAction;
@@ -490,6 +493,110 @@ class OutpatientController extends Controller
         ];
 
         return view('layouts.index', ['data' => $data]);
+    }
+
+    public function lab(Request $request, $id)
+    {
+        $outpatient = Outpatient::findOrFail($id);
+
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'date_of_request' => 'required',
+                'doctor_id' => 'required',
+                'lrd_item_id' => 'required'
+            ], [
+                'date_of_request.required' => 'tanggal permintaan tidak boleh kosong',
+                'doctor_id.required' => 'mohon memilih dokter',
+                'lrd_item_id.required' => 'mohon memilih salah satu item'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $outpatient) {
+                        $createLabRequest = LabRequest::create([
+                            'patient_id' => $outpatient->patient_id,
+                            'doctor_id' => $request->doctor_id,
+                            'lab_requestable_type' => Outpatient::class,
+                            'lab_requestable_id' => $outpatient->id,
+                            'date_of_request' => $request->date_of_request,
+                            'status' => 1
+                        ]);
+
+                        foreach ($request->lrd_item_id as $lii) {
+                            $labItem = LabItem::find($lii);
+                            $labParent = $labItem ? $labItem->labItemParent : null;
+                            $labFee = $labItem ? $labItem->labFee : null;
+
+                            if ($labItem) {
+                                $createLabRequest->labRequestDetail()->create([
+                                    'lab_item_id' => $labItem->id,
+                                    'lab_item_parent_id' => $labParent ? $labParent->id : null,
+                                    'consumables' => $labFee ? $labFee->consumables : null,
+                                    'hospital_service' => $labFee ? $labFee->hospital_service : null,
+                                    'service' => $labFee ? $labFee->service : null
+                                ]);
+                            }
+                        }
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Data berhasil dikirim di laboratorium'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'outpatient' => $outpatient,
+            'patient' => $outpatient->patient,
+            'labRequest' => $outpatient->labRequest,
+            'doctor' => Doctor::all(),
+            'labItemGroup' => LabItemGroup::orderBy('name')->get(),
+            'content' => 'collection.outpatient-lab'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function labPrint(Request $request, $id)
+    {
+        $data = LabRequest::where('status', 3)->where('id', $id)->firstOrFail();
+
+        if ($request->has('slug')) {
+            if ($request->slug == 'result') {
+                $view = 'pdf.lab-result';
+                $title = 'Hasil Laboratorium';
+            } else if ($request->slug == 'detail') {
+                $view = 'pdf.lab-detail';
+                $title = 'Rincian Biaya Hasil Cek Laboratorium';
+            } else {
+                abort(404);
+            }
+
+            $pdf = Pdf::setOptions([
+                'adminUsername' => auth()->user()->username
+            ])->loadView($view, [
+                'title' => $title,
+                'data' => $data
+            ]);
+
+            return $pdf->stream($title . ' - ' . date('YmdHis') . '.pdf');
+        }
+
+        abort(404);
     }
 
     public function updateData(Request $request, $id)

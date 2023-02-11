@@ -204,4 +204,14 @@ class Outpatient extends Model
     {
         return $this->hasMany(OutpatientDiagnosis::class);
     }
+
+    /**
+     * labRequest
+     *
+     * @return void
+     */
+    public function labRequest()
+    {
+        return $this->morphMany(LabRequest::class, 'lab_requestable');
+    }
 }
