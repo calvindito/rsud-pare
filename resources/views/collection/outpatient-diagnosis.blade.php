@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendataan - Rawat Inap - <span class="fw-normal">Diagnosa</span>
+                Pendataan - Rawat Jalan - <span class="fw-normal">Diagnosa</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('collection/inpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+            <a href="{{ url('collection/outpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
         </div>
     </div>
 </div>
@@ -40,10 +40,10 @@
                     <tr>
                         <th class="align-middle">Tanggal Masuk</th>
                         <td class="align-middle" width="1%">:</td>
-                        <td class="align-middle">{{ $inpatient->date_of_entry }}</td>
-                        <th class="align-middle">Kamar</th>
+                        <td class="align-middle">{{ $outpatient->date_of_entry }}</td>
+                        <th class="align-middle">Poli</th>
                         <td class="align-middle" width="1%">:</td>
-                        <td class="align-middle">{{ $inpatient->roomType->name . ' | ' . $inpatient->roomType->classType->name }}</td>
+                        <td class="align-middle">{{ $outpatient->unit->name }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -56,12 +56,12 @@
             </div>
             <div class="card-body">
                 <div id="plus-destroy-diagnosis">
-                    @if($inpatientDiagnosis->where('type', 1)->count() > 0)
-                        @foreach($inpatientDiagnosis->where('type', 1) as $id)
+                    @if($outpatientDiagnosis->where('type', 1)->count() > 0)
+                        @foreach($outpatientDiagnosis->where('type', 1) as $id)
                             <div class="form-group">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="diagnosis[]" value="{{ $id->value }}" placeholder="Masukan diagnosa">
-                                    @if($inpatient->status == 1)
+                                    @if($outpatient->status != 4)
                                         <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
                                     @endif
                                 </div>
@@ -69,7 +69,7 @@
                         @endforeach
                     @endif
                 </div>
-                @if($inpatient->status == 1)
+                @if($outpatient->status == 1)
                     <div class="form-group">
                         <button type="button" class="btn btn-teal col-12" onclick="addItem('diagnosis')"><i class="ph-plus me-2"></i> Tambah Diagnosa</button>
                     </div>
@@ -82,12 +82,12 @@
             </div>
             <div class="card-body">
                 <div id="plus-destroy-action">
-                    @if($inpatientDiagnosis->where('type', 2)->count() > 0)
-                        @foreach($inpatientDiagnosis->where('type', 2) as $id)
+                    @if($outpatientDiagnosis->where('type', 2)->count() > 0)
+                        @foreach($outpatientDiagnosis->where('type', 2) as $id)
                             <div class="form-group">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="action[]" value="{{ $id->value }}" placeholder="Masukan tindakan">
-                                    @if($inpatient->status == 1)
+                                    @if($outpatient->status != 4)
                                         <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
                                     @endif
                                 </div>
@@ -95,14 +95,14 @@
                         @endforeach
                     @endif
                 </div>
-                @if($inpatient->status == 1)
+                @if($outpatient->status == 1)
                     <div class="form-group">
                         <button type="button" class="btn btn-teal col-12" onclick="addItem('action')"><i class="ph-plus me-2"></i> Tambah Tindakan</button>
                     </div>
                 @endif
             </div>
         </div>
-        @if($inpatient->status == 1)
+        @if($outpatient->status == 1)
             <div class="card">
                 <div class="card-body">
                     <div class="text-end">
@@ -123,7 +123,7 @@
     });
 
     function checkStatus() {
-        var status = '{{ $inpatient->status }}';
+        var status = '{{ $outpatient->status }}';
 
         if(status == 1) {
             $('.form-control').attr('disabled', false);
@@ -173,7 +173,7 @@
 
     function submitted() {
         $.ajax({
-            url: '{{ url("collection/inpatient/diagnosis/" . $inpatient->id) }}',
+            url: '{{ url("collection/outpatient/diagnosis/" . $outpatient->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -209,7 +209,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/inpatient/diagnosis/" . $inpatient->id) }}');
+                        window.location.replace('{{ url("collection/outpatient/diagnosis/" . $outpatient->id) }}');
                     });
                 } else if(response.code == 400) {
                     $('.btn-to-top button').click();

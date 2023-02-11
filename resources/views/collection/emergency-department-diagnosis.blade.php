@@ -59,7 +59,12 @@
                     @if($emergencyDepartmentDiagnosis->where('type', 1)->count() > 0)
                         @foreach($emergencyDepartmentDiagnosis->where('type', 1) as $edd)
                             <div class="form-group">
-                                <input type="text" class="form-control" name="diagnosis[]" value="{{ $edd->value }}" placeholder="Masukan diagnosa">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="diagnosis[]" value="{{ $edd->value }}" placeholder="Masukan diagnosa">
+                                    @if($emergencyDepartment->status == 1)
+                                        <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                                    @endif
+                                </div>
                             </div>
                         @endforeach
                     @endif
@@ -80,7 +85,12 @@
                     @if($emergencyDepartmentDiagnosis->where('type', 2)->count() > 0)
                         @foreach($emergencyDepartmentDiagnosis->where('type', 2) as $edd)
                             <div class="form-group">
-                                <input type="text" class="form-control" name="action[]" value="{{ $edd->value }}" placeholder="Masukan tindakan">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="action[]" value="{{ $edd->value }}" placeholder="Masukan tindakan">
+                                    @if($emergencyDepartment->status == 1)
+                                        <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                                    @endif
+                                </div>
                             </div>
                         @endforeach
                     @endif

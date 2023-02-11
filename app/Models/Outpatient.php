@@ -194,4 +194,14 @@ class Outpatient extends Model
     {
         return $this->hasMany(OutpatientSoap::class);
     }
+
+    /**
+     * outpatientDiagnosis
+     *
+     * @return void
+     */
+    public function outpatientDiagnosis()
+    {
+        return $this->hasMany(OutpatientDiagnosis::class);
+    }
 }

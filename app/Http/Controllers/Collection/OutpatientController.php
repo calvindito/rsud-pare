@@ -438,6 +438,60 @@ class OutpatientController extends Controller
         return view('layouts.index', ['data' => $data]);
     }
 
+    public function diagnosis(Request $request, $id)
+    {
+        $outpatient = Outpatient::findOrFail($id);
+
+        if ($request->ajax()) {
+            try {
+                $outpatient->outpatientDiagnosis()->delete();
+
+                if ($request->has('diagnosis')) {
+                    foreach ($request->diagnosis as $d) {
+                        if (!empty($d)) {
+                            $outpatient->outpatientDiagnosis()->create([
+                                'type' => 1,
+                                'value' => $d
+                            ]);
+                        }
+                    }
+                }
+
+                if ($request->has('action')) {
+                    foreach ($request->action as $a) {
+                        if (!empty($a)) {
+                            $outpatient->outpatientDiagnosis()->create([
+                                'type' => 2,
+                                'value' => $a
+                            ]);
+                        }
+                    }
+                }
+
+                $response = [
+                    'code' => 200,
+                    'message' => 'Diagnosa berhasil disimpan'
+                ];
+            } catch (\Exception $e) {
+                $response = [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ];
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'outpatient' => $outpatient,
+            'patient' => $outpatient->patient,
+            'outpatientDiagnosis' => $outpatient->outpatientDiagnosis,
+            'content' => 'collection.outpatient-diagnosis'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
     public function updateData(Request $request, $id)
     {
         $outpatient = Outpatient::findOrFail($id);
