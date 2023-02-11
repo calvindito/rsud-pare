@@ -110,6 +110,8 @@ class RadiologyRequest extends Model
             $text = 'Rawat Inap';
         } else if ($model == 'App\Models\EmergencyDepartment') {
             $text = 'IGD';
+        } else if ($model == 'App\Models\Outpatient') {
+            $text = 'Rawat Jalan';
         } else {
             $text = 'Tidak Ada';
         }
