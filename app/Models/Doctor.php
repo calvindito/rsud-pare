@@ -58,4 +58,14 @@ class Doctor extends Model
 
         return $text;
     }
+
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->hasMany(Operation::class, 'doctor_operation_id');
+    }
 }

@@ -68,4 +68,14 @@ class Unit extends Model
     {
         return $this->hasMany(OutpatientPoly::class);
     }
+
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->hasMany(Operation::class);
+    }
 }

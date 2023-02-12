@@ -49,4 +49,14 @@ class FunctionalService extends Model
 
         return $html;
     }
+
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->hasMany(Operation::class);
+    }
 }

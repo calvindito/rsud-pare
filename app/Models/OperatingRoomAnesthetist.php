@@ -29,4 +29,14 @@ class OperatingRoomAnesthetist extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->hasMany(Operation::class);
+    }
 }

@@ -499,6 +499,10 @@ Route::middleware('auth')->group(function () {
                 Route::get('print/{id}', 'DataController@print');
                 Route::delete('destroy-data', 'DataController@destroyData');
             });
+
+            Route::prefix('summary')->group(function () {
+                Route::get('/', 'SummaryController@index');
+            });
         });
 
         Route::prefix('lab')->group(function () {
