@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Operation;
 
+use App\Models\Doctor;
 use App\Models\Operation;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -26,7 +28,8 @@ class DataController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('patient_id', 'like', "%$search%")
+                    $query->whereRaw("LPAD(id, 6, 0) LIKE '%$search%'")
+                        ->orWhere('patient_id', 'like', "%$search%")
                         ->orWhereHas('patient', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
                         })
@@ -42,6 +45,9 @@ class DataController extends Controller
             })
             ->addColumn('status', function (Operation $query) {
                 return $query->status();
+            })
+            ->addColumn('code', function (Operation $query) {
+                return $query->code();
             })
             ->addColumn('employee_name', function (Operation $query) {
                 $employeeName = 'Belum Ada';
@@ -92,11 +98,115 @@ class DataController extends Controller
                 return $query->ref();
             })
             ->addColumn('action', function (Operation $query) {
-                return '';
+                $fullAction = '';
+                if ($query->status == 1) {
+                    $fullAction = '
+                        <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="destroyData(' . $query->id . ')">
+                            <i class="ph-trash-simple me-2"></i>
+                            Hapus Data
+                        </a>
+                    ';
+                }
+
+                return '
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-light text-primary btn-sm btn-block fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
+                        <div class="dropdown-menu">
+                            <a href="' . url('operation/data/manage/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-webcam me-2"></i>
+                                Kelola
+                            </a>
+                            <a href="' . url('operation/data/print/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-printer me-2"></i>
+                                Cetak
+                            </a>
+                            ' . $fullAction . '
+                        </div>
+                    </div>
+                ';
             })
             ->rawColumns(['action', 'status'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
+    }
+
+    public function manage(Request $request, $id)
+    {
+        $operation = Operation::findOrFail($id);
+
+        if ($request->ajax()) {
+            try {
+                $operation->update([
+                    'doctor_operation_id' => $request->doctor_operation_id,
+                    'date_of_out' => $request->date_of_out,
+                    'hospital_service' => $request->hospital_service,
+                    'doctor_operating_room' => $request->doctor_operating_room,
+                    'doctor_anesthetist' => $request->doctor_anesthetist,
+                    'nurse_operating_room' => $request->nurse_operating_room,
+                    'nurse_anesthetist' => $request->nurse_anesthetist,
+                    'material' => $request->material,
+                    'monitoring' => $request->monitoring,
+                    'nursing_care' => $request->nursing_care,
+                    'status' => $request->status
+                ]);
+
+                $response = [
+                    'code' => 200,
+                    'message' => 'Data operasi berhasil disimpan'
+                ];
+            } catch (\Exception $e) {
+                $response = [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ];
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'operation' => $operation,
+            'patient' => $operation->patient,
+            'doctor' => Doctor::all(),
+            'content' => 'operation.data-manage'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function print($id)
+    {
+        $data = Operation::findOrFail($id);
+        $title = 'Rincian Biaya Operasi';
+        $pdf = Pdf::setOptions([
+            'adminUsername' => auth()->user()->username
+        ])->loadView('pdf.operation-detail', [
+            'title' => $title,
+            'data' => $data
+        ]);
+
+        return $pdf->stream($title . ' - ' . date('YmdHis') . '.pdf');
+    }
+
+    public function destroyData(Request $request)
+    {
+        $id = $request->id;
+
+        try {
+            Operation::destroy($id);
+
+            $response = [
+                'code' => 200,
+                'message' => 'Data telah dihapus'
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response);
     }
 }

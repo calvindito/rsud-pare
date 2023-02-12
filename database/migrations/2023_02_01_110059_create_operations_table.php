@@ -22,12 +22,23 @@ class CreateOperationsTable extends Migration
             $table->unsignedBigInteger('operating_room_anesthetist_id')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->unsignedBigInteger('unit_id')->nullable();
+            $table->unsignedBigInteger('doctor_operation_id')->nullable();
             $table->nullableMorphs('operationable');
             $table->timestamp('date_of_entry')->nullable();
+            $table->timestamp('date_of_out')->nullable();
             $table->string('diagnosis')->nullable();
             $table->boolean('specimen')->default(0);
+            $table->double('hospital_service')->nullable();
+            $table->double('doctor_operating_room')->nullable();
+            $table->double('doctor_anesthetist')->nullable();
+            $table->double('nurse_operating_room')->nullable();
+            $table->double('nurse_anesthetist')->nullable();
+            $table->double('material')->nullable();
+            $table->double('monitoring')->nullable();
+            $table->double('nursing_care')->nullable();
             $table->char('status', 1)->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

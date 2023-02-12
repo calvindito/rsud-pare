@@ -495,6 +495,9 @@ Route::middleware('auth')->group(function () {
             Route::prefix('data')->group(function () {
                 Route::get('/', 'DataController@index');
                 Route::get('datatable', 'DataController@datatable');
+                Route::match(['get', 'post'], 'manage/{id}', 'DataController@manage');
+                Route::get('print/{id}', 'DataController@print');
+                Route::delete('destroy-data', 'DataController@destroyData');
             });
         });
 

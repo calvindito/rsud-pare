@@ -16,7 +16,7 @@ class BedController extends Controller
     {
         $data = [
             'classType' => ClassType::all(),
-            'functionalService' => FunctionalService::where('status', 1)->get(),
+            'functionalService' => FunctionalService::where('status', true)->get(),
             'content' => 'master-data.health-service.bed'
         ];
 

@@ -21,7 +21,7 @@ class CreateOutpatientActionsTable extends Migration
             $table->double('consumables')->nullable();
             $table->double('hospital_service')->nullable();
             $table->double('service')->nullable();
-            $table->boolean('status', 1)->default(0);
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

@@ -162,7 +162,7 @@ class LabController extends Controller
 
     public function print(Request $request, $id)
     {
-        $data = LabRequest::where('status', 3)->where('id', $id)->firstOrFail();
+        $data = LabRequest::where('status', 3)->findOrFail($id);
 
         if ($request->has('slug')) {
             if ($request->slug == 'result') {

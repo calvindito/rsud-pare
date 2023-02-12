@@ -46,7 +46,7 @@ class Simrs
 
     public static function formatRupiah($number)
     {
-        return 'Rp ' . number_format($number, 2, ',', '.');
+        return 'Rp ' . number_format($number, 0, '.', '.');
     }
 
     public static function todayLongLinePoly($unitId)

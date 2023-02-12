@@ -14,7 +14,7 @@ class RoomSpaceController extends Controller
     public function index()
     {
         $data = [
-            'roomType' => RoomType::where('status', 1)->get(),
+            'roomType' => RoomType::where('status', true)->get(),
             'content' => 'master-data.room.room-space'
         ];
 

@@ -571,7 +571,7 @@ class EmergencyDepartmentController extends Controller
 
     public function labPrint(Request $request, $id)
     {
-        $data = LabRequest::where('status', 3)->where('id', $id)->firstOrFail();
+        $data = LabRequest::where('status', 3)->findOrFail($id);
 
         if ($request->has('slug')) {
             if ($request->slug == 'result') {
@@ -668,7 +668,7 @@ class EmergencyDepartmentController extends Controller
 
     public function radiologyPrint($id)
     {
-        $data = RadiologyRequest::where('status', 3)->where('id', $id)->firstOrFail();
+        $data = RadiologyRequest::where('status', 3)->findOrFail($id);
         $pdf = Pdf::setOptions([
             'adminUsername' => auth()->user()->username
         ])->loadView('pdf.radiology-result', [

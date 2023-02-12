@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Operation extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -47,13 +48,11 @@ class Operation extends Model
         $status = isset($this->attributes['status']) ? $this->attributes['status'] : null;
 
         if ($status == 1) {
-            $text = 'Sedang Dirawat';
+            $text = 'Belum Operasi';
         } else if ($status == 2) {
-            $text = 'Pindah Kamar';
+            $text = 'Sedang Operasi';
         } else if ($status == 3) {
-            $text = 'Pulang';
-        } else if ($status == 4) {
-            $text = 'Keluar Kamar';
+            $text = 'Selesai Operasi';
         } else {
             $text = 'Invalid';
         }
@@ -141,13 +140,13 @@ class Operation extends Model
         $status = $this->status;
 
         if ($status == 1) {
-            $html = '<span class="badge bg-danger">Belum Operasi</span>';
+            $html = '<span class="badge bg-danger col-12">Belum Operasi</span>';
         } else if ($status == 2) {
-            $html = '<span class="badge bg-primary">Sedang Operasi</span>';
+            $html = '<span class="badge bg-primary col-12">Sedang Operasi</span>';
         } else if ($status == 3) {
-            $html = '<span class="badge bg-success">Selesai Operasi</span>';
+            $html = '<span class="badge bg-success col-12">Selesai Operasi</span>';
         } else {
-            $html = '<span class="badge bg-warning">Invalid</span>';
+            $html = '<span class="badge bg-warning col-12">Invalid</span>';
         }
 
         return $html;
@@ -160,7 +159,7 @@ class Operation extends Model
      */
     public function ref()
     {
-        $model = $this->lab_requestable_type;
+        $model = $this->operationable_type;
 
         if ($model == 'App\Models\Inpatient') {
             $text = 'Rawat Inap';
@@ -181,5 +180,55 @@ class Operation extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * operatingRoomAction
+     *
+     * @return void
+     */
+    public function operatingRoomAction()
+    {
+        return $this->belongsTo(OperatingRoomAction::class);
+    }
+
+    /**
+     * operatingRoomAnesthetist
+     *
+     * @return void
+     */
+    public function operatingRoomAnesthetist()
+    {
+        return $this->belongsTo(OperatingRoomAnesthetist::class);
+    }
+
+    /**
+     * doctorOperation
+     *
+     * @return void
+     */
+    public function doctorOperation()
+    {
+        return $this->belongsTo(Doctor::class, 'doctor_operation_id');
+    }
+
+    /**
+     * total
+     *
+     * @return void
+     */
+    public function total()
+    {
+        $hospitalService = $this->hospital_service;
+        $doctorOperatingRoom = $this->doctor_operating_room;
+        $doctorAnesthetist = $this->doctor_anesthetist;
+        $nurseOperatingRoom = $this->nurse_operating_room;
+        $nurseAnesthetist = $this->nurse_anesthetist;
+        $material = $this->material;
+        $monitoring = $this->monitoring;
+        $nursingCare = $this->nursing_care;
+        $total = $hospitalService + $doctorOperatingRoom + $doctorAnesthetist + $nurseOperatingRoom + $nurseAnesthetist + $material + $monitoring + $nursingCare;
+
+        return $total;
     }
 }

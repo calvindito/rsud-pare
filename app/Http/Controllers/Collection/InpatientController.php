@@ -615,7 +615,7 @@ class InpatientController extends Controller
 
     public function labPrint(Request $request, $id)
     {
-        $data = LabRequest::where('status', 3)->where('id', $id)->firstOrFail();
+        $data = LabRequest::where('status', 3)->findOrFail($id);
 
         if ($request->has('slug')) {
             if ($request->slug == 'result') {
@@ -711,7 +711,7 @@ class InpatientController extends Controller
 
     public function radiologyPrint($id)
     {
-        $data = RadiologyRequest::where('status', 3)->where('id', $id)->firstOrFail();
+        $data = RadiologyRequest::where('status', 3)->findOrFail($id);
         $pdf = Pdf::setOptions([
             'adminUsername' => auth()->user()->username
         ])->loadView('pdf.radiology-result', [
@@ -769,6 +769,8 @@ class InpatientController extends Controller
                     DB::transaction(function () use ($request, $patientId, $inpatient, $operation) {
                         $userId = auth()->id();
                         $dateOfEntry = date('Y-m-d H:i:s', strtotime($request->date_of_entry));
+                        $operatingRoomActionId = $request->operating_room_action_id;
+                        $operatingRoomAction = OperatingRoomAction::find($operatingRoomActionId);
 
                         $fillPatient = [
                             'identity_number' => $request->identity_number,
@@ -783,7 +785,7 @@ class InpatientController extends Controller
                         $fillOperation = [
                             'user_id' => $userId,
                             'patient_id' => $patientId,
-                            'operating_room_action_id' => $request->operating_room_action_id,
+                            'operating_room_action_id' => $operatingRoomActionId,
                             'functional_service_id' => $request->functional_service_id,
                             'operating_room_anesthetist_id' => $request->operating_room_anesthetist_id,
                             'doctor_id' => $request->doctor_id,
@@ -792,7 +794,13 @@ class InpatientController extends Controller
                             'operationable_id' => $inpatient->id,
                             'date_of_entry' => $dateOfEntry,
                             'diagnosis' => $request->diagnosis,
-                            'specimen' => $request->specimen
+                            'specimen' => $request->specimen,
+                            'hospital_service' => $operatingRoomAction->fee_hospital_service ?? null,
+                            'doctor_operating_room' => $operatingRoomAction->fee_doctor_operating_room ?? null,
+                            'doctor_anesthetist' => $operatingRoomAction->fee_doctor_anesthetist ?? null,
+                            'nurse_operating_room' => $operatingRoomAction->fee_nurse_operating_room ?? null,
+                            'nurse_anesthetist' => $operatingRoomAction->fee_nurse_anesthetist ?? null
+
                         ];
 
                         if ($operation) {
@@ -834,12 +842,18 @@ class InpatientController extends Controller
 
             return response()->json($response);
         } else {
+            $operatingRoomAction = OperatingRoomAction::where('class_type_id', $inpatient->roomType->class_type_id)
+                ->where('status', true)
+                ->orderBy('operating_room_group_id')
+                ->orderBy('operating_room_action_type_id')
+                ->get();
+
             $data = [
                 'inpatient' => $inpatient,
                 'operation' => $operation,
                 'unit' => Unit::where('type', 1)->orderBy('name')->get(),
-                'operatingRoomAction' => OperatingRoomAction::orderBy('operating_room_group_id')->orderBy('operating_room_action_type_id')->get(),
-                'functionalService' => FunctionalService::all(),
+                'operatingRoomAction' => $operatingRoomAction,
+                'functionalService' => FunctionalService::where('status', true)->get(),
                 'operatingRoomAnesthetist' => OperatingRoomAnesthetist::all(),
                 'doctor' => Doctor::all(),
                 'content' => 'collection.inpatient-operating-room'

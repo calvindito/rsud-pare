@@ -201,7 +201,7 @@ class RadiologyController extends Controller
 
     public function print(Request $request, $id)
     {
-        $data = RadiologyRequest::where('status', 3)->where('id', $id)->firstOrFail();
+        $data = RadiologyRequest::where('status', 3)->findOrFail($id);
 
         if ($request->has('slug')) {
             if ($request->slug == 'result') {
