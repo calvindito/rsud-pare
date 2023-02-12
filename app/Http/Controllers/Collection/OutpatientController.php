@@ -248,14 +248,14 @@ class OutpatientController extends Controller
                             'job' => $request->job,
                             'phone' => $request->phone,
                             'parent_name' => $request->parent_name,
-                            'partner_name' => $request->partner_name,
-                            'verified_at' => now()
+                            'partner_name' => $request->partner_name
                         ];
 
                         if ($hasDataPatient) {
                             $hasDataPatient->update($fillPatient);
                             $patientId = $hasDataPatient->id;
                         } else {
+                            $fillPatient = array_merge($fillPatient, ['verified_at' => now()]);
                             $createPatient = Patient::create($fillPatient);
                             $patientId = $createPatient->id;
                         }
@@ -754,8 +754,7 @@ class OutpatientController extends Controller
                             'job' => $request->job,
                             'phone' => $request->phone,
                             'parent_name' => $request->parent_name,
-                            'partner_name' => $request->partner_name,
-                            'verified_at' => now()
+                            'partner_name' => $request->partner_name
                         ];
 
                         $fillOutpatient = [
@@ -854,8 +853,7 @@ class OutpatientController extends Controller
                             'gender' => $request->gender,
                             'date_of_birth' => $request->date_of_birth,
                             'village' => $request->village,
-                            'address' => $request->address,
-                            'verified_at' => now()
+                            'address' => $request->address
                         ];
 
                         $fillOperation = [
@@ -865,6 +863,7 @@ class OutpatientController extends Controller
                             'functional_service_id' => $request->functional_service_id,
                             'operating_room_anesthetist_id' => $request->operating_room_anesthetist_id,
                             'doctor_id' => $request->doctor_id,
+                            'unit_id' => $request->unit_id,
                             'operationable_type' => Outpatient::class,
                             'operationable_id' => $outpatient->id,
                             'date_of_entry' => $dateOfEntry,
@@ -899,7 +898,7 @@ class OutpatientController extends Controller
 
                     $response = [
                         'code' => 200,
-                        'message' => 'Data berhasil diubah'
+                        'message' => 'Data kamar operasi berhasil disimpan'
                     ];
                 } catch (\Exception $e) {
                     $response = [

@@ -467,6 +467,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('lab/print/{id}', 'InpatientController@labPrint');
                 Route::match(['get', 'post'], 'radiology/{id}', 'InpatientController@radiology');
                 Route::get('radiology/print/{id}', 'InpatientController@radiologyPrint');
+                Route::match(['get', 'post'], 'operating-room/{id}', 'InpatientController@operatingRoom');
                 Route::match(['get', 'post'], 'checkout/{id}', 'InpatientController@checkout');
                 Route::match(['get', 'post'], 'update-data/{id}', 'InpatientController@updateData');
                 Route::delete('destroy-data', 'InpatientController@destroyData');
@@ -487,6 +488,13 @@ Route::middleware('auth')->group(function () {
                 Route::match(['get', 'post'], 'checkout/{id}', 'EmergencyDepartmentController@checkout');
                 Route::match(['get', 'post'], 'update-data/{id}', 'EmergencyDepartmentController@updateData');
                 Route::delete('destroy-data', 'EmergencyDepartmentController@destroyData');
+            });
+        });
+
+        Route::prefix('operation')->namespace('Operation')->group(function () {
+            Route::prefix('data')->group(function () {
+                Route::get('/', 'DataController@index');
+                Route::get('datatable', 'DataController@datatable');
             });
         });
 

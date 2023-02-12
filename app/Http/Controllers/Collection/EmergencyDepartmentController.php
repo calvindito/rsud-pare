@@ -221,14 +221,14 @@ class EmergencyDepartmentController extends Controller
                             'rt' => $request->rt,
                             'rw' => $request->rw,
                             'village' => $request->village,
-                            'address' => $request->address,
-                            'verified_at' => now()
+                            'address' => $request->address
                         ];
 
                         if ($hasDataPatient) {
                             $hasDataPatient->update($fillPatient);
                             $patientId = $hasDataPatient->id;
                         } else {
+                            $fillPatient = array_merge($fillPatient, ['verified_at' => now()]);
                             $createPatient = Patient::create($fillPatient);
                             $patientId = $createPatient->id;
                         }

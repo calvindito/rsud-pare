@@ -317,4 +317,14 @@ class Inpatient extends Model
     {
         return $this->morphMany(RadiologyRequest::class, 'radiology_requestable');
     }
+
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->morphOne(Operation::class, 'operationable');
+    }
 }

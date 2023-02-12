@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendaftaran - Rawat Jalan - <span class="fw-normal">Kamar Operasi</span>
+                Pendaftaran - Rawat Inap - <span class="fw-normal">Kamar Operasi</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('collection/outpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+            <a href="{{ url('collection/inpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
         </div>
     </div>
 </div>
@@ -23,7 +23,7 @@
                     </div>
                 @else
                     <div class="alert alert-primary text-center mb-0">
-                        Buat Data Kamar Operasi Pasien <b class="fst-italic">{{ $outpatient->patient->name }}</b>
+                        Buat Data Kamar Operasi Pasien <b class="fst-italic">{{ $inpatient->patient->name }}</b>
                     </div>
                 @endif
             </div>
@@ -98,13 +98,12 @@
             </div>
             <div class="card-body border-top">
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-3">Poli <span class="text-danger fw-bold">*</span></label>
+                    <label class="col-form-label col-lg-3">Unit <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
                         <select class="form-select" name="unit_id" id="unit_id">
+                            <option value="">-- Pilih --</option>
                             @foreach($unit as $u)
-                                @if($u->id == $outpatient->unit_id)
-                                    <option value="{{ $u->id }}" selected>{{ $u->name }}</option>
-                                @endif
+                                <option value="{{ $u->id }}" {{ ($operation->unit_id ?? null) == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -215,7 +214,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="text-end">
-                    <a href="{{ url('collection/outpatient') }}" class="btn btn-danger">
+                    <a href="{{ url('collection/inpatient') }}" class="btn btn-danger">
                         <i class="ph-x me-1"></i>
                         Batalkan Perubahan
                     </a>
@@ -268,11 +267,11 @@
 
     function loadPatient() {
         $.ajax({
-            url: '{{ url("collection/outpatient/load-patient") }}',
+            url: '{{ url("collection/inpatient/load-patient") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
-                id: '{{ $outpatient->patient->id }}'
+                id: '{{ $inpatient->patient->id }}'
             },
             beforeSend: function() {
                 onLoading('show', '.content');
@@ -303,7 +302,7 @@
 
     function updatePatient() {
         $.ajax({
-            url: '{{ url("collection/outpatient/operating-room/" . $outpatient->id) }}',
+            url: '{{ url("collection/inpatient/operating-room/" . $inpatient->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -339,7 +338,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/outpatient/operating-room/" . $outpatient->id) }}');
+                        window.location.replace('{{ url("collection/inpatient/operating-room/" . $inpatient->id) }}');
                     });
                 } else if(response.code == 400) {
                     $('.btn-to-top button').click();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Collection;
 
+use App\Models\Unit;
 use App\Helpers\Simrs;
 use App\Models\Doctor;
 use App\Models\LabItem;
@@ -10,6 +11,7 @@ use App\Models\Medicine;
 use App\Models\Religion;
 use App\Models\RoomType;
 use App\Models\Inpatient;
+use App\Models\Operation;
 use App\Models\Radiology;
 use App\Models\LabRequest;
 use App\Models\ActionOther;
@@ -23,7 +25,10 @@ use App\Models\RadiologyRequest;
 use App\Models\FunctionalService;
 use App\Models\ActionNonOperative;
 use Illuminate\Support\Facades\DB;
+use App\Models\OperatingRoomAction;
 use App\Http\Controllers\Controller;
+use App\Models\OperatingRoomAnesthetist;
+use App\Models\OperationDoctorAssistant;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
@@ -136,6 +141,10 @@ class InpatientController extends Controller
                                 <i class="ph-wheelchair me-2"></i>
                                 Radiologi
                             </a>
+                            <a href="' . url('collection/inpatient/operating-room/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-bed me-2"></i>
+                                Kamar Operasi
+                            </a>
                         </div>
                     </div>
                     <div class="btn-group">
@@ -223,14 +232,14 @@ class InpatientController extends Controller
                             'greeted' => $request->greeted,
                             'gender' => $request->gender,
                             'date_of_birth' => $request->date_of_birth,
-                            'religion_id' => $request->religion_id,
-                            'verified_at' => now()
+                            'religion_id' => $request->religion_id
                         ];
 
                         if ($hasDataPatient) {
                             $hasDataPatient->update($fillPatient);
                             $patientId = $hasDataPatient->id;
                         } else {
+                            $fillPatient = array_merge($fillPatient, ['verified_at' => now()]);
                             $createPatient = Patient::create($fillPatient);
                             $patientId = $createPatient->id;
                         }
@@ -711,6 +720,133 @@ class InpatientController extends Controller
         ]);
 
         return $pdf->stream('Hasil Pemeriksaan Radiologi - ' . date('YmdHis') . '.pdf');
+    }
+
+    public function operatingRoom(Request $request, $id)
+    {
+        $inpatient = Inpatient::findOrFail($id);
+        $patientId = $inpatient->patient->id;
+        $operation = $inpatient->operation;
+
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'identity_number' => 'nullable|digits:16|numeric|unique:patients,identity_number,' . $patientId,
+                'name' => 'required',
+                'gender' => 'required',
+                'date_of_birth' => 'required',
+                'village' => 'required',
+                'address' => 'required',
+                'unit_id' => 'required',
+                'date_of_entry' => 'required',
+                'operating_room_action_id' => 'required',
+                'functional_service_id' => 'required',
+                'operating_room_anesthetist_id' => 'required',
+                'doctor_id' => 'required'
+            ], [
+                'identity_number.digits' => 'no identitas harus 16 karakter',
+                'identity_number.numeric' => 'no identitas harus angka',
+                'identity_number.unique' => 'no identitas telah digunakan',
+                'name.required' => 'nama tidak boleh kosong',
+                'gender.required' => 'mohon memilih jenis kelamin',
+                'date_of_birth.required' => 'tanggal lahir tidak boleh kosong',
+                'village.required' => 'nama tidak boleh kosong',
+                'address.required' => 'alamat tidak boleh kosong',
+                'unit_id.required' => 'mohon memilih unit',
+                'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
+                'operating_room_action_id.required' => 'mohon memilih operasi',
+                'functional_service_id.required' => 'mohon memilih upf',
+                'operating_room_anesthetist_id.required' => 'mohon memilih jenis anestesi',
+                'doctor_id.required' => 'mohon memilih dokter anestesi'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request, $patientId, $inpatient, $operation) {
+                        $userId = auth()->id();
+                        $dateOfEntry = date('Y-m-d H:i:s', strtotime($request->date_of_entry));
+
+                        $fillPatient = [
+                            'identity_number' => $request->identity_number,
+                            'name' => $request->name,
+                            'greeted' => $request->greeted,
+                            'gender' => $request->gender,
+                            'date_of_birth' => $request->date_of_birth,
+                            'village' => $request->village,
+                            'address' => $request->address
+                        ];
+
+                        $fillOperation = [
+                            'user_id' => $userId,
+                            'patient_id' => $patientId,
+                            'operating_room_action_id' => $request->operating_room_action_id,
+                            'functional_service_id' => $request->functional_service_id,
+                            'operating_room_anesthetist_id' => $request->operating_room_anesthetist_id,
+                            'doctor_id' => $request->doctor_id,
+                            'unit_id' => $request->unit_id,
+                            'operationable_type' => Inpatient::class,
+                            'operationable_id' => $inpatient->id,
+                            'date_of_entry' => $dateOfEntry,
+                            'diagnosis' => $request->diagnosis,
+                            'specimen' => $request->specimen
+                        ];
+
+                        if ($operation) {
+                            $operation->operationDoctorAssistant()->delete();
+                            $operation->fill($fillOperation)->save();
+                            $operationId = $operation->id;
+                        } else {
+                            $operation = Operation::create($fillOperation);
+                            $operationId = $operation->id;
+                        }
+
+                        if ($request->has('item')) {
+                            foreach ($request->item as $key => $i) {
+                                $name = $request->operation_doctor_assistant_name[$key];
+
+                                if ($name) {
+                                    OperationDoctorAssistant::create([
+                                        'operation_id' => $operationId,
+                                        'name' => $name
+                                    ]);
+                                }
+                            }
+                        }
+
+                        $inpatient->patient()->update($fillPatient);
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Data kamar operasi berhasil disimpan'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        } else {
+            $data = [
+                'inpatient' => $inpatient,
+                'operation' => $operation,
+                'unit' => Unit::where('type', 1)->orderBy('name')->get(),
+                'operatingRoomAction' => OperatingRoomAction::orderBy('operating_room_group_id')->orderBy('operating_room_action_type_id')->get(),
+                'functionalService' => FunctionalService::all(),
+                'operatingRoomAnesthetist' => OperatingRoomAnesthetist::all(),
+                'doctor' => Doctor::all(),
+                'content' => 'collection.inpatient-operating-room'
+            ];
+        }
+
+        return view('layouts.index', ['data' => $data]);
     }
 
     public function checkout(Request $request, $id)

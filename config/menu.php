@@ -457,6 +457,28 @@ return [
         ]
     ],
     [
+        'name' => 'operation',
+        'menu' => 'Operasi',
+        'icon' => 'ph-bed',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'data',
+                'menu' => 'Data',
+                'icon' => null,
+                'link' => 'operation/data',
+                'sub' => null
+            ],
+            [
+                'name' => 'summary',
+                'menu' => 'Ringkasan',
+                'icon' => null,
+                'link' => 'operation/summary',
+                'sub' => null
+            ],
+        ]
+    ],
+    [
         'name' => 'lab',
         'menu' => 'Laboratorium',
         'icon' => 'ph-flask',
