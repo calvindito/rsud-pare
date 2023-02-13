@@ -32,7 +32,7 @@ class AuthController extends Controller
             if (auth()->attempt($credentials)) {
                 $request->session()->regenerate();
 
-                return redirect()->intended('dashboard/general');
+                return redirect()->intended('index');
             }
 
             return back()->with(['failed' => 'Username dan Password yang anda masukan tidak ditemukan'])->onlyInput('username');

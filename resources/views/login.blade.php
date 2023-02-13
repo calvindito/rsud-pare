@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>RSUD KAB KEDIRI - Masuk</title>
+	<title>RSUD KAB KEDIRI</title>
     <link href="{{ asset('assets/icon.png') }}" rel="shortcut icon">
 	<link href="{{ asset('template/assets/fonts/inter/inter.css') }}" rel="stylesheet">
 	<link href="{{ asset('template/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet">
