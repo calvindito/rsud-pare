@@ -19,6 +19,7 @@ class CreateCitiesTable extends Migration
             $table->string('name')->nullable();
             $table->string('island')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

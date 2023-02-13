@@ -20,6 +20,7 @@ class CreateBedsTable extends Migration
             $table->string('name')->nullable();
             $table->string('keywords')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

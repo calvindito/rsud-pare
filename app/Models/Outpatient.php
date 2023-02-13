@@ -113,7 +113,7 @@ class Outpatient extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Patient::class)->withTrashed();
     }
 
     /**
@@ -123,7 +123,7 @@ class Outpatient extends Model
      */
     public function unit()
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class)->withTrashed();
     }
 
     /**
@@ -133,7 +133,7 @@ class Outpatient extends Model
      */
     public function operation()
     {
-        return $this->morphOne(Operation::class, 'operationable');
+        return $this->morphOne(Operation::class, 'operationable')->withTrashed();
     }
 
     public function status()
@@ -182,7 +182,7 @@ class Outpatient extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     /**

@@ -21,14 +21,12 @@ class UserSeeder extends Seeder
                 $dataEmployee = Employee::where('code', $q->PEGAWAI_ID)->first();
 
                 if ($dataEmployee) {
-                    User::insert([
+                    User::create([
                         'employee_id' => $dataEmployee->id,
                         'role_id' => $q->LEVEL,
                         'username' => $q->USERNAME,
                         'password' => bcrypt('123456'),
-                        'status' => $q->STATUS != 1 ? 0 : 1,
-                        'created_at' => $q->created_at ? $q->created_at : now(),
-                        'updated_at' => $q->updated_at ? $q->updated_at : now()
+                        'status' => $q->STATUS != 1 ? 0 : 1
                     ]);
                 }
             }

@@ -17,7 +17,7 @@ class PatientGroupSeeder extends Seeder
     {
         DB::connection('clone')->table('a_golpasien')->orderBy('KodeGol')->chunk(1000, function ($query) {
             foreach ($query as $q) {
-                PatientGroup::insert([
+                PatientGroup::create([
                     'code' => $q->KodeGol,
                     'name' => $q->NamaGol,
                     'kpid' => $q->a_kpid,
@@ -31,9 +31,7 @@ class PatientGroupSeeder extends Seeder
                     'car_free_corpse' => $q->MblJnhGratis,
                     'code_member' => $q->KDJNSKPST,
                     'code_membership' => $q->KDJNSPESERTA,
-                    'employeeable' => $q->IsKaryawan,
-                    'created_at' => now(),
-                    'updated_at' => now()
+                    'employeeable' => $q->IsKaryawan
                 ]);
             }
         });

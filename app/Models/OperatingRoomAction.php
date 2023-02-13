@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class OperatingRoomAction extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -37,7 +38,7 @@ class OperatingRoomAction extends Model
      */
     public function classType()
     {
-        return $this->belongsTo(ClassType::class);
+        return $this->belongsTo(ClassType::class)->withTrashed();
     }
 
     /**
@@ -47,7 +48,7 @@ class OperatingRoomAction extends Model
      */
     public function operatingRoomActionType()
     {
-        return $this->belongsTo(OperatingRoomActionType::class);
+        return $this->belongsTo(OperatingRoomActionType::class)->withTrashed();
     }
 
     /**
@@ -57,7 +58,7 @@ class OperatingRoomAction extends Model
      */
     public function operatingRoomGroup()
     {
-        return $this->belongsTo(OperatingRoomGroup::class);
+        return $this->belongsTo(OperatingRoomGroup::class)->withTrashed();
     }
 
     /**

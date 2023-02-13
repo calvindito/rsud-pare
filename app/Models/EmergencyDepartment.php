@@ -141,7 +141,7 @@ class EmergencyDepartment extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Patient::class)->withTrashed();
     }
 
     /**
@@ -151,7 +151,7 @@ class EmergencyDepartment extends Model
      */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->belongsTo(Doctor::class)->withTrashed();
     }
 
     /**
@@ -161,7 +161,7 @@ class EmergencyDepartment extends Model
      */
     public function functionalService()
     {
-        return $this->belongsTo(FunctionalService::class);
+        return $this->belongsTo(FunctionalService::class)->withTrashed();
     }
 
     /**

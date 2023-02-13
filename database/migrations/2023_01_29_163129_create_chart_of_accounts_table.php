@@ -20,6 +20,7 @@ class CreateChartOfAccountsTable extends Migration
             $table->string('name')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -36,8 +36,13 @@ class MedicineController extends Controller
                         ->orWhere('name_generic', 'like', "%$search%");
                 }
             })
-            ->editColumn('price_purchase', '{{ Simrs::formatRupiah($price_purchase) }}')
-            ->editColumn('price', '{{ Simrs::formatRupiah($price) }}')
+            ->addColumn('stock', function (Medicine $query) {
+                $html = '<div><small><b>Total : </b>' . $query->stock() . '</small></div>';
+                $html .= '<div><small><b>Terjual : </b>' . $query->stock('sold') . '</small></div>';
+                $html .= '<div><small><b>Tersedia : </b>' . $query->stock('available') . '</small></div>';
+
+                return '<button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$html'" . ')">Klik Disini</button>';
+            })
             ->addColumn('distributor_name', function (Medicine $query) {
                 $distributorName = null;
 
@@ -85,7 +90,7 @@ class MedicineController extends Controller
                     </div>
                 ';
             })
-            ->rawColumns(['action', 'factory_name'])
+            ->rawColumns(['action', 'factory_name', 'stock'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
@@ -98,8 +103,7 @@ class MedicineController extends Controller
             'code' => 'required|unique:medicines,code',
             'code_type' => 'required|unique:medicines,code_type',
             'name' => 'required',
-            'name_generic' => 'required',
-            'price' => 'required'
+            'name_generic' => 'required'
         ], [
             'distributor_id.required' => 'mohon memilih distributor',
             'code.required' => 'kode t tidak boleh kosong',
@@ -107,8 +111,7 @@ class MedicineController extends Controller
             'code_type.required' => 'kode jenis tidak boleh kosong',
             'code_type.unique' => 'kode jenis telah digunakan',
             'name.required' => 'nama tidak boleh kosong',
-            'name_generic.required' => 'nama generik tidak boleh kosong',
-            'price.required' => 'harga jual tidak boleh kosong'
+            'name_generic.required' => 'nama generik tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -133,13 +136,7 @@ class MedicineController extends Controller
                     'non_generic' => $request->non_generic,
                     'nar' => $request->nar,
                     'oakrl' => $request->oakrl,
-                    'chronic' => $request->chronic,
-                    'stock' => $request->stock,
-                    'stock_min' => $request->stock_min,
-                    'price' => $request->price,
-                    'price_purchase' => $request->price_purchase,
-                    'price_netto' => $request->price_netto,
-                    'discount' => $request->discount
+                    'chronic' => $request->chronic
                 ]);
 
                 $response = [
@@ -173,8 +170,7 @@ class MedicineController extends Controller
             'code' => 'required|unique:medicines,code,' . $id,
             'code_type' => 'required|unique:medicines,code_type,' . $id,
             'name' => 'required',
-            'name_generic' => 'required',
-            'price' => 'required'
+            'name_generic' => 'required'
         ], [
             'distributor_id.required' => 'mohon memilih distributor',
             'code.required' => 'kode t tidak boleh kosong',
@@ -182,8 +178,7 @@ class MedicineController extends Controller
             'code_type.required' => 'kode jenis tidak boleh kosong',
             'code_type.unique' => 'kode jenis telah digunakan',
             'name.required' => 'nama tidak boleh kosong',
-            'name_generic.required' => 'nama generik tidak boleh kosong',
-            'price.required' => 'harga jual tidak boleh kosong'
+            'name_generic.required' => 'nama generik tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -208,13 +203,7 @@ class MedicineController extends Controller
                     'non_generic' => $request->non_generic,
                     'nar' => $request->nar,
                     'oakrl' => $request->oakrl,
-                    'chronic' => $request->chronic,
-                    'stock' => $request->stock,
-                    'stock_min' => $request->stock_min,
-                    'price' => $request->price,
-                    'price_purchase' => $request->price_purchase,
-                    'price_netto' => $request->price_netto,
-                    'discount' => $request->discount
+                    'chronic' => $request->chronic
                 ]);
 
                 $response = [

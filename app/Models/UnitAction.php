@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class UnitAction extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -37,7 +38,7 @@ class UnitAction extends Model
      */
     public function unit()
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class)->withTrashed();
     }
 
     /**
@@ -47,6 +48,6 @@ class UnitAction extends Model
      */
     public function action()
     {
-        return $this->belongsTo(Action::class);
+        return $this->belongsTo(Action::class)->withTrashed();
     }
 }

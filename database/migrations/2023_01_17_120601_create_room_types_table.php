@@ -27,6 +27,7 @@ class CreateRoomTypesTable extends Migration
             $table->integer('tier')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

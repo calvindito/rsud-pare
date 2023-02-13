@@ -21,7 +21,7 @@ class ActionOtherSeeder extends Seeder
                     'id' => $q->id_tindakan,
                     'class_type_id' => $q->kelas_id,
                     'name' => $q->nama_tindakan,
-                    'consumables' => $q->bhp,
+                    'consumables' => $q->bhp ?? 0,
                     'hospital_service' => $q->jrs,
                     'service' => $q->japel,
                     'fee' => $q->tarip,

@@ -18,6 +18,7 @@ class CreateDistrictsTable extends Migration
             $table->unsignedBigInteger('city_id')->nullable();
             $table->string('name')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

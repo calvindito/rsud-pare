@@ -20,6 +20,7 @@ class CreateHealthServiceBedsTable extends Migration
             $table->integer('qty_man')->nullable();
             $table->integer('qty_woman')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

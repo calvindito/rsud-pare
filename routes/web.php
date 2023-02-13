@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('serverside')->group(function () {
         Route::get('location', 'ServerSideController@location');
         Route::get('patient', 'ServerSideController@patient');
+        Route::get('medicine', 'ServerSideController@medicine');
     });
 
     Route::middleware('verify.permission')->group(function () {
@@ -411,6 +412,15 @@ Route::middleware('auth')->group(function () {
                     Route::get('show-data', 'MedicineController@showData');
                     Route::post('update-data', 'MedicineController@updateData');
                     Route::delete('destroy-data', 'MedicineController@destroyData');
+                });
+
+                Route::prefix('stock')->group(function () {
+                    Route::get('/', 'StockController@index');
+                    Route::get('datatable', 'StockController@datatable');
+                    Route::post('create-data', 'StockController@createData');
+                    Route::get('show-data', 'StockController@showData');
+                    Route::post('update-data', 'StockController@updateData');
+                    Route::delete('destroy-data', 'StockController@destroyData');
                 });
             });
 

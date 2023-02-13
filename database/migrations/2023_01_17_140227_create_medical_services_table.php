@@ -21,6 +21,7 @@ class CreateMedicalServicesTable extends Migration
             $table->double('fee')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

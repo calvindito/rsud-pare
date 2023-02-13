@@ -21,6 +21,7 @@ class CreateUnitActionsTable extends Migration
             $table->double('hospital_service')->nullable();
             $table->double('service')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -19,6 +19,7 @@ class CreateActionsTable extends Migration
             $table->string('name')->nullable();
             $table->double('fee')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -17,6 +17,7 @@ class CreateDistributorsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

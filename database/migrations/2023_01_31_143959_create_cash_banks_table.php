@@ -22,6 +22,7 @@ class CreateCashBanksTable extends Migration
             $table->char('type', 1)->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

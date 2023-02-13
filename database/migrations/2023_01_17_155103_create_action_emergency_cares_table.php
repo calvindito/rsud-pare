@@ -22,6 +22,7 @@ class CreateActionEmergencyCaresTable extends Migration
             $table->double('fee')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

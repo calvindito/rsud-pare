@@ -13,6 +13,7 @@ use App\Models\LabRequest;
 use App\Models\ActionOther;
 use App\Models\LabItemGroup;
 use Illuminate\Http\Request;
+use App\Models\MedicineStock;
 use App\Models\MedicalService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ActionSupporting;
@@ -398,34 +399,72 @@ class EmergencyDepartmentController extends Controller
     {
         $emergencyDepartment = EmergencyDepartment::findOrFail($id);
 
-        if ($request->_token == csrf_token()) {
+        if ($request->ajax()) {
             $validation = Validator::make($request->all(), [
-                'recipe' => 'required',
+                'item' => 'required',
             ], [
-                'recipe.required' => 'Mohon memilih salah satu obat',
+                'item.required' => 'mohon mengisi minimal 1 obat yang diresepkan',
             ]);
 
             if ($validation->fails()) {
-                return redirect()->back()->withErrors($validation);
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
             } else {
                 try {
-                    $emergencyDepartment->recipe()->delete();
+                    foreach ($emergencyDepartment->recipe as $r) {
+                        $qty = $r->qty;
 
-                    foreach ($request->recipe as $r) {
-                        $emergencyDepartment->recipe()->create([
-                            'medicine_id' => $r
-                        ]);
+                        if ($r->medicineStock->sold > 0) {
+                            $r->medicineStock()->decrement('sold', $qty);
+                        }
+
+                        $r->medicineStock()->increment('stock', $qty);
+                        $r->delete();
                     }
 
-                    return redirect('collection/emergency-department/recipe/' . $id)->with([
-                        'success' => 'Data berhasil di submit'
-                    ]);
+                    if ($request->has('item')) {
+                        foreach ($request->item as $key => $i) {
+                            $medicineStockId = isset($request->r_medicine_stock_id[$key]) ? $request->r_medicine_stock_id[$key] : 0;
+
+                            if ($medicineStockId) {
+                                $qty = isset($request->r_qty[$key]) ? $request->r_qty[$key] : 0;
+                                $medicineStock = MedicineStock::find($medicineStockId);
+
+                                if ($medicineStock) {
+                                    if ($qty > $medicineStock->stock) {
+                                        $qty = $medicineStock->stock;
+                                    }
+                                }
+
+                                $medicineStock->decrement('stock', $qty);
+                                $medicineStock->increment('sold', $qty);
+
+                                $emergencyDepartment->recipe()->create([
+                                    'medicine_stock_id' => $medicineStockId,
+                                    'qty' => $qty,
+                                    'price_purchase' => $medicineStock->price_purchase ?? null,
+                                    'price_sell' => $medicineStock->price_sell ?? null,
+                                    'discount' => $medicineStock->discount ?? null
+                                ]);
+                            }
+                        }
+                    }
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Tindakan berhasil disimpan'
+                    ];
                 } catch (\Exception $e) {
-                    return redirect()->back()->with([
-                        'error' => $e->getMessage()
-                    ]);
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
                 }
             }
+
+            return response()->json($response);
         }
 
         $data = [
@@ -433,7 +472,7 @@ class EmergencyDepartmentController extends Controller
             'functionalService' => $emergencyDepartment->functionalService,
             'patient' => $emergencyDepartment->patient,
             'recipe' => $emergencyDepartment->recipe,
-            'medicine' => Medicine::where('stock', '>', 0)->get(),
+            'medicine' => Medicine::available($emergencyDepartment->recipe->count() > 0 ? true : false)->get(),
             'content' => 'collection.emergency-department-recipe'
         ];
 

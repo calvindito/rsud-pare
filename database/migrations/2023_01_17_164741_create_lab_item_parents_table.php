@@ -31,6 +31,7 @@ class CreateLabItemParentsTable extends Migration
             $table->string('unit')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

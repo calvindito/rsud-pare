@@ -25,6 +25,7 @@ class CreateOperatingRoomActionsTable extends Migration
             $table->double('fee_nurse_anesthetist')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

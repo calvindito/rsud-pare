@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Models\LabItem;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class LabFee extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -38,7 +38,7 @@ class LabFee extends Model
      */
     public function labItem()
     {
-        return $this->belongsTo(LabItem::class);
+        return $this->belongsTo(LabItem::class)->withTrashed();
     }
 
     /**
@@ -48,7 +48,7 @@ class LabFee extends Model
      */
     public function classType()
     {
-        return $this->belongsTo(ClassType::class);
+        return $this->belongsTo(ClassType::class)->withTrashed();
     }
 
     /**

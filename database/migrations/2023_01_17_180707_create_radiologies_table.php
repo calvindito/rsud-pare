@@ -21,6 +21,7 @@ class CreateRadiologiesTable extends Migration
             $table->string('object')->nullable();
             $table->string('projection')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

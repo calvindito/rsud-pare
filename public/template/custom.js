@@ -97,15 +97,9 @@ function select2Basic() {
 }
 
 function select2Ajax(selector, endpoint, onModal = true) {
-    if(onModal) {
-        var dropdownParent = $('.modal');
-    } else {
-        var dropdownParent = '';
-    }
-
     $(selector).select2({
         placeholder: '-- Pilih --',
-        dropdownParent: dropdownParent,
+        dropdownParent: onModal == true ? $('.modal') : '',
         minimumInputLength: 3,
         allowClear: true,
         cache: true,

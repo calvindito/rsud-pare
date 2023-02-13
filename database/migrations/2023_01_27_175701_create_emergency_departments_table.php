@@ -27,7 +27,7 @@ class CreateEmergencyDepartmentsTable extends Migration
             $table->char('status', 1)->default(1);
             $table->char('ending', 1)->nullable();
             $table->timestamps();
-            $table->softDeletes('deleted_at');
+            $table->softDeletes();
         });
     }
 

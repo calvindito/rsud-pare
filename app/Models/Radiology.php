@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Radiology extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -74,7 +75,7 @@ class Radiology extends Model
      */
     public function actionSupporting()
     {
-        return $this->belongsTo(ActionSupporting::class);
+        return $this->belongsTo(ActionSupporting::class)->withTrashed();
     }
 
     /**
@@ -84,6 +85,6 @@ class Radiology extends Model
      */
     public function radiologyAction()
     {
-        return $this->hasOne(RadiologyAction::class);
+        return $this->hasOne(RadiologyAction::class)->withTrashed();
     }
 }

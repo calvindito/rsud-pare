@@ -22,6 +22,7 @@ class CreateProvincesTable extends Migration
             $table->string('specialization')->nullable();
             $table->string('island')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

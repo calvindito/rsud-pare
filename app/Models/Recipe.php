@@ -41,12 +41,12 @@ class Recipe extends Model
     }
 
     /**
-     * medicine
+     * medicineStock
      *
      * @return void
      */
-    public function medicine()
+    public function medicineStock()
     {
-        return $this->belongsTo(Medicine::class);
+        return $this->belongsTo(MedicineStock::class)->withTrashed();
     }
 }

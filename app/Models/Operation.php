@@ -77,7 +77,7 @@ class Operation extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Patient::class)->withTrashed();
     }
 
     /**
@@ -97,7 +97,7 @@ class Operation extends Model
      */
     public function unit()
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class)->withTrashed();
     }
 
     /**
@@ -107,7 +107,7 @@ class Operation extends Model
      */
     public function functionalService()
     {
-        return $this->belongsTo(FunctionalService::class);
+        return $this->belongsTo(FunctionalService::class)->withTrashed();
     }
 
     /**
@@ -117,7 +117,7 @@ class Operation extends Model
      */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->belongsTo(Doctor::class)->withTrashed();
     }
 
     /**
@@ -179,7 +179,7 @@ class Operation extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->withTrashed();
     }
 
     /**
@@ -189,7 +189,7 @@ class Operation extends Model
      */
     public function operatingRoomAction()
     {
-        return $this->belongsTo(OperatingRoomAction::class);
+        return $this->belongsTo(OperatingRoomAction::class)->withTrashed();
     }
 
     /**
@@ -199,7 +199,7 @@ class Operation extends Model
      */
     public function operatingRoomAnesthetist()
     {
-        return $this->belongsTo(OperatingRoomAnesthetist::class);
+        return $this->belongsTo(OperatingRoomAnesthetist::class)->withTrashed();
     }
 
     /**
@@ -209,7 +209,7 @@ class Operation extends Model
      */
     public function doctorOperation()
     {
-        return $this->belongsTo(Doctor::class, 'doctor_operation_id');
+        return $this->belongsTo(Doctor::class, 'doctor_operation_id')->withTrashed();
     }
 
     /**

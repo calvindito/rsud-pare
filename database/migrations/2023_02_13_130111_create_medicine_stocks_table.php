@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRecipesTable extends Migration
+class CreateMedicineStocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateRecipesTable extends Migration
      */
     public function up()
     {
-        Schema::create('recipes', function (Blueprint $table) {
+        Schema::create('medicine_stocks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('medicine_stock_id')->nullable();
-            $table->nullableMorphs('recipeable');
-            $table->integer('qty')->default(0);
+            $table->unsignedBigInteger('medicine_id')->nullable();
+            $table->date('expired_date')->nullable();
+            $table->integer('stock')->default(0);
+            $table->integer('sold')->default(0);
             $table->double('price_purchase')->nullable();
             $table->double('price_sell')->nullable();
-            $table->double('discount')->nullable();
+            $table->double('discount')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -32,6 +34,6 @@ class CreateRecipesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recipes');
+        Schema::dropIfExists('medicine_stocks');
     }
 }

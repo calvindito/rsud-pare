@@ -19,6 +19,7 @@ class CreateRoomSpacesTable extends Migration
             $table->string('name')->nullable();
             $table->string('facility')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -26,6 +26,7 @@ class CreateActionOperativesTable extends Migration
             $table->double('total')->nullable();
             $table->double('fee')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

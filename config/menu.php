@@ -365,6 +365,13 @@ return [
                         'link' => 'master-data/pharmacy/medicine',
                         'sub' => null
                     ],
+                    [
+                        'name' => 'stock',
+                        'menu' => 'Stok',
+                        'icon' => null,
+                        'link' => 'master-data/pharmacy/stock',
+                        'sub' => null
+                    ],
                 ]
             ],
             [
@@ -445,13 +452,6 @@ return [
                 'menu' => 'IGD',
                 'icon' => null,
                 'link' => 'collection/emergency-department',
-                'sub' => null
-            ],
-            [
-                'name' => 'online',
-                'menu' => 'Online',
-                'icon' => null,
-                'link' => 'collection/online',
                 'sub' => null
             ],
         ]

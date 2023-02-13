@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Patient;
 use App\Models\District;
+use App\Models\Medicine;
 use App\Models\Province;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -67,6 +68,19 @@ class ServerSideController extends Controller
                     ->orWhere('name', 'like', "%$search%");
             })
             ->limit(100)
+            ->get()
+            ->toArray();
+
+        return response()->json($data);
+    }
+
+    public function medicine(Request $request)
+    {
+        $search = $request->search;
+        $data = Medicine::selectRaw('id, name as text')
+            ->when(!empty($search), function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%");
+            })
             ->get()
             ->toArray();
 

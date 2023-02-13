@@ -23,6 +23,7 @@ class CreateBudgetsTable extends Migration
             $table->text('description')->nullable();
             $table->char('status', 1)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

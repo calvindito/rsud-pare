@@ -21,6 +21,7 @@ class CreateClassTypesTable extends Migration
             $table->double('fee_monitoring')->nullable();
             $table->double('fee_nursing_care')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

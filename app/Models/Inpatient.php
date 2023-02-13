@@ -141,7 +141,7 @@ class Inpatient extends Model
      */
     public function parent()
     {
-        return $this->belongsTo(Inpatient::class, 'parent_id');
+        return $this->belongsTo(Inpatient::class, 'parent_id')->withTrashed();
     }
 
     /**
@@ -151,7 +151,7 @@ class Inpatient extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(Patient::class)->withTrashed();
     }
 
     /**
@@ -161,7 +161,7 @@ class Inpatient extends Model
      */
     public function roomType()
     {
-        return $this->belongsTo(RoomType::class);
+        return $this->belongsTo(RoomType::class)->withTrashed();
     }
 
     /**
@@ -171,7 +171,7 @@ class Inpatient extends Model
      */
     public function functionalService()
     {
-        return $this->belongsTo(FunctionalService::class);
+        return $this->belongsTo(FunctionalService::class)->withTrashed();
     }
 
     /**
@@ -325,6 +325,6 @@ class Inpatient extends Model
      */
     public function operation()
     {
-        return $this->morphOne(Operation::class, 'operationable');
+        return $this->morphOne(Operation::class, 'operationable')->withTrashed();
     }
 }

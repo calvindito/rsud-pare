@@ -3,18 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Setting extends Model
+class MedicineStock extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'settings';
+    protected $table = 'medicine_stocks';
 
     /**
      * The primary key associated with the table.
@@ -29,4 +30,24 @@ class Setting extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * medicine
+     *
+     * @return void
+     */
+    public function medicine()
+    {
+        return $this->belongsTo(Medicine::class)->withTrashed();
+    }
+
+    /**
+     * recipe
+     *
+     * @return void
+     */
+    public function recipe()
+    {
+        return $this->hasMany(Recipe::class);
+    }
 }

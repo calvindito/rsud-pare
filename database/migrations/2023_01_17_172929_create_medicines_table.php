@@ -30,13 +30,8 @@ class CreateMedicinesTable extends Migration
             $table->string('nar')->nullable();
             $table->string('oakrl')->nullable();
             $table->string('chronic')->nullable();
-            $table->integer('stock')->nullable();
-            $table->integer('stock_min')->nullable();
-            $table->double('price')->nullable();
-            $table->double('price_purchase')->nullable();
-            $table->double('price_netto')->nullable();
-            $table->double('discount')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

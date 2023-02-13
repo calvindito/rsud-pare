@@ -43,6 +43,7 @@ class CreatePatientsTable extends Migration
             $table->char('type', 1)->nullable();
             $table->timestamp('verified_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

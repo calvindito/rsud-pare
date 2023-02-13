@@ -17,11 +17,9 @@ class DTDSeeder extends Seeder
     {
         DB::connection('clone')->table('m_dtd')->orderBy('kode')->chunk(1000, function ($query) {
             foreach ($query as $q) {
-                DTD::insert([
+                DTD::create([
                     'code' => $q->kode,
-                    'name' => $q->deskripsi,
-                    'created_at' => $q->created_at ? $q->created_at : now(),
-                    'updated_at' => $q->updated_at ? $q->updated_at : now()
+                    'name' => $q->deskripsi
                 ]);
             }
         });

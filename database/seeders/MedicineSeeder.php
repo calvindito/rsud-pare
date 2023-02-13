@@ -17,7 +17,7 @@ class MedicineSeeder extends Seeder
     {
         DB::connection('clone')->table('m_obat_akhp')->orderBy('kd_barang')->chunk(1000, function ($query) {
             foreach ($query as $q) {
-                Medicine::insert([
+                $create = Medicine::create([
                     'code' => $q->kd_barang,
                     'code_t' => $q->kd_t,
                     'code_type' => $q->kd_js,
@@ -31,15 +31,14 @@ class MedicineSeeder extends Seeder
                     'non_generic' => $q->gen_non,
                     'nar' => $q->nar_p_non,
                     'oakrl' => $q->oakrl,
-                    'chronic' => $q->kronis,
+                    'chronic' => $q->kronis
+                ]);
+
+                $create->medicineStock()->create([
                     'stock' => $q->stok,
-                    'stock_min' => $q->stok_min,
-                    'price' => $q->hj,
                     'price_purchase' => $q->hb,
-                    'price_netto' => $q->hna,
-                    'discount' => $q->diskon,
-                    'created_at' => now(),
-                    'updated_at' => now()
+                    'price_sell' => $q->hj,
+                    'discount' => $q->diskon
                 ]);
             }
         });

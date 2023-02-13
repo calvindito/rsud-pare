@@ -18,6 +18,7 @@ class CreateActionSupportingsTable extends Migration
             $table->unsignedBigInteger('class_type_id')->nullable();
             $table->string('name')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

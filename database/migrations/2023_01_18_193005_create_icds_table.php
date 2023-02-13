@@ -19,6 +19,7 @@ class CreateICDSTable extends Migration
             $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

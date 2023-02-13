@@ -19,6 +19,7 @@ class CreateOperatingRoomGroupsTable extends Migration
             $table->char('group', 1)->nullable();
             $table->double('fee_cssd')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

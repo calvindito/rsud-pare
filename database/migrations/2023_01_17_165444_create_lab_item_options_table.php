@@ -19,6 +19,7 @@ class CreateLabItemOptionsTable extends Migration
             $table->double('score')->nullable();
             $table->string('label')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

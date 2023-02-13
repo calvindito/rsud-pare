@@ -19,6 +19,7 @@ class CreateUnitsTable extends Migration
             $table->string('name')->nullable();
             $table->char('type', 1)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

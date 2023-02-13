@@ -22,6 +22,7 @@ class CreateRadiologyActionsTable extends Migration
             $table->double('service')->nullable();
             $table->double('fee')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

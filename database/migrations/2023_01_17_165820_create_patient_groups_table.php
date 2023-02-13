@@ -23,13 +23,14 @@ class CreatePatientGroupsTable extends Migration
             $table->string('privilege_class_type')->nullable();
             $table->string('rule_code')->nullable();
             $table->string('first_number')->nullable();
-            $table->boolean('contribution_assistance')->default(0);
-            $table->boolean('car_free_ambulance')->default(0);
-            $table->boolean('car_free_corpse')->default(0);
+            $table->boolean('contribution_assistance')->nullable();
+            $table->boolean('car_free_ambulance')->nullable();
+            $table->boolean('car_free_corpse')->nullable();
             $table->string('code_member')->nullable();
             $table->string('code_membership')->nullable();
             $table->boolean('employeeable')->default(0);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

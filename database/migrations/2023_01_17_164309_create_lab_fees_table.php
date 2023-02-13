@@ -22,6 +22,7 @@ class CreateLabFeesTable extends Migration
             $table->double('service')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

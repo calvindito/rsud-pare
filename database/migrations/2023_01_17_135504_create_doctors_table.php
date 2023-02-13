@@ -22,6 +22,7 @@ class CreateDoctorsTable extends Migration
             $table->text('address')->nullable();
             $table->string('phone')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

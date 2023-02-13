@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class HealthServiceBed extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -37,7 +38,7 @@ class HealthServiceBed extends Model
      */
     public function classType()
     {
-        return $this->belongsTo(ClassType::class);
+        return $this->belongsTo(ClassType::class)->withTrashed();
     }
 
     /**
@@ -47,6 +48,6 @@ class HealthServiceBed extends Model
      */
     public function functionalService()
     {
-        return $this->belongsTo(FunctionalService::class);
+        return $this->belongsTo(FunctionalService::class)->withTrashed();
     }
 }
