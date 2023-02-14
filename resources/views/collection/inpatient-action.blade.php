@@ -112,7 +112,7 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control number-format" name="observation_nominal" id="observation_nominal" value="{{ $inpatient->observation->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="observation_nominal" id="observation_nominal" value="{{ $inpatient->observation->nominal ?? (App\Models\ActionEmergencyCare::find(2)->fee ?? 0) }}" onkeyup="total()" placeholder="0">
                                         </div>
                                     </td>
                                     <td class="align-middle" nowrap>Biaya Kamar</td>
@@ -138,7 +138,7 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control number-format" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $inpatient->supervision_doctor->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $inpatient->supervision_doctor->nominal ?? (App\Models\ActionEmergencyCare::find(4)->fee ?? 0) }}" onkeyup="total()" placeholder="0">
                                         </div>
                                     </td>
                                     <td class="align-middle" nowrap>Askep</td>
