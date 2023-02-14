@@ -145,4 +145,14 @@ class Patient extends Model
     {
         return $this->hasMany(EmergencyDepartment::class);
     }
+
+    /**
+     * religion
+     *
+     * @return void
+     */
+    public function religion()
+    {
+        return $this->belongsTo(Religion::class);
+    }
 }

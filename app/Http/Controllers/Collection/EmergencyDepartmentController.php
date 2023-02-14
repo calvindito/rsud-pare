@@ -715,6 +715,34 @@ class EmergencyDepartmentController extends Controller
         return $pdf->stream('Hasil Pemeriksaan Radiologi - ' . date('YmdHis') . '.pdf');
     }
 
+    public function print(Request $request, $id)
+    {
+        $data = EmergencyDepartment::findOrFail($id);
+
+        if ($request->has('slug')) {
+            if ($request->slug == 'receipt') {
+                $view = 'pdf.emergency-department-receipt';
+                $title = 'Kwitansi IGD';
+            } else if ($request->slug == 'detail') {
+                $view = 'pdf.emergency-department-detail';
+                $title = 'Rincian Biaya IGD';
+            } else {
+                abort(404);
+            }
+
+            $pdf = Pdf::setOptions([
+                'adminUsername' => auth()->user()->username
+            ])->loadView($view, [
+                'title' => $title,
+                'data' => $data
+            ]);
+
+            return $pdf->stream($title . ' - ' . date('YmdHis') . '.pdf');
+        }
+
+        abort(404);
+    }
+
     public function checkout(Request $request, $id)
     {
         $emergencyDepartment = EmergencyDepartment::where('status', 1)->findOrFail($id);

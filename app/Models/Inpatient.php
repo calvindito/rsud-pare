@@ -400,6 +400,11 @@ class Inpatient extends Model
         return $total;
     }
 
+    /**
+     * costBreakdown
+     *
+     * @return void
+     */
     public function costBreakdown()
     {
         $actionService = 0;

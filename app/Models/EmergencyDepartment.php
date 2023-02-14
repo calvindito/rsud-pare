@@ -305,4 +305,123 @@ class EmergencyDepartment extends Model
     {
         return $this->morphMany(RadiologyRequest::class, 'radiology_requestable');
     }
+
+    /**
+     * total
+     *
+     * @return void
+     */
+    public function total()
+    {
+        $total = 0;
+        $total += $this->observation->nominal ?? 0;
+        $total += $this->supervision_doctor->nominal ?? 0;
+        $total += $this->emergencyDepartmentHealth->sum('nominal');
+        $total += $this->emergencyDepartmentNonOperative->sum('nominal');
+        $total += $this->emergencyDepartmentPackage->sum('nominal');
+        $total += $this->emergencyDepartmentSupporting->sum('nominal');
+        $total += $this->emergencyDepartmentOther->sum('nominal');
+        $total += $this->radiologyRequest->sum('consumables');
+        $total += $this->radiologyRequest->sum('hospital_service');
+        $total += $this->radiologyRequest->sum('service');
+        $total += $this->radiologyRequest->sum('fee');
+
+        foreach ($this->emergencyDepartmentService as $is) {
+            $qty = $is->qty ?? 0;
+            $nominal = $is->nominal ?? 0;
+            $total += $nominal * $qty;
+        }
+
+        foreach ($this->recipe as $r) {
+            $qty = $r->qty;
+            $price = $r->price_sell;
+            $discount = $r->discount;
+
+            if ($discount > 0) {
+                $totalDiscount = ($discount / 100) * $price;
+                $price -= $totalDiscount;
+            }
+
+            $total += $price * $qty;
+        }
+
+        foreach ($this->labRequest as $lr) {
+            $consumables = $lr->labRequestDetail->sum('consumables');
+            $hospitalService = $lr->labRequestDetail->sum('hospital_service');
+            $service = $lr->labRequestDetail->sum('service');
+            $total += $consumables + $hospitalService + $service;
+        }
+
+        return $total;
+    }
+
+    /**
+     * costBreakdown
+     *
+     * @return void
+     */
+    public function costBreakdown()
+    {
+        $actionService = 0;
+        $actionNonOperative = 0;
+        $actionSupporting = 0;
+        $actionHealth = 0;
+        $actionOther = 0;
+        $actionPackage = 0;
+        $recipe = 0;
+        $lab = 0;
+        $radiology = 0;
+
+        $actionService += $this->observation->nominal ?? 0;
+        $actionService += $this->supervision_doctor->nominal ?? 0;
+        $actionHealth += $this->emergencyDepartmentHealth->sum('nominal');
+        $actionNonOperative += $this->emergencyDepartmentNonOperative->sum('nominal');
+        $actionPackage += $this->emergencyDepartmentPackage->sum('nominal');
+        $actionSupporting += $this->emergencyDepartmentSupporting->sum('nominal');
+        $actionOther += $this->emergencyDepartmentOther->sum('nominal');
+        $radiology += $this->radiologyRequest->sum('consumables');
+        $radiology += $this->radiologyRequest->sum('hospital_service');
+        $radiology += $this->radiologyRequest->sum('service');
+        $radiology += $this->radiologyRequest->sum('fee');
+
+        foreach ($this->emergencyDepartmentService as $is) {
+            $qty = $is->qty ?? 0;
+            $nominal = $is->nominal ?? 0;
+            $actionService += $nominal * $qty;
+        }
+
+        foreach ($this->recipe as $r) {
+            $qty = $r->qty;
+            $price = $r->price_sell;
+            $discount = $r->discount;
+
+            if ($discount > 0) {
+                $totalDiscount = ($discount / 100) * $price;
+                $price -= $totalDiscount;
+            }
+
+            $recipe += $price * $qty;
+        }
+
+        foreach ($this->labRequest as $lr) {
+            $consumables = $lr->labRequestDetail->sum('consumables');
+            $hospitalService = $lr->labRequestDetail->sum('hospital_service');
+            $service = $lr->labRequestDetail->sum('service');
+            $lab += $consumables + $hospitalService + $service;
+        }
+
+        $result = (object) [
+            'actionService' => $actionService,
+            'actionNonOperative' => $actionNonOperative,
+            'actionSupporting' => $actionSupporting,
+            'actionHealth' => $actionHealth,
+            'actionOther' => $actionOther,
+            'actionPackage' => $actionPackage,
+            'recipe' => $recipe,
+            'lab' => $lab,
+            'radiology' => $radiology
+        ];
+
+        return $result;
+    }
 }

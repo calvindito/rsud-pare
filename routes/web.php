@@ -496,6 +496,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('lab/print/{id}', 'EmergencyDepartmentController@labPrint');
                 Route::match(['get', 'post'], 'radiology/{id}', 'EmergencyDepartmentController@radiology');
                 Route::get('radiology/print/{id}', 'EmergencyDepartmentController@radiologyPrint');
+                Route::get('print/{id}', 'EmergencyDepartmentController@print');
                 Route::match(['get', 'post'], 'checkout/{id}', 'EmergencyDepartmentController@checkout');
                 Route::match(['get', 'post'], 'update-data/{id}', 'EmergencyDepartmentController@updateData');
                 Route::delete('destroy-data', 'EmergencyDepartmentController@destroyData');
