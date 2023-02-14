@@ -288,11 +288,8 @@ class EmergencyDepartmentController extends Controller
                     ];
 
                     $emergencyDepartment->update([
-                        'doctor_id' => $request->doctor_id,
-                        'date_of_out' => date('Y-m-d H:i:s', strtotime($request->date_of_out)),
                         'observation' => $observation,
-                        'supervision_doctor' => $supervisionDoctor,
-                        'ending' => $request->ending
+                        'supervision_doctor' => $supervisionDoctor
                     ]);
 
                     $emergencyDepartment->emergencyDepartmentHealth()->delete();

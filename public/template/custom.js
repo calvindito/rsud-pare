@@ -44,7 +44,7 @@ function configDataTable() {
         dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
         language: {
             search: '<span class="me-1">Cari:</span> <div class="form-control-feedback form-control-feedback-end flex-fill">_INPUT_<div class="form-control-feedback-icon"><i class="ph-magnifying-glass opacity-50"></i></div></div>',
-            searchPlaceholder: 'Kata kunci...',
+            searchPlaceholder: 'Kata kunci ...',
             lengthMenu: '<span class="me-1">Tampilkan:</span> _MENU_',
             paginate: {
                 'first': 'Halawan Awal',
@@ -56,7 +56,7 @@ function configDataTable() {
             info: 'Menampilkan _START_ sampai _END_ dari _TOTAL_ data',
             infoEmpty: 'Menampilkan 0 sampai 0 dari 0 data',
             infoFiltered: '(Filtering dari _MAX_ total data)',
-            loadingRecords: 'Memuat...',
+            loadingRecords: 'Memuat ...',
             zeroRecords: 'Tidak ada data yang ditemukan',
             pageButton: 'btn btn-primary'
         }

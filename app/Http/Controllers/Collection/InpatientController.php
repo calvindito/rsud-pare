@@ -302,15 +302,12 @@ class InpatientController extends Controller
                     ];
 
                     $inpatient->update([
-                        'doctor_id' => $request->doctor_id,
-                        'date_of_out' => date('Y-m-d H:i:s', strtotime($request->date_of_out)),
                         'observation' => $observation,
                         'supervision_doctor' => $supervisionDoctor,
                         'fee_room' => $request->fee_room,
                         'fee_nursing_care' => $request->fee_nursing_care,
                         'fee_nutritional_care' => $request->fee_nutritional_care,
-                        'fee_nutritional_care_qty' => $request->fee_nutritional_care_qty,
-                        'ending' => $request->ending
+                        'fee_nutritional_care_qty' => $request->fee_nutritional_care_qty
                     ]);
 
                     $inpatient->inpatientHealth()->delete();
@@ -902,6 +899,34 @@ class InpatientController extends Controller
         }
 
         return view('layouts.index', ['data' => $data]);
+    }
+
+    public function print(Request $request, $id)
+    {
+        $data = Inpatient::findOrFail($id);
+
+        if ($request->has('slug')) {
+            if ($request->slug == 'receipt') {
+                $view = 'pdf.inpatient-receipt';
+                $title = 'Kwitansi Rawat Inap';
+            } else if ($request->slug == 'detail') {
+                $view = 'pdf.inpatient-detail';
+                $title = 'Rincian Biaya Rawat Inap';
+            } else {
+                abort(404);
+            }
+
+            $pdf = Pdf::setOptions([
+                'adminUsername' => auth()->user()->username
+            ])->loadView($view, [
+                'title' => $title,
+                'data' => $data
+            ]);
+
+            return $pdf->stream($title . ' - ' . date('YmdHis') . '.pdf');
+        }
+
+        abort(404);
     }
 
     public function checkout(Request $request, $id)

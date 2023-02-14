@@ -32,36 +32,60 @@
     @include('pdf.header')
     <table style="width:100%; margin-bottom:20px;">
         <tr style="font-size:14px;">
+            <td style="font-weight:bold;">Kode</td>
+            <td>:</td>
+            <td>{{ $data->code() }}</td>
+            <td style="font-weight:bold;">Status</td>
+            <td>:</td>
+            <td>{{ $data->status_format_result ?? '-' }}</td>
+        </tr>
+        <tr style="font-size:14px;">
             <td style="font-weight:bold;">Pasien</td>
             <td>:</td>
-            <td>{{ $data->outpatient->patient->name }}</td>
+            <td>{{ $data->patient->name ?? '-' }}</td>
+            <td style="font-weight:bold;">Kamar</td>
+            <td>:</td>
+            <td>{{ $data->roomType->room->name ?? '-' }}</td>
+        </tr>
+        <tr style="font-size:14px;">
+            <td style="font-weight:bold;">No RM</td>
+            <td>:</td>
+            <td>{{ $data->patient->id ?? '-' }}</td>
+            <td style="font-weight:bold;">Kelas</td>
+            <td>:</td>
+            <td>{{ $data->roomType->classType->name ?? '-' }}</td>
+        </tr>
+        <tr style="font-size:14px;">
+            <td style="font-weight:bold;">Jenis Kelamin</td>
+            <td>:</td>
+            <td>{{ $data->patient->gender_format_result ?? '-' }}</td>
             <td style="font-weight:bold;">Dokter</td>
             <td>:</td>
             <td>{{ $data->doctor->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Jenis Kelamin</td>
+            <td style="font-weight:bold;">UPF</td>
             <td>:</td>
-            <td>{{ $data->outpatient->patient->gender_format_result }}</td>
-            <td style="font-weight:bold;">Golongan</td>
-            <td>:</td>
-            <td>{{ $data->outpatient->type_format_result ?? '-' }}</td>
-        </tr>
-        <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Poli</td>
-            <td>:</td>
-            <td>{{ $data->outpatient->unit->name }}</td>
-            <td style="font-weight:bold;">Kehadiran</td>
-            <td>:</td>
-            <td>{{ $data->outpatient->presence_format_result }}</td>
-        </tr>
-        <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Tanggal Masuk</td>
-            <td>:</td>
-            <td>{{ $data->outpatient->date_of_entry }}</td>
+            <td>{{ $data->functionalService->name ?? '-' }}</td>
             <td style="font-weight:bold;">Tanggal Cetak</td>
             <td>:</td>
             <td>{{ now() }}</td>
+        </tr>
+        <tr style="font-size:14px;">
+            <td style="font-weight:bold;">Golongan</td>
+            <td>:</td>
+            <td>{{ $data->type_format_result }}</td>
+            <td style="font-weight:bold;">Tanggal Masuk</td>
+            <td>:</td>
+            <td>{{ $data->date_of_entry }}</td>
+        </tr>
+        <tr style="font-size:14px;">
+            <td style="font-weight:bold;">Hasil</td>
+            <td>:</td>
+            <td>{{ $data->ending_format_result }}</td>
+            <td style="font-weight:bold;">Tanggal Keluar</td>
+            <td>:</td>
+            <td>{{ !empty($data->date_of_out) ? $data->date_of_out : '-' }}</td>
         </tr>
     </table>
     <table class="table" style="margin-bottom:20px;">
@@ -75,16 +99,16 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td style="text-align:center;">{{ $data->unitAction->action->name }}</td>
-            </tr>
         </tbody>
     </table>
     <table style="width:100%;">
         <tr style="text-align:center;">
-            <td style="text-align:right;">
-                <div style="font-size:14px;">Pare, {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}</div>
-                <div style="font-size:14px; margin-bottom:60px;">Petugas Poli</div>
+            <td>
+                <div style="font-size:14px; margin-bottom:60px;">Yang Bersangkutan</div>
+                <div style="font-size:14px; text-decoration:underline;">(.............................)</div>
+            </td>
+            <td>
+                <div style="font-size:14px; margin-bottom:60px;">Petugas</div>
                 <div style="font-size:14px; text-decoration:underline;">(.............................)</div>
             </td>
         </tr>

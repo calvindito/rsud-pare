@@ -407,10 +407,10 @@ class OutpatientController extends Controller
                         'type' => 1
                     ],
                     [
-                        'subjective' => $request->checkup_care_subjective,
-                        'objective' => $request->checkup_care_objective,
-                        'assessment' => $request->checkup_care_assessment,
-                        'planning' => $request->checkup_care_planning,
+                        'subjective' => $request->checkup_subjective,
+                        'objective' => $request->checkup_objective,
+                        'assessment' => $request->checkup_assessment,
+                        'planning' => $request->checkup_planning,
                         'type' => 2
                     ]
                 ];
