@@ -353,14 +353,14 @@ class Inpatient extends Model
         $total += $this->radiologyRequest->sum('hospital_service');
         $total += $this->radiologyRequest->sum('service');
         $total += $this->radiologyRequest->sum('fee');
-        $total += $this->radiologyRequest->sum('hospital_service');
-        $total += $this->radiologyRequest->sum('doctor_operating_room');
-        $total += $this->radiologyRequest->sum('doctor_anesthetist');
-        $total += $this->radiologyRequest->sum('nurse_operating_room');
-        $total += $this->radiologyRequest->sum('nurse_anesthetist');
-        $total += $this->radiologyRequest->sum('material');
-        $total += $this->radiologyRequest->sum('monitoring');
-        $total += $this->radiologyRequest->sum('nursing_care');
+        $total += $this->operation->hospital_service ?? 0;
+        $total += $this->operation->doctor_operating_room ?? 0;
+        $total += $this->operation->doctor_anesthetist ?? 0;
+        $total += $this->operation->nurse_operating_room ?? 0;
+        $total += $this->operation->nurse_anesthetist ?? 0;
+        $total += $this->operation->material ?? 0;
+        $total += $this->operation->monitoring ?? 0;
+        $total += $this->operation->nursing_care ?? 0;
 
         foreach ($this->inpatientOther as $io) {
             $emergencyCare = !empty($io->emergency_care) ? $io->emergency_care : 0;
@@ -398,5 +398,104 @@ class Inpatient extends Model
         }
 
         return $total;
+    }
+
+    public function costBreakdown()
+    {
+        $actionService = 0;
+        $actionOperative = 0;
+        $actionNonOperative = 0;
+        $actionSupporting = 0;
+        $actionHealth = 0;
+        $actionOther = 0;
+        $actionPackage = 0;
+        $recipe = 0;
+        $lab = 0;
+        $radiology = 0;
+        $operation = 0;
+
+        $actionService += $this->observation->nominal ?? 0;
+        $actionService += $this->supervision_doctor->nominal ?? 0;
+        $actionService += !empty($this->fee_room) ? $this->fee_room : 0;
+        $actionService += !empty($this->fee_nursing_care) ? $this->fee_nursing_care : 0;
+        $actionService += !empty($this->fee_nutritional_care) ? $this->fee_nutritional_care * $this->fee_nutritional_care_qty ?? 0 : 0;
+
+        $actionHealth += $this->inpatientHealth->sum('emergency_care');
+        $actionHealth += $this->inpatientHealth->sum('hospitalization');
+
+        $actionNonOperative += $this->inpatientNonOperative->sum('emergency_care');
+        $actionNonOperative += $this->inpatientNonOperative->sum('hospitalization');
+
+        $actionOperative += $this->inpatientOperative->sum('nominal');
+
+        $actionPackage += $this->inpatientPackage->sum('nominal');
+
+        $actionSupporting += $this->inpatientSupporting->sum('emergency_care');
+        $actionSupporting += $this->inpatientSupporting->sum('hospitalization');
+
+        $radiology += $this->radiologyRequest->sum('consumables');
+        $radiology += $this->radiologyRequest->sum('hospital_service');
+        $radiology += $this->radiologyRequest->sum('service');
+        $radiology += $this->radiologyRequest->sum('fee');
+
+        $operation += $this->operation->hospital_service ?? 0;
+        $operation += $this->operation->doctor_operating_room ?? 0;
+        $operation += $this->operation->doctor_anesthetist ?? 0;
+        $operation += $this->operation->nurse_operating_room ?? 0;
+        $operation += $this->operation->nurse_anesthetist ?? 0;
+        $operation += $this->operation->material ?? 0;
+        $operation += $this->operation->monitoring ?? 0;
+        $operation += $this->operation->nursing_care ?? 0;
+
+        foreach ($this->inpatientOther as $io) {
+            $emergencyCare = !empty($io->emergency_care) ? $io->emergency_care : 0;
+            $hospitalizationQty = !empty($io->hospitalization_qty) ? $io->hospitalization_qty : 0;
+            $hospitalization = !empty($io->hospitalization) ? $io->hospitalization : 0;
+            $actionOther += $emergencyCare + ($hospitalization * $hospitalizationQty);
+        }
+
+        foreach ($this->inpatientService as $is) {
+            $emergencyCareQty = $is->emergency_care->qty ?? 0;
+            $emergencyCare = $is->emergency_care->nominal ?? 0;
+            $hospitalizationQty = $is->hospitalization->qty ?? 0;
+            $hospitalization = $is->hospitalization->nominal ?? 0;
+            $actionService += ($emergencyCare * $emergencyCareQty) + ($hospitalization * $hospitalizationQty);
+        }
+
+        foreach ($this->recipe as $r) {
+            $qty = $r->qty;
+            $price = $r->price_sell;
+            $discount = $r->discount;
+
+            if ($discount > 0) {
+                $totalDiscount = ($discount / 100) * $price;
+                $price -= $totalDiscount;
+            }
+
+            $recipe += $price * $qty;
+        }
+
+        foreach ($this->labRequest as $lr) {
+            $consumables = $lr->labRequestDetail->sum('consumables');
+            $hospitalService = $lr->labRequestDetail->sum('hospital_service');
+            $service = $lr->labRequestDetail->sum('service');
+            $lab += $consumables + $hospitalService + $service;
+        }
+
+        $result = (object) [
+            'actionService' => $actionService,
+            'actionOperative' => $actionOperative,
+            'actionNonOperative' => $actionNonOperative,
+            'actionSupporting' => $actionSupporting,
+            'actionHealth' => $actionHealth,
+            'actionOther' => $actionOther,
+            'actionPackage' => $actionPackage,
+            'recipe' => $recipe,
+            'lab' => $lab,
+            'radiology' => $radiology,
+            'operation' => $operation
+        ];
+
+        return $result;
     }
 }
