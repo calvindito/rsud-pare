@@ -536,6 +536,13 @@ return [
         'link' => 'javascript:void(0);',
         'sub' => [
             [
+                'name' => 'medicine',
+                'menu' => 'Obat',
+                'icon' => null,
+                'link' => 'report/medicine',
+                'sub' => null
+            ],
+            [
                 'name' => 'finance',
                 'menu' => 'Keuangan',
                 'icon' => null,

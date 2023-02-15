@@ -564,6 +564,11 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::prefix('report')->namespace('Report')->group(function () {
+            Route::prefix('medicine')->group(function () {
+                Route::get('/', 'MedicineController@index');
+                Route::get('datatable', 'MedicineController@datatable');
+            });
+
             Route::prefix('finance')->namespace('Finance')->group(function () {
                 Route::prefix('budget')->group(function () {
                     Route::get('/', 'BudgetController@index');
