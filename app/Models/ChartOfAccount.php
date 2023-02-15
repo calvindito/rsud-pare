@@ -119,4 +119,9 @@ class ChartOfAccount extends Model
 
         return $html;
     }
+
+    public function sub()
+    {
+        return $this->hasMany(ChartOfAccount::class, 'parent_id')->with('sub');
+    }
 }

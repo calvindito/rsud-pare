@@ -83,7 +83,7 @@ class ChartOfAccountController extends Controller
         } else {
             try {
                 $createData = ChartOfAccount::create([
-                    'parent_id' => $request->parent_id != 0 ? $request->parent_id : null,
+                    'parent_id' => $request->parent_id,
                     'code' => $request->code,
                     'name' => $request->name
                 ]);
@@ -131,7 +131,7 @@ class ChartOfAccountController extends Controller
         } else {
             try {
                 $updateData = ChartOfAccount::findOrFail($id)->update([
-                    'parent_id' => $request->parent_id != 0 ? $request->parent_id : null,
+                    'parent_id' => $request->parent_id,
                     'code' => $request->code,
                     'name' => $request->name,
                     'status' => $request->status

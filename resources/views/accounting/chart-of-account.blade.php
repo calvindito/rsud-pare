@@ -29,7 +29,7 @@
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Kode</th>
                         <th nowrap>Nama</th>
-                        <th nowrap>Status</th>
+                        <th class="text-center" nowrap>Status</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -56,7 +56,7 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Parent</label>
                         <div class="col-md-9">
-                            <select class="form-select select2-basic" name="parent_id" id="parent_id"></select>
+                            <select class="form-select" name="parent_id" id="parent_id"></select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -114,7 +114,7 @@
             async: false,
             beforeSend: function() {
                 onLoading('show', '#parent_id');
-                $('#parent_id').html('<option value="0" selected>Is Parent</option>');
+                $('#parent_id').html('<option value="" selected>Is Parent</option>');
             },
             success: function(response) {
                 onLoading('close', '#parent_id');
@@ -154,7 +154,7 @@
         $('#btn-cancel').addClass('d-none');
         $('#status').val(1);
         $('#status').attr('disabled', true);
-        $('#parent_id').val(0).change();
+        $('#parent_id').val('').change();
     }
 
     function onCreate() {
@@ -227,7 +227,7 @@
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle nowrap' },
                 { data: 'fullname', name: 'name', orderable: true, searchable: false, className: 'align-middle nowrap' },
-                { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'status', name: 'status', orderable: true, searchable: false, className: 'text-center align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -292,7 +292,7 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#parent_id').val(response.parent_id).change();
+                $('#parent_id').val(response.parent_id);
                 $('#code').val(response.code);
                 $('#name').val(response.name);
                 $('#status').val(response.status);

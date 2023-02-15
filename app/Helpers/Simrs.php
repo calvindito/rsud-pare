@@ -7,6 +7,7 @@ use App\Models\District;
 use App\Models\Province;
 use App\Models\Outpatient;
 use App\Models\RoleAccess;
+use App\Models\ChartOfAccount;
 
 class Simrs
 {
@@ -91,23 +92,23 @@ class Simrs
         if ($score < 12) {
             $text = ' ' . $word[$score];
         } else if ($score < 20) {
-            $text = self::numeratorSay($score - 10) . ' Belas';
+            $text = static::numeratorSay($score - 10) . ' Belas';
         } else if ($score < 100) {
-            $text = self::numeratorSay($score / 10) . ' Puluh' . self::numeratorSay($score % 10);
+            $text = static::numeratorSay($score / 10) . ' Puluh' . static::numeratorSay($score % 10);
         } else if ($score < 200) {
-            $text = ' Seratus' . self::numeratorSay($score - 100);
+            $text = ' Seratus' . static::numeratorSay($score - 100);
         } else if ($score < 1000) {
-            $text = self::numeratorSay($score / 100) . ' Ratus' . self::numeratorSay($score % 100);
+            $text = static::numeratorSay($score / 100) . ' Ratus' . static::numeratorSay($score % 100);
         } else if ($score < 2000) {
-            $text = ' Seribu' . self::numeratorSay($score - 1000);
+            $text = ' Seribu' . static::numeratorSay($score - 1000);
         } else if ($score < 1000000) {
-            $text = self::numeratorSay($score / 1000) . ' Ribu' . self::numeratorSay($score % 1000);
+            $text = static::numeratorSay($score / 1000) . ' Ribu' . static::numeratorSay($score % 1000);
         } else if ($score < 1000000000) {
-            $text = self::numeratorSay($score / 1000000) . ' Juta' . self::numeratorSay($score % 1000000);
+            $text = static::numeratorSay($score / 1000000) . ' Juta' . static::numeratorSay($score % 1000000);
         } else if ($score < 1000000000000) {
-            $text = self::numeratorSay($score / 1000000000) . ' Milyar' . self::numeratorSay(fmod($score, 1000000000));
+            $text = static::numeratorSay($score / 1000000000) . ' Milyar' . static::numeratorSay(fmod($score, 1000000000));
         } else if ($score < 1000000000000000) {
-            $text = self::numeratorSay($score / 1000000000000) . ' Trilyun' . self::numeratorSay(fmod($score, 1000000000000));
+            $text = static::numeratorSay($score / 1000000000000) . ' Trilyun' . static::numeratorSay(fmod($score, 1000000000000));
         }
 
         return $text;
