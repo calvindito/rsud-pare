@@ -547,9 +547,9 @@ Route::middleware('auth')->group(function () {
             Route::prefix('budget')->group(function () {
                 Route::get('/', 'BudgetController@index');
                 Route::get('datatable', 'BudgetController@datatable');
-                Route::post('create-data', 'BudgetController@createData');
-                Route::get('show-data', 'BudgetController@showData');
-                Route::post('update-data', 'BudgetController@updateData');
+                Route::get('detail/{id}', 'BudgetController@detail');
+                Route::match(['get', 'post'], 'create', 'BudgetController@create');
+                Route::match(['get', 'post'], 'update/{id}', 'BudgetController@update');
                 Route::delete('destroy-data', 'BudgetController@destroyData');
             });
 

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Finance;
 
+use App\Helpers\Simrs;
 use App\Models\Budget;
 use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +16,6 @@ class BudgetController extends Controller
     public function index()
     {
         $data = [
-            'chartOfAccount' => ChartOfAccount::where('status', true)->orderBy('code')->get(),
             'content' => 'finance.budget'
         ];
 
@@ -29,40 +30,20 @@ class BudgetController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('description', 'like', "%$search%")
-                        ->whereHas('chartOfAccount', function ($query) use ($search) {
-                            $query->where('code', 'like', "%$search%")
-                                ->orWhere('name', 'like', "%$search%");
-                        })
-                        ->whereHas('user', function ($query) use ($search) {
+                    $query->whereRaw("LPAD(id, 6, 0) LIKE '%$search%'")
+                        ->orWhere('description', 'like', "%$search%")
+                        ->orWhereHas('user', function ($query) use ($search) {
                             $query->whereHas('employee', function ($query) use ($search) {
                                 $query->where('name', 'like', "%$search%");
                             });
                         });
                 }
             })
-            ->editColumn('nominal', '{{ Simrs::formatRupiah($nominal) }}')
-            ->editColumn('limit_blud', '{{ Simrs::formatRupiah($limit_blud) }}')
+            ->editColumn('code', function (Budget $query) {
+                return $query->code();
+            })
             ->editColumn('status', function (Budget $query) {
                 return $query->status();
-            })
-            ->addColumn('chart_of_account_code', function (Budget $query) {
-                $chartOfAccountCode = null;
-
-                if (isset($query->chartOfAccount->code)) {
-                    $chartOfAccountCode = $query->chartOfAccount->code;
-                }
-
-                return $chartOfAccountCode;
-            })
-            ->addColumn('chart_of_account_name', function (Budget $query) {
-                $chartOfAccountName = null;
-
-                if (isset($query->chartOfAccount->name)) {
-                    $chartOfAccountName = $query->chartOfAccount->name;
-                }
-
-                return $chartOfAccountName;
             })
             ->addColumn('employee_name', function (Budget $query) {
                 $employeeName = null;
@@ -74,12 +55,12 @@ class BudgetController extends Controller
                 return $employeeName;
             })
             ->addColumn('action', function (Budget $query) {
-                if ($query->status == 1 || $query->status == 3) {
+                if (in_array($query->status, [1, 3])) {
                     $action = '
                         <div class="btn-group">
                             <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
                             <div class="dropdown-menu">
-                                <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="showDataUpdate(' . $query->id . ')">
+                                <a href="' . url('finance/budget/update/' . $query->id) . '" class="dropdown-item fs-13">
                                     <i class="ph-pen me-2"></i>
                                     Ubah Data
                                 </a>
@@ -91,7 +72,12 @@ class BudgetController extends Controller
                         </div>
                     ';
                 } else {
-                    $action = '<button type="button" class="btn btn-light text-primary btn-sm fw-semibold" disabled>Tidak Ada Aksi</button>';
+                    $action = '
+                        <a href="' . url('finance/budget/detail/' . $query->id) . '" class="btn btn-light text-info btn-sm fw-semibold">
+                            <i class="ph-eye me-2"></i>
+                            Lihat Detail
+                        </a>
+                    ';
                 }
 
                 return $action;
@@ -102,108 +88,149 @@ class BudgetController extends Controller
             ->toJson();
     }
 
-    public function createData(Request $request)
+    public function detail($id)
     {
-        $validation = Validator::make($request->all(), [
-            'chart_of_account_id' => 'required',
-            'nominal' => 'required|numeric',
-            'limit_blud' => 'required|numeric',
-            'date' => 'required'
-        ], [
-            'chart_of_account_id.required' => 'mohon memilih bagan akun',
-            'nominal.required' => 'nominal tidak boleh kosong',
-            'nominal.numeric' => 'nominal harus angka yang valid',
-            'limit_blud.required' => 'batas blud tidak boleh kosong',
-            'limit_blud.required' => 'batas blud harus angka yang valid',
-            'date.required' => 'tanggal tidak boleh kosong'
-        ]);
+        $data = [
+            'budget' => Budget::whereIn('status', [2, 4, 5])->findOrFail($id),
+            'chartOfAccount' => ChartOfAccount::with('sub')->whereNull('parent_id')->where('status', true)->orderBy('code')->get(),
+            'content' => 'finance.budget-detail'
+        ];
 
-        if ($validation->fails()) {
-            $response = [
-                'code' => 400,
-                'error' => $validation->errors()->all(),
-            ];
-        } else {
-            try {
-                $createData = Budget::create([
-                    'chart_of_account_id' => $request->chart_of_account_id,
-                    'user_id' => auth()->id(),
-                    'nominal' => $request->nominal,
-                    'limit_blud' => $request->limit_blud,
-                    'date' => $request->date,
-                    'description' => $request->description,
-                    'status' => $request->status
-                ]);
-
-                $response = [
-                    'code' => 200,
-                    'message' => 'Data telah ditambahkan'
-                ];
-            } catch (\Exception $e) {
-                $response = [
-                    'code' => $e->getCode(),
-                    'message' => $e->getMessage()
-                ];
-            }
-        }
-
-        return response()->json($response);
+        return view('layouts.index', ['data' => $data]);
     }
 
-    public function showData(Request $request)
+    public function create(Request $request)
     {
-        $id = $request->id;
-        $data = Budget::findOrFail($id);
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'status' => 'required',
+                'date' => 'required',
+                'description' => 'required'
+            ], [
+                'status.required' => 'mohon memilih status',
+                'date.required' => 'tanggal tidak boleh kosong',
+                'description.required' => 'keterangan tidak boleh kosong'
+            ]);
 
-        return response()->json($data);
-    }
-
-    public function updateData(Request $request)
-    {
-        $id = $request->table_id;
-        $validation = Validator::make($request->all(), [
-            'chart_of_account_id' => 'required',
-            'nominal' => 'required|numeric',
-            'limit_blud' => 'required|numeric',
-            'date' => 'required'
-        ], [
-            'chart_of_account_id.required' => 'mohon memilih bagan akun',
-            'nominal.required' => 'nominal tidak boleh kosong',
-            'nominal.numeric' => 'nominal harus angka yang valid',
-            'limit_blud.required' => 'batas blud tidak boleh kosong',
-            'limit_blud.required' => 'batas blud harus angka yang valid',
-            'date.required' => 'tanggal tidak boleh kosong'
-        ]);
-
-        if ($validation->fails()) {
-            $response = [
-                'code' => 400,
-                'error' => $validation->errors()->all(),
-            ];
-        } else {
-            try {
-                $updateData = Budget::findOrFail($id)->update([
-                    'chart_of_account_id' => $request->chart_of_account_id,
-                    'nominal' => $request->nominal,
-                    'limit_blud' => $request->limit_blud,
-                    'date' => $request->date,
-                    'description' => $request->description,
-                    'status' => $request->status
-                ]);
-
+            if ($validation->fails()) {
                 $response = [
-                    'code' => 200,
-                    'message' => 'Data telah diubah'
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
                 ];
-            } catch (\Exception $e) {
-                $response = [
-                    'code' => $e->getCode(),
-                    'message' => $e->getMessage()
-                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($request) {
+                        $createData = Budget::create([
+                            'user_id' => auth()->id(),
+                            'date' => $request->date,
+                            'description' => $request->description,
+                            'status' => $request->status
+                        ]);
+
+                        if ($request->has('bd_chart_of_account_id')) {
+                            foreach ($request->bd_chart_of_account_id as $key => $coai) {
+                                $nominal = isset($request->bd_nominal[$key]) ? $request->bd_nominal[$key] : null;
+                                $limitBlud = isset($request->bd_limit_blud[$key]) ? $request->bd_limit_blud[$key] : null;
+
+                                $createData->budgetDetail()->create([
+                                    'chart_of_account_id' => $coai,
+                                    'nominal' => $nominal,
+                                    'limit_blud' => $limitBlud
+                                ]);
+                            }
+                        }
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Data anggaran berhasil dibuat'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
             }
+
+            return response()->json($response);
         }
 
-        return response()->json($response);
+        $data = [
+            'chartOfAccount' => ChartOfAccount::with('sub')->whereNull('parent_id')->where('status', true)->orderBy('code')->get(),
+            'content' => 'finance.budget-create'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $budget = Budget::whereIn('status', [1, 3])->findOrFail($id);
+
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'status' => 'required',
+                'date' => 'required',
+                'description' => 'required'
+            ], [
+                'status.required' => 'mohon memilih status',
+                'date.required' => 'tanggal tidak boleh kosong',
+                'description.required' => 'keterangan tidak boleh kosong'
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    DB::transaction(function () use ($budget, $request) {
+                        $budget->update([
+                            'date' => $request->date,
+                            'description' => $request->description,
+                            'status' => $request->status
+                        ]);
+
+                        $budget->budgetDetail()->delete();
+
+                        if ($request->has('bd_chart_of_account_id')) {
+                            foreach ($request->bd_chart_of_account_id as $key => $coai) {
+                                $nominal = isset($request->bd_nominal[$key]) ? $request->bd_nominal[$key] : null;
+                                $limitBlud = isset($request->bd_limit_blud[$key]) ? $request->bd_limit_blud[$key] : null;
+
+                                $budget->budgetDetail()->create([
+                                    'chart_of_account_id' => $coai,
+                                    'nominal' => $nominal,
+                                    'limit_blud' => $limitBlud
+                                ]);
+                            }
+                        }
+                    });
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Data anggaran berhasil diubah'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'budget' => $budget,
+            'chartOfAccount' => ChartOfAccount::with('sub')->whereNull('parent_id')->where('status', true)->orderBy('code')->get(),
+            'content' => 'finance.budget-update'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
     }
 
     public function destroyData(Request $request)

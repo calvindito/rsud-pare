@@ -7,7 +7,6 @@ use App\Models\District;
 use App\Models\Province;
 use App\Models\Outpatient;
 use App\Models\RoleAccess;
-use App\Models\ChartOfAccount;
 
 class Simrs
 {

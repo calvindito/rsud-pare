@@ -52,3 +52,21 @@
     top: -1px;
     z-index: 1;
 }
+
+.form-custom {
+    background: white;
+    color: #1f2937;
+    border: 1px solid #D1D5DB;
+    border-radius: 3px;
+    margin: 0;
+}
+
+.form-custom:focus {
+    border: 1px solid gray !important;
+    box-shadow: none;
+    outline: none;
+}
+
+.form-custom:disabled {
+    background: #F9FAFB;
+}

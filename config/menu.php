@@ -522,7 +522,7 @@ return [
             ],
             [
                 'name' => 'cash-bank',
-                'menu' => 'Kas & bank',
+                'menu' => 'Kas & Bank',
                 'icon' => null,
                 'link' => 'finance/cash-bank',
                 'sub' => null

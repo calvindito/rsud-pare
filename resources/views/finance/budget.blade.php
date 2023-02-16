@@ -13,10 +13,10 @@
                     <a href="{{ url()->full() }}" class="dropdown-item">Halaman</a>
                 </div>
             </div>
-            <button type="button" class="btn btn-flat-primary" onclick="onCreate()">
+            <a href="{{ url('finance/budget/create') }}" class="btn btn-flat-primary">
                 <i class="ph-plus-circle me-1"></i>
-                Tambah Data
-            </button>
+                Buat Anggaran
+            </a>
         </div>
     </div>
 </div>
@@ -28,10 +28,7 @@
                     <tr>
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Kode</th>
-                        <th nowrap>Bagan Akun</th>
                         <th nowrap>Karyawan</th>
-                        <th nowrap>Nominal</th>
-                        <th nowrap>Batas BLUD</th>
                         <th nowrap>Tanggal</th>
                         <th nowrap>Keterangan</th>
                         <th class="text-center" nowrap>Status</th>
@@ -39,92 +36,6 @@
                     </tr>
                 </thead>
             </table>
-        </div>
-    </div>
-</div>
-
-<div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
-                    <i class="ph-x"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger d-none" id="validation-element">
-                    <ul class="mb-0" id="validation-data"></ul>
-                </div>
-                <form id="form-data">
-                    <input type="hidden" name="table_id" id="table_id">
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Bagan Akun <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select select2-basic" name="chart_of_account_id" id="chart_of_account_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($chartOfAccount as $coa)
-                                    <option value="{{ $coa->id }}">
-                                        {{ $coa->code }}
-                                        &nbsp;&nbsp;
-                                        {{ $coa->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nominal <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control number-format" name="nominal" id="nominal" placeholder="Masukan nominal">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Batas BLUD <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control number-format" name="limit_blud" id="limit_blud" placeholder="Masukan batas blud">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Tanggal <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="date" class="form-control" name="date" id="date">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Keterangan</label>
-                        <div class="col-md-9">
-                            <textarea class="form-control" name="description" id="description" style="resize:none;"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group text-center mb-0">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="radio" class="btn-check" name="status" id="status-1" value="1" autocomplete="off" checked>
-                                <label class="btn btn-outline-secondary btn-sm col-12" for="status-1">Draft</label>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="radio" class="btn-check" name="status" id="status-2" value="2" autocomplete="off">
-                                <label class="btn btn-outline-info btn-sm col-12" for="status-2">Ajukan Sekarang</label>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer justify-content-end">
-                <button class="btn btn-danger d-none" id="btn-cancel" onclick="onCancel()">
-                    <i class="ph-x me-1"></i>
-                    Batalkan Perubahan
-                </button>
-                <button class="btn btn-warning d-none" id="btn-update" onclick="updateData()">
-                    <i class="ph-floppy-disk me-1"></i>
-                    Simpan Perubahan Data
-                </button>
-                <button class="btn btn-primary d-none" id="btn-create" onclick="createData()">
-                    <i class="ph-plus-circle me-1"></i>
-                    Simpan Data
-                </button>
-            </div>
         </div>
     </div>
 </div>
@@ -137,56 +48,6 @@
 
     function onReloadTable() {
         window.gDataTable.ajax.reload(null, false);
-    }
-
-    function onReset() {
-        clearValidation();
-        $('#modal-form').modal('hide');
-        $('#form-data').trigger('reset');
-        $('#btn-create').removeClass('d-none');
-        $('#btn-update').addClass('d-none');
-        $('#btn-cancel').addClass('d-none');
-        $('#chart_of_account_id').val('').change();
-        $('#date').val('{{ date("Y-m-d") }}');
-        $('input[name="status"][value="1"]').prop('checked', true);
-    }
-
-    function onCreate() {
-        onReset();
-        $('#modal-form .modal-title').text('Tambah Data');
-        $('#modal-form').modal('show');
-    }
-
-    function onCancel() {
-        onReset();
-    }
-
-    function onUpdate() {
-        onReset();
-        $('#btn-create').addClass('d-none');
-        $('#btn-update').removeClass('d-none');
-        $('#btn-cancel').removeClass('d-none');
-        $('#modal-form .modal-title').text('Edit Data');
-        $('#modal-form').modal('show');
-    }
-
-    function clearValidation() {
-        $('#validation-element').addClass('d-none');
-        $('#validation-data').html('');
-    }
-
-    function showValidation(data) {
-        $('#validation-element').removeClass('d-none');
-        $('#validation-data').html('');
-
-        $.each(data, function(index, value) {
-            $('#validation-data').append('<li>' + value + '</li>');
-        });
-    }
-
-    function formSuccess() {
-        onReset();
-        onReloadTable();
     }
 
     function loadData() {
@@ -218,137 +79,13 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'chart_of_account_code', name: 'chart_of_account_code', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'chart_of_account_name', name: 'chart_of_account_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'code', name: 'id', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'employee_name', name: 'employee_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'nominal', name: 'nominal', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'limit_blud', name: 'limit_blud', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'date', name: 'date', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'description', name: 'description', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'status', name: 'status', orderable: true, searchable: true, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
-        });
-    }
-
-    function createData() {
-        $.ajax({
-            url: '{{ url("finance/budget/create-data") }}',
-            type: 'POST',
-            dataType: 'JSON',
-            data: $('#form-data').serialize(),
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            beforeSend: function() {
-                onLoading('show', '.modal-content');
-                clearValidation();
-            },
-            success: function(response) {
-                onLoading('close', '.modal-content');
-
-                if(response.code == 200) {
-                    formSuccess();
-                    notification('success', response.message);
-                } else if(response.code == 400) {
-                    $('#modal-form .modal-body').scrollTop(0);
-                    showValidation(response.error);
-                } else {
-                    swalInit.fire({
-                        title: 'Error',
-                        text: response.message,
-                        icon: 'error',
-                        showCloseButton: true
-                    });
-                }
-            },
-            error: function(response) {
-                onLoading('close', '.modal-content');
-
-                swalInit.fire({
-                    html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
-                    icon: 'error',
-                    showCloseButton: true
-                });
-            }
-        });
-    }
-
-    function showDataUpdate(id) {
-        $.ajax({
-            url: '{{ url("finance/budget/show-data") }}',
-            type: 'GET',
-            dataType: 'JSON',
-            data: {
-                id: id
-            },
-            beforeSend: function() {
-                onLoading('show', '.modal-content');
-                onUpdate();
-            },
-            success: function(response) {
-                onLoading('close', '.modal-content');
-
-                $('#table_id').val(response.id);
-                $('#chart_of_account_id').val(response.chart_of_account_id).change();
-                $('#nominal').val(response.nominal);
-                $('#limit_blud').val(response.limit_blud);
-                $('#date').val(response.date);
-                $('#description').val(response.description);
-                $('input[name="status"][value="' + response.status + '"]').prop('checked', true);
-            },
-            error: function(response) {
-                onLoading('close', '.modal-content');
-
-                swalInit.fire({
-                    html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
-                    icon: 'error',
-                    showCloseButton: true
-                });
-            }
-        });
-    }
-
-    function updateData() {
-        $.ajax({
-            url: '{{ url("finance/budget/update-data") }}',
-            type: 'POST',
-            dataType: 'JSON',
-            data: $('#form-data').serialize(),
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            beforeSend: function() {
-                onLoading('show', '.modal-content');
-                clearValidation();
-            },
-            success: function(response) {
-                onLoading('close', '.modal-content');
-
-                if(response.code == 200) {
-                    formSuccess();
-                    notification('success', response.message);
-                } else if(response.code == 400) {
-                    $('#modal-form .modal-body').scrollTop(0);
-                    showValidation(response.error);
-                } else {
-                    swalInit.fire({
-                        title: 'Error',
-                        text: response.message,
-                        icon: 'error',
-                        showCloseButton: true
-                    });
-                }
-            },
-            error: function(response) {
-                onLoading('close', '.modal-content');
-
-                swalInit.fire({
-                    html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
-                    icon: 'error',
-                    showCloseButton: true
-                });
-            }
         });
     }
 

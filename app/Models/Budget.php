@@ -32,13 +32,13 @@ class Budget extends Model
     protected $guarded = ['id'];
 
     /**
-     * chartOfAccount
+     * code
      *
      * @return void
      */
-    public function chartOfAccount()
+    public function code()
     {
-        return $this->belongsTo(ChartOfAccount::class)->withTrashed();
+        return sprintf('%06s', $this->id);
     }
 
     /**
@@ -75,5 +75,15 @@ class Budget extends Model
         }
 
         return $html;
+    }
+
+    /**
+     * budgetDetail
+     *
+     * @return void
+     */
+    public function budgetDetail()
+    {
+        return $this->hasMany(BudgetDetail::class);
     }
 }
