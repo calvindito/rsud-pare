@@ -23,8 +23,6 @@ $(function() {
     setBaseUrl();
     lightBox();
 
-    $('.select2').select2();
-
     $('.sidebar-control').on('click', function() {
         if(window.gDataTable) {
             gDataTable.columns.adjust().draw();

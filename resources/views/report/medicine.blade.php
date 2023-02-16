@@ -85,6 +85,7 @@
     $(function() {
         loadData();
         sidebarMini();
+        $('.select2').select2();
     });
 
     function onReloadTable() {
