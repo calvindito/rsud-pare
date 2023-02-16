@@ -127,7 +127,7 @@ class DistributorController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = Distributor::with('factoryDistributor')->findOrFail($id);
+        $data = Distributor::with('distributorFactory')->findOrFail($id);
 
         return response()->json($data);
     }
