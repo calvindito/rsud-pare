@@ -36,6 +36,7 @@ class OtherController extends Controller
                 }
             })
             ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
+            ->editColumn('emergency_care', '{{ Simrs::formatRupiah($emergency_care) }}')
             ->editColumn('consumables', '{{ Simrs::formatRupiah($consumables) }}')
             ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
             ->editColumn('service', '{{ Simrs::formatRupiah($service) }}')
@@ -78,7 +79,8 @@ class OtherController extends Controller
             'class_type_id' => 'required',
             'hospital_service' => 'required|numeric',
             'service' => 'required|numeric',
-            'fee' => 'required|numeric'
+            'fee' => 'required|numeric',
+            'emergency_care' => 'required|numeric'
         ], [
             'name.required' => 'nama tindakan tidak boleh kosong',
             'class_type_id.required' => 'mohon memilih kelas',
@@ -87,7 +89,9 @@ class OtherController extends Controller
             'service.required' => 'jaspel tidak boleh kosong',
             'service.numeric' => 'jaspel harus angka yang valid',
             'fee.required' => 'tarif tidak boleh kosong',
-            'fee.numeric' => 'tarif harus angka yang valid'
+            'fee.numeric' => 'tarif harus angka yang valid',
+            'emergency_care.required' => 'ird tidak boleh kosong',
+            'emergency_care.numeric' => 'ird harus angka yang valid'
         ]);
 
         if ($validation->fails()) {
@@ -104,6 +108,7 @@ class OtherController extends Controller
                     'hospital_service' => $request->hospital_service,
                     'service' => $request->service,
                     'fee' => $request->fee,
+                    'emergency_care' => $request->emergency_care,
                     'description' => $request->description
                 ]);
 
@@ -138,7 +143,8 @@ class OtherController extends Controller
             'class_type_id' => 'required',
             'hospital_service' => 'required|numeric',
             'service' => 'required|numeric',
-            'fee' => 'required|numeric'
+            'fee' => 'required|numeric',
+            'emergency_care' => 'required|numeric'
         ], [
             'name.required' => 'nama tindakan tidak boleh kosong',
             'class_type_id.required' => 'mohon memilih kelas',
@@ -147,7 +153,9 @@ class OtherController extends Controller
             'service.required' => 'jaspel tidak boleh kosong',
             'service.numeric' => 'jaspel harus angka yang valid',
             'fee.required' => 'tarif tidak boleh kosong',
-            'fee.numeric' => 'tarif harus angka yang valid'
+            'fee.required' => 'tarif tidak boleh kosong',
+            'emergency_care.numeric' => 'ird harus angka yang valid',
+            'emergency_care.numeric' => 'ird harus angka yang valid'
         ]);
 
         if ($validation->fails()) {
@@ -164,6 +172,7 @@ class OtherController extends Controller
                     'hospital_service' => $request->hospital_service,
                     'service' => $request->service,
                     'fee' => $request->fee,
+                    'emergency_care' => $request->emergency_care,
                     'description' => $request->description
                 ]);
 

@@ -35,6 +35,8 @@ class SupportingController extends Controller
                         });
                 }
             })
+            ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
+            ->editColumn('emergency_care', '{{ Simrs::formatRupiah($emergency_care) }}')
             ->addColumn('class_type_name', function (ActionSupporting $query) {
                 $classTypeName = null;
 
@@ -71,10 +73,14 @@ class SupportingController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'class_type_id' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'fee' => 'required',
+            'emergency_care' => 'required'
         ], [
             'class_type_id.required' => 'mohon memilih kelas',
-            'name.required' => 'nama tidak boleh kosong'
+            'name.required' => 'nama tidak boleh kosong',
+            'fee.required' => 'biaya tidak boleh kosong',
+            'emergency_care.required' => 'ird tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -86,7 +92,9 @@ class SupportingController extends Controller
             try {
                 $createData = ActionSupporting::create([
                     'class_type_id' => $request->class_type_id,
-                    'name' => $request->name
+                    'name' => $request->name,
+                    'fee' => $request->fee,
+                    'emergency_care' => $request->emergency_care
                 ]);
 
                 $response = [
@@ -117,10 +125,14 @@ class SupportingController extends Controller
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
             'class_type_id' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'fee' => 'required',
+            'emergency_care' => 'required'
         ], [
             'class_type_id.required' => 'mohon memilih kelas',
-            'name.required' => 'nama tidak boleh kosong'
+            'name.required' => 'nama tidak boleh kosong',
+            'fee.required' => 'biaya tidak boleh kosong',
+            'emergency_care.required' => 'ird tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -132,7 +144,9 @@ class SupportingController extends Controller
             try {
                 $updateData = ActionSupporting::findOrFail($id)->update([
                     'class_type_id' => $request->class_type_id,
-                    'name' => $request->name
+                    'name' => $request->name,
+                    'fee' => $request->fee,
+                    'emergency_care' => $request->emergency_care
                 ]);
 
                 $response = [

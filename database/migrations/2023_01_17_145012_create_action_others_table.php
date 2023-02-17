@@ -21,6 +21,7 @@ class CreateActionOthersTable extends Migration
             $table->double('hospital_service')->nullable();
             $table->double('service')->nullable();
             $table->double('fee')->nullable();
+            $table->double('emergency_care')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();

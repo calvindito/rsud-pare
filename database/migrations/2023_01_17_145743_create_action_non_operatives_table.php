@@ -25,6 +25,7 @@ class CreateActionNonOperativesTable extends Migration
             $table->double('nurse_anesthetist')->nullable();
             $table->double('total')->nullable();
             $table->double('fee')->nullable();
+            $table->double('emergency_care')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

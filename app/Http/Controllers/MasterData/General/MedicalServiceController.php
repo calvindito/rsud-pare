@@ -36,6 +36,7 @@ class MedicalServiceController extends Controller
                 }
             })
             ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
+            ->editColumn('emergency_care', '{{ Simrs::formatRupiah($emergency_care) }}')
             ->editColumn('status', function (MedicalService $query) {
                 return $query->status();
             })
@@ -79,12 +80,15 @@ class MedicalServiceController extends Controller
             'code' => 'required',
             'name' => 'required',
             'fee' => 'required|numeric',
+            'emergency_care' => 'required|numeric'
         ], [
             'class_type_id.required' => 'mohon memilih kelas',
             'code.required' => 'kode tidak boleh kosong',
             'name.required' => 'nama tidak boleh kosong',
-            'fee.required' => 'biaya monitor tidak boleh kosong',
-            'fee.numeric' => 'biaya monitor harus angka yang valid'
+            'fee.required' => 'biaya tidak boleh kosong',
+            'fee.numeric' => 'biaya harus angka yang valid',
+            'emergency_care.required' => 'ird tidak boleh kosong',
+            'emergency_care.numeric' => 'ird harus angka yang valid'
         ]);
 
         if ($validation->fails()) {
@@ -98,7 +102,8 @@ class MedicalServiceController extends Controller
                     'class_type_id' => $request->class_type_id,
                     'code' => $request->code,
                     'name' => $request->name,
-                    'fee' => $request->fee
+                    'fee' => $request->fee,
+                    'emergency_care' => $request->emergency_care
                 ]);
 
                 $response = [
@@ -132,12 +137,15 @@ class MedicalServiceController extends Controller
             'code' => 'required',
             'name' => 'required',
             'fee' => 'required|numeric',
+            'emergency_care' => 'required|numeric'
         ], [
             'class_type_id.required' => 'mohon memilih kelas',
             'code.required' => 'kode tidak boleh kosong',
             'name.required' => 'nama tidak boleh kosong',
             'fee.required' => 'biaya tidak boleh kosong',
-            'fee.numeric' => 'biaya harus angka yang valid'
+            'fee.numeric' => 'biaya harus angka yang valid',
+            'emergency_care.required' => 'ird tidak boleh kosong',
+            'emergency_care.numeric' => 'ird harus angka yang valid'
         ]);
 
         if ($validation->fails()) {
@@ -152,6 +160,7 @@ class MedicalServiceController extends Controller
                     'code' => $request->code,
                     'name' => $request->name,
                     'fee' => $request->fee,
+                    'emergency_care' => $request->emergency_care,
                     'status' => $request->status
                 ]);
 

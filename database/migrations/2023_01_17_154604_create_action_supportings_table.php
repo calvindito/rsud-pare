@@ -17,6 +17,8 @@ class CreateActionSupportingsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('class_type_id')->nullable();
             $table->string('name')->nullable();
+            $table->double('fee')->nullable();
+            $table->double('emergency_care')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

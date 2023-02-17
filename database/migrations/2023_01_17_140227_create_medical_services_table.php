@@ -19,6 +19,7 @@ class CreateMedicalServicesTable extends Migration
             $table->char('code', 1)->nullable();
             $table->string('name')->nullable();
             $table->double('fee')->nullable();
+            $table->double('emergency_care')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

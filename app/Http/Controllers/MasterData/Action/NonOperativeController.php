@@ -38,6 +38,8 @@ class NonOperativeController extends Controller
             })
             ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
             ->editColumn('doctor_operating', '{{ Simrs::formatRupiah($doctor_operating) }}')
+            ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
+            ->editColumn('emergency_care', '{{ Simrs::formatRupiah($emergency_care) }}')
             ->addColumn('class_type_name', function (ActionNonOperative $query) {
                 $classTypeName = null;
 
@@ -82,7 +84,8 @@ class NonOperativeController extends Controller
             'nurse_operating_room' => 'required|numeric',
             'nurse_anesthetist' => 'required|numeric',
             'total' => 'required|numeric|max:100',
-            'fee' => 'required|numeric'
+            'fee' => 'required|numeric',
+            'emergency_care' => 'required|numeric'
         ], [
             'name.required' => 'nama tindakan tidak boleh kosong',
             'code.required' => 'kode tindakan tidak boleh kosong',
@@ -103,7 +106,9 @@ class NonOperativeController extends Controller
             'total.numeric' => 'total harus angka yang valid',
             'total.max' => 'total maksimal 100',
             'fee.required' => 'tarif tidak boleh kosong',
-            'fee.numeric' => 'tarif harus angka yang valid'
+            'fee.numeric' => 'tarif harus angka yang valid',
+            'emergency_care.required' => 'ird tidak boleh kosong',
+            'emergency_care.numeric' => 'ird harus angka yang valid'
         ]);
 
         if ($validation->fails()) {
@@ -123,7 +128,8 @@ class NonOperativeController extends Controller
                     'nurse_operating_room' => $request->nurse_operating_room,
                     'nurse_anesthetist' => $request->nurse_anesthetist,
                     'total' => $request->total,
-                    'fee' => $request->fee
+                    'fee' => $request->fee,
+                    'emergency_care' => $request->emergency_care
                 ]);
 
                 $response = [
@@ -162,7 +168,8 @@ class NonOperativeController extends Controller
             'nurse_operating_room' => 'required|numeric',
             'nurse_anesthetist' => 'required|numeric',
             'total' => 'required|numeric|max:100',
-            'fee' => 'required|numeric'
+            'fee' => 'required|numeric',
+            'emergency_care' => 'required|numeric'
         ], [
             'name.required' => 'nama tindakan tidak boleh kosong',
             'code.required' => 'kode tindakan tidak boleh kosong',
@@ -183,7 +190,9 @@ class NonOperativeController extends Controller
             'total.numeric' => 'total harus angka yang valid',
             'total.max' => 'total maksimal 100',
             'fee.required' => 'tarif tidak boleh kosong',
-            'fee.numeric' => 'tarif harus angka yang valid'
+            'fee.numeric' => 'tarif harus angka yang valid',
+            'emergency_care.required' => 'ird tidak boleh kosong',
+            'emergency_care.numeric' => 'ird harus angka yang valid'
         ]);
 
         if ($validation->fails()) {
@@ -203,7 +212,8 @@ class NonOperativeController extends Controller
                     'nurse_operating_room' => $request->nurse_operating_room,
                     'nurse_anesthetist' => $request->nurse_anesthetist,
                     'total' => $request->total,
-                    'fee' => $request->fee
+                    'fee' => $request->fee,
+                    'emergency_care' => $request->emergency_care
                 ]);
 
                 $response = [

@@ -188,7 +188,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="is_emergency_care_nominal[]" value="{{ $check->emergency_care->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="is_emergency_care_nominal[]" value="{{ $check->emergency_care->nominal ?? $ms->emergency_care }}" onkeyup="total()" placeholder="0">
                                                     <select class="form-select w-auto flex-grow-0" name="is_emergency_care_qty[]" onchange="total()">
                                                         @for($i = 1; $i <= 100; $i++)
                                                             <option value="{{ $i }}" {{ ($check->emergency_care->qty ?? 1) == $i ? 'selected' : '' }}>{{ $i }}</option>
@@ -280,7 +280,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="ino_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="ino_emergency_care[]" value="{{ $check->emergency_care ?? $ano->emergency_care }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                             <td class="align-middle">
@@ -322,7 +322,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="is_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="is_emergency_care[]" value="{{ $check->emergency_care ?? $as->emergency_care }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                             <td class="align-middle">
@@ -412,7 +412,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="io_emergency_care[]" value="{{ $check->emergency_care ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="io_emergency_care[]" value="{{ $check->emergency_care ?? $ao->emergency_care }}" onkeyup="total()" placeholder="0">
                                                 </div>
                                             </td>
                                             <td class="align-middle">

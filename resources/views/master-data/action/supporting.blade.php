@@ -29,6 +29,8 @@
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Nama Tindakan</th>
                         <th nowrap>Kelas</th>
+                        <th nowrap>Tarif</th>
+                        <th nowrap>IRD</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -67,6 +69,18 @@
                         <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Tarif <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control number-format" name="fee" id="fee" placeholder="Masukan tarif">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">IRD <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control number-format" name="emergency_care" id="emergency_care" placeholder="Masukan ird">
                         </div>
                     </div>
                 </form>
@@ -176,6 +190,8 @@
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'class_type_name', name: 'class_type_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'fee', name: 'fee', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'emergency_care', name: 'emergency_care', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -242,6 +258,8 @@
                 $('#table_id').val(response.id);
                 $('#class_type_id').val(response.class_type_id);
                 $('#name').val(response.name);
+                $('#fee').val(response.fee);
+                $('#emergency_care').val(response.emergency_care);
             },
             error: function(response) {
                 onLoading('close', '.modal-content');

@@ -30,6 +30,7 @@
                         <th nowrap>Nama Tindakan</th>
                         <th nowrap>Kelas</th>
                         <th nowrap>Tarif</th>
+                        <th nowrap>IRD</th>
                         <th nowrap>Bhp</th>
                         <th nowrap>Jrs</th>
                         <th nowrap>Jaspel</th>
@@ -95,6 +96,12 @@
                         <label class="col-form-label col-lg-3">Tarif <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <input type="text" class="form-control number-format" name="fee" id="fee" placeholder="Masukan tarif">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">IRD <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control number-format" name="emergency_care" id="emergency_care" placeholder="Masukan ird">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -211,6 +218,7 @@
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'class_type_name', name: 'class_type_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'fee', name: 'fee', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'emergency_care', name: 'emergency_care', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'consumables', name: 'consumables', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'hospital_service', name: 'hospital_service', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'service', name: 'service', orderable: true, searchable: false, className: 'align-middle' },
@@ -284,6 +292,7 @@
                 $('#hospital_service').val(response.hospital_service);
                 $('#service').val(response.service);
                 $('#fee').val(response.fee);
+                $('#emergency_care').val(response.emergency_care);
                 $('#description').val(response.description);
             },
             error: function(response) {
