@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Farmasi - <span class="fw-normal">Stok</span>
+                Farmasi - <span class="fw-normal">Stok</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -190,7 +190,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("master-data/pharmacy/stock/datatable") }}',
+                url: '{{ url("pharmacy/stock/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -225,7 +225,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/pharmacy/stock/create-data") }}',
+            url: '{{ url("pharmacy/stock/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -268,7 +268,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/pharmacy/stock/show-data") }}',
+            url: '{{ url("pharmacy/stock/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -303,7 +303,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/pharmacy/stock/update-data") }}',
+            url: '{{ url("pharmacy/stock/update-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -358,7 +358,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/pharmacy/stock/destroy-data") }}',
+                        url: '{{ url("pharmacy/stock/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

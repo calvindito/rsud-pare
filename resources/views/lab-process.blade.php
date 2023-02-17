@@ -134,15 +134,15 @@
             <div class="card-body">
                 <div class="text-end">
                     @if(in_array($labRequest->status, [1, 2]))
-                        <button type="button" class="btn btn-danger" onclick="createData('reject')">
+                        <button type="button" class="btn btn-danger" onclick="submitted('reject')">
                             <i class="ph-prohibit me-1"></i>
                             Tolak
                         </button>
-                        <button type="button" class="btn btn-warning" onclick="createData('keep')">
+                        <button type="button" class="btn btn-warning" onclick="submitted('keep')">
                             <i class="ph-floppy-disk me-1"></i>
                             Simpan
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="createData('done')">
+                        <button type="button" class="btn btn-primary" onclick="submitted('done')">
                             <i class="ph-check-circle me-1"></i>
                             Selesaikan
                         </button>
@@ -188,7 +188,7 @@
         });
     }
 
-    function createData(param) {
+    function submitted(param) {
         $.ajax({
             url: '{{ url("lab/process/" . $labRequest->id . "?submit=") }}' + param,
             type: 'POST',

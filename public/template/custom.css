@@ -70,3 +70,7 @@
 .form-custom:disabled {
     background: #F9FAFB;
 }
+
+strike {
+    opacity: 0.5;
+}

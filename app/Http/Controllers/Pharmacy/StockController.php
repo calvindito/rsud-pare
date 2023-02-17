@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\MasterData\Pharmacy;
+namespace App\Http\Controllers\Pharmacy;
 
-use App\Models\City;
-use App\Models\Factory;
+use App\Models\Medicine;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\MedicineStock;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class FactoryController extends Controller
+class StockController extends Controller
 {
     public function index()
     {
         $data = [
-            'city' => City::all(),
-            'content' => 'master-data.pharmacy.factory'
+            'medicine' => Medicine::all(),
+            'content' => 'pharmacy.stock'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -25,29 +24,32 @@ class FactoryController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Factory::query();
+        $data = MedicineStock::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('name', 'like', "%$search%")
-                        ->orWhere('email', 'like', "%$search%")
-                        ->orWhere('address', 'like', "%$search%")
-                        ->whereHas('city', function ($query) use ($search) {
-                            $query->where('name', 'like', "%$search%");
-                        });
+                    $query->whereHas('medicine', function ($query) use ($search) {
+                        $query->orWhere('name', 'like', "%$search%");
+                    });
                 }
             })
-            ->addColumn('city_name', function (Factory $query) {
-                $cityName = null;
+            ->editColumn('price_purchase', '{{ Simrs::formatRupiah($price_purchase) }}')
+            ->editColumn('price_sell', '{{ Simrs::formatRupiah($price_sell) }}')
+            ->editColumn('discount', '{{ $discount }} %')
+            ->addColumn('total', function (MedicineStock $query) {
+                return $query->stock + $query->sold;
+            })
+            ->addColumn('medicine_name', function (MedicineStock $query) {
+                $medicineName = null;
 
-                if (isset($query->city)) {
-                    $cityName = $query->city->name;
+                if (isset($query->medicine)) {
+                    $medicineName = $query->medicine->name;
                 }
 
-                return $cityName;
+                return $medicineName;
             })
-            ->addColumn('action', function (Factory $query) {
+            ->addColumn('action', function (MedicineStock $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -64,7 +66,7 @@ class FactoryController extends Controller
                     </div>
                 ';
             })
-            ->rawColumns(['action', 'distributor_name'])
+            ->rawColumns(['action', 'factory_name', 'stock'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();
@@ -73,20 +75,21 @@ class FactoryController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'city_id' => 'required',
-            'name' => 'required',
-            'phone' => 'required|digits_between:8,13|numeric',
-            'email' => 'required|email',
-            'address' => 'required'
+            'medicine_id' => 'required',
+            'expired_date' => 'required',
+            'stock' => 'required',
+            'price_purchase' => 'required',
+            'price_sell' => 'required',
+            'discount' => 'required|numeric|max:100'
         ], [
-            'city_id.required' => 'mohon memilih kota',
-            'name.required' => 'nama tidak boleh kosong',
-            'phone.required' => 'no telp tidak boleh kosong',
-            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
-            'phone.numeric' => 'no telp harus angka',
-            'email.required' => 'email tidak boleh kosong',
-            'email.email' => 'email tidak valid',
-            'address.required' => 'alamat tidak boleh kosong'
+            'medicine_id.required' => 'mohon memilih obat',
+            'expired_date.required' => 'tanggal kadaluwarsa tidak boleh kosong',
+            'stock.required' => 'stok tidak boleh kosong',
+            'price_purchase.required' => 'harga beli tidak boleh kosong',
+            'price_sell.required' => 'harga jual tidak boleh kosong',
+            'discount.required' => 'diskon tidak boleh kosong',
+            'discount.numeric' => 'diskon harus angka',
+            'discount.max' => 'diskon maksimal 100%'
         ]);
 
         if ($validation->fails()) {
@@ -96,12 +99,13 @@ class FactoryController extends Controller
             ];
         } else {
             try {
-                $createData = Factory::create([
-                    'city_id' => $request->city_id,
-                    'name' => $request->name,
-                    'phone' => $request->phone,
-                    'email' => $request->email,
-                    'address' => $request->address
+                $createData = MedicineStock::create([
+                    'medicine_id' => $request->medicine_id,
+                    'expired_date' => $request->expired_date,
+                    'stock' => $request->stock,
+                    'price_purchase' => $request->price_purchase,
+                    'price_sell' => $request->price_sell,
+                    'discount' => $request->discount
                 ]);
 
                 $response = [
@@ -122,7 +126,7 @@ class FactoryController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = Factory::findOrFail($id);
+        $data = MedicineStock::with('medicine')->findOrFail($id);
 
         return response()->json($data);
     }
@@ -131,20 +135,21 @@ class FactoryController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'city_id' => 'required',
-            'name' => 'required',
-            'phone' => 'required|digits_between:8,13|numeric',
-            'email' => 'required|email',
-            'address' => 'required'
+            'medicine_id' => 'required',
+            'expired_date' => 'required',
+            'stock' => 'required',
+            'price_purchase' => 'required',
+            'price_sell' => 'required',
+            'discount' => 'required|numeric|max:100'
         ], [
-            'city_id.required' => 'mohon memilih kota',
-            'name.required' => 'nama tidak boleh kosong',
-            'phone.required' => 'no telp tidak boleh kosong',
-            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
-            'phone.numeric' => 'no telp harus angka',
-            'email.required' => 'email tidak boleh kosong',
-            'email.email' => 'email tidak valid',
-            'address.required' => 'alamat tidak boleh kosong'
+            'medicine_id.required' => 'mohon memilih obat',
+            'expired_date.required' => 'tanggal kadaluwarsa tidak boleh kosong',
+            'stock.required' => 'stok tidak boleh kosong',
+            'price_purchase.required' => 'harga beli tidak boleh kosong',
+            'price_sell.required' => 'harga jual tidak boleh kosong',
+            'discount.required' => 'diskon tidak boleh kosong',
+            'discount.numeric' => 'diskon harus angka',
+            'discount.max' => 'diskon maksimal 100%'
         ]);
 
         if ($validation->fails()) {
@@ -154,12 +159,13 @@ class FactoryController extends Controller
             ];
         } else {
             try {
-                Factory::findOrFail($id)->update([
-                    'city_id' => $request->city_id,
-                    'name' => $request->name,
-                    'phone' => $request->phone,
-                    'email' => $request->email,
-                    'address' => $request->address
+                $updateData = MedicineStock::findOrFail($id)->update([
+                    'medicine_id' => $request->medicine_id,
+                    'expired_date' => $request->expired_date,
+                    'stock' => $request->stock,
+                    'price_purchase' => $request->price_purchase,
+                    'price_sell' => $request->price_sell,
+                    'discount' => $request->discount
                 ]);
 
                 $response = [
@@ -182,7 +188,7 @@ class FactoryController extends Controller
         $id = $request->id;
 
         try {
-            Factory::destroy($id);
+            MedicineStock::destroy($id);
 
             $response = [
                 'code' => 200,

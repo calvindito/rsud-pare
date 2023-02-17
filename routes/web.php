@@ -386,44 +386,6 @@ Route::middleware('auth')->group(function () {
                 });
             });
 
-            Route::prefix('pharmacy')->namespace('Pharmacy')->group(function () {
-                Route::prefix('distributor')->group(function () {
-                    Route::get('/', 'DistributorController@index');
-                    Route::get('datatable', 'DistributorController@datatable');
-                    Route::post('create-data', 'DistributorController@createData');
-                    Route::get('show-data', 'DistributorController@showData');
-                    Route::post('update-data', 'DistributorController@updateData');
-                    Route::delete('destroy-data', 'DistributorController@destroyData');
-                });
-
-                Route::prefix('factory')->group(function () {
-                    Route::get('/', 'FactoryController@index');
-                    Route::get('datatable', 'FactoryController@datatable');
-                    Route::post('create-data', 'FactoryController@createData');
-                    Route::get('show-data', 'FactoryController@showData');
-                    Route::post('update-data', 'FactoryController@updateData');
-                    Route::delete('destroy-data', 'FactoryController@destroyData');
-                });
-
-                Route::prefix('medicine')->group(function () {
-                    Route::get('/', 'MedicineController@index');
-                    Route::get('datatable', 'MedicineController@datatable');
-                    Route::post('create-data', 'MedicineController@createData');
-                    Route::get('show-data', 'MedicineController@showData');
-                    Route::post('update-data', 'MedicineController@updateData');
-                    Route::delete('destroy-data', 'MedicineController@destroyData');
-                });
-
-                Route::prefix('stock')->group(function () {
-                    Route::get('/', 'StockController@index');
-                    Route::get('datatable', 'StockController@datatable');
-                    Route::post('create-data', 'StockController@createData');
-                    Route::get('show-data', 'StockController@showData');
-                    Route::post('update-data', 'StockController@updateData');
-                    Route::delete('destroy-data', 'StockController@destroyData');
-                });
-            });
-
             Route::prefix('radiology')->namespace('Radiology')->group(function () {
                 Route::prefix('data')->group(function () {
                     Route::get('/', 'DataController@index');
@@ -529,6 +491,50 @@ Route::middleware('auth')->group(function () {
             Route::get('datatable', 'RadiologyController@datatable');
             Route::match(['get', 'post'], 'process/{id}', 'RadiologyController@process');
             Route::get('print/{id}', 'RadiologyController@print');
+        });
+
+        Route::prefix('pharmacy')->namespace('Pharmacy')->group(function () {
+            Route::prefix('distributor')->group(function () {
+                Route::get('/', 'DistributorController@index');
+                Route::get('datatable', 'DistributorController@datatable');
+                Route::post('create-data', 'DistributorController@createData');
+                Route::get('show-data', 'DistributorController@showData');
+                Route::post('update-data', 'DistributorController@updateData');
+                Route::delete('destroy-data', 'DistributorController@destroyData');
+            });
+
+            Route::prefix('factory')->group(function () {
+                Route::get('/', 'FactoryController@index');
+                Route::get('datatable', 'FactoryController@datatable');
+                Route::post('create-data', 'FactoryController@createData');
+                Route::get('show-data', 'FactoryController@showData');
+                Route::post('update-data', 'FactoryController@updateData');
+                Route::delete('destroy-data', 'FactoryController@destroyData');
+            });
+
+            Route::prefix('medicine')->group(function () {
+                Route::get('/', 'MedicineController@index');
+                Route::get('datatable', 'MedicineController@datatable');
+                Route::post('create-data', 'MedicineController@createData');
+                Route::get('show-data', 'MedicineController@showData');
+                Route::post('update-data', 'MedicineController@updateData');
+                Route::delete('destroy-data', 'MedicineController@destroyData');
+            });
+
+            Route::prefix('stock')->group(function () {
+                Route::get('/', 'StockController@index');
+                Route::get('datatable', 'StockController@datatable');
+                Route::post('create-data', 'StockController@createData');
+                Route::get('show-data', 'StockController@showData');
+                Route::post('update-data', 'StockController@updateData');
+                Route::delete('destroy-data', 'StockController@destroyData');
+            });
+
+            Route::prefix('request')->group(function () {
+                Route::get('/', 'RequestController@index');
+                Route::get('datatable', 'RequestController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'RequestController@detail');
+            });
         });
 
         Route::prefix('accounting')->namespace('Accounting')->group(function () {

@@ -59,10 +59,11 @@
                     @foreach($recipe as $r)
                         <div id="item">
                             <input type="hidden" name="item[]" value="{{ true }}">
+                            <input type="hidden" name="status[]" value="{{ $r->status }}">
                             <div class="row">
-                                <div class="{{ $emergencyDepartment->status == 1 ? 'col-md-9' : 'col-md-10' }}">
+                                <div class="col-md-7">
                                     <div class="form-group">
-                                        <select class="form-select" name="r_medicine_stock_id[]">
+                                        <select class="form-select select2" name="r_medicine_stock_id[]" {{ !empty($r->status) || $emergencyDepartment->status != 1 ? 'disabled' : '' }}>
                                             <option value="">-- Pilih Obat --</option>
                                             @foreach($medicine as $m)
                                                 <option value="{{ $m->fifoStock->id }}" {{ ($r->medicine_stock_id ?? null) == $m->fifoStock->id ? 'selected' : '' }}>{{ $m->name }}</option>
@@ -70,13 +71,19 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="{{ $emergencyDepartment->status == 1 ? 'col-md-2' : 'col-md-2' }}">
+                                <div class="col-md-2">
                                     <div class="form-group">
-                                        <input type="number" class="form-control" name="r_qty[]" value="{{ $r->qty }}" placeholder="Jumlah">
+                                        <input type="number" class="form-control" name="r_qty[]" value="{{ $r->qty }}" placeholder="Jumlah" {{ !empty($r->status) || $emergencyDepartment->status != 1 ? 'disabled' : '' }}>
                                     </div>
                                 </div>
-                                @if($emergencyDepartment->status == 1)
-                                    <div class="col-md-1">
+                                @if(!empty($r->status) || $emergencyDepartment->status != 1)
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" value="{{ $r->status() }}" disabled>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <button type="button" class="btn btn-danger col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
                                         </div>
@@ -111,15 +118,14 @@
         checkStatus();
         sidebarMini();
         fullWidthAllDevice();
+
+        $('.select2').select2();
     });
 
     function checkStatus() {
         var status = '{{ $emergencyDepartment->status }}';
 
-        if(status == 1) {
-            $('.form-control').attr('disabled', false);
-            $('.form-select').attr('disabled', false);
-        } else {
+        if(status != 1) {
             $('.form-control').attr('disabled', true);
             $('.form-select').attr('disabled', true);
         }
@@ -129,10 +135,11 @@
         var formElement = $(`
             <div id="item">
                 <input type="hidden" name="item[]" value="{{ true }}">
+                <input type="hidden" name="r_status[]" value="{{ null }}">
                 <div class="row">
-                    <div class="col-md-9">
+                    <div class="col-md-7">
                         <div class="form-group">
-                            <select class="form-select" name="r_medicine_stock_id[]">
+                            <select class="form-select select2" name="r_medicine_stock_id[]">
                                 <option value="">-- Pilih Obat --</option>
                                 @foreach($medicine as $m)
                                     <option value="{{ $m->fifoStock->id }}">{{ $m->name }}</option>
@@ -145,7 +152,7 @@
                             <input type="number" class="form-control" name="r_qty[]" placeholder="Jumlah">
                         </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <button type="button" class="btn btn-danger btn-sm col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
                         </div>
@@ -155,6 +162,7 @@
         `).hide().fadeIn(500);
 
         $('#plus-destroy-item').append(formElement);
+        $('.select2').select2();
     }
 
     function removeItem(paramObj) {

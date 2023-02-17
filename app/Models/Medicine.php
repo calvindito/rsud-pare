@@ -38,14 +38,19 @@ class Medicine extends Model
      * @param  mixed  $calculatedWithRecipe
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAvailable($query, $calculatedWithRecipe = false)
+    public function scopeAvailable($query, $morphs = [])
     {
-        return $query->whereHas('medicineStock', function ($query) use ($calculatedWithRecipe) {
-            if ($calculatedWithRecipe) {
-                $query->has('recipe')->orWhere('stock', '>', 0);
-            } else {
-                $query->where('stock', '>=', 0);
+        return $query->whereHas('medicineStock', function ($query) use ($morphs) {
+            $query->where('stock', '>', 0);
+
+            if ($morphs) {
+                $query->orWhereHas('recipe', function ($query) use ($morphs) {
+                    $query->where('recipeable_type', $morphs['type'])
+                        ->where('recipeable_id', $morphs['id']);
+                });
             }
+
+            $query->take(1)->orderBy('expired_date');
         });
     }
 

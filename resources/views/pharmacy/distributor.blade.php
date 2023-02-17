@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Master Data - Farmasi - <span class="fw-normal">Distributor</span>
+                Farmasi - <span class="fw-normal">Distributor</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,11 +27,8 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kota</th>
                         <th nowrap>Nama</th>
-                        <th nowrap>No HP</th>
-                        <th nowrap>Email</th>
-                        <th nowrap>Alamat</th>
+                        <th class="text-center" nowrap>Pabrik</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -41,7 +38,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -56,37 +53,19 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kota <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select select2-basic" name="city_id" id="city_id">
-                                @foreach($city as $c)
-                                    <option value="{{ $c->id }}">{{ $c->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">No HP <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Pabrik <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="phone" id="phone" placeholder="Masukan no hp">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Email <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="email" id="email" placeholder="Masukan email">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Alamat <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <textarea class="form-control" name="address" id="address" style="resize:none;" placeholder="Masukan alamat"></textarea>
+                            <select class="form-select select2-basic" name="distributor_factory_factory_id[]" id="distributor_factory_factory_id" multiple>
+                                @foreach($factory as $f)
+                                    <option value="{{ $f->id }}">{{ $f->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -175,7 +154,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("master-data/pharmacy/factory/datatable") }}',
+                url: '{{ url("pharmacy/distributor/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -195,11 +174,8 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'city_name', name: 'city_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'phone', name: 'phone', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'email', name: 'email', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'address', name: 'address', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'factory_name', name: 'factory_name', orderable: false, searchable: true, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -207,7 +183,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("master-data/pharmacy/factory/create-data") }}',
+            url: '{{ url("pharmacy/distributor/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -250,7 +226,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("master-data/pharmacy/factory/show-data") }}',
+            url: '{{ url("pharmacy/distributor/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -264,11 +240,14 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#city_id').val(response.city_id).change();
                 $('#name').val(response.name);
-                $('#phone').val(response.phone);
-                $('#email').val(response.email);
-                $('#address').val(response.address);
+
+                var factoryId = new Array();
+                $.each(response.distributor_factory, function(i, val) {
+                    factoryId[i] = val.factory_id;
+                });
+
+                $('#distributor_factory_factory_id').val(factoryId).change();
             },
             error: function(response) {
                 onLoading('close', '.modal-content');
@@ -284,7 +263,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("master-data/pharmacy/factory/update-data") }}',
+            url: '{{ url("pharmacy/distributor/update-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -339,7 +318,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("master-data/pharmacy/factory/destroy-data") }}',
+                        url: '{{ url("pharmacy/distributor/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

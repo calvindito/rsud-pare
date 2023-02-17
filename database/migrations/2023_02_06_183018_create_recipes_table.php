@@ -15,12 +15,15 @@ class CreateRecipesTable extends Migration
     {
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('patient_id')->nullable();
             $table->unsignedBigInteger('medicine_stock_id')->nullable();
             $table->nullableMorphs('recipeable');
             $table->integer('qty')->default(0);
             $table->double('price_purchase')->nullable();
             $table->double('price_sell')->nullable();
             $table->double('discount')->nullable();
+            $table->char('status', 1)->nullable();
             $table->timestamps();
         });
     }

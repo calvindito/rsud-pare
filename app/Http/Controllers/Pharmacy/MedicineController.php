@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\MasterData\Pharmacy;
+namespace App\Http\Controllers\Pharmacy;
 
 use App\Models\Medicine;
 use App\Models\Distributor;
@@ -15,7 +15,7 @@ class MedicineController extends Controller
     {
         $data = [
             'distributor' => Distributor::all(),
-            'content' => 'master-data.pharmacy.medicine'
+            'content' => 'pharmacy.medicine'
         ];
 
         return view('layouts.index', ['data' => $data]);

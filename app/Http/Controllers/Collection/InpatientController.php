@@ -459,40 +459,48 @@ class InpatientController extends Controller
                 try {
                     DB::transaction(function () use ($request, $inpatient) {
                         foreach ($inpatient->recipe as $r) {
-                            $qty = $r->qty;
+                            if (empty($r->status)) {
+                                $qty = $r->qty;
 
-                            if ($r->medicineStock->sold > 0) {
-                                $r->medicineStock()->decrement('sold', $qty);
+                                if ($r->medicineStock->sold > 0) {
+                                    $r->medicineStock()->decrement('sold', $qty);
+                                }
+
+                                $r->medicineStock()->increment('stock', $qty);
+                                $r->delete();
                             }
-
-                            $r->medicineStock()->increment('stock', $qty);
-                            $r->delete();
                         }
 
                         if ($request->has('item')) {
                             foreach ($request->item as $key => $i) {
                                 $medicineStockId = isset($request->r_medicine_stock_id[$key]) ? $request->r_medicine_stock_id[$key] : 0;
+                                $status = isset($request->r_status[$key]) ? $request->r_status[$key] : null;
 
-                                if ($medicineStockId) {
-                                    $qty = isset($request->r_qty[$key]) ? $request->r_qty[$key] : 0;
-                                    $medicineStock = MedicineStock::find($medicineStockId);
+                                if ($medicineStockId && empty($status)) {
+                                    $medicineStock = MedicineStock::where('stock', '>', 0)->find($medicineStockId);
+                                    $qty = isset($request->r_qty[$key]) ? (int) $request->r_qty[$key] : 0;
+                                    $stock = $medicineStock->stock ?? 0;
 
-                                    if ($medicineStock) {
-                                        if ($qty > $medicineStock->stock) {
-                                            $qty = $medicineStock->stock;
+                                    if ($stock > 0) {
+                                        if ($qty > $stock) {
+                                            $qty = $stock;
                                         }
+
+                                        if ($medicineStock) {
+                                            $medicineStock->decrement('stock', $qty);
+                                            $medicineStock->increment('sold', $qty);
+                                        }
+
+                                        $inpatient->recipe()->create([
+                                            'user_id' => auth()->id(),
+                                            'patient_id' => $inpatient->patient_id,
+                                            'medicine_stock_id' => $medicineStockId,
+                                            'qty' => $qty,
+                                            'price_purchase' => $medicineStock->price_purchase ?? null,
+                                            'price_sell' => $medicineStock->price_sell ?? null,
+                                            'discount' => $medicineStock->discount ?? null
+                                        ]);
                                     }
-
-                                    $medicineStock->decrement('stock', $qty);
-                                    $medicineStock->increment('sold', $qty);
-
-                                    $inpatient->recipe()->create([
-                                        'medicine_stock_id' => $medicineStockId,
-                                        'qty' => $qty,
-                                        'price_purchase' => $medicineStock->price_purchase ?? null,
-                                        'price_sell' => $medicineStock->price_sell ?? null,
-                                        'discount' => $medicineStock->discount ?? null
-                                    ]);
                                 }
                             }
                         }
@@ -517,7 +525,7 @@ class InpatientController extends Controller
             'inpatient' => $inpatient,
             'patient' => $inpatient->patient,
             'recipe' => $inpatient->recipe,
-            'medicine' => Medicine::available($inpatient->recipe->count() > 0 ? true : false)->get(),
+            'medicine' => Medicine::available(['type' => Inpatient::class, 'id' => $inpatient->id])->get(),
             'content' => 'collection.inpatient-recipe'
         ];
 

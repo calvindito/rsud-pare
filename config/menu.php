@@ -339,42 +339,6 @@ return [
                 ]
             ],
             [
-                'name' => 'pharmacy',
-                'menu' => 'Farmasi',
-                'icon' => null,
-                'link' => 'javascript:void(0);',
-                'sub' => [
-                    [
-                        'name' => 'distributor',
-                        'menu' => 'Distributor',
-                        'icon' => null,
-                        'link' => 'master-data/pharmacy/distributor',
-                        'sub' => null
-                    ],
-                    [
-                        'name' => 'factory',
-                        'menu' => 'Pabrik',
-                        'icon' => null,
-                        'link' => 'master-data/pharmacy/factory',
-                        'sub' => null
-                    ],
-                    [
-                        'name' => 'medicine',
-                        'menu' => 'Obat',
-                        'icon' => null,
-                        'link' => 'master-data/pharmacy/medicine',
-                        'sub' => null
-                    ],
-                    [
-                        'name' => 'stock',
-                        'menu' => 'Stok',
-                        'icon' => null,
-                        'link' => 'master-data/pharmacy/stock',
-                        'sub' => null
-                    ],
-                ]
-            ],
-            [
                 'name' => 'radiology',
                 'menu' => 'Radiologi',
                 'icon' => null,
@@ -430,7 +394,7 @@ return [
     [
         'name' => 'collection',
         'menu' => 'Pendataan',
-        'icon' => 'ph-folder-notch-open',
+        'icon' => 'ph-first-aid',
         'link' => 'javascript:void(0);',
         'sub' => [
             [
@@ -491,6 +455,56 @@ return [
         'icon' => 'ph-monitor',
         'link' => 'radiology',
         'sub' => null
+    ],
+    [
+        'name' => 'pharmacy',
+        'menu' => 'Farmasi',
+        'icon' => 'ph-thermometer',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'distributor',
+                'menu' => 'Distributor',
+                'icon' => null,
+                'link' => 'pharmacy/distributor',
+                'sub' => null
+            ],
+            [
+                'name' => 'factory',
+                'menu' => 'Pabrik',
+                'icon' => null,
+                'link' => 'pharmacy/factory',
+                'sub' => null
+            ],
+            [
+                'name' => 'medicine',
+                'menu' => 'Obat',
+                'icon' => null,
+                'link' => 'pharmacy/medicine',
+                'sub' => null
+            ],
+            [
+                'name' => 'stock',
+                'menu' => 'Stok',
+                'icon' => null,
+                'link' => 'pharmacy/stock',
+                'sub' => null
+            ],
+            [
+                'name' => 'request',
+                'menu' => 'Permintaan',
+                'icon' => null,
+                'link' => 'pharmacy/request',
+                'sub' => null
+            ],
+            [
+                'name' => 'mutation',
+                'menu' => 'Mutasi',
+                'icon' => null,
+                'link' => 'pharmacy/mutation',
+                'sub' => null
+            ],
+        ]
     ],
     [
         'name' => 'accounting',

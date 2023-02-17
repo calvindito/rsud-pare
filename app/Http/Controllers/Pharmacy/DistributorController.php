@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\MasterData\Pharmacy;
+namespace App\Http\Controllers\Pharmacy;
 
 use App\Models\Factory;
 use App\Models\Distributor;
@@ -16,7 +16,7 @@ class DistributorController extends Controller
     {
         $data = [
             'factory' => Factory::all(),
-            'content' => 'master-data.pharmacy.distributor'
+            'content' => 'pharmacy.distributor'
         ];
 
         return view('layouts.index', ['data' => $data]);
