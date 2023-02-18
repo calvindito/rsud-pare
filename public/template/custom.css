@@ -78,3 +78,16 @@ strike {
 .no-click {
     cursor: context-menu !important;
 }
+
+::-webkit-scrollbar {
+    width: 5px !important;
+    height: 5px !important;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #9CA3AF !important;
+}

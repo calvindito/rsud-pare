@@ -40,7 +40,7 @@
                 <div class="text-end">
                     <button type="button" class="btn btn-primary" onclick="loadData()">
                         <i class="ph-magnifying-glass me-1"></i>
-                        Cari Data
+                        Tampilkan
                     </button>
                 </div>
             </div>
