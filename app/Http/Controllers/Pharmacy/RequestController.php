@@ -85,7 +85,20 @@ class RequestController extends Controller
             try {
                 foreach ($request->id as $key => $i) {
                     $status = isset($request->status[$key]) ? $request->status[$key] : null;
-                    Recipe::find($i)->update(['status' => $status]);
+
+                    if (!empty($status)) {
+                        $update = Recipe::find($i)->update(['status' => $status]);
+
+                        if (in_array($status, [1, 3])) {
+                            $update->medicineStock()->increment('stock', $update);
+                            $update->medicineStock()->decrement('sold', $update);
+                        } else if ($status == 2) {
+                            $update->medicineStock()->update(['stock' => 0]);
+                        } else {
+                            $update->medicineStock()->decrement('stock', $update);
+                            $update->medicineStock()->increment('sold', $update);
+                        }
+                    }
                 }
 
                 $response = [

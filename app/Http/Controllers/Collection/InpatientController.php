@@ -457,54 +457,36 @@ class InpatientController extends Controller
                 ];
             } else {
                 try {
-                    DB::transaction(function () use ($request, $inpatient) {
-                        foreach ($inpatient->recipe as $r) {
-                            if (empty($r->status)) {
-                                $qty = $r->qty;
+                    $inpatient->recipe()->whereNull('status')->delete();
 
-                                if ($r->medicineStock->sold > 0) {
-                                    $r->medicineStock()->decrement('sold', $qty);
-                                }
+                    if ($request->has('item')) {
+                        foreach ($request->item as $key => $i) {
+                            $medicineStockId = isset($request->r_medicine_stock_id[$key]) ? $request->r_medicine_stock_id[$key] : 0;
+                            $status = isset($request->r_status[$key]) ? $request->r_status[$key] : null;
 
-                                $r->medicineStock()->increment('stock', $qty);
-                                $r->delete();
-                            }
-                        }
+                            if ($medicineStockId && empty($status)) {
+                                $medicineStock = MedicineStock::where('stock', '>', 0)->find($medicineStockId);
+                                $qty = isset($request->r_qty[$key]) ? (int) $request->r_qty[$key] : 0;
+                                $stock = $medicineStock->stock ?? 0;
 
-                        if ($request->has('item')) {
-                            foreach ($request->item as $key => $i) {
-                                $medicineStockId = isset($request->r_medicine_stock_id[$key]) ? $request->r_medicine_stock_id[$key] : 0;
-                                $status = isset($request->r_status[$key]) ? $request->r_status[$key] : null;
-
-                                if ($medicineStockId && empty($status)) {
-                                    $medicineStock = MedicineStock::where('stock', '>', 0)->find($medicineStockId);
-                                    $qty = isset($request->r_qty[$key]) ? (int) $request->r_qty[$key] : 0;
-                                    $stock = $medicineStock->stock ?? 0;
-
-                                    if ($stock > 0) {
-                                        if ($qty > $stock) {
-                                            $qty = $stock;
-                                        }
-
-                                        if ($medicineStock) {
-                                            $medicineStock->decrement('stock', $qty);
-                                            $medicineStock->increment('sold', $qty);
-                                        }
-
-                                        $inpatient->recipe()->create([
-                                            'user_id' => auth()->id(),
-                                            'patient_id' => $inpatient->patient_id,
-                                            'medicine_stock_id' => $medicineStockId,
-                                            'qty' => $qty,
-                                            'price_purchase' => $medicineStock->price_purchase ?? null,
-                                            'price_sell' => $medicineStock->price_sell ?? null,
-                                            'discount' => $medicineStock->discount ?? null
-                                        ]);
+                                if ($stock > 0) {
+                                    if ($qty > $stock) {
+                                        $qty = $stock;
                                     }
+
+                                    $inpatient->recipe()->create([
+                                        'user_id' => auth()->id(),
+                                        'patient_id' => $inpatient->patient_id,
+                                        'medicine_stock_id' => $medicineStockId,
+                                        'qty' => $qty,
+                                        'price_purchase' => $medicineStock->price_purchase ?? null,
+                                        'price_sell' => $medicineStock->price_sell ?? null,
+                                        'discount' => $medicineStock->discount ?? null
+                                    ]);
                                 }
                             }
                         }
-                    });
+                    }
 
                     $response = [
                         'code' => 200,

@@ -50,21 +50,33 @@ class StockController extends Controller
                 return $medicineName;
             })
             ->addColumn('action', function (MedicineStock $query) {
-                return '
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
-                        <div class="dropdown-menu">
-                            <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="showDataUpdate(' . $query->id . ')">
-                                <i class="ph-pen me-2"></i>
-                                Ubah Data
-                            </a>
-                            <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="destroyData(' . $query->id . ')">
-                                <i class="ph-trash-simple me-2"></i>
-                                Hapus Data
-                            </a>
+                if ($query->stock > 0 && $query->sold > 0) {
+                    $btnAction = '
+                        <button type="button" class="btn btn-light text-info btn-sm fw-semibold no-click">Sedang Berjalan</button>
+                    ';
+                } else if ($query->stock == 0) {
+                    $btnAction = '
+                        <button type="button" class="btn btn-light text-danger btn-sm fw-semibold no-click">Habis</button>
+                    ';
+                } else {
+                    $btnAction = '
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
+                            <div class="dropdown-menu">
+                                <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="showDataUpdate(' . $query->id . ')">
+                                    <i class="ph-pen me-2"></i>
+                                    Ubah Data
+                                </a>
+                                <a href="javascript:void(0);" class="dropdown-item fs-13" onclick="destroyData(' . $query->id . ')">
+                                    <i class="ph-trash-simple me-2"></i>
+                                    Hapus Data
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                ';
+                    ';
+                }
+
+                return $btnAction;
             })
             ->rawColumns(['action', 'factory_name', 'stock'])
             ->addIndexColumn()

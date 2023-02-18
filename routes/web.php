@@ -535,6 +535,12 @@ Route::middleware('auth')->group(function () {
                 Route::get('datatable', 'RequestController@datatable');
                 Route::match(['get', 'post'], 'detail/{id}', 'RequestController@detail');
             });
+
+            Route::prefix('mutation')->group(function () {
+                Route::get('/', 'MutationController@index');
+                Route::get('load-data', 'MutationController@loadData');
+                Route::get('print', 'MutationController@print');
+            });
         });
 
         Route::prefix('accounting')->namespace('Accounting')->group(function () {

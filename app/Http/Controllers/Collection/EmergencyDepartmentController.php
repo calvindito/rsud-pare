@@ -410,18 +410,7 @@ class EmergencyDepartmentController extends Controller
                 ];
             } else {
                 try {
-                    foreach ($emergencyDepartment->recipe as $r) {
-                        if (empty($r->status)) {
-                            $qty = $r->qty;
-
-                            if ($r->medicineStock->sold > 0) {
-                                $r->medicineStock()->decrement('sold', $qty);
-                            }
-
-                            $r->medicineStock()->increment('stock', $qty);
-                            $r->delete();
-                        }
-                    }
+                    $emergencyDepartment->recipe()->whereNull('status')->delete();
 
                     if ($request->has('item')) {
                         foreach ($request->item as $key => $i) {
@@ -436,11 +425,6 @@ class EmergencyDepartmentController extends Controller
                                 if ($stock > 0) {
                                     if ($qty > $stock) {
                                         $qty = $stock;
-                                    }
-
-                                    if ($medicineStock) {
-                                        $medicineStock->decrement('stock', $qty);
-                                        $medicineStock->increment('sold', $qty);
                                     }
 
                                     $emergencyDepartment->recipe()->create([

@@ -89,7 +89,7 @@
                                 <td class="align-middle" nowrap>{{ $rm->discount }} %</td>
                                 <td class="align-middle" nowrap>
                                     @if(!empty($rm->status))
-                                        <input type="hidden" name="status[]" value="{{ $rm->status }}">
+                                        <input type="hidden" name="status[]" value="{{ null }}">
                                         <input type="text" class="form-control" value="{{ $rm->status() }}" disabled>
                                     @else
                                         <select class="form-select" name="status[]">
