@@ -17,7 +17,7 @@
                     <div class="input-group">
                         <span class="input-group-text"><i class="ph-calendar"></i></span>
                         <select class="form-select wmin-100" name="year" id="year" onchange="onLoading('show', '.content'); this.form.submit()">
-                            @for($i = date('Y'); $i >= 2018; $i--)
+                            @for($i = date('Y'); $i >= 2015; $i--)
                                 <option value="{{ $i }}" {{ $year == $i ? 'selected' : '' }}>Tahun {{ $i }}</option>
                             @endfor
                         </select>

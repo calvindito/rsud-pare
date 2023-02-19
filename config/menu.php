@@ -15,6 +15,13 @@ return [
                 'sub' => null
             ],
             [
+                'name' => 'income',
+                'menu' => 'Pendapatan',
+                'icon' => null,
+                'link' => 'dashboard/income',
+                'sub' => null
+            ],
+            [
                 'name' => 'general',
                 'menu' => 'Umum',
                 'icon' => null,

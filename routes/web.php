@@ -38,6 +38,15 @@ Route::middleware('auth')->group(function () {
                 Route::get('emergency-department', 'VisitController@emergencyDepartment');
             });
 
+            Route::prefix('income')->group(function () {
+                Route::get('/', 'IncomeController@index');
+                Route::get('purchase-medicine', 'IncomeController@purchaseMedicine');
+                Route::get('sale-medicine', 'IncomeController@saleMedicine');
+                Route::get('compare-purchase-sale-medicine', 'IncomeController@comparePurchaseSaleMedicine');
+                Route::get('profit-medicine', 'IncomeController@profitMedicine');
+                Route::get('operating-room', 'IncomeController@operatingRoom');
+            });
+
             Route::prefix('general')->group(function () {
                 Route::get('/', 'GeneralController@general');
             });
