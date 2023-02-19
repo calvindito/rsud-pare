@@ -8,6 +8,13 @@ return [
         'link' => 'javascript:void(0);',
         'sub' => [
             [
+                'name' => 'visit',
+                'menu' => 'Kunjungan',
+                'icon' => null,
+                'link' => 'dashboard/visit',
+                'sub' => null
+            ],
+            [
                 'name' => 'general',
                 'menu' => 'Umum',
                 'icon' => null,

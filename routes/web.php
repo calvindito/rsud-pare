@@ -28,6 +28,16 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('verify.permission')->group(function () {
         Route::prefix('dashboard')->namespace('Dashboard')->group(function () {
+            Route::prefix('visit')->group(function () {
+                Route::get('/', 'VisitController@index');
+                Route::get('per-year', 'VisitController@perYear');
+                Route::get('last-3-year', 'VisitController@last3Year');
+                Route::get('last-5-year', 'VisitController@last5Year');
+                Route::get('outpatient', 'VisitController@outpatient');
+                Route::get('inpatient', 'VisitController@inpatient');
+                Route::get('emergency-department', 'VisitController@emergencyDepartment');
+            });
+
             Route::prefix('general')->group(function () {
                 Route::get('/', 'GeneralController@general');
             });

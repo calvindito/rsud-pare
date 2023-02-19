@@ -150,38 +150,12 @@
             <div class="card-body border-top">
                 <div class="form-group mb-4 text-center">
                     <div class="btn-group">
-                        <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-general" value="1" autocomplete="off">
-                            <label class="btn btn-outline-primary rounded-pill" for="type-general">Umum</label>
-                        </div>
-                        <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-jamkesda" value="2" autocomplete="off">
-                            <label class="btn btn-outline-primary rounded-pill" for="type-jamkesda">Jamkesda</label>
-                        </div>
-                        <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-bpjs-labor" value="3" autocomplete="off">
-                            <label class="btn btn-outline-primary rounded-pill" for="type-bpjs-labor">BPJS Tenaga Kerja</label>
-                        </div>
-                        <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-in-health" value="4" autocomplete="off">
-                            <label class="btn btn-outline-primary rounded-pill" for="type-in-health">In Health</label>
-                        </div>
-                        <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-jr-jamkesda" value="5" autocomplete="off">
-                            <label class="btn btn-outline-primary rounded-pill" for="type-jr-jamkesda">JR Jamkesda</label>
-                        </div>
-                        <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-jr-bpjs" value="6" autocomplete="off">
-                            <label class="btn btn-outline-primary rounded-pill" for="type-jr-bpjs">JR BPJS</label>
-                        </div>
-                        <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-jr-general" value="7" autocomplete="off">
-                            <label class="btn btn-outline-primary rounded-pill" for="type-jr-general">JR Umum</label>
-                        </div>
-                        <div class="me-2">
-                            <input type="radio" class="btn-check" name="type" id="type-bpjs-health" value="8" autocomplete="off">
-                            <label class="btn btn-outline-primary rounded-pill" for="type-bpjs-health">BPJS Kesehatan</label>
-                        </div>
+                        @foreach (Simrs::nursingType() as $key => $nt)
+                            <div class="me-2">
+                                <input type="radio" class="btn-check" name="type" id="type-{{ Str::slug($nt) }}" value="{{ $key + 1 }}" autocomplete="off">
+                                <label class="btn btn-outline-primary rounded-pill" for="type-{{ Str::slug($nt) }}">{{ $nt }}</label>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
                 <div class="form-group row">

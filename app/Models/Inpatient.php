@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\Simrs;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -56,26 +57,7 @@ class Inpatient extends Model
     protected function getTypeFormatResultAttribute()
     {
         $type = isset($this->attributes['type']) ? $this->attributes['type'] : null;
-
-        if ($type == 1) {
-            $text = 'Umum';
-        } else if ($type == 2) {
-            $text = 'Jamkesda';
-        } else if ($type == 3) {
-            $text = 'BPJS Tenaga Kerja';
-        } else if ($type == 4) {
-            $text = 'In Health';
-        } else if ($type == 5) {
-            $text = 'JR Jamkesda';
-        } else if ($type == 6) {
-            $text = 'JR BPJS';
-        } else if ($type == 7) {
-            $text = 'JR Umum';
-        } else if ($type == 8) {
-            $text = 'BPJS Kesehatan';
-        } else {
-            $text = 'Invalid';
-        }
+        $text = empty($type) ? 'Invalid' : Simrs::nursingType($type);
 
         return $text;
     }

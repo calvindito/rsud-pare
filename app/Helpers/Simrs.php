@@ -123,4 +123,16 @@ class Simrs
 
         return $result . ' Rupiah';
     }
+
+    public static function nursingType($index = null)
+    {
+        $type = ['Umum', 'Jamkesda', 'BPJS Tenaga Kerja', 'In Health', 'JR Jamkesda', 'JR BPJS', 'BPJS Kesehatan'];
+        $result = $type;
+
+        if ($index) {
+            $result = isset($type[$index - 1]) ? $type[$index - 1] : 'Invalid';
+        }
+
+        return $result;
+    }
 }
