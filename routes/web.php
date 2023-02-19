@@ -47,8 +47,11 @@ Route::middleware('auth')->group(function () {
                 Route::get('operating-room', 'IncomeController@operatingRoom');
             });
 
-            Route::prefix('general')->group(function () {
-                Route::get('/', 'GeneralController@general');
+            Route::prefix('operating-room')->group(function () {
+                Route::get('/', 'OperatingRoomController@index');
+                Route::get('per-year', 'OperatingRoomController@perYear');
+                Route::get('anesthetist', 'OperatingRoomController@anesthetist');
+                Route::get('status', 'OperatingRoomController@status');
             });
 
             Route::prefix('poly')->group(function () {

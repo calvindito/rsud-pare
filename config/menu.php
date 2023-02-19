@@ -22,10 +22,10 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'general',
-                'menu' => 'Umum',
+                'name' => 'operating-room',
+                'menu' => 'Kamar Operasi',
                 'icon' => null,
-                'link' => 'dashboard/general',
+                'link' => 'dashboard/operating-room',
                 'sub' => null
             ],
             [
