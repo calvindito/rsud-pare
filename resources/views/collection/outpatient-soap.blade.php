@@ -145,18 +145,6 @@
             </form>
         </div>
     </div>
-    @if($outpatient->status != 4)
-        <div class="card">
-            <div class="card-body">
-                <div class="text-end">
-                    <button type="button" class="btn btn-warning" onclick="submitted()">
-                        <i class="ph-floppy-disk me-2"></i>
-                        Simpan Data
-                    </button>
-                </div>
-            </div>
-        </div>
-    @endif
 </div>
 
 <script>
@@ -164,6 +152,8 @@
         fullWidthAllDevice();
         initFormStep();
         checkStatus();
+
+        $('#form-data .actions').addClass('mt-3');
     });
 
     function checkStatus() {
@@ -179,29 +169,144 @@
     }
 
     function initFormStep() {
-        $('.steps-all-1, .steps-all-2').steps({
+        $('.steps-all-1').steps({
             headerTag: 'h6',
             bodyTag: 'fieldset',
             transitionEffect: 'none',
-            enableAllSteps: true,
+            labels: {
+                previous: document.dir == 'rtl' ? '<i class="ph-arrow-circle-right me-2"></i> Sebelumnya' : '<i class="ph-arrow-circle-left me-2"></i> Sebelumnya',
+                next: document.dir == 'rtl' ? 'Selanjutnya <i class="ph-arrow-circle-left ms-2"></i>' : 'Selanjutnya <i class="ph-arrow-circle-right ms-2"></i>',
+                finish: 'Simpan <i class="ph-floppy-disk ms-2"></i>'
+            },
+            autoFocus: true,
             titleTemplate: '<span class="number">#index#</span> #title#',
             onStepChanged: function(event, currentIndex) {
-                $('.steps-all-1 ul:eq(0) li').removeClass('done');
                 $('.steps-all-2 ul:eq(0) li').removeClass('done');
-                initConfigFormStep();
+            },
+            onStepChanging: function (event, currentIndex, newIndex) {
+                var value = $('#nursing_care_value').summernote('isEmpty');
+                var subjective = $('#nursing_care_subjective').summernote('isEmpty');
+                var obejctive = $('#nursing_care_objective').summernote('isEmpty');
+                var assessment = $('#nursing_care_assessment').summernote('isEmpty');
+                var planning = $('#nursing_care_planning').summernote('isEmpty');
+
+                if (currentIndex == 0) {
+                    if(value) {
+                        Swal.fire('Oops...', 'mohon mengisi askep terlebih dahulu', 'info');
+
+                        return false;
+                    }
+                }
+
+                if (currentIndex == 1) {
+                    if(subjective) {
+                        Swal.fire('Oops...', 'mohon mengisi subjective terlebih dahulu', 'info');
+
+                        return false;
+                    }
+                }
+
+                if (currentIndex == 2) {
+                    if(obejctive) {
+                        Swal.fire('Oops...', 'mohon mengisi obejctive terlebih dahulu', 'info');
+
+                        return false;
+                    }
+                }
+
+                if (currentIndex == 3) {
+                    if(assessment) {
+                        Swal.fire('Oops...', 'mohon mengisi assessment terlebih dahulu', 'info');
+
+                        return false;
+                    }
+                }
+
+                if (planning == 4) {
+                    if(assessment) {
+                        Swal.fire('Oops...', 'mohon mengisi planning terlebih dahulu', 'info');
+
+                        return false;
+                    }
+                }
+
+                var status = '{{ $outpatient->status }}';
+
+                if(status == 4) {
+                    $('#form-data a[href="#finish"]').hide();
+                }
+
+                return true;
+            },
+            onFinished: function (event, currentIndex) {
+                submitted();
             }
         });
 
-        initConfigFormStep();
-    }
+        $('.steps-all-2').steps({
+            headerTag: 'h6',
+            bodyTag: 'fieldset',
+            transitionEffect: 'none',
+            labels: {
+                previous: document.dir == 'rtl' ? '<i class="ph-arrow-circle-right me-2"></i> Sebelumnya' : '<i class="ph-arrow-circle-left me-2"></i> Sebelumnya',
+                next: document.dir == 'rtl' ? 'Selanjutnya <i class="ph-arrow-circle-left ms-2"></i>' : 'Selanjutnya <i class="ph-arrow-circle-right ms-2"></i>',
+                finish: 'Simpan <i class="ph-floppy-disk ms-2"></i>'
+            },
+            autoFocus: true,
+            titleTemplate: '<span class="number">#index#</span> #title#',
+            onStepChanged: function(event, currentIndex) {
+                $('.steps-all-2 ul:eq(0) li').removeClass('done');
+            },
+            onStepChanging: function (event, currentIndex, newIndex) {
+                var subjective = $('#checkup_subjective').summernote('isEmpty');
+                var obejctive = $('#checkup_objective').summernote('isEmpty');
+                var assessment = $('#checkup_assessment').summernote('isEmpty');
+                var planning = $('#checkup_planning').summernote('isEmpty');
 
-    function initConfigFormStep() {
-        $('.steps-all-1 a[href="#finish"]').parent().hide();
-        $('.steps-all-1 a[href="#next"]').parent().hide();
-        $('.steps-all-1 a[href="#previous"]').parent().hide();
-        $('.steps-all-2 a[href="#finish"]').parent().hide();
-        $('.steps-all-2 a[href="#next"]').parent().hide();
-        $('.steps-all-2 a[href="#previous"]').parent().hide();
+                if (currentIndex == 0) {
+                    if(subjective) {
+                        Swal.fire('Oops...', 'mohon mengisi subjective terlebih dahulu', 'info');
+
+                        return false;
+                    }
+                }
+
+                if (currentIndex == 1) {
+                    if(obejctive) {
+                        Swal.fire('Oops...', 'mohon mengisi obejctive terlebih dahulu', 'info');
+
+                        return false;
+                    }
+                }
+
+                if (currentIndex == 2) {
+                    if(assessment) {
+                        Swal.fire('Oops...', 'mohon mengisi assessment terlebih dahulu', 'info');
+
+                        return false;
+                    }
+                }
+
+                if (planning == 3) {
+                    if(assessment) {
+                        Swal.fire('Oops...', 'mohon mengisi planning terlebih dahulu', 'info');
+
+                        return false;
+                    }
+                }
+
+                var status = '{{ $outpatient->status }}';
+
+                if(status == 4) {
+                    $('#form-data a[href="#finish"]').hide();
+                }
+
+                return true;
+            },
+            onFinished: function (event, currentIndex) {
+                submitted();
+            }
+        });
     }
 
     function submitted() {
