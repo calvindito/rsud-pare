@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Farmasi - <span class="fw-normal">Obat</span>
+                Farmasi - <span class="fw-normal">Satuan</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,16 +27,7 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode Barang</th>
-                        <th nowrap>Kode T</th>
-                        <th nowrap>Kode Jenis</th>
-                        <th nowrap>Satuan</th>
-                        <th nowrap>Pabrik</th>
-                        <th nowrap>Distributor</th>
-                        <th nowrap>Nama Barang</th>
-                        <th nowrap>Nama Generik</th>
-                        <th nowrap>Kekuatan</th>
-                        <th nowrap>Stok</th>
+                        <th nowrap>Nama</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -46,7 +37,7 @@
 </div>
 
 <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"></h5>
@@ -61,108 +52,9 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Distributor <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <select class="form-select select2-basic" name="distributor_id" id="distributor_id">
-                                @foreach($distributor as $d)
-                                    <option value="{{ $d->id }}">{{ $d->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Satuan <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="medicine_unit_id" id="medicine_unit_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($medicineUnit as $mu)
-                                    <option value="{{ $mu->id }}">{{ $mu->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Barang <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode barang">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode T <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="code_t" id="code_t" placeholder="Masukan kode t">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Jenis</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="code_type" id="code_type" placeholder="Masukan kode jenis">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nama Barang <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama barang">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nama Generik <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="name_generic" id="name_generic" placeholder="Masukan nama generik">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kekuatan</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="power" id="power" placeholder="Masukan kekuatan">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kekuatan Satuan</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="power_unit" id="power_unit" placeholder="Masukan kekuatan satuan">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Satuan</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="unit" id="unit" placeholder="Masukan satuan">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Persediaan</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="inventory" id="inventory" placeholder="Masukan persediaan">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Bir</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="bir" id="bir" placeholder="Masukan bir">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Non Generik</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="non_generic" id="non_generic" placeholder="Masukan non generik">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nar</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="nar" id="nar" placeholder="Masukan nar">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Oakrl</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="oakrl" id="oakrl" placeholder="Masukan oakrl">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kronis</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="chronic" id="chronic" placeholder="Masukan kronis">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama">
                         </div>
                     </div>
                 </form>
@@ -188,7 +80,6 @@
 <script>
     $(function() {
         loadData();
-        sidebarMini();
     });
 
     function onReloadTable() {
@@ -202,7 +93,6 @@
         $('#btn-create').removeClass('d-none');
         $('#btn-update').addClass('d-none');
         $('#btn-cancel').addClass('d-none');
-        $('.select2-basic').val('').change();
     }
 
     function onCreate() {
@@ -252,7 +142,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("pharmacy/medicine/datatable") }}',
+                url: '{{ url("pharmacy/unit/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -272,16 +162,7 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'code_t', name: 'code_t', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'code_type', name: 'code_type', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'medicine_unit_name', name: 'medicine_unit_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'factory_name', name: 'factory_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'distributor_name', name: 'distributor_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'name_generic', name: 'name_generic', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'power', name: 'power', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'stock', name: 'stock', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });
@@ -289,7 +170,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("pharmacy/medicine/create-data") }}',
+            url: '{{ url("pharmacy/unit/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -332,7 +213,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("pharmacy/medicine/show-data") }}',
+            url: '{{ url("pharmacy/unit/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -346,22 +227,7 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#distributor_id').val(response.distributor_id).change();
-                $('#medicine_unit_id').val(response.medicine_unit_id).change();
-                $('#code').val(response.code);
-                $('#code_t').val(response.code_t);
-                $('#code_type').val(response.code_type);
                 $('#name').val(response.name);
-                $('#name_generic').val(response.name_generic);
-                $('#power').val(response.power);
-                $('#power_unit').val(response.power_unit);
-                $('#unit').val(response.unit);
-                $('#inventory').val(response.inventory);
-                $('#bir').val(response.bir);
-                $('#non_generic').val(response.non_generic);
-                $('#nar').val(response.nar);
-                $('#oakrl').val(response.oakrl);
-                $('#chronic').val(response.chronic);
             },
             error: function(response) {
                 onLoading('close', '.modal-content');
@@ -377,7 +243,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("pharmacy/medicine/update-data") }}',
+            url: '{{ url("pharmacy/unit/update-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -432,7 +298,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("pharmacy/medicine/destroy-data") }}',
+                        url: '{{ url("pharmacy/unit/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

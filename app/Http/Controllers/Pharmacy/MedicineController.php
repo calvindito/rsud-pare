@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pharmacy;
 
 use App\Models\Medicine;
 use App\Models\Distributor;
+use App\Models\MedicineUnit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -15,6 +16,7 @@ class MedicineController extends Controller
     {
         $data = [
             'distributor' => Distributor::all(),
+            'medicineUnit' => MedicineUnit::all(),
             'content' => 'pharmacy.medicine'
         ];
 
@@ -42,6 +44,15 @@ class MedicineController extends Controller
                 $html .= '<div><small><b>Tersedia : </b>' . $query->stock('available') . '</small></div>';
 
                 return '<button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$html'" . ')">Klik Disini</button>';
+            })
+            ->addColumn('medicine_unit_name', function (Medicine $query) {
+                $medicineUnitName = null;
+
+                if (isset($query->medicineUnit)) {
+                    $medicineUnitName = $query->medicineUnit->name;
+                }
+
+                return $medicineUnitName;
             })
             ->addColumn('distributor_name', function (Medicine $query) {
                 $distributorName = null;
@@ -100,12 +111,14 @@ class MedicineController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'distributor_id' => 'required',
+            'medicine_unit_id' => 'required',
             'code' => 'required|unique:medicines,code',
             'code_type' => 'required|unique:medicines,code_type',
             'name' => 'required',
             'name_generic' => 'required'
         ], [
             'distributor_id.required' => 'mohon memilih distributor',
+            'medicine_unit_id.required' => 'mohon memilih satuan',
             'code.required' => 'kode t tidak boleh kosong',
             'code.unique' => 'kode t telah digunakan',
             'code_type.required' => 'kode jenis tidak boleh kosong',
@@ -123,6 +136,7 @@ class MedicineController extends Controller
             try {
                 $createData = Medicine::create([
                     'distributor_id' => $request->distributor_id,
+                    'medicine_unit_id' => $request->medicine_unit_id,
                     'code' => $request->code,
                     'code_item' => $request->code_item,
                     'code_type' => $request->code_type,
@@ -167,12 +181,14 @@ class MedicineController extends Controller
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
             'distributor_id' => 'required',
+            'medicine_unit_id' => 'required',
             'code' => 'required|unique:medicines,code,' . $id,
             'code_type' => 'required|unique:medicines,code_type,' . $id,
             'name' => 'required',
             'name_generic' => 'required'
         ], [
             'distributor_id.required' => 'mohon memilih distributor',
+            'medicine_unit_id.required' => 'mohon memilih satuan',
             'code.required' => 'kode t tidak boleh kosong',
             'code.unique' => 'kode t telah digunakan',
             'code_type.required' => 'kode jenis tidak boleh kosong',
@@ -190,6 +206,7 @@ class MedicineController extends Controller
             try {
                 $updateData = Medicine::findOrFail($id)->update([
                     'distributor_id' => $request->distributor_id,
+                    'medicine_unit_id' => $request->medicine_unit_id,
                     'code' => $request->code,
                     'code_item' => $request->code_item,
                     'code_type' => $request->code_type,

@@ -115,4 +115,14 @@ class Medicine extends Model
     {
         return $this->hasMany(Recipe::class);
     }
+
+    /**
+     * medicineUnit
+     *
+     * @return void
+     */
+    public function medicineUnit()
+    {
+        return $this->belongsTo(MedicineUnit::class);
+    }
 }

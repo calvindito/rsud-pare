@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\Pharmacy;
 
-use App\Models\City;
-use App\Models\Factory;
+use App\Models\MedicineUnit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class FactoryController extends Controller
+class UnitController extends Controller
 {
     public function index()
     {
         $data = [
-            'city' => City::all(),
-            'content' => 'pharmacy.factory'
+            'content' => 'pharmacy.unit'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -24,29 +22,15 @@ class FactoryController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Factory::query();
+        $data = MedicineUnit::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('name', 'like', "%$search%")
-                        ->orWhere('email', 'like', "%$search%")
-                        ->orWhere('address', 'like', "%$search%")
-                        ->whereHas('city', function ($query) use ($search) {
-                            $query->where('name', 'like', "%$search%");
-                        });
+                    $query->where('name', 'like', "%$search%");
                 }
             })
-            ->addColumn('city_name', function (Factory $query) {
-                $cityName = null;
-
-                if (isset($query->city)) {
-                    $cityName = $query->city->name;
-                }
-
-                return $cityName;
-            })
-            ->addColumn('action', function (Factory $query) {
+            ->addColumn('action', function (MedicineUnit $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -72,20 +56,9 @@ class FactoryController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'city_id' => 'required',
-            'name' => 'required',
-            'phone' => 'required|digits_between:8,13|numeric',
-            'email' => 'required|email',
-            'address' => 'required'
+            'name' => 'required'
         ], [
-            'city_id.required' => 'mohon memilih kota',
-            'name.required' => 'nama tidak boleh kosong',
-            'phone.required' => 'no telp tidak boleh kosong',
-            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
-            'phone.numeric' => 'no telp harus angka',
-            'email.required' => 'email tidak boleh kosong',
-            'email.email' => 'email tidak valid',
-            'address.required' => 'alamat tidak boleh kosong'
+            'name.required' => 'nama tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -95,12 +68,8 @@ class FactoryController extends Controller
             ];
         } else {
             try {
-                $createData = Factory::create([
-                    'city_id' => $request->city_id,
-                    'name' => $request->name,
-                    'phone' => $request->phone,
-                    'email' => $request->email,
-                    'address' => $request->address
+                $createData = MedicineUnit::create([
+                    'name' => $request->name
                 ]);
 
                 $response = [
@@ -121,7 +90,7 @@ class FactoryController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = Factory::findOrFail($id);
+        $data = MedicineUnit::findOrFail($id);
 
         return response()->json($data);
     }
@@ -130,20 +99,9 @@ class FactoryController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'city_id' => 'required',
-            'name' => 'required',
-            'phone' => 'required|digits_between:8,13|numeric',
-            'email' => 'required|email',
-            'address' => 'required'
+            'name' => 'required'
         ], [
-            'city_id.required' => 'mohon memilih kota',
-            'name.required' => 'nama tidak boleh kosong',
-            'phone.required' => 'no telp tidak boleh kosong',
-            'phone.digits_between' => 'no telp min 8 dan maks 13 karakter',
-            'phone.numeric' => 'no telp harus angka',
-            'email.required' => 'email tidak boleh kosong',
-            'email.email' => 'email tidak valid',
-            'address.required' => 'alamat tidak boleh kosong'
+            'name.required' => 'nama tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -153,12 +111,8 @@ class FactoryController extends Controller
             ];
         } else {
             try {
-                Factory::findOrFail($id)->update([
-                    'city_id' => $request->city_id,
-                    'name' => $request->name,
-                    'phone' => $request->phone,
-                    'email' => $request->email,
-                    'address' => $request->address
+                MedicineUnit::findOrFail($id)->update([
+                    'name' => $request->name
                 ]);
 
                 $response = [
@@ -181,7 +135,7 @@ class FactoryController extends Controller
         $id = $request->id;
 
         try {
-            Factory::destroy($id);
+            MedicineUnit::destroy($id);
 
             $response = [
                 'code' => 200,

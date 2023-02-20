@@ -491,6 +491,13 @@ return [
                 'sub' => null
             ],
             [
+                'name' => 'unit',
+                'menu' => 'Satuan',
+                'icon' => null,
+                'link' => 'pharmacy/unit',
+                'sub' => null
+            ],
+            [
                 'name' => 'medicine',
                 'menu' => 'Obat',
                 'icon' => null,

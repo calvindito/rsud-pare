@@ -534,6 +534,15 @@ Route::middleware('auth')->group(function () {
                 Route::delete('destroy-data', 'FactoryController@destroyData');
             });
 
+            Route::prefix('unit')->group(function () {
+                Route::get('/', 'UnitController@index');
+                Route::get('datatable', 'UnitController@datatable');
+                Route::post('create-data', 'UnitController@createData');
+                Route::get('show-data', 'UnitController@showData');
+                Route::post('update-data', 'UnitController@updateData');
+                Route::delete('destroy-data', 'UnitController@destroyData');
+            });
+
             Route::prefix('medicine')->group(function () {
                 Route::get('/', 'MedicineController@index');
                 Route::get('datatable', 'MedicineController@datatable');

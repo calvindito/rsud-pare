@@ -16,6 +16,7 @@ class CreateMedicinesTable extends Migration
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('distributor_id')->nullable();
+            $table->unsignedBigInteger('medicine_unit_id')->nullable();
             $table->string('code')->nullable();
             $table->string('code_t')->nullable();
             $table->string('code_type')->nullable();
