@@ -74,6 +74,9 @@
                             <th nowrap>Satuan</th>
                             <th nowrap>Kondisi</th>
                             <th nowrap>Metode</th>
+                            @if($labRequest->status == 3)
+                                <th class="text-center" nowrap>Status</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -119,6 +122,39 @@
                                         @endif
                                     </td>
                                     <td class="align-middle" nowrap>{{ $lrd->labItemParent->method ?? '-' }}</td>
+                                    @if($labRequest->status == 3)
+                                        <td class="align-middle text-center">
+                                            @isset($lrd->labItemParent)
+                                                @if(!empty($lrd->result))
+                                                    @if(!empty($lrd->labItemParent->limit_lower) && !empty($lrd->result <= $lrd->labItemParent->limit_upper))
+                                                        @if($lrd->result >= $lrd->labItemParent->limit_lower && $lrd->result <= $lrd->labItemParent->limit_upper)
+                                                            <span class="badge bg-primary d-block">Normal</span>
+                                                        @else
+                                                            <span class="badge bg-danger d-block">Danger</span>
+                                                        @endif
+                                                    @elseif((!empty($lrd->labItemParent->limit_lower) && empty($lrd->labItemParent->limit_upper)))
+                                                        @if($lrd->result >= $lrd->labItemParent->limit_lower && $lrd->result <= $lrd->labItemParent->limit_lower)
+                                                            <span class="badge bg-primary d-block">Normal</span>
+                                                        @else
+                                                            <span class="badge bg-danger d-block">Danger</span>
+                                                        @endif
+                                                    @elseif((!empty($lrd->labItemParent->limit_upper) && empty($lrd->labItemParent->limit_lower)))
+                                                        @if($lrd->result >= $lrd->labItemParent->limit_upper && $lrd->result <= $lrd->labItemParent->limit_upper)
+                                                            <span class="badge bg-primary d-block">Normal</span>
+                                                        @else
+                                                            <span class="badge bg-danger d-block">Danger</span>
+                                                        @endif
+                                                    @else
+                                                        <span class="badge bg-secondary d-block">Tidak ada pembatas</span>
+                                                    @endif
+                                                @else
+                                                    <span class="badge bg-secondary d-block">Tidak ada pembatas</span>
+                                                @endif
+                                            @else
+                                                <span class="badge bg-secondary d-block">Tidak ada pembatas</span>
+                                            @endif
+                                        </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         @else

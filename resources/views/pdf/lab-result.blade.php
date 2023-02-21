@@ -26,6 +26,48 @@
         .table tbody td:first-child::after {
             content: leader(". ");
         }
+
+        .badge-primary {
+            background: rgba(12, 131, 255, 1);
+            padding: 0.3125rem 0.4375rem;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            border-radius: 0.25rem;
+            display: block;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+        }
+
+        .badge-secondary {
+            background: rgba(36, 114, 151, 1);
+            padding: 0.3125rem 0.4375rem;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            border-radius: 0.25rem;
+            display: block;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 1);
+            padding: 0.3125rem 0.4375rem;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            border-radius: 0.25rem;
+            display: block;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+        }
     </style>
 </head>
 <body>
@@ -65,6 +107,7 @@
                 <th>Normal</th>
                 <th>Kondisi</th>
                 <th>Metode</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -93,6 +136,37 @@
                     </td>
                     <td class="align-middle">{{ $lrd->labItemCondition->name ?? 'Tidak Ada' }}</td>
                     <td class="align-middle" nowrap>{{ $lrd->labItemParent->method ?? '-' }}</td>
+                    <td class="align-middle" style="text-align:center;">
+                        @isset($lrd->labItemParent)
+                            @if(!empty($lrd->result))
+                                @if(!empty($lrd->labItemParent->limit_lower) && !empty($lrd->result <= $lrd->labItemParent->limit_upper))
+                                    @if($lrd->result >= $lrd->labItemParent->limit_lower && $lrd->result <= $lrd->labItemParent->limit_upper)
+                                        <span class="badge-primary">Normal</span>
+                                    @else
+                                        <span class="badge-danger">Danger</span>
+                                    @endif
+                                @elseif((!empty($lrd->labItemParent->limit_lower) && empty($lrd->labItemParent->limit_upper)))
+                                    @if($lrd->result >= $lrd->labItemParent->limit_lower && $lrd->result <= $lrd->labItemParent->limit_lower)
+                                        <span class="badge-primary">Normal</span>
+                                    @else
+                                        <span class="badge-danger">Danger</span>
+                                    @endif
+                                @elseif((!empty($lrd->labItemParent->limit_upper) && empty($lrd->labItemParent->limit_lower)))
+                                    @if($lrd->result >= $lrd->labItemParent->limit_upper && $lrd->result <= $lrd->labItemParent->limit_upper)
+                                        <span class="badge-primary">Normal</span>
+                                    @else
+                                        <span class="badge-danger">Danger</span>
+                                    @endif
+                                @else
+                                    <span class="badge-secondary">Tidak ada pembatas</span>
+                                @endif
+                            @else
+                                <span class="badge-secondary">Tidak ada pembatas</span>
+                            @endif
+                        @else
+                            <span class="badge-secondary">Tidak ada pembatas</span>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
