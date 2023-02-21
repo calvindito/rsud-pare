@@ -100,7 +100,7 @@
                     Pelayanan
                 </div>
             </td>
-            <td style="font-size:14px; text-align:left;">
+            <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->actionService) }}
             </td>
         </tr>
@@ -110,7 +110,7 @@
                     Non Operatif
                 </div>
             </td>
-            <td style="font-size:14px; text-align:left;">
+            <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->actionNonOperative) }}
             </td>
         </tr>
@@ -120,7 +120,7 @@
                     Penunjang
                 </div>
             </td>
-            <td style="font-size:14px; text-align:left;">
+            <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->actionSupporting) }}
             </td>
         </tr>
@@ -130,7 +130,7 @@
                     Obat & Alkes
                 </div>
             </td>
-            <td style="font-size:14px; text-align:left;">
+            <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->actionHealth) }}
             </td>
         </tr>
@@ -140,7 +140,7 @@
                     Lain - Lain
                 </div>
             </td>
-            <td style="font-size:14px; text-align:left;">
+            <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->actionOther) }}
             </td>
         </tr>
@@ -150,7 +150,7 @@
                     Paket
                 </div>
             </td>
-            <td style="font-size:14px; text-align:left;">
+            <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->actionPackage) }}
             </td>
         </tr>
@@ -158,7 +158,7 @@
             <td style="font-size:14px; text-align:left;">
                 Permintaan Obat
             </td>
-            <td style="font-size:14px; text-align:left;">
+            <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->recipe) }}
             </td>
         </tr>
@@ -166,7 +166,7 @@
             <td style="font-size:14px; text-align:left;">
                 Laboratorium
             </td>
-            <td style="font-size:14px; text-align:left;">
+            <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->lab) }}
             </td>
         </tr>
@@ -174,7 +174,7 @@
             <td style="font-size:14px; text-align:left;">
                 Radiologi
             </td>
-            <td style="font-size:14px; text-align:left;">
+            <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->radiology) }}
             </td>
         </tr>
