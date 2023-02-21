@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('serverside')->group(function () {
         Route::get('location', 'ServerSideController@location');
         Route::get('patient', 'ServerSideController@patient');
-        Route::get('medicine', 'ServerSideController@medicine');
+        Route::get('item', 'ServerSideController@item');
     });
 
     Route::middleware('verify.permission')->group(function () {
@@ -40,10 +40,10 @@ Route::middleware('auth')->group(function () {
 
             Route::prefix('income')->group(function () {
                 Route::get('/', 'IncomeController@index');
-                Route::get('purchase-medicine', 'IncomeController@purchaseMedicine');
-                Route::get('sale-medicine', 'IncomeController@saleMedicine');
-                Route::get('compare-purchase-sale-medicine', 'IncomeController@comparePurchaseSaleMedicine');
-                Route::get('profit-medicine', 'IncomeController@profitMedicine');
+                Route::get('purchase-item', 'IncomeController@purchaseItem');
+                Route::get('sale-item', 'IncomeController@saleItem');
+                Route::get('compare-purchase-sale-item', 'IncomeController@comparePurchaseSaleItem');
+                Route::get('profit-item', 'IncomeController@profitItem');
                 Route::get('operating-room', 'IncomeController@operatingRoom');
             });
 
@@ -543,13 +543,13 @@ Route::middleware('auth')->group(function () {
                 Route::delete('destroy-data', 'UnitController@destroyData');
             });
 
-            Route::prefix('medicine')->group(function () {
-                Route::get('/', 'MedicineController@index');
-                Route::get('datatable', 'MedicineController@datatable');
-                Route::post('create-data', 'MedicineController@createData');
-                Route::get('show-data', 'MedicineController@showData');
-                Route::post('update-data', 'MedicineController@updateData');
-                Route::delete('destroy-data', 'MedicineController@destroyData');
+            Route::prefix('item')->group(function () {
+                Route::get('/', 'ItemController@index');
+                Route::get('datatable', 'ItemController@datatable');
+                Route::post('create-data', 'ItemController@createData');
+                Route::get('show-data', 'ItemController@showData');
+                Route::post('update-data', 'ItemController@updateData');
+                Route::delete('destroy-data', 'ItemController@destroyData');
             });
 
             Route::prefix('stock')->group(function () {
@@ -607,9 +607,9 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::prefix('report')->namespace('Report')->group(function () {
-            Route::prefix('medicine')->group(function () {
-                Route::get('/', 'MedicineController@index');
-                Route::get('datatable', 'MedicineController@datatable');
+            Route::prefix('item')->group(function () {
+                Route::get('/', 'ItemController@index');
+                Route::get('datatable', 'ItemController@datatable');
             });
 
             Route::prefix('finance')->namespace('Finance')->group(function () {

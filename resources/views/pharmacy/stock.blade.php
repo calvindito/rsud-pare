@@ -27,7 +27,8 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Obat</th>
+                        <th nowrap>Barang</th>
+                        <th nowrap>Jenis</th>
                         <th nowrap>Tanggal Kadaluwarsa</th>
                         <th nowrap>Stok Total</th>
                         <th nowrap>Stok Tersedia</th>
@@ -59,10 +60,10 @@
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Obat <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Item <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <select class="form-select" name="medicine_id" id="medicine_id">
-                                @foreach($medicine as $m)
+                            <select class="form-select" name="item_id" id="item_id">
+                                @foreach($item as $m)
                                     <option value="{{ $m->id }}">{{ $m->name }}</option>
                                 @endforeach
                             </select>
@@ -125,7 +126,7 @@
     $(function() {
         loadData();
         sidebarMini();
-        select2Ajax('#medicine_id', 'medicine');
+        select2Ajax('#item_id', 'item');
     });
 
     function onReloadTable() {
@@ -139,8 +140,8 @@
         $('#btn-create').removeClass('d-none');
         $('#btn-update').addClass('d-none');
         $('#btn-cancel').addClass('d-none');
-        $('#medicine_id').html('');
-        $('#medicine_id').val('').change();
+        $('#item_id').html('');
+        $('#item_id').val('').change();
     }
 
     function onCreate() {
@@ -210,7 +211,8 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'medicine_name', name: 'medicine_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'item_name', name: 'item_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'item_type_format_result', name: 'item_type_format_result', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'expired_date', name: 'expired_date', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'total', name: 'total', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'stock', name: 'stock', orderable: true, searchable: false, className: 'align-middle' },
@@ -282,7 +284,7 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#medicine_id').html('<option value="' + response.medicine_id + '" selected>' + response.medicine.name + '</option>');
+                $('#item_id').html('<option value="' + response.item_id + '" selected>' + response.item.name + '</option>');
                 $('#expired_date').val(response.expired_date);
                 $('#stock').val(response.stock);
                 $('#price_purchase').val(response.price_purchase);

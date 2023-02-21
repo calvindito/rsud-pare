@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Pharmacy;
 
-use App\Models\Medicine;
+use App\Models\Item;
+use App\Models\ItemUnit;
 use App\Models\Distributor;
-use App\Models\MedicineUnit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class MedicineController extends Controller
+class ItemController extends Controller
 {
     public function index()
     {
         $data = [
             'distributor' => Distributor::all(),
-            'medicineUnit' => MedicineUnit::all(),
-            'content' => 'pharmacy.medicine'
+            'itemUnit' => ItemUnit::all(),
+            'content' => 'pharmacy.item'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -26,7 +26,7 @@ class MedicineController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Medicine::query();
+        $data = Item::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -38,23 +38,23 @@ class MedicineController extends Controller
                         ->orWhere('name_generic', 'like', "%$search%");
                 }
             })
-            ->addColumn('stock', function (Medicine $query) {
+            ->addColumn('stock', function (Item $query) {
                 $html = '<div><small><b>Total : </b>' . $query->stock() . '</small></div>';
                 $html .= '<div><small><b>Terjual : </b>' . $query->stock('sold') . '</small></div>';
                 $html .= '<div><small><b>Tersedia : </b>' . $query->stock('available') . '</small></div>';
 
                 return '<button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$html'" . ')">Klik Disini</button>';
             })
-            ->addColumn('medicine_unit_name', function (Medicine $query) {
-                $medicineUnitName = null;
+            ->addColumn('item_unit_name', function (Item $query) {
+                $itemUnitName = null;
 
-                if (isset($query->medicineUnit)) {
-                    $medicineUnitName = $query->medicineUnit->name;
+                if (isset($query->itemUnit)) {
+                    $itemUnitName = $query->itemUnit->name;
                 }
 
-                return $medicineUnitName;
+                return $itemUnitName;
             })
-            ->addColumn('distributor_name', function (Medicine $query) {
+            ->addColumn('distributor_name', function (Item $query) {
                 $distributorName = null;
 
                 if (isset($query->distributor)) {
@@ -63,7 +63,7 @@ class MedicineController extends Controller
 
                 return $distributorName;
             })
-            ->editColumn('factory_name', function (Medicine $query) {
+            ->editColumn('factory_name', function (Item $query) {
                 $factoryName = '';
 
                 if ($query->distributor) {
@@ -84,7 +84,7 @@ class MedicineController extends Controller
                     <button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$implodeName'" . ')">Klik Disini</button>
                 ';
             })
-            ->addColumn('action', function (Medicine $query) {
+            ->addColumn('action', function (Item $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -111,14 +111,16 @@ class MedicineController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'distributor_id' => 'required',
-            'medicine_unit_id' => 'required',
-            'code' => 'required|unique:medicines,code',
-            'code_type' => 'required|unique:medicines,code_type',
+            'item_unit_id' => 'required',
+            'type' => 'required',
+            'code' => 'required|unique:items,code',
+            'code_type' => 'required|unique:items,code_type',
             'name' => 'required',
             'name_generic' => 'required'
         ], [
             'distributor_id.required' => 'mohon memilih distributor',
-            'medicine_unit_id.required' => 'mohon memilih satuan',
+            'item_unit_id.required' => 'mohon memilih satuan',
+            'type.required' => 'mohon memilih jenis',
             'code.required' => 'kode t tidak boleh kosong',
             'code.unique' => 'kode t telah digunakan',
             'code_type.required' => 'kode jenis tidak boleh kosong',
@@ -134,9 +136,9 @@ class MedicineController extends Controller
             ];
         } else {
             try {
-                $createData = Medicine::create([
+                $createData = Item::create([
                     'distributor_id' => $request->distributor_id,
-                    'medicine_unit_id' => $request->medicine_unit_id,
+                    'item_unit_id' => $request->item_unit_id,
                     'code' => $request->code,
                     'code_item' => $request->code_item,
                     'code_type' => $request->code_type,
@@ -171,7 +173,7 @@ class MedicineController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = Medicine::findOrFail($id);
+        $data = Item::findOrFail($id);
 
         return response()->json($data);
     }
@@ -181,14 +183,16 @@ class MedicineController extends Controller
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
             'distributor_id' => 'required',
-            'medicine_unit_id' => 'required',
-            'code' => 'required|unique:medicines,code,' . $id,
-            'code_type' => 'required|unique:medicines,code_type,' . $id,
+            'item_unit_id' => 'required',
+            'type' => 'required',
+            'code' => 'required|unique:items,code,' . $id,
+            'code_type' => 'required|unique:items,code_type,' . $id,
             'name' => 'required',
             'name_generic' => 'required'
         ], [
             'distributor_id.required' => 'mohon memilih distributor',
-            'medicine_unit_id.required' => 'mohon memilih satuan',
+            'item_unit_id.required' => 'mohon memilih satuan',
+            'type.required' => 'mohon memilih jenis',
             'code.required' => 'kode t tidak boleh kosong',
             'code.unique' => 'kode t telah digunakan',
             'code_type.required' => 'kode jenis tidak boleh kosong',
@@ -204,9 +208,9 @@ class MedicineController extends Controller
             ];
         } else {
             try {
-                $updateData = Medicine::findOrFail($id)->update([
+                $updateData = Item::findOrFail($id)->update([
                     'distributor_id' => $request->distributor_id,
-                    'medicine_unit_id' => $request->medicine_unit_id,
+                    'item_unit_id' => $request->item_unit_id,
                     'code' => $request->code,
                     'code_item' => $request->code_item,
                     'code_type' => $request->code_type,
@@ -243,7 +247,7 @@ class MedicineController extends Controller
         $id = $request->id;
 
         try {
-            Medicine::destroy($id);
+            Item::destroy($id);
 
             $response = [
                 'code' => 200,

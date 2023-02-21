@@ -79,7 +79,7 @@ class RequestController extends Controller
     public function detail(Request $request, $id)
     {
         $recipe = Recipe::findOrFail($id);
-        $recipeMedicine = Recipe::where('recipeable_type', $recipe->recipeable_type)->where('recipeable_id', $recipe->recipeable_id)->get();
+        $recipeItem = Recipe::where('recipeable_type', $recipe->recipeable_type)->where('recipeable_id', $recipe->recipeable_id)->get();
 
         if ($request->ajax()) {
             try {
@@ -90,13 +90,13 @@ class RequestController extends Controller
                         $update = Recipe::find($i)->update(['status' => $status]);
 
                         if (in_array($status, [1, 3])) {
-                            $update->medicineStock()->increment('stock', $update);
-                            $update->medicineStock()->decrement('sold', $update);
+                            $update->itemStock()->increment('stock', $update);
+                            $update->itemStock()->decrement('sold', $update);
                         } else if ($status == 2) {
-                            $update->medicineStock()->update(['stock' => 0]);
+                            $update->itemStock()->update(['stock' => 0]);
                         } else {
-                            $update->medicineStock()->decrement('stock', $update);
-                            $update->medicineStock()->increment('sold', $update);
+                            $update->itemStock()->decrement('stock', $update);
+                            $update->itemStock()->increment('sold', $update);
                         }
                     }
                 }
@@ -118,7 +118,7 @@ class RequestController extends Controller
         $data = [
             'recipe' => $recipe,
             'patient' => $recipe->patient,
-            'recipeMedicine' => $recipeMedicine,
+            'recipeItem' => $recipeItem,
             'patient' => $recipe->patient,
             'content' => 'pharmacy.request-detail'
         ];

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Report;
 
+use App\Models\Item;
 use App\Models\Factory;
-use App\Models\Medicine;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
-class MedicineController extends Controller
+class ItemController extends Controller
 {
     public function index()
     {
         $data = [
             'distributor' => Distributor::all(),
             'factory' => Factory::all(),
-            'content' => 'report.medicine'
+            'content' => 'report.item'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -25,7 +25,7 @@ class MedicineController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Medicine::query();
+        $data = Item::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search, $request) {
@@ -50,8 +50,8 @@ class MedicineController extends Controller
                 }
 
                 if (!empty($request->stock)) {
-                    $query->whereHas('medicineStock', function ($query) use ($request) {
-                        $query->groupBy('medicine_id');
+                    $query->whereHas('itemStock', function ($query) use ($request) {
+                        $query->groupBy('item_id');
 
                         if ($request->stock == 'many') {
                             $query->havingRaw('SUM(stock) > 1000');
@@ -63,14 +63,14 @@ class MedicineController extends Controller
                     });
                 }
             })
-            ->addColumn('stock', function (Medicine $query) {
+            ->addColumn('stock', function (Item $query) {
                 $html = '<div><small><b>Total : </b>' . $query->stock() . '</small></div>';
                 $html .= '<div><small><b>Terjual : </b>' . $query->stock('sold') . '</small></div>';
                 $html .= '<div><small><b>Tersedia : </b>' . $query->stock('available') . '</small></div>';
 
                 return '<button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$html'" . ')">Klik Disini</button>';
             })
-            ->addColumn('distributor_name', function (Medicine $query) {
+            ->addColumn('distributor_name', function (Item $query) {
                 $distributorName = null;
 
                 if (isset($query->distributor)) {
@@ -79,7 +79,7 @@ class MedicineController extends Controller
 
                 return $distributorName;
             })
-            ->editColumn('factory_name', function (Medicine $query) {
+            ->editColumn('factory_name', function (Item $query) {
                 $factoryName = '';
 
                 if ($query->distributor) {

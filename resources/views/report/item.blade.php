@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Laporan - <span class="fw-normal">Obat</span>
+                Laporan - <span class="fw-normal">Barang</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -101,7 +101,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("report/medicine/datatable") }}',
+                url: '{{ url("report/item/datatable") }}',
                 dataType: 'JSON',
                 data: {
                     distributor_id: $('#distributor_id').val(),

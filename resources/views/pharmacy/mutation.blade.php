@@ -18,9 +18,9 @@
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-2">Obat <span class="text-danger fw-bold">*</span></label>
+                    <label class="col-form-label col-lg-2">Barang <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-10">
-                        <select class="form-select" name="medicine_id" id="medicine_id"></select>
+                        <select class="form-select" name="item_id" id="item_id"></select>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -77,7 +77,7 @@
 
 <script>
     $(function() {
-        select2Ajax('#medicine_id', 'medicine', false);
+        select2Ajax('#item_id', 'item', false);
     });
 
     function clearValidation() {
@@ -141,14 +141,14 @@
     }
 
     function printData() {
-        var medicineId = $('#medicine_id').val();
+        var itemId = $('#item_id').val();
         var dateStart = $('#date_start').val();
         var dateEnd = $('#date_end').val();
 
-        if(medicineId != '' && dateStart != '' && dateEnd != '') {
+        if(itemId != '' && dateStart != '' && dateEnd != '') {
             var parseUrl = '{{ url("pharmacy/mutation/print?") }}' + $.param({
                 _token: '{{ csrf_token() }}',
-                medicine_id: medicineId,
+                item_id: itemId,
                 date_start: dateStart,
                 date_end: dateEnd
             });

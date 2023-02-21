@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Medicine;
+use App\Models\Item;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class MedicineSeeder extends Seeder
+class ItemSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class MedicineSeeder extends Seeder
     {
         DB::connection('clone')->table('m_obat_akhp')->orderBy('kd_barang')->chunk(1000, function ($query) {
             foreach ($query as $q) {
-                $create = Medicine::create([
+                $create = Item::create([
                     'code' => $q->kd_barang,
                     'code_t' => $q->kd_t,
                     'code_type' => $q->kd_js,
@@ -31,10 +31,11 @@ class MedicineSeeder extends Seeder
                     'non_generic' => $q->gen_non,
                     'nar' => $q->nar_p_non,
                     'oakrl' => $q->oakrl,
-                    'chronic' => $q->kronis
+                    'chronic' => $q->kronis,
+                    'type' => 1
                 ]);
 
-                $create->medicineStock()->create([
+                $create->itemStock()->create([
                     'stock' => $q->stok,
                     'price_purchase' => $q->hb,
                     'price_sell' => $q->hj,

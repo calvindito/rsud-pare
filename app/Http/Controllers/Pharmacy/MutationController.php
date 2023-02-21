@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Pharmacy;
 
 use Carbon\Carbon;
+use App\Models\Item;
 use App\Models\Recipe;
-use App\Models\Medicine;
+use App\Models\ItemStock;
 use Illuminate\Http\Request;
-use App\Models\MedicineStock;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -26,11 +26,11 @@ class MutationController extends Controller
     public function loadData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'medicine_id' => 'required',
+            'item_id' => 'required',
             'date_start' => 'required|before_or_equal:date_end',
             'date_end' => 'required|after_or_equal:date_start'
         ], [
-            'medicine_id.required' => 'mohon memilih obat',
+            'item_id.required' => 'mohon memilih item',
             'date_start.required' => 'tanggal awal tidak boleh kosong',
             'date_start.before_or_equal' => 'tanggal awal tidak boleh lebih dari tanggal akhir',
             'date_end.required' => 'tanggal akhir tidak boleh kosong',
@@ -45,18 +45,18 @@ class MutationController extends Controller
         } else {
             try {
                 $data = [];
-                $medicineId = $request->medicine_id;
+                $itemId = $request->item_id;
                 $startDate = $request->date_start;
                 $endDate = $request->date_end;
                 $diff = Carbon::parse($startDate)->diffInDays($endDate);
 
                 for ($i = 0; $i <= $diff; $i++) {
                     $date = date('Y-m-d', strtotime("+$i days", strtotime($startDate)));
-                    $remaining = MedicineStock::whereDate('created_at', '<', $date)->where('medicine_id', $medicineId)->sum('stock');
-                    $stockIn = MedicineStock::whereDate('created_at', $date)->where('medicine_id', $medicineId)->sum(DB::raw('stock + sold'));
+                    $remaining = ItemStock::whereDate('created_at', '<', $date)->where('item_id', $itemId)->sum('stock');
+                    $stockIn = ItemStock::whereDate('created_at', $date)->where('item_id', $itemId)->sum(DB::raw('stock + sold'));
                     $stockOut = Recipe::whereDate('created_at', $date)
-                        ->whereHas('medicineStock', function ($query) use ($date, $medicineId) {
-                            $query->where('medicine_id', $medicineId)
+                        ->whereHas('itemStock', function ($query) use ($date, $itemId) {
+                            $query->where('item_id', $itemId)
                                 ->whereDate('created_at', $date);
                         })
                         ->where('status', 4)
@@ -87,13 +87,13 @@ class MutationController extends Controller
 
     public function print(Request $request)
     {
-        $medicine = Medicine::findOrFail($request->medicine_id);
+        $item = Item::findOrFail($request->item_id);
         $validation = Validator::make($request->all(), [
-            'medicine_id' => 'required',
+            'item_id' => 'required',
             'date_start' => 'required|before_or_equal:date_end',
             'date_end' => 'required|after_or_equal:date_start'
         ], [
-            'medicine_id.required' => 'mohon memilih obat',
+            'item_id.required' => 'mohon memilih item',
             'date_start.required' => 'tanggal awal tidak boleh kosong',
             'date_start.before_or_equal' => 'tanggal awal tidak boleh lebih dari tanggal akhir',
             'date_end.required' => 'tanggal akhir tidak boleh kosong',
@@ -104,18 +104,18 @@ class MutationController extends Controller
             return response()->json($validation->errors()->all());
         } else {
             $data = [];
-            $medicineId = $request->medicine_id;
+            $itemId = $request->item_id;
             $startDate = $request->date_start;
             $endDate = $request->date_end;
             $diff = Carbon::parse($startDate)->diffInDays($endDate);
 
             for ($i = 0; $i <= $diff; $i++) {
                 $date = date('Y-m-d', strtotime("+$i days", strtotime($startDate)));
-                $remaining = MedicineStock::whereDate('created_at', '<', $date)->where('medicine_id', $medicineId)->sum('stock');
-                $stockIn = MedicineStock::whereDate('created_at', $date)->where('medicine_id', $medicineId)->sum(DB::raw('stock + sold'));
+                $remaining = ItemStock::whereDate('created_at', '<', $date)->where('item_id', $itemId)->sum('stock');
+                $stockIn = ItemStock::whereDate('created_at', $date)->where('item_id', $itemId)->sum(DB::raw('stock + sold'));
                 $stockOut = Recipe::whereDate('created_at', $date)
-                    ->whereHas('medicineStock', function ($query) use ($date, $medicineId) {
-                        $query->where('medicine_id', $medicineId)
+                    ->whereHas('itemStock', function ($query) use ($date, $itemId) {
+                        $query->where('item_id', $itemId)
                             ->whereDate('created_at', $date);
                     })
                     ->where('status', 4)
@@ -132,15 +132,15 @@ class MutationController extends Controller
             $pdf = Pdf::setOptions([
                 'adminUsername' => auth()->user()->username
             ])->loadView('pdf.mutation', [
-                'title' => 'Mutasi Stok Obat',
-                'medicine' => $medicine,
+                'title' => 'Mutasi Stok Barang',
+                'item' => $item,
                 'data' => $data,
                 'startDate' => $startDate,
                 'endDate' => $endDate,
                 'diff' => $diff
             ]);
 
-            return $pdf->stream('Mutasi Stok Obat' . ' - ' . date('YmdHis') . '.pdf');
+            return $pdf->stream('Mutasi Stok Barang' . ' - ' . date('YmdHis') . '.pdf');
         }
     }
 }

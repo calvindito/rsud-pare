@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Dashboard;
 
 use Carbon\Carbon;
 use App\Models\Recipe;
+use App\Models\ItemStock;
 use App\Models\Operation;
 use Illuminate\Http\Request;
-use App\Models\MedicineStock;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -21,7 +21,7 @@ class IncomeController extends Controller
         return view('layouts.index', ['data' => $data]);
     }
 
-    public function purchaseMedicine(Request $request)
+    public function purchaseItem(Request $request)
     {
         try {
             $data = [];
@@ -30,8 +30,8 @@ class IncomeController extends Controller
 
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
-                $data['nominal'][] = MedicineStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_purchase * (stock + sold)'));
-                $data['qty'][] = MedicineStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('stock + sold'));
+                $data['nominal'][] = ItemStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_purchase * (stock + sold)'));
+                $data['qty'][] = ItemStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('stock + sold'));
             }
 
             $response = [
@@ -67,7 +67,7 @@ class IncomeController extends Controller
         return response()->json($response);
     }
 
-    public function saleMedicine(Request $request)
+    public function saleItem(Request $request)
     {
         try {
             $data = [];
@@ -113,7 +113,7 @@ class IncomeController extends Controller
         return response()->json($response);
     }
 
-    public function comparePurchaseSaleMedicine(Request $request)
+    public function comparePurchaseSaleItem(Request $request)
     {
         try {
             $data = [];
@@ -122,7 +122,7 @@ class IncomeController extends Controller
 
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
-                $data['purchase'][] = MedicineStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_purchase * (stock + sold)'));
+                $data['purchase'][] = ItemStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_purchase * (stock + sold)'));
                 $data['sell'][] = Recipe::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_sell * qty'));
             }
 
@@ -155,7 +155,7 @@ class IncomeController extends Controller
         return response()->json($response);
     }
 
-    public function profitMedicine(Request $request)
+    public function profitItem(Request $request)
     {
         try {
             $data = [];

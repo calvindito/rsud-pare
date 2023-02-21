@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Farmasi - <span class="fw-normal">Obat</span>
+                Farmasi - <span class="fw-normal">Barang</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -33,6 +33,7 @@
                         <th nowrap>Satuan</th>
                         <th nowrap>Pabrik</th>
                         <th nowrap>Distributor</th>
+                        <th nowrap>Jenis</th>
                         <th nowrap>Nama Barang</th>
                         <th nowrap>Nama Generik</th>
                         <th nowrap>Kekuatan</th>
@@ -73,11 +74,21 @@
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Satuan <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <select class="form-select" name="medicine_unit_id" id="medicine_unit_id">
+                            <select class="form-select" name="item_unit_id" id="item_unit_id">
                                 <option value="">-- Pilih --</option>
-                                @foreach($medicineUnit as $mu)
+                                @foreach($itemUnit as $mu)
                                     <option value="{{ $mu->id }}">{{ $mu->name }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Jenis <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="type" id="type">
+                                <option value="">-- Pilih --</option>
+                                <option value="1">Obat</option>
+                                <option value="2">Alat Kesehatan</option>
                             </select>
                         </div>
                     </div>
@@ -252,7 +263,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("pharmacy/medicine/datatable") }}',
+                url: '{{ url("pharmacy/item/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -275,9 +286,10 @@
                 { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'code_t', name: 'code_t', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'code_type', name: 'code_type', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'medicine_unit_name', name: 'medicine_unit_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'item_unit_name', name: 'item_unit_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'factory_name', name: 'factory_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'distributor_name', name: 'distributor_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'type_format_result', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name_generic', name: 'name_generic', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'power', name: 'power', orderable: true, searchable: false, className: 'align-middle' },
@@ -289,7 +301,7 @@
 
     function createData() {
         $.ajax({
-            url: '{{ url("pharmacy/medicine/create-data") }}',
+            url: '{{ url("pharmacy/item/create-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -332,7 +344,7 @@
 
     function showDataUpdate(id) {
         $.ajax({
-            url: '{{ url("pharmacy/medicine/show-data") }}',
+            url: '{{ url("pharmacy/item/show-data") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
@@ -347,7 +359,8 @@
 
                 $('#table_id').val(response.id);
                 $('#distributor_id').val(response.distributor_id).change();
-                $('#medicine_unit_id').val(response.medicine_unit_id).change();
+                $('#item_unit_id').val(response.item_unit_id).change();
+                $('#type').val(response.type).change();
                 $('#code').val(response.code);
                 $('#code_t').val(response.code_t);
                 $('#code_type').val(response.code_type);
@@ -377,7 +390,7 @@
 
     function updateData() {
         $.ajax({
-            url: '{{ url("pharmacy/medicine/update-data") }}',
+            url: '{{ url("pharmacy/item/update-data") }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -432,7 +445,7 @@
                 }),
                 Noty.button('Hapus', 'btn btn-danger ms-2', function () {
                     $.ajax({
-                        url: '{{ url("pharmacy/medicine/destroy-data") }}',
+                        url: '{{ url("pharmacy/item/destroy-data") }}',
                         type: 'DELETE',
                         dataType: 'JSON',
                         data: {

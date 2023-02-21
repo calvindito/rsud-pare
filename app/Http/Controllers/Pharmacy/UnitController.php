@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Pharmacy;
 
-use App\Models\MedicineUnit;
+use App\Models\ItemUnit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -22,7 +22,7 @@ class UnitController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = MedicineUnit::query();
+        $data = ItemUnit::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -30,7 +30,7 @@ class UnitController extends Controller
                     $query->where('name', 'like', "%$search%");
                 }
             })
-            ->addColumn('action', function (MedicineUnit $query) {
+            ->addColumn('action', function (ItemUnit $query) {
                 return '
                     <div class="btn-group">
                         <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -68,7 +68,7 @@ class UnitController extends Controller
             ];
         } else {
             try {
-                $createData = MedicineUnit::create([
+                $createData = ItemUnit::create([
                     'name' => $request->name
                 ]);
 
@@ -90,7 +90,7 @@ class UnitController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = MedicineUnit::findOrFail($id);
+        $data = ItemUnit::findOrFail($id);
 
         return response()->json($data);
     }
@@ -111,7 +111,7 @@ class UnitController extends Controller
             ];
         } else {
             try {
-                MedicineUnit::findOrFail($id)->update([
+                ItemUnit::findOrFail($id)->update([
                     'name' => $request->name
                 ]);
 
@@ -135,7 +135,7 @@ class UnitController extends Controller
         $id = $request->id;
 
         try {
-            MedicineUnit::destroy($id);
+            ItemUnit::destroy($id);
 
             $response = [
                 'code' => 200,

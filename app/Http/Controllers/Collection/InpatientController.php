@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\Collection;
 
+use App\Models\Item;
 use App\Models\Unit;
 use App\Helpers\Simrs;
 use App\Models\Doctor;
 use App\Models\LabItem;
 use App\Models\Patient;
 use App\Models\Employee;
-use App\Models\Medicine;
 use App\Models\Religion;
 use App\Models\RoomType;
 use App\Models\Inpatient;
+use App\Models\ItemStock;
 use App\Models\Operation;
 use App\Models\Radiology;
 use App\Models\LabRequest;
 use App\Models\ActionOther;
 use App\Models\LabItemGroup;
 use Illuminate\Http\Request;
-use App\Models\MedicineStock;
 use App\Models\MedicalService;
 use App\Models\ActionOperative;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -448,7 +448,7 @@ class InpatientController extends Controller
             $validation = Validator::make($request->all(), [
                 'item' => 'required',
             ], [
-                'item.required' => 'mohon mengisi minimal 1 obat yang diresepkan',
+                'item.required' => 'mohon mengisi minimal 1 barang yang diresepkan',
             ]);
 
             if ($validation->fails()) {
@@ -462,13 +462,13 @@ class InpatientController extends Controller
 
                     if ($request->has('item')) {
                         foreach ($request->item as $key => $i) {
-                            $medicineStockId = isset($request->r_medicine_stock_id[$key]) ? $request->r_medicine_stock_id[$key] : 0;
+                            $itemStockId = isset($request->r_item_stock_id[$key]) ? $request->r_item_stock_id[$key] : 0;
                             $status = isset($request->r_status[$key]) ? $request->r_status[$key] : null;
 
-                            if ($medicineStockId && empty($status)) {
-                                $medicineStock = MedicineStock::where('stock', '>', 0)->find($medicineStockId);
+                            if ($itemStockId && empty($status)) {
+                                $itemStock = ItemStock::where('stock', '>', 0)->find($itemStockId);
                                 $qty = isset($request->r_qty[$key]) ? (int) $request->r_qty[$key] : 0;
-                                $stock = $medicineStock->stock ?? 0;
+                                $stock = $itemStock->stock ?? 0;
 
                                 if ($stock > 0) {
                                     if ($qty > $stock) {
@@ -478,11 +478,11 @@ class InpatientController extends Controller
                                     $inpatient->recipe()->create([
                                         'user_id' => auth()->id(),
                                         'patient_id' => $inpatient->patient_id,
-                                        'medicine_stock_id' => $medicineStockId,
+                                        'item_stock_id' => $itemStockId,
                                         'qty' => $qty,
-                                        'price_purchase' => $medicineStock->price_purchase ?? null,
-                                        'price_sell' => $medicineStock->price_sell ?? null,
-                                        'discount' => $medicineStock->discount ?? null
+                                        'price_purchase' => $itemStock->price_purchase ?? null,
+                                        'price_sell' => $itemStock->price_sell ?? null,
+                                        'discount' => $itemStock->discount ?? null
                                     ]);
                                 }
                             }
@@ -508,7 +508,7 @@ class InpatientController extends Controller
             'inpatient' => $inpatient,
             'patient' => $inpatient->patient,
             'recipe' => $inpatient->recipe,
-            'medicine' => Medicine::available(['type' => Inpatient::class, 'id' => $inpatient->id])->get(),
+            'item' => Item::available(['type' => Inpatient::class, 'id' => $inpatient->id])->get(),
             'content' => 'collection.inpatient-recipe'
         ];
 

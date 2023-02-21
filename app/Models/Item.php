@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Medicine extends Model
+class Item extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -15,7 +15,7 @@ class Medicine extends Model
      *
      * @var string
      */
-    protected $table = 'medicines';
+    protected $table = 'items';
 
     /**
      * The primary key associated with the table.
@@ -32,6 +32,33 @@ class Medicine extends Model
     protected $guarded = ['id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['type_format_result'];
+
+    /**
+     * getTypeAttribute
+     *
+     * @return void
+     */
+    protected function getTypeFormatResultAttribute()
+    {
+        $type = isset($this->attributes['type']) ? $this->attributes['type'] : null;
+
+        if ($type == 1) {
+            $text = 'Obat';
+        } else if ($type == 2) {
+            $text = 'Alat Kesehatan';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
+
+    /**
      * scopeAvailable
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -40,7 +67,7 @@ class Medicine extends Model
      */
     public function scopeAvailable($query, $morphs = [])
     {
-        return $query->whereHas('medicineStock', function ($query) use ($morphs) {
+        return $query->whereHas('itemStock', function ($query) use ($morphs) {
             $query->where('stock', '>', 0);
 
             if ($morphs) {
@@ -65,13 +92,13 @@ class Medicine extends Model
     }
 
     /**
-     * medicineStock
+     * itemStock
      *
      * @return void
      */
-    public function medicineStock()
+    public function itemStock()
     {
-        return $this->hasMany(MedicineStock::class);
+        return $this->hasMany(ItemStock::class);
     }
 
     /**
@@ -81,8 +108,8 @@ class Medicine extends Model
      */
     public function stock($type = null)
     {
-        $stock = $this->medicineStock->sum('stock');
-        $sold = $this->medicineStock->sum('sold');
+        $stock = $this->itemStock->sum('stock');
+        $sold = $this->itemStock->sum('sold');
         $total = $stock + $sold;
 
         if ($type == 'sold') {
@@ -103,7 +130,7 @@ class Medicine extends Model
      */
     public function fifoStock()
     {
-        return $this->hasOne(MedicineStock::class)->withTrashed()->oldest('expired_date');
+        return $this->hasOne(ItemStock::class)->withTrashed()->oldest('expired_date');
     }
 
     /**
@@ -117,12 +144,12 @@ class Medicine extends Model
     }
 
     /**
-     * medicineUnit
+     * itemUnit
      *
      * @return void
      */
-    public function medicineUnit()
+    public function itemUnit()
     {
-        return $this->belongsTo(MedicineUnit::class);
+        return $this->belongsTo(ItemUnit::class);
     }
 }

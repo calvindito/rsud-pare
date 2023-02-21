@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Pharmacy;
 
-use App\Models\Medicine;
+use App\Models\Item;
+use App\Models\ItemStock;
 use Illuminate\Http\Request;
-use App\Models\MedicineStock;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +14,7 @@ class StockController extends Controller
     public function index()
     {
         $data = [
-            'medicine' => Medicine::all(),
+            'item' => Item::all(),
             'content' => 'pharmacy.stock'
         ];
 
@@ -24,12 +24,12 @@ class StockController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = MedicineStock::query();
+        $data = ItemStock::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->whereHas('medicine', function ($query) use ($search) {
+                    $query->whereHas('item', function ($query) use ($search) {
                         $query->orWhere('name', 'like', "%$search%");
                     });
                 }
@@ -37,19 +37,28 @@ class StockController extends Controller
             ->editColumn('price_purchase', '{{ Simrs::formatRupiah($price_purchase) }}')
             ->editColumn('price_sell', '{{ Simrs::formatRupiah($price_sell) }}')
             ->editColumn('discount', '{{ $discount }} %')
-            ->addColumn('total', function (MedicineStock $query) {
+            ->addColumn('total', function (ItemStock $query) {
                 return $query->stock + $query->sold;
             })
-            ->addColumn('medicine_name', function (MedicineStock $query) {
-                $medicineName = null;
+            ->addColumn('item_name', function (ItemStock $query) {
+                $itemName = null;
 
-                if (isset($query->medicine)) {
-                    $medicineName = $query->medicine->name;
+                if (isset($query->item)) {
+                    $itemName = $query->item->name;
                 }
 
-                return $medicineName;
+                return $itemName;
             })
-            ->addColumn('action', function (MedicineStock $query) {
+            ->addColumn('item_type_format_result', function (ItemStock $query) {
+                $itemTypeFormatResultName = null;
+
+                if (isset($query->item)) {
+                    $itemTypeFormatResultName = $query->item->type_format_result;
+                }
+
+                return $itemTypeFormatResultName;
+            })
+            ->addColumn('action', function (ItemStock $query) {
                 if ($query->stock > 0 && $query->sold > 0) {
                     $btnAction = '
                         <button type="button" class="btn btn-light text-info btn-sm fw-semibold no-click">Sedang Berjalan</button>
@@ -87,14 +96,14 @@ class StockController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'medicine_id' => 'required',
+            'item_id' => 'required',
             'expired_date' => 'required',
             'stock' => 'required',
             'price_purchase' => 'required',
             'price_sell' => 'required',
             'discount' => 'required|numeric|max:100'
         ], [
-            'medicine_id.required' => 'mohon memilih obat',
+            'item_id.required' => 'mohon memilih item',
             'expired_date.required' => 'tanggal kadaluwarsa tidak boleh kosong',
             'stock.required' => 'stok tidak boleh kosong',
             'price_purchase.required' => 'harga beli tidak boleh kosong',
@@ -111,8 +120,8 @@ class StockController extends Controller
             ];
         } else {
             try {
-                $createData = MedicineStock::create([
-                    'medicine_id' => $request->medicine_id,
+                $createData = ItemStock::create([
+                    'item_id' => $request->item_id,
                     'expired_date' => $request->expired_date,
                     'stock' => $request->stock,
                     'price_purchase' => $request->price_purchase,
@@ -138,7 +147,7 @@ class StockController extends Controller
     public function showData(Request $request)
     {
         $id = $request->id;
-        $data = MedicineStock::with('medicine')->findOrFail($id);
+        $data = ItemStock::with('item')->findOrFail($id);
 
         return response()->json($data);
     }
@@ -147,14 +156,14 @@ class StockController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'medicine_id' => 'required',
+            'item_id' => 'required',
             'expired_date' => 'required',
             'stock' => 'required',
             'price_purchase' => 'required',
             'price_sell' => 'required',
             'discount' => 'required|numeric|max:100'
         ], [
-            'medicine_id.required' => 'mohon memilih obat',
+            'item_id.required' => 'mohon memilih item',
             'expired_date.required' => 'tanggal kadaluwarsa tidak boleh kosong',
             'stock.required' => 'stok tidak boleh kosong',
             'price_purchase.required' => 'harga beli tidak boleh kosong',
@@ -171,8 +180,8 @@ class StockController extends Controller
             ];
         } else {
             try {
-                $updateData = MedicineStock::findOrFail($id)->update([
-                    'medicine_id' => $request->medicine_id,
+                $updateData = ItemStock::findOrFail($id)->update([
+                    'item_id' => $request->item_id,
                     'expired_date' => $request->expired_date,
                     'stock' => $request->stock,
                     'price_purchase' => $request->price_purchase,
@@ -200,7 +209,7 @@ class StockController extends Controller
         $id = $request->id;
 
         try {
-            MedicineStock::destroy($id);
+            ItemStock::destroy($id);
 
             $response = [
                 'code' => 200,

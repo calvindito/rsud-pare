@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LabItemGroupSeeder::class);
         $this->call(LabFeeSeeder::class);
         $this->call(LabItemConditionSeeder::class);
-        $this->call(MedicineSeeder::class);
+        $this->call(ItemSeeder::class);
         $this->call(RadiologySeeder::class);
         $this->call(RadiologyActionSeeder::class);
         $this->call(UserSeeder::class);

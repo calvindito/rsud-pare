@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class MedicineUnit extends Model
+class ItemStock extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -15,7 +15,7 @@ class MedicineUnit extends Model
      *
      * @var string
      */
-    protected $table = 'medicine_units';
+    protected $table = 'item_stocks';
 
     /**
      * The primary key associated with the table.
@@ -30,4 +30,24 @@ class MedicineUnit extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * item
+     *
+     * @return void
+     */
+    public function item()
+    {
+        return $this->belongsTo(Item::class)->withTrashed();
+    }
+
+    /**
+     * recipe
+     *
+     * @return void
+     */
+    public function recipe()
+    {
+        return $this->hasMany(Recipe::class);
+    }
 }

@@ -31,7 +31,7 @@
 <body>
     @include('pdf.header')
     <hr style="margin-top:20px; margin-bottom:20px;">
-    <div style="text-align:center;">{{ $medicine->name }}</div>
+    <div style="text-align:center;">{{ $item->name }}</div>
     <hr style="margin-top:20px; margin-bottom:20px;">
     <table style="width:100%; margin-bottom:20px;">
         <tr style="font-size:14px;">

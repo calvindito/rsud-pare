@@ -63,10 +63,10 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <div class="form-group">
-                                        <select class="form-select select2" name="r_medicine_stock_id[]" {{ !empty($r->status) || $emergencyDepartment->status != 1 ? 'disabled' : '' }}>
-                                            <option value="">-- Pilih Obat --</option>
-                                            @foreach($medicine as $m)
-                                                <option value="{{ $m->fifoStock->id }}" {{ ($r->medicine_stock_id ?? null) == $m->fifoStock->id ? 'selected' : '' }}>{{ $m->name }}</option>
+                                        <select class="form-select select2" name="r_item_stock_id[]" {{ !empty($r->status) || $emergencyDepartment->status != 1 ? 'disabled' : '' }}>
+                                            <option value="">-- Pilih Barang --</option>
+                                            @foreach($item as $m)
+                                                <option value="{{ $m->fifoStock->id }}" {{ ($r->item_stock_id ?? null) == $m->fifoStock->id ? 'selected' : '' }}>{{ $m->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -139,9 +139,9 @@
                 <div class="row">
                     <div class="col-md-7">
                         <div class="form-group">
-                            <select class="form-select select2" name="r_medicine_stock_id[]">
-                                <option value="">-- Pilih Obat --</option>
-                                @foreach($medicine as $m)
+                            <select class="form-select select2" name="r_item_stock_id[]">
+                                <option value="">-- Pilih Barang --</option>
+                                @foreach($item as $m)
                                     <option value="{{ $m->fifoStock->id }}">{{ $m->name }}</option>
                                 @endforeach
                             </select>

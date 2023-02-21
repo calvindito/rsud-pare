@@ -13,7 +13,7 @@
             <form id="form-chart-1">
                 <div class="card">
                     <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                        <h6 class="py-sm-3 mb-sm-0">Pembelian Obat Per Tahun</h6>
+                        <h6 class="py-sm-3 mb-sm-0">Pembelian Barang Per Tahun</h6>
                         <div class="ms-sm-auto my-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
                                 <div class="input-group">
@@ -40,7 +40,7 @@
             <form id="form-chart-2">
                 <div class="card">
                     <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                        <h6 class="py-sm-3 mb-sm-0">Penjualan Obat Per Tahun</h6>
+                        <h6 class="py-sm-3 mb-sm-0">Penjualan Barang Per Tahun</h6>
                         <div class="ms-sm-auto my-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
                                 <div class="input-group">
@@ -67,7 +67,7 @@
             <form id="form-chart-3">
                 <div class="card">
                     <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                        <h6 class="py-sm-3 mb-sm-0">Perbandingan Pembelian & Penjualan Obat Per Tahun</h6>
+                        <h6 class="py-sm-3 mb-sm-0">Perbandingan Pembelian & Penjualan Barang Per Tahun</h6>
                         <div class="ms-sm-auto my-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
                                 <div class="input-group">
@@ -94,7 +94,7 @@
             <form id="form-chart-4">
                 <div class="card">
                     <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                        <h6 class="py-sm-3 mb-sm-0">Laba Pendapatan Obat Per Tahun</h6>
+                        <h6 class="py-sm-3 mb-sm-0">Laba Pendapatan Barang Per Tahun</h6>
                         <div class="ms-sm-auto my-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
                                 <div class="input-group">
@@ -164,7 +164,7 @@
 
     function chart1() {
         $.ajax({
-            url: '{{ url("dashboard/income/purchase-medicine") }}',
+            url: '{{ url("dashboard/income/purchase-item") }}',
             type: 'GET',
             dataType: 'JSON',
             data: $('#form-chart-1').serialize(),
@@ -251,7 +251,7 @@
 
     function chart2() {
         $.ajax({
-            url: '{{ url("dashboard/income/sale-medicine") }}',
+            url: '{{ url("dashboard/income/sale-item") }}',
             type: 'GET',
             dataType: 'JSON',
             data: $('#form-chart-2').serialize(),
@@ -338,7 +338,7 @@
 
     function chart3() {
         $.ajax({
-            url: '{{ url("dashboard/income/compare-purchase-sale-medicine") }}',
+            url: '{{ url("dashboard/income/compare-purchase-sale-item") }}',
             type: 'GET',
             dataType: 'JSON',
             data: $('#form-chart-3').serialize(),
@@ -435,7 +435,7 @@
 
     function chart4() {
         $.ajax({
-            url: '{{ url("dashboard/income/profit-medicine") }}',
+            url: '{{ url("dashboard/income/profit-item") }}',
             type: 'GET',
             dataType: 'JSON',
             data: $('#form-chart-4').serialize(),

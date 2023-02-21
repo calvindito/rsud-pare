@@ -498,10 +498,10 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'medicine',
-                'menu' => 'Obat',
+                'name' => 'item',
+                'menu' => 'Barang',
                 'icon' => null,
-                'link' => 'pharmacy/medicine',
+                'link' => 'pharmacy/item',
                 'sub' => null
             ],
             [
@@ -571,10 +571,10 @@ return [
         'link' => 'javascript:void(0);',
         'sub' => [
             [
-                'name' => 'medicine',
-                'menu' => 'Obat',
+                'name' => 'item',
+                'menu' => 'Barang',
                 'icon' => null,
-                'link' => 'report/medicine',
+                'link' => 'report/item',
                 'sub' => null
             ],
             [

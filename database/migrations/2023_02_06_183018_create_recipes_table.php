@@ -17,7 +17,7 @@ class CreateRecipesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('patient_id')->nullable();
-            $table->unsignedBigInteger('medicine_stock_id')->nullable();
+            $table->unsignedBigInteger('item_stock_id')->nullable();
             $table->nullableMorphs('recipeable');
             $table->integer('qty')->default(0);
             $table->double('price_purchase')->nullable();

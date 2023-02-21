@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMedicineStocksTable extends Migration
+class CreateItemStocksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateMedicineStocksTable extends Migration
      */
     public function up()
     {
-        Schema::create('medicine_stocks', function (Blueprint $table) {
+        Schema::create('item_stocks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('medicine_id')->nullable();
+            $table->unsignedBigInteger('item_id')->nullable();
             $table->date('expired_date')->nullable();
             $table->integer('stock')->default(0);
             $table->integer('sold')->default(0);
@@ -34,6 +34,6 @@ class CreateMedicineStocksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medicine_stocks');
+        Schema::dropIfExists('item_stocks');
     }
 }

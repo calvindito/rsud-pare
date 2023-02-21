@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMedicineUnitsTable extends Migration
+class CreateItemUnitsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateMedicineUnitsTable extends Migration
      */
     public function up()
     {
-        Schema::create('medicine_units', function (Blueprint $table) {
+        Schema::create('item_units', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
@@ -28,6 +28,6 @@ class CreateMedicineUnitsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medicine_units');
+        Schema::dropIfExists('item_units');
     }
 }

@@ -50,14 +50,14 @@
     <form id="form-data">
         <div class="card">
             <div class="card-header">
-                <h6 class="hstack gap-2 mb-0">Permintaan Obat</h6>
+                <h6 class="hstack gap-2 mb-0">Permintaan Barang</h6>
             </div>
             <div class="card-body">
                 <table class="table table-bordered">
                     <thead class="bg-light">
                         <tr>
                             <th class="text-center" nowrap>No</th>
-                            <th nowrap>Obat</th>
+                            <th nowrap>Barang</th>
                             <th nowrap>Jumlah</th>
                             <th nowrap>Harga</th>
                             <th nowrap>Diskon</th>
@@ -65,11 +65,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($recipeMedicine as $key => $rm)
+                        @foreach($recipeItem as $key => $rm)
                             <tr>
                                 <input type="hidden" name="id[]" value="{{ $rm->id }}">
                                 <td class="align-middle text-center">{{ $key + 1 }}</td>
-                                <td class="align-middle" nowrap>{{ $rm->medicineStock->medicine->name }}</td>
+                                <td class="align-middle" nowrap>{{ $rm->itemStock->item->name }}</td>
                                 <td class="align-middle" nowrap>{{ $rm->qty }}</td>
                                 <td class="align-middle" nowrap>
                                     @if($rm->discount > 0)
