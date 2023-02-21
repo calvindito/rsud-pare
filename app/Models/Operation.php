@@ -219,16 +219,54 @@ class Operation extends Model
      */
     public function total()
     {
-        $hospitalService = $this->hospital_service;
-        $doctorOperatingRoom = $this->doctor_operating_room;
-        $doctorAnesthetist = $this->doctor_anesthetist;
-        $nurseOperatingRoom = $this->nurse_operating_room;
-        $nurseAnesthetist = $this->nurse_anesthetist;
-        $material = $this->material;
-        $monitoring = $this->monitoring;
-        $nursingCare = $this->nursing_care;
-        $total = $hospitalService + $doctorOperatingRoom + $doctorAnesthetist + $nurseOperatingRoom + $nurseAnesthetist + $material + $monitoring + $nursingCare;
+        $total = 0;
+        $total += $this->hospital_service;
+        $total += $this->doctor_operating_room;
+        $total += $this->doctor_anesthetist;
+        $total += $this->nurse_operating_room;
+        $total += $this->nurse_anesthetist;
+        $total += $this->monitoring;
+        $total += $this->nursing_care;
+        $total += $this->totalMaterial();
 
         return $total;
+    }
+
+    /**
+     * totalMaterial
+     *
+     * @return float
+     */
+    public function totalMaterial()
+    {
+        $total = 0;
+
+        if ($this->operationMaterial) {
+            foreach ($this->operationMaterial as $op) {
+                $discount = $op->discount;
+                $qty = $op->qty;
+                $price = $op->price_sell;
+                $nett = $price * $qty;
+
+                if ($discount > 0) {
+                    $priceDiscount = ($discount / 100) * $price;
+                    $nett = ($price - $priceDiscount) * $qty;
+                }
+
+                $total += $nett;
+            }
+        }
+
+        return $total;
+    }
+
+    /**
+     * operationMaterial
+     *
+     * @return void
+     */
+    public function operationMaterial()
+    {
+        return $this->hasMany(OperationMaterial::class);
     }
 }

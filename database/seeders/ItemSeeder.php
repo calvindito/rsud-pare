@@ -36,10 +36,11 @@ class ItemSeeder extends Seeder
                 ]);
 
                 $create->itemStock()->create([
-                    'stock' => $q->stok,
+                    'qty' => $q->stok,
                     'price_purchase' => $q->hb,
                     'price_sell' => $q->hj,
-                    'discount' => $q->diskon
+                    'discount' => $q->diskon,
+                    'type' => 1
                 ]);
             }
         });

@@ -37,8 +37,11 @@ class StockController extends Controller
             ->editColumn('price_purchase', '{{ Simrs::formatRupiah($price_purchase) }}')
             ->editColumn('price_sell', '{{ Simrs::formatRupiah($price_sell) }}')
             ->editColumn('discount', '{{ $discount }} %')
-            ->addColumn('total', function (ItemStock $query) {
-                return $query->stock + $query->sold;
+            ->addColumn('available', function (ItemStock $query) {
+                return $query->available();
+            })
+            ->addColumn('sold', function (ItemStock $query) {
+                return $query->sold();
             })
             ->addColumn('item_name', function (ItemStock $query) {
                 $itemName = null;
@@ -59,15 +62,11 @@ class StockController extends Controller
                 return $itemTypeFormatResultName;
             })
             ->addColumn('action', function (ItemStock $query) {
-                if ($query->stock > 0 && $query->sold > 0) {
-                    $btnAction = '
-                        <button type="button" class="btn btn-light text-info btn-sm fw-semibold no-click">Sedang Berjalan</button>
-                    ';
-                } else if ($query->stock == 0) {
+                if ($query->qty == $query->sold()) {
                     $btnAction = '
                         <button type="button" class="btn btn-light text-danger btn-sm fw-semibold no-click">Habis</button>
                     ';
-                } else {
+                } else if ($query->qty > 0 && $query->sold() == 0) {
                     $btnAction = '
                         <div class="btn-group">
                             <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
@@ -82,6 +81,10 @@ class StockController extends Controller
                                 </a>
                             </div>
                         </div>
+                    ';
+                } else {
+                    $btnAction = '
+                        <button type="button" class="btn btn-light text-info btn-sm fw-semibold no-click">Sedang Berjalan</button>
                     ';
                 }
 
@@ -98,14 +101,14 @@ class StockController extends Controller
         $validation = Validator::make($request->all(), [
             'item_id' => 'required',
             'expired_date' => 'required',
-            'stock' => 'required',
+            'qty' => 'required',
             'price_purchase' => 'required',
             'price_sell' => 'required',
             'discount' => 'required|numeric|max:100'
         ], [
             'item_id.required' => 'mohon memilih item',
             'expired_date.required' => 'tanggal kadaluwarsa tidak boleh kosong',
-            'stock.required' => 'stok tidak boleh kosong',
+            'qty.required' => 'jumlah tidak boleh kosong',
             'price_purchase.required' => 'harga beli tidak boleh kosong',
             'price_sell.required' => 'harga jual tidak boleh kosong',
             'discount.required' => 'diskon tidak boleh kosong',
@@ -123,10 +126,11 @@ class StockController extends Controller
                 $createData = ItemStock::create([
                     'item_id' => $request->item_id,
                     'expired_date' => $request->expired_date,
-                    'stock' => $request->stock,
+                    'qty' => $request->qty,
                     'price_purchase' => $request->price_purchase,
                     'price_sell' => $request->price_sell,
-                    'discount' => $request->discount
+                    'discount' => $request->discount,
+                    'type' => 1
                 ]);
 
                 $response = [
@@ -158,14 +162,14 @@ class StockController extends Controller
         $validation = Validator::make($request->all(), [
             'item_id' => 'required',
             'expired_date' => 'required',
-            'stock' => 'required',
+            'qty' => 'required',
             'price_purchase' => 'required',
             'price_sell' => 'required',
             'discount' => 'required|numeric|max:100'
         ], [
             'item_id.required' => 'mohon memilih item',
             'expired_date.required' => 'tanggal kadaluwarsa tidak boleh kosong',
-            'stock.required' => 'stok tidak boleh kosong',
+            'qty.required' => 'jumlah tidak boleh kosong',
             'price_purchase.required' => 'harga beli tidak boleh kosong',
             'price_sell.required' => 'harga jual tidak boleh kosong',
             'discount.required' => 'diskon tidak boleh kosong',
@@ -183,10 +187,11 @@ class StockController extends Controller
                 $updateData = ItemStock::findOrFail($id)->update([
                     'item_id' => $request->item_id,
                     'expired_date' => $request->expired_date,
-                    'stock' => $request->stock,
+                    'qty' => $request->qty,
                     'price_purchase' => $request->price_purchase,
                     'price_sell' => $request->price_sell,
-                    'discount' => $request->discount
+                    'discount' => $request->discount,
+                    'type' => 1
                 ]);
 
                 $response = [

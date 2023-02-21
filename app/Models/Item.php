@@ -62,22 +62,15 @@ class Item extends Model
      * scopeAvailable
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  mixed  $calculatedWithRecipe
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAvailable($query, $morphs = [])
+    public function scopeAvailable($query)
     {
-        return $query->whereHas('itemStock', function ($query) use ($morphs) {
-            $query->where('stock', '>', 0);
-
-            if ($morphs) {
-                $query->orWhereHas('recipe', function ($query) use ($morphs) {
-                    $query->where('recipeable_type', $morphs['type'])
-                        ->where('recipeable_id', $morphs['id']);
-                });
-            }
-
-            $query->take(1)->orderBy('expired_date');
+        return $query->whereHas('itemStock', function ($query) {
+            $query->selectRaw("
+                SUM(CASE WHEN type = '1' THEN qty END) as stock,
+                SUM(CASE WHEN type = '2' THEN qty END) as sold
+            ")->groupBy('item_id')->havingRaw('stock > IF(sold > 0, sold, 0)');
         });
     }
 
@@ -108,14 +101,14 @@ class Item extends Model
      */
     public function stock($type = null)
     {
-        $stock = $this->itemStock->sum('stock');
-        $sold = $this->itemStock->sum('sold');
-        $total = $stock + $sold;
+        $total = $this->itemStock->where('type', 1)->sum('qty');
+        $sold = $this->itemStock->where('type', 2)->sum('qty');
+        $available = $total - $sold;
 
         if ($type == 'sold') {
             $result = $sold;
         } else if ($type == 'available') {
-            $result = $stock;
+            $result = $available;
         } else {
             $result = $total;
         }

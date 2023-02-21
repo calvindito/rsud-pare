@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Operation;
 
+use App\Models\Item;
 use App\Models\Doctor;
+use App\Models\ItemStock;
 use App\Models\Operation;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -151,6 +153,50 @@ class DataController extends Controller
                     'status' => $request->status
                 ]);
 
+                $operation->fresh();
+                $operation->operationMaterial()->delete();
+
+                if ($request->has('item')) {
+                    foreach ($request->item as $key => $i) {
+                        $itemId = isset($request->om_item_id[$key]) ? $request->om_item_id[$key] : null;
+                        $qty = isset($request->om_qty[$key]) ? $request->om_qty[$key] : null;
+
+                        if ($itemId && $qty > 0) {
+                            $itemStock = ItemStock::selectRaw("*, SUM(CASE WHEN type = '1' THEN qty END) as stock, SUM(CASE WHEN type = '2' THEN qty END) as sold")
+                                ->where('item_id', $itemId)
+                                ->groupBy('item_id')
+                                ->havingRaw('stock > IF(sold > 0, sold, 0)')
+                                ->oldest('expired_date')
+                                ->first();
+
+                            if ($itemStock) {
+                                $stock = $itemStock->stock;
+                                $sold = $itemStock->sold;
+                                $qtyAvailable = $stock - $sold;
+
+                                if ($qty > $qtyAvailable) {
+                                    $qty = $qtyAvailable;
+                                }
+
+                                $operation->operationMaterial()->create([
+                                    'item_stock_id' => $itemStock->id,
+                                    'qty' => $qty,
+                                    'price_purchase' => $itemStock->price_purchase,
+                                    'price_sell' => $itemStock->price_sell,
+                                    'discount' => $itemStock->discount
+                                ]);
+
+                                if ($operation->status == 3) {
+                                    ItemStock::find($itemStock->id)->replicate()->fill([
+                                        'type' => 2,
+                                        'qty' => $qty
+                                    ])->save();
+                                }
+                            }
+                        }
+                    }
+                }
+
                 $response = [
                     'code' => 200,
                     'message' => 'Data operasi berhasil disimpan'
@@ -167,8 +213,10 @@ class DataController extends Controller
 
         $data = [
             'operation' => $operation,
+            'operationMaterial' => $operation->operationMaterial,
             'patient' => $operation->patient,
             'doctor' => Doctor::all(),
+            'item' => Item::available()->where('type', 2)->get(),
             'content' => 'operation.data-manage'
         ];
 

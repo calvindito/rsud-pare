@@ -32,6 +32,33 @@ class ItemStock extends Model
     protected $guarded = ['id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['type_format_result'];
+
+    /**
+     * getTypeAttribute
+     *
+     * @return void
+     */
+    protected function getTypeFormatResultAttribute()
+    {
+        $type = isset($this->attributes['type']) ? $this->attributes['type'] : null;
+
+        if ($type == 1) {
+            $text = 'Masuk';
+        } else if ($type == 2) {
+            $text = 'Keluar';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
+
+    /**
      * item
      *
      * @return void
@@ -42,12 +69,28 @@ class ItemStock extends Model
     }
 
     /**
-     * recipe
+     * available
      *
-     * @return void
+     * @return int
      */
-    public function recipe()
+    public function available()
     {
-        return $this->hasMany(Recipe::class);
+        $stock = $this->qty;
+        $sold = $this->sold();
+
+        return $stock - $sold;
+    }
+
+    /**
+     * sold
+     *
+     * @return int
+     */
+    public function sold()
+    {
+        return ItemStock::where('item_id', $this->item_id)
+            ->where('expired_date', $this->expired_date)
+            ->where('type', 2)
+            ->sum('qty');
     }
 }

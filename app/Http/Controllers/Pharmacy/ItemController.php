@@ -140,7 +140,7 @@ class ItemController extends Controller
                     'distributor_id' => $request->distributor_id,
                     'item_unit_id' => $request->item_unit_id,
                     'code' => $request->code,
-                    'code_item' => $request->code_item,
+                    'code_t' => $request->code_t,
                     'code_type' => $request->code_type,
                     'name' => $request->name,
                     'name_generic' => $request->name_generic,
@@ -152,7 +152,8 @@ class ItemController extends Controller
                     'non_generic' => $request->non_generic,
                     'nar' => $request->nar,
                     'oakrl' => $request->oakrl,
-                    'chronic' => $request->chronic
+                    'chronic' => $request->chronic,
+                    'type' => $request->type
                 ]);
 
                 $response = [
@@ -212,7 +213,7 @@ class ItemController extends Controller
                     'distributor_id' => $request->distributor_id,
                     'item_unit_id' => $request->item_unit_id,
                     'code' => $request->code,
-                    'code_item' => $request->code_item,
+                    'code_t' => $request->code_t,
                     'code_type' => $request->code_type,
                     'name' => $request->name,
                     'name_generic' => $request->name_generic,
@@ -224,7 +225,8 @@ class ItemController extends Controller
                     'non_generic' => $request->non_generic,
                     'nar' => $request->nar,
                     'oakrl' => $request->oakrl,
-                    'chronic' => $request->chronic
+                    'chronic' => $request->chronic,
+                    'type' => $request->type
                 ]);
 
                 $response = [

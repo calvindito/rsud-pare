@@ -191,27 +191,29 @@
                     <label class="col-form-label col-lg-3">Asisten Dokter</label>
                     <div class="col-md-9">
                         <div id="plus-destroy-item">
-                            @if($operation->operationDoctorAssistant->count() > 0)
-                                @foreach($operation->operationDoctorAssistant as $oda)
-                                    <div class="form-group">
-                                        <input type="hidden" name="item[]" value="{{ true }}">
-                                        <div class="row">
-                                            <div class="{{ $outpatient->status != 4 ? 'col-md-11' : 'col-md-12' }}">
-                                                <select class="form-select select2" name="o_employee_id[]">
-                                                    <option value="">-- Pilih --</option>
-                                                    @foreach($employee as $e)
-                                                        <option value="{{ $e->id }}" {{ $oda->employee_id == $e->id ? 'selected' : '' }}>{{ $e->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            @if($outpatient->status != 4)
-                                                <div class="col-md-1">
-                                                    <button type="button" class="btn btn-light col-12 btn-sm" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                            @if($operation)
+                                @if($operation->operationDoctorAssistant->count() > 0)
+                                    @foreach($operation->operationDoctorAssistant as $oda)
+                                        <div class="form-group">
+                                            <input type="hidden" name="item[]" value="{{ true }}">
+                                            <div class="row">
+                                                <div class="{{ $outpatient->status != 4 ? 'col-md-11' : 'col-md-12' }}">
+                                                    <select class="form-select select2" name="o_employee_id[]">
+                                                        <option value="">-- Pilih --</option>
+                                                        @foreach($employee as $e)
+                                                            <option value="{{ $e->id }}" {{ $oda->employee_id == $e->id ? 'selected' : '' }}>{{ $e->name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
-                                            @endif
+                                                @if($outpatient->status != 4)
+                                                    <div class="col-md-1">
+                                                        <button type="button" class="btn btn-light col-12 btn-sm" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                @endforeach
+                                    @endforeach
+                                @endif
                             @endif
                         </div>
                     </div>

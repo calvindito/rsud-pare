@@ -109,7 +109,7 @@
         </tr>
         <tr>
             <th style="text-align:left;">Biaya Bahan</th>
-            <td>{{ Simrs::formatRupiah($data->material) }}</td>
+            <td>{{ Simrs::formatRupiah($data->totalMaterial()) }}</td>
         </tr>
         <tr>
             <th style="text-align:left;">Biaya RR Monitoring</th>

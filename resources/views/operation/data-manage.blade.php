@@ -157,12 +157,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-2">Biaya Bahan</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control number-format" name="material" id="material" value="{{ $operation->material ?? '' }}">
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label class="col-form-label col-lg-2">Biaya RR Monitoring</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control number-format" name="monitoring" id="monitoring" value="{{ $operation->monitoring ?? '' }}">
@@ -181,7 +175,45 @@
                         <div class="form-text bg-light border border-top-0 rounded-bottom px-2 py-1 mt-0">kosongi jika belum selesai operasi</div>
                     </div>
                 </div>
-                <div class="form-group"><hr class="mb-0"></div>
+                <fieldset>
+                    <legend class="fs-base fw-bold border-bottom pb-2 mb-3">Biaya Bahan</legend>
+                    <div id="plus-destroy-item">
+                        @foreach($operationMaterial as $om)
+                            <div id="item">
+                                <input type="hidden" name="item[]" value="{{ true }}">
+                                <div class="row">
+                                    <div class="{{ $operation->status != 3 ? 'col-md-8' : 'col-md-9' }}">
+                                        <div class="form-group">
+                                            <select class="form-select" name="om_item_id[]">
+                                                @foreach($item as $i)
+                                                    <option value="{{ $i->id }}" {{ $om->itemStock->item_id == $i->id ? 'selected' : '' }}>{{ $i->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <input type="number" class="form-control" name="om_qty[]" min="1" value="{{ $om->qty }}" placeholder="Masukan jumlah">
+                                        </div>
+                                    </div>
+                                    @if($operation->status != 3)
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-danger col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                    @if($operation->status != 3)
+                        <div class="form-group">
+                            <button type="button" class="btn btn-teal col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Biaya</button>
+                        </div>
+                    @endif
+                </fieldset>
+                <div class="form-group"><hr class="mt-0 mb-0"></div>
                 <div class="form-group text-center mb-0">
                     @if($operation->status != 3)
                         <div class="row">
@@ -213,7 +245,7 @@
                             Simpan Data
                         </button>
                     @else
-                        <a href="{{ url('operation/data/print/' . $operation->id) }}" class="btn btn-teal">
+                        <a href="{{ url('operation/data/print/' . $operation->id) }}" class="btn btn-teal" target="_blank">
                             <i class="ph-printer me-2"></i>
                             Cetak
                         </a>
@@ -237,12 +269,45 @@
         if(status != 3) {
             $('.form-control').attr('disabled', false);
             $('.form-select').attr('disabled', false);
-            $('input[type="radio"]').attr('disabled', false);
         } else {
             $('.form-control').attr('disabled', true);
             $('.form-select').attr('disabled', true);
-            $('input[type="radio"]').attr('disabled', true);
         }
+    }
+
+    function addItem() {
+        var formElement = $(`
+            <div id="item">
+                <input type="hidden" name="item[]" value="{{ true }}">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <select class="form-select" name="om_item_id[]">
+                                @foreach($item as $i)
+                                    <option value="{{ $i->id }}">{{ $i->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="number" class="form-control" name="om_qty[]" min="1" placeholder="Masukan jumlah">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-danger col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `).hide().fadeIn(500);
+
+        $('#plus-destroy-item').append(formElement);
+    }
+
+    function removeItem(paramObj) {
+        $(paramObj).parents('#item').remove();
     }
 
     function clearValidation() {

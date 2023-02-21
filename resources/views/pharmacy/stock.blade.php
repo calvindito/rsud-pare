@@ -76,9 +76,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Stok <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Jumlah <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="stock" id="stock" placeholder="Masukan stok">
+                            <input type="number" class="form-control" name="qty" id="qty" placeholder="Masukan jumlah">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -214,9 +214,9 @@
                 { data: 'item_name', name: 'item_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'item_type_format_result', name: 'item_type_format_result', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'expired_date', name: 'expired_date', orderable: true, searchable: true, className: 'align-middle' },
-                { data: 'total', name: 'total', orderable: false, searchable: false, className: 'align-middle' },
-                { data: 'stock', name: 'stock', orderable: true, searchable: false, className: 'align-middle' },
-                { data: 'sold', name: 'sold', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'qty', name: 'qty', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'available', name: 'available', orderable: false, searchable: false, className: 'align-middle' },
+                { data: 'sold', name: 'sold', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'price_purchase', name: 'price_purchase', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'price_sell', name: 'price_sell', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'discount', name: 'discount', orderable: true, searchable: false, className: 'align-middle' },
@@ -286,7 +286,7 @@
                 $('#table_id').val(response.id);
                 $('#item_id').html('<option value="' + response.item_id + '" selected>' + response.item.name + '</option>');
                 $('#expired_date').val(response.expired_date);
-                $('#stock').val(response.stock);
+                $('#qty').val(response.qty);
                 $('#price_purchase').val(response.price_purchase);
                 $('#price_sell').val(response.price_sell);
                 $('#discount').val(response.discount);

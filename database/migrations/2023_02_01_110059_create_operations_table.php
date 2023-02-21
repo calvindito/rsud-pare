@@ -33,7 +33,6 @@ class CreateOperationsTable extends Migration
             $table->double('doctor_anesthetist')->nullable();
             $table->double('nurse_operating_room')->nullable();
             $table->double('nurse_anesthetist')->nullable();
-            $table->double('material')->nullable();
             $table->double('monitoring')->nullable();
             $table->double('nursing_care')->nullable();
             $table->char('status', 1)->default(1);

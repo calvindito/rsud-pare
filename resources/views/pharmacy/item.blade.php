@@ -99,13 +99,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode T <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Kode T</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="code_t" id="code_t" placeholder="Masukan kode t">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Jenis</label>
+                        <label class="col-form-label col-lg-3">Kode Jenis <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" name="code_type" id="code_type" placeholder="Masukan kode jenis">
                         </div>
