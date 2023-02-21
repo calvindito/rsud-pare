@@ -98,7 +98,7 @@
                         @foreach($operation->operationDoctorAssistant as $key => $oda)
                             <tr>
                                 <td class="align-middle text-center" width="5%">{{ $key + 1 }}</td>
-                                <td class="align-middle">{{ $oda->name }}</td>
+                                <td class="align-middle">{{ $oda->employee->name }}</td>
                             </tr>
                         @endforeach
                     @else

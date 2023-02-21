@@ -7,6 +7,7 @@ use App\Helpers\Simrs;
 use App\Models\Doctor;
 use App\Models\LabItem;
 use App\Models\Patient;
+use App\Models\Employee;
 use App\Models\Religion;
 use App\Models\Operation;
 use App\Models\Radiology;
@@ -889,12 +890,12 @@ class OutpatientController extends Controller
 
                         if ($request->has('item')) {
                             foreach ($request->item as $key => $i) {
-                                $name = $request->operation_doctor_assistant_name[$key];
+                                $employeeId = isset($request->o_employee_id[$key]) ? $request->o_employee_id[$key] : null;
 
-                                if ($name) {
+                                if ($employeeId) {
                                     OperationDoctorAssistant::create([
                                         'operation_id' => $operationId,
-                                        'name' => $name
+                                        'employee_id' => $employeeId
                                     ]);
                                 }
                             }
@@ -925,6 +926,7 @@ class OutpatientController extends Controller
             $data = [
                 'outpatient' => $outpatient,
                 'operation' => $operation,
+                'employee' => Employee::where('status', true)->get(),
                 'unit' => Unit::where('type', 2)->orderBy('name')->get(),
                 'operatingRoomAction' => $operatingRoomAction,
                 'functionalService' => FunctionalService::where('status', true)->get(),

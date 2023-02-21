@@ -29,4 +29,14 @@ class OperationDoctorAssistant extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * employee
+     *
+     * @return void
+     */
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class);
+    }
 }

@@ -188,64 +188,102 @@
                     </div>
                 </div>
                 <div class="form-group row justify-content-end">
-                    <label class="col-form-label col-lg-3">Asisten</label>
+                    <label class="col-form-label col-lg-3">Asisten Dokter</label>
                     <div class="col-md-9">
                         <div id="plus-destroy-item">
-                            @isset($operation->operationDoctorAssistant)
-                                @if($operation->operationDoctorAssistant->count() > 0)
-                                    @foreach($operation->operationDoctorAssistant as $oda)
-                                        <div class="form-group">
-                                            <input type="hidden" name="item[]" value="{{ true }}">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="operation_doctor_assistant_name[]" value="{{ $oda->name }}" placeholder="Masukan nama asisten">
-                                                <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                            @if($operation->operationDoctorAssistant->count() > 0)
+                                @foreach($operation->operationDoctorAssistant as $oda)
+                                    <div class="form-group">
+                                        <input type="hidden" name="item[]" value="{{ true }}">
+                                        <div class="row">
+                                            <div class="{{ $outpatient->status != 4 ? 'col-md-11' : 'col-md-12' }}">
+                                                <select class="form-select select2" name="o_employee_id[]">
+                                                    <option value="">-- Pilih --</option>
+                                                    @foreach($employee as $e)
+                                                        <option value="{{ $e->id }}" {{ $oda->employee_id == $e->id ? 'selected' : '' }}>{{ $e->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
+                                            @if($outpatient->status != 4)
+                                                <div class="col-md-1">
+                                                    <button type="button" class="btn btn-light col-12 btn-sm" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                                                </div>
+                                            @endif
                                         </div>
-                                    @endforeach
-                                @endif
+                                    </div>
+                                @endforeach
                             @endif
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <button type="button" class="btn btn-teal col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Asisten</button>
-                </div>
+                @if($outpatient->status != 4)
+                    <div class="form-group">
+                        <button type="button" class="btn btn-teal col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Asisten</button>
+                    </div>
+                @endif
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="text-end">
-                    <a href="{{ url('collection/outpatient') }}" class="btn btn-danger">
-                        <i class="ph-x me-1"></i>
-                        Batalkan Perubahan
-                    </a>
-                    <button type="button" class="btn btn-warning" onclick="updatePatient()">
-                        <i class="ph-floppy-disk me-2"></i>
-                        Simpan Data
-                    </button>
+        @if($outpatient->status != 4)
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-end">
+                        <a href="{{ url('collection/outpatient') }}" class="btn btn-danger">
+                            <i class="ph-x me-1"></i>
+                            Batalkan Perubahan
+                        </a>
+                        <button type="button" class="btn btn-warning" onclick="submitted()">
+                            <i class="ph-floppy-disk me-2"></i>
+                            Simpan Data
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endif
     </form>
 </div>
 
 <script>
     $(function() {
         loadPatient();
+        checkStatus();
+
+        $('.select2').select2();
     });
+
+    function checkStatus() {
+        var status = '{{ $outpatient->status }}';
+
+        if(status != 4) {
+            $('.form-control').attr('disabled', false);
+            $('.form-select').attr('disabled', false);
+        } else {
+            $('.form-control').attr('disabled', true);
+            $('.form-select').attr('disabled', true);
+        }
+    }
 
     function addItem() {
         var formElement = $(`
             <div class="form-group">
                 <input type="hidden" name="item[]" value="{{ true }}">
-                <div class="input-group">
-                    <input type="text" class="form-control" name="operation_doctor_assistant_name[]" placeholder="Masukan nama asisten">
-                    <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                <div class="row">
+                    <div class="col-md-11">
+                        <select class="form-select select2" name="o_employee_id[]">
+                            <option value="">-- Pilih --</option>
+                            @foreach($employee as $e)
+                                <option value="{{ $e->id }}">{{ $e->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-light col-12 btn-sm" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
+                    </div>
                 </div>
             </div>
         `).hide().fadeIn(500);
 
         $('#plus-destroy-item').append(formElement);
+        $('.select2').select2();
     }
 
     function removeItem(paramObj) {
@@ -301,7 +339,7 @@
         });
     }
 
-    function updatePatient() {
+    function submitted() {
         $.ajax({
             url: '{{ url("collection/outpatient/operating-room/" . $outpatient->id) }}',
             type: 'POST',

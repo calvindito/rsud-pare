@@ -16,7 +16,7 @@ class CreateOperationDoctorAssistantsTable extends Migration
         Schema::create('operation_doctor_assistants', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('operation_id')->nullable();
-            $table->string('name')->nullable();
+            $table->unsignedBigInteger('employee_id')->nullable();
             $table->timestamps();
         });
     }
