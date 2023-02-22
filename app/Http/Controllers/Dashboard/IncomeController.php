@@ -14,6 +14,8 @@ class IncomeController extends Controller
 {
     public function index()
     {
+        return view('errors.coming-soon');
+
         $data = [
             'content' => 'dashboard.income'
         ];

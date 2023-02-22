@@ -40,7 +40,7 @@ class ItemController extends Controller
             })
             ->addColumn('stock', function (Item $query) {
                 $html = '<div><small><b>Total : </b>' . $query->stock() . '</small></div>';
-                $html .= '<div><small><b>Terjual : </b>' . $query->stock('sold') . '</small></div>';
+                $html .= '<div><small><b>Terpotong : </b>' . $query->stock('cut') . '</small></div>';
                 $html .= '<div><small><b>Tersedia : </b>' . $query->stock('available') . '</small></div>';
 
                 return '<button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$html'" . ')">Klik Disini</button>';

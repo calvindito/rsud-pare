@@ -608,8 +608,7 @@ Route::middleware('auth')->group(function () {
 
             Route::prefix('request')->group(function () {
                 Route::get('/', 'RequestController@index');
-                Route::get('datatable', 'RequestController@datatable');
-                Route::match(['get', 'post'], 'detail/{id}', 'RequestController@detail');
+                Route::post('submitted', 'RequestController@submitted');
             });
 
             Route::prefix('mutation')->group(function () {

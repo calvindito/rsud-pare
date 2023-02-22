@@ -41,6 +41,9 @@ class StockController extends Controller
             ->editColumn('price_purchase', '{{ Simrs::formatRupiah($price_purchase) }}')
             ->editColumn('price_sell', '{{ Simrs::formatRupiah($price_sell) }}')
             ->editColumn('discount', '{{ $discount }} %')
+            ->addColumn('status', function (DispensaryItemStock $query) {
+                return $query->status();
+            })
             ->addColumn('qty', function (DispensaryItemStock $query) {
                 return $query->status == 2 ? $query->qty : '-';
             })
@@ -99,16 +102,16 @@ class StockController extends Controller
                         ';
                     }
                 } else {
-                    $btnAction = '
-                        <button type="button" class="btn btn-light text-dark btn-sm fw-semibold no-click">' . $query->status() . '</button>
-                    ';
-
                     if ($query->status == 1) {
-                        $btnAction .= '
+                        $btnAction = '
                             <button type="button" class="btn btn-danger btn-sm fw-semibold fs-13" onclick="destroyData(' . $query->id . ')">
                                 <i class="ph-trash-simple me-2"></i>
                                 Hapus Data
                             </button>
+                        ';
+                    } else {
+                        $btnAction = '
+                            <button type="button" class="btn btn-light text-dark btn-sm fw-semibold no-click">Tidak Bisa Digunakan</button>
                         ';
                     }
                 }

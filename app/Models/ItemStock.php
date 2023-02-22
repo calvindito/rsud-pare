@@ -76,17 +76,17 @@ class ItemStock extends Model
     public function available()
     {
         $stock = $this->qty;
-        $sold = $this->sold();
+        $cut = $this->cut();
 
-        return $stock - $sold;
+        return $stock - $cut;
     }
 
     /**
-     * sold
+     * cut
      *
      * @return int
      */
-    public function sold()
+    public function cut()
     {
         return ItemStock::where('item_id', $this->item_id)
             ->where('expired_date', $this->expired_date)

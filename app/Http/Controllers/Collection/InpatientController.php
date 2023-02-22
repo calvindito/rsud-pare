@@ -756,6 +756,8 @@ class InpatientController extends Controller
 
     public function operatingRoom(Request $request, $id)
     {
+        return view('errors.coming-soon');
+
         $inpatient = Inpatient::findOrFail($id);
         $patientId = $inpatient->patient->id;
         $operation = $inpatient->operation;

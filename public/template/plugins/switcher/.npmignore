@@ -1,0 +1,14 @@
+.DS_Store
+node_modules
+*.log
+debug
+img
+.github
+.vscode
+.prettierrc
+.dccache
+test
+bootstrap*.tgz
+cypress
+cypress.config.js
+README.template.md

@@ -69,8 +69,8 @@ class Item extends Model
         return $query->whereHas('itemStock', function ($query) {
             $query->selectRaw("
                 SUM(CASE WHEN type = '1' THEN qty END) as stock,
-                SUM(CASE WHEN type = '2' THEN qty END) as sold
-            ")->groupBy('item_id')->havingRaw('stock > IF(sold > 0, sold, 0)');
+                SUM(CASE WHEN type = '2' THEN qty END) as cut
+            ")->groupBy('item_id')->havingRaw('stock > IF(cut > 0, cut, 0)');
         });
     }
 
@@ -102,11 +102,11 @@ class Item extends Model
     public function stock($type = null)
     {
         $total = $this->itemStock->where('type', 1)->sum('qty');
-        $sold = $this->itemStock->where('type', 2)->sum('qty');
-        $available = $total - $sold;
+        $cut = $this->itemStock->where('type', 2)->sum('qty');
+        $available = $total - $cut;
 
-        if ($type == 'sold') {
-            $result = $sold;
+        if ($type == 'cut') {
+            $result = $cut;
         } else if ($type == 'available') {
             $result = $available;
         } else {

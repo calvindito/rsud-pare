@@ -16,6 +16,8 @@ class MutationController extends Controller
 {
     public function index(Request $request)
     {
+        return view('errors.coming-soon');
+
         $data = [
             'content' => 'pharmacy.mutation'
         ];

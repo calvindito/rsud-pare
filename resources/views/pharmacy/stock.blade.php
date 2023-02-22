@@ -32,7 +32,7 @@
                         <th nowrap>Tanggal Kadaluwarsa</th>
                         <th nowrap>Stok Total</th>
                         <th nowrap>Stok Tersedia</th>
-                        <th nowrap>Stok Terjual</th>
+                        <th nowrap>Stok Terpotong</th>
                         <th nowrap>Harga Beli</th>
                         <th nowrap>Harga Jual</th>
                         <th nowrap>Diskon</th>
@@ -216,7 +216,7 @@
                 { data: 'expired_date', name: 'expired_date', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'qty', name: 'qty', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'available', name: 'available', orderable: false, searchable: false, className: 'align-middle' },
-                { data: 'sold', name: 'sold', orderable: false, searchable: false, className: 'align-middle' },
+                { data: 'cut', name: 'cut', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'price_purchase', name: 'price_purchase', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'price_sell', name: 'price_sell', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'discount', name: 'discount', orderable: true, searchable: false, className: 'align-middle' },

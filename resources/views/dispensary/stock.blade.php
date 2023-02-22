@@ -27,6 +27,7 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
+                        <th nowrap>Status</th>
                         <th nowrap>Item</th>
                         <th nowrap>Apotek</th>
                         <th nowrap>Jenis</th>
@@ -116,7 +117,7 @@
 
     function onCreate() {
         onReset();
-        $('#modal-form .modal-title').text('Tambah Data');
+        $('#modal-form .modal-title').text('Minta Stok');
         $('#modal-form').modal('show');
     }
 
@@ -168,6 +169,7 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
+                { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'item_name', name: 'item_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'dispensary_name', name: 'dispensary_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'item_type', name: 'item_type', orderable: false, searchable: false, className: 'align-middle' },

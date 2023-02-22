@@ -40,8 +40,8 @@ class StockController extends Controller
             ->addColumn('available', function (ItemStock $query) {
                 return $query->available();
             })
-            ->addColumn('sold', function (ItemStock $query) {
-                return $query->sold();
+            ->addColumn('cut', function (ItemStock $query) {
+                return $query->cut();
             })
             ->addColumn('item_name', function (ItemStock $query) {
                 $itemName = null;
@@ -62,11 +62,11 @@ class StockController extends Controller
                 return $itemTypeFormatResultName;
             })
             ->addColumn('action', function (ItemStock $query) {
-                if ($query->qty == $query->sold()) {
+                if ($query->qty == $query->cut()) {
                     $btnAction = '
                         <button type="button" class="btn btn-light text-danger btn-sm fw-semibold no-click">Habis</button>
                     ';
-                } else if ($query->qty > 0 && $query->sold() == 0) {
+                } else if ($query->qty > 0 && $query->cut() == 0) {
                     $btnAction = '
                         <div class="btn-group">
                             <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>

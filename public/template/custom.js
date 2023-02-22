@@ -22,6 +22,7 @@ $(function() {
     select2Basic();
     setBaseUrl();
     lightBox();
+    initSwitcher();
 
     $('.sidebar-control').on('click', function() {
         if(window.gDataTable) {
@@ -29,6 +30,10 @@ $(function() {
         }
     });
 });
+
+function initSwitcher() {
+    $('input[data-toggle="switcher"]').bootstrapToggle();
+}
 
 function setBaseUrl() {
     var fileSrc = $('meta[name="url"]').attr('content');

@@ -15,6 +15,8 @@ class DataController extends Controller
 {
     public function index()
     {
+        return view('errors.coming-soon');
+
         $data = [
             'content' => 'operation.data'
         ];
@@ -135,6 +137,8 @@ class DataController extends Controller
 
     public function manage(Request $request, $id)
     {
+        return view('errors.coming-soon');
+
         $operation = Operation::findOrFail($id);
 
         if ($request->ajax()) {

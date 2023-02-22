@@ -883,6 +883,8 @@ class OutpatientController extends Controller
 
     public function operatingRoom(Request $request, $id)
     {
+        return view('errors.coming-soon');
+
         $outpatient = Outpatient::findOrFail($id);
         $patientId = $outpatient->patient->id;
         $operation = $outpatient->operation;
