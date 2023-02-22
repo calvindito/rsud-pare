@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDispensaryLocationsTable extends Migration
+class CreateDispensariesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class CreateDispensaryLocationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('dispensary_locations', function (Blueprint $table) {
+        Schema::create('dispensaries', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('dispensary_location_id')->nullable();
             $table->string('name')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -28,6 +29,6 @@ class CreateDispensaryLocationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dispensary_locations');
+        Schema::dropIfExists('dispensaries');
     }
 }
