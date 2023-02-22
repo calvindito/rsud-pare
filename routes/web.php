@@ -537,10 +537,6 @@ Route::middleware('auth')->group(function () {
             Route::prefix('item')->group(function () {
                 Route::get('/', 'ItemController@index');
                 Route::get('datatable', 'ItemController@datatable');
-                Route::post('create-data', 'ItemController@createData');
-                Route::get('show-data', 'ItemController@showData');
-                Route::post('update-data', 'ItemController@updateData');
-                Route::delete('destroy-data', 'ItemController@destroyData');
             });
 
             Route::prefix('stock')->group(function () {

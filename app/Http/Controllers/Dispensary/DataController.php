@@ -61,7 +61,7 @@ class DataController extends Controller
                     </div>
                 ';
             })
-            ->rawColumns(['action', 'distributor_name'])
+            ->rawColumns(['action'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();

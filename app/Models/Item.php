@@ -117,16 +117,6 @@ class Item extends Model
     }
 
     /**
-     * fifoStock
-     *
-     * @return void
-     */
-    public function fifoStock()
-    {
-        return $this->hasOne(ItemStock::class)->withTrashed()->oldest('expired_date');
-    }
-
-    /**
      * recipe
      *
      * @return void
