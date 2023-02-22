@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRecipesTable extends Migration
+class CreateDispensaryRequestsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateRecipesTable extends Migration
      */
     public function up()
     {
-        Schema::create('recipes', function (Blueprint $table) {
+        Schema::create('dispensary_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('patient_id')->nullable();
-            $table->unsignedBigInteger('item_stock_id')->nullable();
-            $table->nullableMorphs('recipeable');
+            $table->unsignedBigInteger('dispensary_item_stock_id')->nullable();
+            $table->nullableMorphs('dispensary_requestable', 'dispensary_requestable_type_id');
             $table->integer('qty')->default(0);
             $table->double('price_purchase')->nullable();
             $table->double('price_sell')->nullable();
@@ -35,6 +35,6 @@ class CreateRecipesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('recipes');
+        Schema::dropIfExists('dispensary_requests');
     }
 }

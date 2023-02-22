@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Pharmacy;
+namespace App\Http\Controllers\Dispensary;
 
 use Illuminate\Http\Request;
 use App\Models\DispensaryRequest;
@@ -12,7 +12,7 @@ class RequestController extends Controller
     public function index()
     {
         $data = [
-            'content' => 'pharmacy.request'
+            'content' => 'dispensary.request'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -26,8 +26,7 @@ class RequestController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->whereRaw("LPAD(id, 6, 0) LIKE '%$search%'")
-                        ->orWhere('patient_id', 'like', "%$search%")
+                    $query->where('patient_id', 'like', "%$search%")
                         ->orWhereHas('patient', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
                         })
@@ -64,7 +63,7 @@ class RequestController extends Controller
             })
             ->addColumn('action', function (DispensaryRequest $query) {
                 return '
-                    <a href="' . url('pharmacy/request/detail/' . $query->id) . '" class="btn btn-primary btn-sm">
+                    <a href="' . url('dispensary/request/detail/' . $query->id) . '" class="btn btn-primary btn-sm">
                         <i class="ph-eye me-2"></i>
                         Lihat Detail
                     </a>
@@ -79,7 +78,7 @@ class RequestController extends Controller
     public function detail(Request $request, $id)
     {
         $dispensaryRequest = DispensaryRequest::findOrFail($id);
-        $dispensaryRequestItem = DispensaryRequest::where('dispensary_requestable_type', $dispensaryRequest->dispensary_requestable_type)
+        $dispensaryRequestItem = DispensaryRequest::with('dispensaryItemStock')->where('dispensary_requestable_type', $dispensaryRequest->dispensary_requestable_type)
             ->where('dispensary_requestable_id', $dispensaryRequest->dispensary_requestable_id)
             ->get();
 
@@ -87,25 +86,23 @@ class RequestController extends Controller
             try {
                 foreach ($request->id as $key => $i) {
                     $status = isset($request->status[$key]) ? $request->status[$key] : null;
+                    $dispensaryRequest = DispensaryRequest::find($i);
 
                     if (!empty($status)) {
-                        $update = DispensaryRequest::find($i)->update(['status' => $status]);
+                        $dispensaryRequest->update(['status' => $status]);
 
-                        if (in_array($status, [1, 3])) {
-                            $update->itemStock()->increment('stock', $update);
-                            $update->itemStock()->decrement('sold', $update);
-                        } else if ($status == 2) {
-                            $update->itemStock()->update(['stock' => 0]);
-                        } else {
-                            $update->itemStock()->decrement('stock', $update);
-                            $update->itemStock()->increment('sold', $update);
+                        if ($status == 4) {
+                            $dispensaryRequest->dispensaryItemStock->replicate()->fill([
+                                'type' => 2,
+                                'qty' => $dispensaryRequest->qty
+                            ])->save();
                         }
                     }
                 }
 
                 $response = [
                     'code' => 200,
-                    'message' => 'Data resep berhasil disubmit'
+                    'message' => 'Data permintaan berhasil disubmit'
                 ];
             } catch (\Exception $e) {
                 $response = [
@@ -122,7 +119,7 @@ class RequestController extends Controller
             'patient' => $dispensaryRequest->patient,
             'dispensaryRequestItem' => $dispensaryRequestItem,
             'patient' => $dispensaryRequest->patient,
-            'content' => 'pharmacy.request-detail'
+            'content' => 'dispensary.request-detail'
         ];
 
         return view('layouts.index', ['data' => $data]);

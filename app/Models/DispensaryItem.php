@@ -97,4 +97,21 @@ class DispensaryItem extends Model
     {
         return $this->hasMany(DispensaryItemStock::class);
     }
+
+    /**
+     * fifoStock
+     *
+     * @return void
+     */
+    public function fifoStock()
+    {
+        $dispensaryItemStock = DispensaryItemStock::selectRaw("*, SUM(CASE WHEN type = '1' THEN qty END) as stock, SUM(CASE WHEN type = '2' THEN qty END) as sold")
+            ->where('dispensary_item_id', $this->id)
+            ->where('status', 2)
+            ->groupBy('dispensary_item_id')
+            ->havingRaw('stock > IF(sold > 0, sold, 0)')
+            ->first();
+
+        return $dispensaryItemStock;
+    }
 }

@@ -261,13 +261,13 @@ class Inpatient extends Model
     }
 
     /**
-     * recipe
+     * dispensaryRequest
      *
      * @return void
      */
-    public function recipe()
+    public function dispensaryRequest()
     {
-        return $this->morphMany(Recipe::class, 'recipeable');
+        return $this->morphMany(DispensaryRequest::class, 'dispensary_requestable');
     }
 
     /**
@@ -359,10 +359,10 @@ class Inpatient extends Model
             $total += ($emergencyCare * $emergencyCareQty) + ($hospitalization * $hospitalizationQty);
         }
 
-        foreach ($this->recipe as $r) {
-            $qty = $r->qty;
-            $price = $r->price_sell;
-            $discount = $r->discount;
+        foreach ($this->dispensaryRequest as $dr) {
+            $qty = $dr->qty;
+            $price = $dr->price_sell;
+            $discount = $dr->discount;
 
             if ($discount > 0) {
                 $totalDiscount = ($discount / 100) * $price;
@@ -396,7 +396,7 @@ class Inpatient extends Model
         $actionHealth = 0;
         $actionOther = 0;
         $actionPackage = 0;
-        $recipe = 0;
+        $dispensaryRequest = 0;
         $lab = 0;
         $radiology = 0;
         $operation = 0;
@@ -449,17 +449,17 @@ class Inpatient extends Model
             $actionService += ($emergencyCare * $emergencyCareQty) + ($hospitalization * $hospitalizationQty);
         }
 
-        foreach ($this->recipe as $r) {
-            $qty = $r->qty;
-            $price = $r->price_sell;
-            $discount = $r->discount;
+        foreach ($this->dispensaryRequest as $dr) {
+            $qty = $dr->qty;
+            $price = $dr->price_sell;
+            $discount = $dr->discount;
 
             if ($discount > 0) {
                 $totalDiscount = ($discount / 100) * $price;
                 $price -= $totalDiscount;
             }
 
-            $recipe += $price * $qty;
+            $dispensaryRequest += $price * $qty;
         }
 
         foreach ($this->labRequest as $lr) {
@@ -477,7 +477,7 @@ class Inpatient extends Model
             'actionHealth' => $actionHealth,
             'actionOther' => $actionOther,
             'actionPackage' => $actionPackage,
-            'recipe' => $recipe,
+            'dispensaryRequest' => $dispensaryRequest,
             'lab' => $lab,
             'radiology' => $radiology,
             'operation' => $operation

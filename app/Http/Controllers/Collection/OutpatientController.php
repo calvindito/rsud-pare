@@ -16,11 +16,13 @@ use App\Models\Outpatient;
 use App\Models\UnitAction;
 use App\Models\LabItemGroup;
 use Illuminate\Http\Request;
+use App\Models\DispensaryItem;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\OutpatientAction;
 use App\Models\RadiologyRequest;
 use App\Models\FunctionalService;
 use Illuminate\Support\Facades\DB;
+use App\Models\DispensaryItemStock;
 use App\Models\OperatingRoomAction;
 use App\Http\Controllers\Controller;
 use App\Models\OperatingRoomAnesthetist;
@@ -120,6 +122,10 @@ class OutpatientController extends Controller
                             <a href="' . url('collection/outpatient/action/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-person-simple-run me-2"></i>
                                 Tindakan
+                            </a>
+                            <a href="' . url('collection/outpatient/recipe/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-drop-half-bottom me-2"></i>
+                                E-Resep
                             </a>
                             <a href="' . url('collection/outpatient/soap/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-chat-centered-text me-2"></i>
@@ -388,6 +394,82 @@ class OutpatientController extends Controller
         }
 
         abort(404);
+    }
+
+    public function recipe(Request $request, $id)
+    {
+        $outpatient = Outpatient::findOrFail($id);
+
+        if ($request->ajax()) {
+            $validation = Validator::make($request->all(), [
+                'item' => 'required',
+            ], [
+                'item.required' => 'mohon mengisi minimal 1 item yang diresepkan',
+            ]);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    $outpatient->dispensaryRequest()->whereNull('status')->delete();
+
+                    if ($request->has('item')) {
+                        foreach ($request->item as $key => $i) {
+                            $dispensaryItemStockId = isset($request->dr_dispensary_item_stock_id[$key]) ? $request->dr_dispensary_item_stock_id[$key] : null;
+                            $status = isset($request->dr_status[$key]) ? $request->dr_status[$key] : null;
+
+                            if ($dispensaryItemStockId && empty($status)) {
+                                $dispensaryItemStock = DispensaryItemStock::find($dispensaryItemStockId);
+
+                                $qty = isset($request->dr_qty[$key]) ? (int) $request->dr_qty[$key] : 0;
+                                $stock = $dispensaryItemStock->qty ?? 0;
+
+                                if ($stock > 0) {
+                                    if ($qty > $stock) {
+                                        $qty = $stock;
+                                    }
+
+                                    $outpatient->dispensaryRequest()->create([
+                                        'user_id' => auth()->id(),
+                                        'patient_id' => $outpatient->patient_id,
+                                        'dispensary_item_stock_id' => $dispensaryItemStockId,
+                                        'qty' => $qty,
+                                        'price_purchase' => $dispensaryItemStock->price_purchase ?? null,
+                                        'price_sell' => $dispensaryItemStock->price_sell ?? null,
+                                        'discount' => $dispensaryItemStock->discount ?? null
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Resep berhasil disimpan'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'outpatient' => $outpatient,
+            'patient' => $outpatient->patient,
+            'dispensaryRequest' => $outpatient->dispensaryRequest,
+            'dispensaryItem' => DispensaryItem::available()->get(),
+            'content' => 'collection.outpatient-recipe'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
     }
 
     public function soap(Request $request, $id)

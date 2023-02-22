@@ -169,7 +169,7 @@
                 Permintaan Item
             </td>
             <td style="font-size:14px; text-align:right;">
-                {{ Simrs::formatRupiah($data->costBreakdown()->recipe) }}
+                {{ Simrs::formatRupiah($data->costBreakdown()->dispensaryRequest) }}
             </td>
         </tr>
         <tr>

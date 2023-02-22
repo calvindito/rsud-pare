@@ -56,30 +56,36 @@
             </div>
             <div class="card-body">
                 <div id="plus-destroy-item">
-                    @foreach($recipe as $r)
+                    @foreach($dispensaryRequest as $dr)
                         <div id="item">
                             <input type="hidden" name="item[]" value="{{ true }}">
-                            <input type="hidden" name="status[]" value="{{ $r->status }}">
+                            <input type="hidden" name="dr_status[]" value="{{ $dr->status }}">
                             <div class="row">
                                 <div class="col-md-7">
                                     <div class="form-group">
-                                        <select class="form-select select2" name="r_item_stock_id[]" {{ !empty($r->status) || $emergencyDepartment->status != 1 ? 'disabled' : '' }}>
+                                        @if(!empty($dr->status))
+                                            <input type="hidden" name="dr_dispensary_item_stock_id[]" value="{{ $dr->dispensary_item_stock_id }}">
+                                        @endif
+                                        <select class="form-select select2" name="dr_dispensary_item_stock_id[]" {{ !empty($dr->status) || $emergencyDepartment->status != 1 ? 'disabled' : '' }}>
                                             <option value="">-- Pilih Item --</option>
-                                            @foreach($item as $m)
-                                                <option value="{{ $m->fifoStock->id }}" {{ ($r->item_stock_id ?? null) == $m->fifoStock->id ? 'selected' : '' }}>{{ $m->name }}</option>
+                                            @foreach($dispensaryItem as $di)
+                                                <option value="{{ $di->fifoStock()->id }}" {{ ($dr->dispensary_item_stock_id ?? null) == $di->fifoStock()->id ? 'selected' : '' }}>{{ $di->item->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <input type="number" class="form-control" name="r_qty[]" value="{{ $r->qty }}" placeholder="Jumlah" {{ !empty($r->status) || $emergencyDepartment->status != 1 ? 'disabled' : '' }}>
+                                        @if(!empty($dr->status))
+                                            <input type="hidden" name="dr_qty[]" value="{{ $dr->qty }}">
+                                        @endif
+                                        <input type="number" class="form-control" name="dr_qty[]" value="{{ $dr->qty }}" placeholder="Jumlah" {{ !empty($dr->status) || $emergencyDepartment->status != 1 ? 'disabled' : '' }}>
                                     </div>
                                 </div>
-                                @if(!empty($r->status) || $emergencyDepartment->status != 1)
+                                @if(!empty($dr->status) || $emergencyDepartment->status != 1)
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" value="{{ $r->status() }}" disabled>
+                                            <input type="text" class="form-control" value="{{ $dr->status() }}" disabled>
                                         </div>
                                     </div>
                                 @else
@@ -110,7 +116,7 @@
                 </div>
             @endif
         </div>
-    </div>
+    </form>
 </div>
 
 <script>
@@ -135,26 +141,26 @@
         var formElement = $(`
             <div id="item">
                 <input type="hidden" name="item[]" value="{{ true }}">
-                <input type="hidden" name="r_status[]" value="{{ null }}">
+                <input type="hidden" name="dr_status[]" value="{{ null }}">
                 <div class="row">
                     <div class="col-md-7">
                         <div class="form-group">
-                            <select class="form-select select2" name="r_item_stock_id[]">
+                            <select class="form-select select2" name="dr_dispensary_item_stock_id[]">
                                 <option value="">-- Pilih Item --</option>
-                                @foreach($item as $m)
-                                    <option value="{{ $m->fifoStock->id }}">{{ $m->name }}</option>
+                                @foreach($dispensaryItem as $di)
+                                    <option value="{{ $di->fifoStock()->id }}">{{ $di->item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <input type="number" class="form-control" name="r_qty[]" placeholder="Jumlah">
+                            <input type="number" class="form-control" name="dr_qty[]" placeholder="Jumlah">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <button type="button" class="btn btn-danger btn-sm col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
+                            <button type="button" class="btn btn-danger col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
                         </div>
                     </div>
                 </div>

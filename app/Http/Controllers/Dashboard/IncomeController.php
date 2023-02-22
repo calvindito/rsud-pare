@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Carbon\Carbon;
-use App\Models\Recipe;
 use App\Models\ItemStock;
 use App\Models\Operation;
 use Illuminate\Http\Request;
+use App\Models\DispensaryRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -76,8 +76,8 @@ class IncomeController extends Controller
 
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
-                $data['nominal'][] = Recipe::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_sell * qty'));
-                $data['qty'][] = Recipe::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum('qty');
+                $data['nominal'][] = DispensaryRequest::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_sell * qty'));
+                $data['qty'][] = DispensaryRequest::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum('qty');
             }
 
             $response = [
@@ -123,7 +123,7 @@ class IncomeController extends Controller
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
                 $data['purchase'][] = ItemStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_purchase * (stock + sold)'));
-                $data['sell'][] = Recipe::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_sell * qty'));
+                $data['sell'][] = DispensaryRequest::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_sell * qty'));
             }
 
             $response = [
@@ -164,7 +164,7 @@ class IncomeController extends Controller
 
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
-                $data[] = Recipe::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('(price_sell - price_purchase) * qty'));
+                $data[] = DispensaryRequest::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('(price_sell - price_purchase) * qty'));
             }
 
             $response = [

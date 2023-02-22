@@ -19,6 +19,7 @@ use App\Models\LabRequest;
 use App\Models\ActionOther;
 use App\Models\LabItemGroup;
 use Illuminate\Http\Request;
+use App\Models\DispensaryItem;
 use App\Models\MedicalService;
 use App\Models\ActionOperative;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -27,6 +28,7 @@ use App\Models\RadiologyRequest;
 use App\Models\FunctionalService;
 use App\Models\ActionNonOperative;
 use Illuminate\Support\Facades\DB;
+use App\Models\DispensaryItemStock;
 use App\Models\OperatingRoomAction;
 use App\Http\Controllers\Controller;
 use App\Models\OperatingRoomAnesthetist;
@@ -458,31 +460,32 @@ class InpatientController extends Controller
                 ];
             } else {
                 try {
-                    $inpatient->recipe()->whereNull('status')->delete();
+                    $inpatient->dispensaryRequest()->whereNull('status')->delete();
 
                     if ($request->has('item')) {
                         foreach ($request->item as $key => $i) {
-                            $itemStockId = isset($request->r_item_stock_id[$key]) ? $request->r_item_stock_id[$key] : 0;
-                            $status = isset($request->r_status[$key]) ? $request->r_status[$key] : null;
+                            $dispensaryItemStockId = isset($request->dr_dispensary_item_stock_id[$key]) ? $request->dr_dispensary_item_stock_id[$key] : null;
+                            $status = isset($request->dr_status[$key]) ? $request->dr_status[$key] : null;
 
-                            if ($itemStockId && empty($status)) {
-                                $itemStock = ItemStock::where('stock', '>', 0)->find($itemStockId);
-                                $qty = isset($request->r_qty[$key]) ? (int) $request->r_qty[$key] : 0;
-                                $stock = $itemStock->stock ?? 0;
+                            if ($dispensaryItemStockId && empty($status)) {
+                                $dispensaryItemStock = DispensaryItemStock::find($dispensaryItemStockId);
+
+                                $qty = isset($request->dr_qty[$key]) ? (int) $request->dr_qty[$key] : 0;
+                                $stock = $dispensaryItemStock->qty ?? 0;
 
                                 if ($stock > 0) {
                                     if ($qty > $stock) {
                                         $qty = $stock;
                                     }
 
-                                    $inpatient->recipe()->create([
+                                    $inpatient->dispensaryRequest()->create([
                                         'user_id' => auth()->id(),
                                         'patient_id' => $inpatient->patient_id,
-                                        'item_stock_id' => $itemStockId,
+                                        'dispensary_item_stock_id' => $dispensaryItemStockId,
                                         'qty' => $qty,
-                                        'price_purchase' => $itemStock->price_purchase ?? null,
-                                        'price_sell' => $itemStock->price_sell ?? null,
-                                        'discount' => $itemStock->discount ?? null
+                                        'price_purchase' => $dispensaryItemStock->price_purchase ?? null,
+                                        'price_sell' => $dispensaryItemStock->price_sell ?? null,
+                                        'discount' => $dispensaryItemStock->discount ?? null
                                     ]);
                                 }
                             }
@@ -491,7 +494,7 @@ class InpatientController extends Controller
 
                     $response = [
                         'code' => 200,
-                        'message' => 'Tindakan berhasil disimpan'
+                        'message' => 'Resep berhasil disimpan'
                     ];
                 } catch (\Exception $e) {
                     $response = [
@@ -507,8 +510,8 @@ class InpatientController extends Controller
         $data = [
             'inpatient' => $inpatient,
             'patient' => $inpatient->patient,
-            'recipe' => $inpatient->recipe,
-            'item' => Item::available(['type' => Inpatient::class, 'id' => $inpatient->id])->get(),
+            'dispensaryRequest' => $inpatient->dispensaryRequest,
+            'dispensaryItem' => DispensaryItem::available()->get(),
             'content' => 'collection.inpatient-recipe'
         ];
 

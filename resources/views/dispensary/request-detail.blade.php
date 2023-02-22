@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Farmasi - Permintaan - <span class="fw-normal">Detail</span>
+                Apotek - Permintaan - <span class="fw-normal">Detail</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('pharmacy/request') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+            <a href="{{ url('dispensary/request') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
             <a href="{{ url()->full() }}" class="btn btn-flat-primary">Refresh</a>
         </div>
     </div>
@@ -59,6 +59,7 @@
                             <th class="text-center" nowrap>No</th>
                             <th nowrap>Item</th>
                             <th nowrap>Jumlah</th>
+                            <th nowrap>Satuan</th>
                             <th nowrap>Harga</th>
                             <th nowrap>Diskon</th>
                             <th nowrap>Status</th>
@@ -69,8 +70,9 @@
                             <tr>
                                 <input type="hidden" name="id[]" value="{{ $dri->id }}">
                                 <td class="align-middle text-center">{{ $key + 1 }}</td>
-                                <td class="align-middle" nowrap>{{ $dri->itemStock->item->name }}</td>
+                                <td class="align-middle" nowrap>{{ $dri->dispensaryItemStock->dispensaryItem->item->name }}</td>
                                 <td class="align-middle" nowrap>{{ $dri->qty }}</td>
+                                <td class="align-middle" nowrap>{{ $dri->dispensaryItemStock->dispensaryItem->item->itemUnit->name ?? '-' }}</td>
                                 <td class="align-middle" nowrap>
                                     @if($dri->discount > 0)
                                         @php
@@ -140,7 +142,7 @@
 
     function submitted(param) {
         $.ajax({
-            url: '{{ url("pharmacy/request/detail/" . $dispensaryRequest->id) }}',
+            url: '{{ url("dispensary/request/detail/" . $dispensaryRequest->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -175,7 +177,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("pharmacy/request/detail/" . $dispensaryRequest->id) }}');
+                        window.location.replace('{{ url("dispensary/request/detail/" . $dispensaryRequest->id) }}');
                     });
                 } else {
                     swalInit.fire({

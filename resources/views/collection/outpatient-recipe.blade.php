@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendataan - Rawat Inap - <span class="fw-normal">E-Resep</span>
+                Pendataan - Rawat Jalan - <span class="fw-normal">E-Resep</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('collection/inpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+            <a href="{{ url('collection/outpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
         </div>
     </div>
 </div>
@@ -40,10 +40,10 @@
                     <tr>
                         <th class="align-middle">Tanggal Masuk</th>
                         <td class="align-middle" width="1%">:</td>
-                        <td class="align-middle">{{ $inpatient->date_of_entry }}</td>
-                        <th class="align-middle">Kamar</th>
+                        <td class="align-middle">{{ $outpatient->date_of_entry }}</td>
+                        <th class="align-middle">Poli</th>
                         <td class="align-middle" width="1%">:</td>
-                        <td class="align-middle">{{ $inpatient->roomType->name . ' | ' . $inpatient->roomType->classType->name }}</td>
+                        <td class="align-middle">{{ $outpatient->unit->name }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -66,7 +66,7 @@
                                         @if(!empty($dr->status))
                                             <input type="hidden" name="dr_dispensary_item_stock_id[]" value="{{ $dr->dispensary_item_stock_id }}">
                                         @endif
-                                        <select class="form-select select2" name="dr_dispensary_item_stock_id[]" {{ !empty($dr->status) || $inpatient->status != 1 ? 'disabled' : '' }}>
+                                        <select class="form-select select2" name="dr_dispensary_item_stock_id[]" {{ !empty($dr->status) || $outpatient->status != 1 ? 'disabled' : '' }}>
                                             <option value="">-- Pilih Item --</option>
                                             @foreach($dispensaryItem as $di)
                                                 <option value="{{ $di->fifoStock()->id }}" {{ ($dr->dispensary_item_stock_id ?? null) == $di->fifoStock()->id ? 'selected' : '' }}>{{ $di->item->name }}</option>
@@ -79,10 +79,10 @@
                                         @if(!empty($dr->status))
                                             <input type="hidden" name="dr_qty[]" value="{{ $dr->qty }}">
                                         @endif
-                                        <input type="number" class="form-control" name="dr_qty[]" value="{{ $dr->qty }}" placeholder="Jumlah" {{ !empty($dr->status) || $inpatient->status != 1 ? 'disabled' : '' }}>
+                                        <input type="number" class="form-control" name="dr_qty[]" value="{{ $dr->qty }}" placeholder="Jumlah" {{ !empty($dr->status) || $outpatient->status != 1 ? 'disabled' : '' }}>
                                     </div>
                                 </div>
-                                @if(!empty($dr->status) || $inpatient->status != 1)
+                                @if(!empty($dr->status) || $outpatient->status != 1)
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <input type="text" class="form-control" value="{{ $dr->status() }}" disabled>
@@ -99,13 +99,13 @@
                         </div>
                     @endforeach
                 </div>
-                @if($inpatient->status == 1)
+                @if($outpatient->status == 1)
                     <div class="form-group mb-0">
                         <button type="button" class="btn btn-success col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Data</button>
                     </div>
                 @endif
             </div>
-            @if($inpatient->status == 1)
+            @if($outpatient->status == 1)
                 <div class="card-footer">
                     <div class="text-end">
                         <button type="button" class="btn btn-primary" onclick="submitted()">
@@ -129,7 +129,7 @@
     });
 
     function checkStatus() {
-        var status = '{{ $inpatient->status }}';
+        var status = '{{ $outpatient->status }}';
 
         if(status != 1) {
             $('.form-control').attr('disabled', true);
@@ -191,7 +191,7 @@
 
     function submitted() {
         $.ajax({
-            url: '{{ url("collection/inpatient/recipe/" . $inpatient->id) }}',
+            url: '{{ url("collection/outpatient/recipe/" . $outpatient->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -226,7 +226,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/inpatient/recipe/" . $inpatient->id) }}');
+                        window.location.replace('{{ url("collection/outpatient/recipe/" . $outpatient->id) }}');
                     });
                 } else if(response.code == 400) {
                     $('.btn-to-top button').click();

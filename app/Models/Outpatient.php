@@ -206,4 +206,14 @@ class Outpatient extends Model
     {
         return $this->morphMany(RadiologyRequest::class, 'radiology_requestable');
     }
+
+    /**
+     * dispensaryRequest
+     *
+     * @return void
+     */
+    public function dispensaryRequest()
+    {
+        return $this->morphMany(DispensaryRequest::class, 'dispensary_requestable');
+    }
 }

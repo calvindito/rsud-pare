@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Pharmacy;
 
 use Carbon\Carbon;
 use App\Models\Item;
-use App\Models\Recipe;
 use App\Models\ItemStock;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\DispensaryRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -54,7 +54,7 @@ class MutationController extends Controller
                     $date = date('Y-m-d', strtotime("+$i days", strtotime($startDate)));
                     $remaining = ItemStock::whereDate('created_at', '<', $date)->where('item_id', $itemId)->sum('stock');
                     $stockIn = ItemStock::whereDate('created_at', $date)->where('item_id', $itemId)->sum(DB::raw('stock + sold'));
-                    $stockOut = Recipe::whereDate('created_at', $date)
+                    $stockOut = DispensaryRequest::whereDate('created_at', $date)
                         ->whereHas('itemStock', function ($query) use ($date, $itemId) {
                             $query->where('item_id', $itemId)
                                 ->whereDate('created_at', $date);
@@ -113,7 +113,7 @@ class MutationController extends Controller
                 $date = date('Y-m-d', strtotime("+$i days", strtotime($startDate)));
                 $remaining = ItemStock::whereDate('created_at', '<', $date)->where('item_id', $itemId)->sum('stock');
                 $stockIn = ItemStock::whereDate('created_at', $date)->where('item_id', $itemId)->sum(DB::raw('stock + sold'));
-                $stockOut = Recipe::whereDate('created_at', $date)
+                $stockOut = DispensaryRequest::whereDate('created_at', $date)
                     ->whereHas('itemStock', function ($query) use ($date, $itemId) {
                         $query->where('item_id', $itemId)
                             ->whereDate('created_at', $date);

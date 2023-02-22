@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Recipe extends Model
+class DispensaryRequest extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Recipe extends Model
      *
      * @var string
      */
-    protected $table = 'recipes';
+    protected $table = 'dispensary_requests';
 
     /**
      * The primary key associated with the table.
@@ -41,23 +41,23 @@ class Recipe extends Model
     protected $guarded = ['id'];
 
     /**
-     * recipeable
+     * dispensaryRequestable
      *
      * @return void
      */
-    public function recipeable()
+    public function dispensaryRequestable()
     {
         return $this->morphTo();
     }
 
     /**
-     * itemStock
+     * dispensaryItemStock
      *
      * @return void
      */
-    public function itemStock()
+    public function dispensaryItemStock()
     {
-        return $this->belongsTo(ItemStock::class)->withTrashed();
+        return $this->belongsTo(DispensaryItemStock::class);
     }
 
     /**
@@ -87,9 +87,9 @@ class Recipe extends Model
      */
     public function statusable($html = false)
     {
-        $type = $this->recipeable_type;
-        $id = $this->recipeable_id;
-        $falseable = Recipe::where('recipeable_type', $type)->where('recipeable_id', $id)->whereNull('status')->count();
+        $type = $this->dispensary_requestable_type;
+        $id = $this->dispensary_requestable_id;
+        $falseable = DispensaryRequest::where('dispensary_requestable_type', $type)->where('dispensary_requestable_id', $id)->whereNull('status')->count();
 
         if ($falseable > 0) {
             $result = $html ? '<span class="badge bg-primary">Menunggu Konfirmasi</span>' : false;
@@ -131,9 +131,11 @@ class Recipe extends Model
      */
     public function ref()
     {
-        $model = $this->recipeable_type;
+        $model = $this->dispensary_requestable_type;
 
-        if ($model == 'App\Models\Inpatient') {
+        if ($model == 'App\Models\Outpatient') {
+            $text = 'Rawat Jalan';
+        } else if ($model == 'App\Models\Inpatient') {
             $text = 'Rawat Inap';
         } else if ($model == 'App\Models\EmergencyDepartment') {
             $text = 'IGD';

@@ -15,7 +15,7 @@
             </div>
             <button type="button" class="btn btn-flat-primary" onclick="onCreate()">
                 <i class="ph-plus-circle me-1"></i>
-                Tambah Data
+                Minta Stok
             </button>
         </div>
     </div>

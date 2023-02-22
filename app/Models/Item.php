@@ -117,13 +117,13 @@ class Item extends Model
     }
 
     /**
-     * recipe
+     * dispensaryRequest
      *
      * @return void
      */
-    public function recipe()
+    public function dispensaryRequest()
     {
-        return $this->hasMany(Recipe::class);
+        return $this->hasMany(DispensaryRequest::class);
     }
 
     /**

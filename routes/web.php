@@ -436,6 +436,7 @@ Route::middleware('auth')->group(function () {
                 Route::get('load-patient', 'OutpatientController@loadPatient');
                 Route::match(['get', 'post'], 'register-patient', 'OutpatientController@registerPatient');
                 Route::match(['get', 'post'], 'action/{id}', 'OutpatientController@action');
+                Route::match(['get', 'post'], 'recipe/{id}', 'OutpatientController@recipe');
                 Route::match(['get', 'post'], 'action/print/{id}', 'OutpatientController@actionPrint');
                 Route::match(['get', 'post'], 'soap/{id}', 'OutpatientController@soap');
                 Route::match(['get', 'post'], 'diagnosis/{id}', 'OutpatientController@diagnosis');
