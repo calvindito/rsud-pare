@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Farmasi - <span class="fw-normal">Barang</span>
+                Farmasi - <span class="fw-normal">Item</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -27,14 +27,14 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode Barang</th>
+                        <th nowrap>Kode Item</th>
                         <th nowrap>Kode T</th>
                         <th nowrap>Kode Jenis</th>
                         <th nowrap>Satuan</th>
                         <th nowrap>Pabrik</th>
                         <th nowrap>Distributor</th>
                         <th nowrap>Jenis</th>
-                        <th nowrap>Nama Barang</th>
+                        <th nowrap>Nama Item</th>
                         <th nowrap>Nama Generik</th>
                         <th nowrap>Kekuatan</th>
                         <th nowrap>Stok</th>
@@ -93,9 +93,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode Barang <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Kode Item <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode barang">
+                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode item">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -111,9 +111,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Nama Barang <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Nama Item <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama barang">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Masukan nama item">
                         </div>
                     </div>
                     <div class="form-group row">

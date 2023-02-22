@@ -448,7 +448,7 @@ class InpatientController extends Controller
             $validation = Validator::make($request->all(), [
                 'item' => 'required',
             ], [
-                'item.required' => 'mohon mengisi minimal 1 barang yang diresepkan',
+                'item.required' => 'mohon mengisi minimal 1 item yang diresepkan',
             ]);
 
             if ($validation->fails()) {

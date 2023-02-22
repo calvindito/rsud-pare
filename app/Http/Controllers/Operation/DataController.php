@@ -216,7 +216,7 @@ class DataController extends Controller
             'operationMaterial' => $operation->operationMaterial,
             'patient' => $operation->patient,
             'doctor' => Doctor::all(),
-            'item' => Item::available()->where('type', 2)->get(),
+            'item' => Item::available()->get(),
             'content' => 'operation.data-manage'
         ];
 

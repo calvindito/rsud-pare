@@ -27,7 +27,7 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Barang</th>
+                        <th nowrap>Item</th>
                         <th nowrap>Jenis</th>
                         <th nowrap>Tanggal Kadaluwarsa</th>
                         <th nowrap>Stok Total</th>

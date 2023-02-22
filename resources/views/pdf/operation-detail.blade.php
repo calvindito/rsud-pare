@@ -89,35 +89,35 @@
         </tr>
         <tr>
             <th style="text-align:left;">Biaya Rumah Sakit</th>
-            <td>{{ Simrs::formatRupiah($data->hospital_service) }}</td>
+            <td style="text-align:right;">{{ Simrs::formatRupiah($data->hospital_service) }}</td>
         </tr>
         <tr>
             <th style="text-align:left;">Biaya Dokter Operasi</th>
-            <td>{{ Simrs::formatRupiah($data->doctor_operating_room) }}</td>
+            <td style="text-align:right;">{{ Simrs::formatRupiah($data->doctor_operating_room) }}</td>
         </tr>
         <tr>
             <th style="text-align:left;">Biaya Dokter Anestesi</th>
-            <td>{{ Simrs::formatRupiah($data->doctor_anesthetist) }}</td>
+            <td style="text-align:right;">{{ Simrs::formatRupiah($data->doctor_anesthetist) }}</td>
         </tr>
         <tr>
             <th style="text-align:left;">Biaya Perawat Operasi</th>
-            <td>{{ Simrs::formatRupiah($data->nurse_operating_room) }}</td>
+            <td style="text-align:right;">{{ Simrs::formatRupiah($data->nurse_operating_room) }}</td>
         </tr>
         <tr>
             <th style="text-align:left;">Biaya Perawat Anestesi</th>
-            <td>{{ Simrs::formatRupiah($data->nurse_anesthetist) }}</td>
+            <td style="text-align:right;">{{ Simrs::formatRupiah($data->nurse_anesthetist) }}</td>
         </tr>
         <tr>
             <th style="text-align:left;">Biaya Bahan</th>
-            <td>{{ Simrs::formatRupiah($data->totalMaterial()) }}</td>
+            <td style="text-align:right;">{{ Simrs::formatRupiah($data->totalMaterial()) }}</td>
         </tr>
         <tr>
             <th style="text-align:left;">Biaya RR Monitoring</th>
-            <td>{{ Simrs::formatRupiah($data->monitoring) }}</td>
+            <td style="text-align:right;">{{ Simrs::formatRupiah($data->monitoring) }}</td>
         </tr>
         <tr>
             <th style="text-align:left;">Biaya RR Askep</th>
-            <td>{{ Simrs::formatRupiah($data->nursing_care) }}</td>
+            <td style="text-align:right;">{{ Simrs::formatRupiah($data->nursing_care) }}</td>
         </tr>
     </table>
     <table class="table">

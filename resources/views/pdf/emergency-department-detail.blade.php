@@ -156,7 +156,7 @@
         </tr>
         <tr>
             <td style="font-size:14px; text-align:left;">
-                Permintaan Barang
+                Permintaan Item
             </td>
             <td style="font-size:14px; text-align:right;">
                 {{ Simrs::formatRupiah($data->costBreakdown()->recipe) }}

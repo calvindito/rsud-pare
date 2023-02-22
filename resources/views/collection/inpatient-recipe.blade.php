@@ -64,7 +64,7 @@
                                 <div class="col-md-7">
                                     <div class="form-group">
                                         <select class="form-select select2" name="r_item_stock_id[]" {{ !empty($r->status) || $inpatient->status != 1 ? 'disabled' : '' }}>
-                                            <option value="">-- Pilih Barang --</option>
+                                            <option value="">-- Pilih Item --</option>
                                             @foreach($item as $m)
                                                 <option value="{{ $m->fifoStock->id }}" {{ ($r->item_stock_id ?? null) == $m->fifoStock->id ? 'selected' : '' }}>{{ $m->name }}</option>
                                             @endforeach
@@ -140,7 +140,7 @@
                     <div class="col-md-7">
                         <div class="form-group">
                             <select class="form-select select2" name="r_item_stock_id[]">
-                                <option value="">-- Pilih Barang --</option>
+                                <option value="">-- Pilih Item --</option>
                                 @foreach($item as $m)
                                     <option value="{{ $m->fifoStock->id }}">{{ $m->name }}</option>
                                 @endforeach

@@ -13,7 +13,7 @@
             <form id="form-chart-1">
                 <div class="card">
                     <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                        <h6 class="py-sm-3 mb-sm-0">Pembelian Barang Per Tahun</h6>
+                        <h6 class="py-sm-3 mb-sm-0">Pembelian Item Per Tahun</h6>
                         <div class="ms-sm-auto my-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
                                 <div class="input-group">
@@ -40,7 +40,7 @@
             <form id="form-chart-2">
                 <div class="card">
                     <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                        <h6 class="py-sm-3 mb-sm-0">Penjualan Barang Per Tahun</h6>
+                        <h6 class="py-sm-3 mb-sm-0">Penjualan Item Per Tahun</h6>
                         <div class="ms-sm-auto my-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
                                 <div class="input-group">
@@ -67,7 +67,7 @@
             <form id="form-chart-3">
                 <div class="card">
                     <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                        <h6 class="py-sm-3 mb-sm-0">Perbandingan Pembelian & Penjualan Barang Per Tahun</h6>
+                        <h6 class="py-sm-3 mb-sm-0">Perbandingan Pembelian & Penjualan Item Per Tahun</h6>
                         <div class="ms-sm-auto my-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
                                 <div class="input-group">
@@ -94,7 +94,7 @@
             <form id="form-chart-4">
                 <div class="card">
                     <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                        <h6 class="py-sm-3 mb-sm-0">Laba Pendapatan Barang Per Tahun</h6>
+                        <h6 class="py-sm-3 mb-sm-0">Laba Pendapatan Item Per Tahun</h6>
                         <div class="ms-sm-auto my-sm-auto">
                             <div class="hstack gap-3 justify-content-between">
                                 <div class="input-group">

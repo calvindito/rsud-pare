@@ -84,31 +84,31 @@
                             <h6>Askep</h6>
                             <fieldset>
                                 <textarea class="form-control text-editor" name="nursing_care_value" id="nursing_care_value">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->value ?? null !!}
+                                    {!! $outpatientSoap->firstWhere('type', 1)->value ?? '' !!}
                                 </textarea>
                             </fieldset>
                             <h6>Subjective</h6>
                             <fieldset>
                                 <textarea class="form-control text-editor" name="nursing_care_subjective" id="nursing_care_subjective">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->subjective ?? null !!}
+                                    {!! $outpatientSoap->firstWhere('type', 1)->subjective ?? '' !!}
                                 </textarea>
                             </fieldset>
                             <h6>Objective</h6>
                             <fieldset>
                                 <textarea class="form-control text-editor" name="nursing_care_objective" id="nursing_care_objective">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->objective ?? null !!}
+                                    {!! $outpatientSoap->firstWhere('type', 1)->objective ?? '' !!}
                                 </textarea>
                             </fieldset>
                             <h6>Assessment</h6>
                             <fieldset>
                                 <textarea class="form-control text-editor" name="nursing_care_assessment" id="nursing_care_assessment">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->assessment ?? null !!}
+                                    {!! $outpatientSoap->firstWhere('type', 1)->assessment ?? '' !!}
                                 </textarea>
                             </fieldset>
                             <h6>Planning</h6>
                             <fieldset>
                                 <textarea class="form-control text-editor" name="nursing_care_planning" id="nursing_care_planning">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->planning ?? null !!}
+                                    {!! $outpatientSoap->firstWhere('type', 1)->planning ?? '' !!}
                                 </textarea>
                             </fieldset>
                         </div>
@@ -118,25 +118,25 @@
                             <h6>Subjective</h6>
                             <fieldset>
                                 <textarea class="form-control text-editor" name="checkup_subjective" id="checkup_subjective">
-                                    {!! $outpatientSoap->firstWhere('type', 2)->subjective ?? null !!}
+                                    {!! $outpatientSoap->firstWhere('type', 2)->subjective ?? '' !!}
                                 </textarea>
                             </fieldset>
                             <h6>Objective</h6>
                             <fieldset>
                                 <textarea class="form-control text-editor" name="checkup_objective" id="checkup_objective">
-                                    {!! $outpatientSoap->firstWhere('type', 2)->objective ?? null !!}
+                                    {!! $outpatientSoap->firstWhere('type', 2)->objective ?? '' !!}
                                 </textarea>
                             </fieldset>
                             <h6>Assessment</h6>
                             <fieldset>
                                 <textarea class="form-control text-editor" name="checkup_assessment" id="checkup_assessment">
-                                    {!! $outpatientSoap->firstWhere('type', 2)->assessment ?? null !!}
+                                    {!! $outpatientSoap->firstWhere('type', 2)->assessment ?? '' !!}
                                 </textarea>
                             </fieldset>
                             <h6>Planning</h6>
                             <fieldset>
                                 <textarea class="form-control text-editor" name="checkup_planning" id="checkup_planning">
-                                    {!! $outpatientSoap->firstWhere('type', 2)->planning ?? null !!}
+                                {!! $outpatientSoap->firstWhere('type', 2)->planning ?? '' !!}
                                 </textarea>
                             </fieldset>
                         </div>

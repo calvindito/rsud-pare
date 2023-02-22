@@ -499,7 +499,7 @@ return [
             ],
             [
                 'name' => 'item',
-                'menu' => 'Barang',
+                'menu' => 'Item',
                 'icon' => null,
                 'link' => 'pharmacy/item',
                 'sub' => null
@@ -572,7 +572,7 @@ return [
         'sub' => [
             [
                 'name' => 'item',
-                'menu' => 'Barang',
+                'menu' => 'Item',
                 'icon' => null,
                 'link' => 'report/item',
                 'sub' => null

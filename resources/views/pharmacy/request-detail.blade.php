@@ -50,14 +50,14 @@
     <form id="form-data">
         <div class="card">
             <div class="card-header">
-                <h6 class="hstack gap-2 mb-0">Permintaan Barang</h6>
+                <h6 class="hstack gap-2 mb-0">Permintaan Item</h6>
             </div>
             <div class="card-body">
                 <table class="table table-bordered">
                     <thead class="bg-light">
                         <tr>
                             <th class="text-center" nowrap>No</th>
-                            <th nowrap>Barang</th>
+                            <th nowrap>Item</th>
                             <th nowrap>Jumlah</th>
                             <th nowrap>Harga</th>
                             <th nowrap>Diskon</th>

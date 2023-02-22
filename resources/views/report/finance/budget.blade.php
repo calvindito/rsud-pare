@@ -62,16 +62,16 @@
                             <tr>
                                 <td class="align-middle">{{ $coa->code }}</td>
                                 <td class="align-middle">{{ $coa->fullname }}</td>
-                                <td class="align-middle">{{ Simrs::formatRupiah($sumNominal) }}</td>
-                                <td class="align-middle">{{ Simrs::formatRupiah($sumLimitBlud) }}</td>
+                                <td class="align-middle text-end">{{ Simrs::formatRupiah($sumNominal) }}</td>
+                                <td class="align-middle text-end">{{ Simrs::formatRupiah($sumLimitBlud) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                     <tfoot class="bg-light">
                         <tr>
                             <th colspan="2" class="align-middle text-uppercase fw-bold">Total</th>
-                            <th class="align-middle fw-bold">{{ Simrs::formatRupiah($totalNominal) }}</th>
-                            <th class="align-middle fw-bold">{{ Simrs::formatRupiah($totalNominal) }}</th>
+                            <th class="align-middle fw-bold text-end">{{ Simrs::formatRupiah($totalNominal) }}</th>
+                            <th class="align-middle fw-bold text-end">{{ Simrs::formatRupiah($totalNominal) }}</th>
                         </tr>
                     </tfoot>
                 </table>

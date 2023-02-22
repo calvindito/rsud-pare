@@ -18,7 +18,7 @@
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-2">Barang <span class="text-danger fw-bold">*</span></label>
+                    <label class="col-form-label col-lg-2">Item <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-10">
                         <select class="form-select" name="item_id" id="item_id"></select>
                     </div>

@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Laporan - <span class="fw-normal">Barang</span>
+                Laporan - <span class="fw-normal">Item</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -65,12 +65,12 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode Barang</th>
+                        <th nowrap>Kode Item</th>
                         <th nowrap>Kode T</th>
                         <th nowrap>Kode Jenis</th>
                         <th nowrap>Pabrik</th>
                         <th nowrap>Distributor</th>
-                        <th nowrap>Nama Barang</th>
+                        <th nowrap>Nama Item</th>
                         <th nowrap>Nama Generik</th>
                         <th nowrap>Kekuatan</th>
                         <th nowrap>Stok</th>

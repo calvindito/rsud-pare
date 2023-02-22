@@ -80,10 +80,10 @@
                 <tr>
                     <td>{{ $lrd->labItem->labItemGroup->name }}</td>
                     <td>{{ $lrd->labItem->name }}</td>
-                    <td nowrap>{{ Simrs::formatRupiah($consumables) }}</td>
-                    <td nowrap>{{ Simrs::formatRupiah($hospitalService) }}</td>
-                    <td nowrap>{{ Simrs::formatRupiah($service) }}</td>
-                    <td nowrap>{{ Simrs::formatRupiah($subtotal) }}</td>
+                    <td style="text-align:right;" nowrap>{{ Simrs::formatRupiah($consumables) }}</td>
+                    <td style="text-align:right;" nowrap>{{ Simrs::formatRupiah($hospitalService) }}</td>
+                    <td style="text-align:right;" nowrap>{{ Simrs::formatRupiah($service) }}</td>
+                    <td style="text-align:right;" nowrap>{{ Simrs::formatRupiah($subtotal) }}</td>
                 </tr>
             @endforeach
         </tbody>

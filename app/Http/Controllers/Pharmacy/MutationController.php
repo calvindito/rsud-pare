@@ -132,7 +132,7 @@ class MutationController extends Controller
             $pdf = Pdf::setOptions([
                 'adminUsername' => auth()->user()->username
             ])->loadView('pdf.mutation', [
-                'title' => 'Mutasi Stok Barang',
+                'title' => 'Mutasi Stok Item',
                 'item' => $item,
                 'data' => $data,
                 'startDate' => $startDate,
@@ -140,7 +140,7 @@ class MutationController extends Controller
                 'diff' => $diff
             ]);
 
-            return $pdf->stream('Mutasi Stok Barang' . ' - ' . date('YmdHis') . '.pdf');
+            return $pdf->stream('Mutasi Stok Item' . ' - ' . date('YmdHis') . '.pdf');
         }
     }
 }
