@@ -515,6 +515,56 @@ Route::middleware('auth')->group(function () {
             Route::get('print/{id}', 'RadiologyController@print');
         });
 
+        Route::prefix('dispensary')->namespace('Dispensary')->group(function () {
+            Route::prefix('location')->group(function () {
+                Route::get('/', 'LocationController@index');
+                Route::get('datatable', 'LocationController@datatable');
+                Route::post('create-data', 'LocationController@createData');
+                Route::get('show-data', 'LocationController@showData');
+                Route::post('update-data', 'LocationController@updateData');
+                Route::delete('destroy-data', 'LocationController@destroyData');
+            });
+
+            Route::prefix('data')->group(function () {
+                Route::get('/', 'DataController@index');
+                Route::get('datatable', 'DataController@datatable');
+                Route::post('create-data', 'DataController@createData');
+                Route::get('show-data', 'DataController@showData');
+                Route::post('update-data', 'DataController@updateData');
+                Route::delete('destroy-data', 'DataController@destroyData');
+            });
+
+            Route::prefix('item')->group(function () {
+                Route::get('/', 'ItemController@index');
+                Route::get('datatable', 'ItemController@datatable');
+                Route::post('create-data', 'ItemController@createData');
+                Route::get('show-data', 'ItemController@showData');
+                Route::post('update-data', 'ItemController@updateData');
+                Route::delete('destroy-data', 'ItemController@destroyData');
+            });
+
+            Route::prefix('stock')->group(function () {
+                Route::get('/', 'StockController@index');
+                Route::get('datatable', 'StockController@datatable');
+                Route::post('create-data', 'StockController@createData');
+                Route::get('show-data', 'StockController@showData');
+                Route::post('update-data', 'StockController@updateData');
+                Route::delete('destroy-data', 'StockController@destroyData');
+            });
+
+            Route::prefix('request')->group(function () {
+                Route::get('/', 'RequestController@index');
+                Route::get('datatable', 'RequestController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'RequestController@detail');
+            });
+
+            Route::prefix('mutation')->group(function () {
+                Route::get('/', 'MutationController@index');
+                Route::get('load-data', 'MutationController@loadData');
+                Route::get('print', 'MutationController@print');
+            });
+        });
+
         Route::prefix('pharmacy')->namespace('Pharmacy')->group(function () {
             Route::prefix('distributor')->group(function () {
                 Route::get('/', 'DistributorController@index');

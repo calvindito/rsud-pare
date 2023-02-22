@@ -471,6 +471,56 @@ return [
         'sub' => null
     ],
     [
+        'name' => 'dispensary',
+        'menu' => 'Apotek',
+        'icon' => 'ph-storefront',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'location',
+                'menu' => 'Lokasi',
+                'icon' => null,
+                'link' => 'dispensary/location',
+                'sub' => null
+            ],
+            [
+                'name' => 'data',
+                'menu' => 'Data',
+                'icon' => null,
+                'link' => 'dispensary/data',
+                'sub' => null
+            ],
+            [
+                'name' => 'item',
+                'menu' => 'Item',
+                'icon' => null,
+                'link' => 'dispensary/item',
+                'sub' => null
+            ],
+            [
+                'name' => 'stock',
+                'menu' => 'Stok',
+                'icon' => null,
+                'link' => 'dispensary/stock',
+                'sub' => null
+            ],
+            [
+                'name' => 'request',
+                'menu' => 'Permintaan',
+                'icon' => null,
+                'link' => 'dispensary/request',
+                'sub' => null
+            ],
+            [
+                'name' => 'mutation',
+                'menu' => 'Mutasi',
+                'icon' => null,
+                'link' => 'dispensary/mutation',
+                'sub' => null
+            ],
+        ]
+    ],
+    [
         'name' => 'pharmacy',
         'menu' => 'Farmasi',
         'icon' => 'ph-thermometer',
