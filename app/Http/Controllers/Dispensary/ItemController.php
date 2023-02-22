@@ -42,7 +42,7 @@ class ItemController extends Controller
             ->addColumn('dispensary_name', function (DispensaryItem $query) {
                 $dispensaryName = null;
 
-                if ($query->dispensary) {
+                if (isset($query->dispensary)) {
                     $dispensaryName = $query->dispensary->name;
                 }
 
@@ -51,7 +51,7 @@ class ItemController extends Controller
             ->addColumn('item_code', function (DispensaryItem $query) {
                 $itemCode = null;
 
-                if ($query->item) {
+                if (isset($query->item)) {
                     $itemCode = $query->item->code;
                 }
 
@@ -60,7 +60,7 @@ class ItemController extends Controller
             ->addColumn('item_code_t', function (DispensaryItem $query) {
                 $itemCodeT = null;
 
-                if ($query->item) {
+                if (isset($query->item)) {
                     $itemCodeT = $query->item->code_t;
                 }
 
@@ -69,7 +69,7 @@ class ItemController extends Controller
             ->addColumn('item_code_type', function (DispensaryItem $query) {
                 $itemCodeType = null;
 
-                if ($query->item) {
+                if (isset($query->item)) {
                     $itemCodeType = $query->item->code_type;
                 }
 
@@ -78,8 +78,8 @@ class ItemController extends Controller
             ->addColumn('item_unit_name', function (DispensaryItem $query) {
                 $itemUnitName = null;
 
-                if ($query->item) {
-                    if ($query->item->itemUnit) {
+                if (isset($query->item)) {
+                    if (isset($query->item->itemUnit)) {
                         $itemUnitName = $query->item->itemUnit->name;
                     }
                 }
@@ -89,7 +89,7 @@ class ItemController extends Controller
             ->addColumn('item_type', function (DispensaryItem $query) {
                 $itemType = null;
 
-                if ($query->item) {
+                if (isset($query->item)) {
                     $itemType = $query->item->type_format_result;
                 }
 
@@ -98,7 +98,7 @@ class ItemController extends Controller
             ->addColumn('item_name', function (DispensaryItem $query) {
                 $itemName = null;
 
-                if ($query->item) {
+                if (isset($query->item)) {
                     $itemName = $query->item->name;
                 }
 
@@ -111,6 +111,7 @@ class ItemController extends Controller
 
                 return '<button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$html'" . ')">Klik Disini</button>';
             })
+            ->rawColumns(['stock'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();

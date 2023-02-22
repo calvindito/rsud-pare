@@ -14,7 +14,7 @@ class DispensaryItemStock extends Model
      *
      * @var string
      */
-    protected $table = 'dispensary_items';
+    protected $table = 'dispensary_item_stocks';
 
     /**
      * The primary key associated with the table.
@@ -31,23 +31,20 @@ class DispensaryItemStock extends Model
     protected $guarded = ['id'];
 
     /**
-     * dispensaryItem
+     * The accessors to append to the model's array form.
      *
-     * @return void
+     * @var array
      */
-    public function dispensaryItem()
-    {
-        return $this->belongsTo(DispensaryItem::class);
-    }
+    protected $appends = ['type_format_result'];
 
     /**
-     * type
+     * getTypeAttribute
      *
      * @return void
      */
-    public function type()
+    protected function getTypeFormatResultAttribute()
     {
-        $type = $this->type;
+        $type = isset($this->attributes['type']) ? $this->attributes['type'] : null;
 
         if ($type == 1) {
             $text = 'Masuk';
@@ -58,6 +55,16 @@ class DispensaryItemStock extends Model
         }
 
         return $text;
+    }
+
+    /**
+     * dispensaryItem
+     *
+     * @return void
+     */
+    public function dispensaryItem()
+    {
+        return $this->belongsTo(DispensaryItem::class);
     }
 
     /**
@@ -80,5 +87,31 @@ class DispensaryItemStock extends Model
         }
 
         return $text;
+    }
+
+    /**
+     * available
+     *
+     * @return int
+     */
+    public function available()
+    {
+        $stock = $this->qty;
+        $sold = $this->sold();
+
+        return $stock - $sold;
+    }
+
+    /**
+     * sold
+     *
+     * @return int
+     */
+    public function sold()
+    {
+        return DispensaryItemStock::where('dispensary_item_id', $this->item_id)
+            ->where('expired_date', $this->expired_date)
+            ->where('type', 2)
+            ->sum('qty');
     }
 }

@@ -78,6 +78,7 @@ class ServerSideController extends Controller
     {
         $search = $request->search;
         $data = Item::selectRaw('id, name as text')
+            ->available()
             ->when(!empty($search), function ($query) use ($search) {
                 $query->where('name', 'like', "%$search%");
             })

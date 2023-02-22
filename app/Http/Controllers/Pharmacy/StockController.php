@@ -90,7 +90,7 @@ class StockController extends Controller
 
                 return $btnAction;
             })
-            ->rawColumns(['action', 'factory_name', 'stock'])
+            ->rawColumns(['action', 'stock'])
             ->addIndexColumn()
             ->escapeColumns()
             ->toJson();

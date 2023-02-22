@@ -543,8 +543,6 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', 'StockController@index');
                 Route::get('datatable', 'StockController@datatable');
                 Route::post('create-data', 'StockController@createData');
-                Route::get('show-data', 'StockController@showData');
-                Route::post('update-data', 'StockController@updateData');
                 Route::delete('destroy-data', 'StockController@destroyData');
             });
 

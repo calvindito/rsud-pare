@@ -53,8 +53,8 @@ class DispensaryItem extends Model
      */
     public function stock($type = null)
     {
-        $total = $this->dispensaryItemStock->where('type', 1)->sum('qty');
-        $sold = $this->dispensaryItemStock->where('type', 2)->sum('qty');
+        $total = $this->dispensaryItemStock->where('type', 1)->where('status', 2)->sum('qty');
+        $sold = $this->dispensaryItemStock->where('type', 2)->where('status', 2)->sum('qty');
         $available = $total - $sold;
 
         if ($type == 'sold') {
@@ -86,5 +86,15 @@ class DispensaryItem extends Model
     public function item()
     {
         return $this->belongsTo(Item::class);
+    }
+
+    /**
+     * dispensaryItemStock
+     *
+     * @return void
+     */
+    public function dispensaryItemStock()
+    {
+        return $this->hasMany(DispensaryItemStock::class);
     }
 }
