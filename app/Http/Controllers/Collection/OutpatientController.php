@@ -11,6 +11,7 @@ use App\Models\Employee;
 use App\Models\Religion;
 use App\Models\Operation;
 use App\Models\Radiology;
+use App\Models\Dispensary;
 use App\Models\LabRequest;
 use App\Models\Outpatient;
 use App\Models\UnitAction;
@@ -201,6 +202,7 @@ class OutpatientController extends Controller
                 'date_of_entry' => 'required',
                 'presence' => 'required',
                 'unit_id' => 'required',
+                'dispensary_id' => 'required'
             ], [
                 'identity_number.required' => 'no identitas tidak boleh kosong',
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -216,7 +218,8 @@ class OutpatientController extends Controller
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'presence.required' => 'mohon memilih kehadiran',
-                'unit_id.required' => 'mohon memilih poli'
+                'unit_id.required' => 'mohon memilih poli',
+                'dispensary_id.required' => 'mohon memilih apotek'
             ]);
 
             if ($validation->fails()) {
@@ -271,6 +274,7 @@ class OutpatientController extends Controller
                             'user_id' => $userId,
                             'patient_id' => $patientId,
                             'unit_id' => $request->unit_id,
+                            'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry,
                             'presence' => $request->presence,
@@ -296,6 +300,7 @@ class OutpatientController extends Controller
         $data = [
             'unit' => Unit::where('type', 2)->orderBy('name')->get(),
             'religion' => Religion::all(),
+            'dispensary' => Dispensary::all(),
             'content' => 'collection.outpatient-register-patient'
         ];
 
@@ -399,6 +404,7 @@ class OutpatientController extends Controller
     public function recipe(Request $request, $id)
     {
         $outpatient = Outpatient::findOrFail($id);
+        $dispensaryId = $outpatient->dispensary_id;
 
         if ($request->ajax()) {
             $validation = Validator::make($request->all(), [
@@ -436,6 +442,7 @@ class OutpatientController extends Controller
                                         'user_id' => auth()->id(),
                                         'patient_id' => $outpatient->patient_id,
                                         'dispensary_item_stock_id' => $dispensaryItemStockId,
+                                        'dispensary_id' => $dispensaryId,
                                         'qty' => $qty,
                                         'price_purchase' => $dispensaryItemStock->price_purchase ?? null,
                                         'price_sell' => $dispensaryItemStock->price_sell ?? null,
@@ -465,7 +472,7 @@ class OutpatientController extends Controller
             'outpatient' => $outpatient,
             'patient' => $outpatient->patient,
             'dispensaryRequest' => $outpatient->dispensaryRequest,
-            'dispensaryItem' => DispensaryItem::available()->get(),
+            'dispensaryItem' => DispensaryItem::available()->where('dispensary_id', $dispensaryId)->get(),
             'content' => 'collection.outpatient-recipe'
         ];
 
@@ -782,6 +789,7 @@ class OutpatientController extends Controller
                 'date_of_entry' => 'required',
                 'presence' => 'required',
                 'unit_id' => 'required',
+                'dispensary_id' => 'required',
                 'status' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -799,6 +807,7 @@ class OutpatientController extends Controller
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'presence.required' => 'mohon memilih kehadiran',
                 'unit_id.required' => 'mohon memilih poli',
+                'dispensary_id.required' => 'mohon memilih apotek',
                 'status.required' => 'mohon memilih status'
             ]);
 
@@ -844,6 +853,7 @@ class OutpatientController extends Controller
                             'user_id' => $userId,
                             'patient_id' => $patientId,
                             'unit_id' => $request->unit_id,
+                            'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry,
                             'date_of_out' => in_array($request->status, [2, 4]) ? now() : null,
@@ -874,6 +884,7 @@ class OutpatientController extends Controller
                 'outpatient' => $outpatient,
                 'religion' => Religion::all(),
                 'unit' => Unit::where('type', 2)->orderBy('name')->get(),
+                'dispensary' => Dispensary::all(),
                 'content' => 'collection.outpatient-update'
             ];
         }
@@ -883,8 +894,6 @@ class OutpatientController extends Controller
 
     public function operatingRoom(Request $request, $id)
     {
-        return view('errors.coming-soon');
-
         $outpatient = Outpatient::findOrFail($id);
         $patientId = $outpatient->patient->id;
         $operation = $outpatient->operation;

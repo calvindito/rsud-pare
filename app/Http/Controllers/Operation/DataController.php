@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Operation;
 
-use App\Models\Item;
 use App\Models\Doctor;
-use App\Models\ItemStock;
 use App\Models\Operation;
 use Illuminate\Http\Request;
+use App\Models\DispensaryItem;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\DispensaryItemStock;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -15,8 +15,6 @@ class DataController extends Controller
 {
     public function index()
     {
-        return view('errors.coming-soon');
-
         $data = [
             'content' => 'operation.data'
         ];
@@ -137,9 +135,8 @@ class DataController extends Controller
 
     public function manage(Request $request, $id)
     {
-        return view('errors.coming-soon');
-
         $operation = Operation::findOrFail($id);
+        $dispensaryId = $operation->operationable->dispensary_id;
 
         if ($request->ajax()) {
             try {
@@ -162,36 +159,30 @@ class DataController extends Controller
 
                 if ($request->has('item')) {
                     foreach ($request->item as $key => $i) {
-                        $itemId = isset($request->om_item_id[$key]) ? $request->om_item_id[$key] : null;
+                        $dispensaryItemStockId = isset($request->om_dispensary_item_stock_id[$key]) ? $request->om_dispensary_item_stock_id[$key] : null;
                         $qty = isset($request->om_qty[$key]) ? $request->om_qty[$key] : null;
 
-                        if ($itemId && $qty > 0) {
-                            $itemStock = ItemStock::selectRaw("*, SUM(CASE WHEN type = '1' THEN qty END) as stock, SUM(CASE WHEN type = '2' THEN qty END) as sold")
-                                ->where('item_id', $itemId)
-                                ->groupBy('item_id')
-                                ->havingRaw('stock > IF(sold > 0, sold, 0)')
-                                ->oldest('expired_date')
-                                ->first();
+                        if ($dispensaryItemStockId && $qty > 0) {
+                            $dispensaryItemStock = DispensaryItemStock::find($dispensaryItemStockId);
 
-                            if ($itemStock) {
-                                $stock = $itemStock->stock;
-                                $sold = $itemStock->sold;
-                                $qtyAvailable = $stock - $sold;
+                            if ($dispensaryItemStock) {
+                                $qtyAvailable = $dispensaryItemStock->qty;
 
                                 if ($qty > $qtyAvailable) {
                                     $qty = $qtyAvailable;
                                 }
 
                                 $operation->operationMaterial()->create([
-                                    'item_stock_id' => $itemStock->id,
+                                    'dispensary_item_stock_id' => $dispensaryItemStockId,
+                                    'dispensary_id' => $dispensaryId,
                                     'qty' => $qty,
-                                    'price_purchase' => $itemStock->price_purchase,
-                                    'price_sell' => $itemStock->price_sell,
-                                    'discount' => $itemStock->discount
+                                    'price_purchase' => $dispensaryItemStock->price_purchase,
+                                    'price_sell' => $dispensaryItemStock->price_sell,
+                                    'discount' => $dispensaryItemStock->discount
                                 ]);
 
                                 if ($operation->status == 3) {
-                                    ItemStock::find($itemStock->id)->replicate()->fill([
+                                    $dispensaryItemStock->replicate()->fill([
                                         'type' => 2,
                                         'qty' => $qty
                                     ])->save();
@@ -220,7 +211,7 @@ class DataController extends Controller
             'operationMaterial' => $operation->operationMaterial,
             'patient' => $operation->patient,
             'doctor' => Doctor::all(),
-            'item' => Item::available()->get(),
+            'dispensaryItem' => DispensaryItem::available()->where('dispensary_id', $dispensaryId)->get(),
             'content' => 'operation.data-manage'
         ];
 

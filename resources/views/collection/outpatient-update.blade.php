@@ -298,6 +298,19 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label class="col-form-label col-lg-3">Apotek <span class="text-danger fw-bold">*</span></label>
+                    <div class="col-md-9">
+                        <select class="form-select" name="dispensary_id" id="dispensary_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach($dispensary as $d)
+                                <option value="{{ $d->id }}" {{ $outpatient->dispensary_id == $d->id ? 'selected' : '' }}>
+                                    {{ $d->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-form-label col-lg-3">Keterangan</label>
                     <div class="col-md-9">
                         <textarea class="form-control" name="description" id="description" style="resize:none;" placeholder="Masukan keterangan">{{ $outpatient->description }}</textarea>

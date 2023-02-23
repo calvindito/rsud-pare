@@ -21,7 +21,7 @@ class RequestController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = DispensaryRequest::groupBy('dispensary_requestable_type', 'dispensary_requestable_id');
+        $data = DispensaryRequest::groupBy('dispensary_requestable_type', 'dispensary_requestable_id', 'dispensary_id');
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -34,6 +34,9 @@ class RequestController extends Controller
                             $query->whereHas('employee', function ($query) use ($search) {
                                 $query->where('name', 'like', "%$search%");
                             });
+                        })
+                        ->orWhereHas('dispensary', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
                         });
                 }
             })
@@ -48,6 +51,15 @@ class RequestController extends Controller
                 }
 
                 return $employeeName;
+            })
+            ->addColumn('dispensary_name', function (DispensaryRequest $query) {
+                $dispensaryName = 'Belum Ada';
+
+                if (isset($query->dispensary)) {
+                    $dispensaryName = $query->dispensary->name;
+                }
+
+                return $dispensaryName;
             })
             ->addColumn('patient_name', function (DispensaryRequest $query) {
                 $patientName = null;
@@ -78,8 +90,10 @@ class RequestController extends Controller
     public function detail(Request $request, $id)
     {
         $dispensaryRequest = DispensaryRequest::findOrFail($id);
-        $dispensaryRequestItem = DispensaryRequest::with('dispensaryItemStock')->where('dispensary_requestable_type', $dispensaryRequest->dispensary_requestable_type)
+        $dispensaryRequestItem = DispensaryRequest::with('dispensaryItemStock')
+            ->where('dispensary_requestable_type', $dispensaryRequest->dispensary_requestable_type)
             ->where('dispensary_requestable_id', $dispensaryRequest->dispensary_requestable_id)
+            ->where('dispensary_id', $dispensaryRequest->dispensary_id)
             ->get();
 
         if ($request->ajax()) {

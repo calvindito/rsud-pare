@@ -24,6 +24,7 @@
                     <tr>
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>User</th>
+                        <th nowrap>Apotek</th>
                         <th nowrap>Ref</th>
                         <th nowrap>Pasien</th>
                         <th class="text-center" nowrap>Status</th>
@@ -72,9 +73,10 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'employee_name', name: 'employee_name', orderable: false, searchable: false, className: 'align-middle' },
+                { data: 'employee_name', name: 'employee_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'dispensary_name', name: 'dispensary_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'ref', name: 'ref', orderable: false, searchable: false, className: 'align-middle' },
-                { data: 'patient_name', name: 'patient_name', orderable: false, searchable: false, className: 'align-middle text-center' },
+                { data: 'patient_name', name: 'patient_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'statusable', name: 'statusable', orderable: false, searchable: false, className: 'align-middle text-center' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]

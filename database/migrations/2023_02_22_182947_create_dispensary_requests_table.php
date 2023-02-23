@@ -18,6 +18,7 @@ class CreateDispensaryRequestsTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('patient_id')->nullable();
             $table->unsignedBigInteger('dispensary_item_stock_id')->nullable();
+            $table->unsignedBigInteger('dispensary_id')->nullable();
             $table->nullableMorphs('dispensary_requestable', 'dispensary_requestable_type_id');
             $table->integer('qty')->default(0);
             $table->double('price_purchase')->nullable();

@@ -120,6 +120,7 @@
                     <label class="col-form-label col-lg-2">Dokter Operasi</label>
                     <div class="col-md-10">
                         <select class="form-select" name="doctor_operation_id" id="doctor_operation_id">
+                            <option value="">-- Pilih --</option>
                             @foreach($doctor as $d)
                                 <option value="{{ $d->id }}" {{ $operation->doctor_operation_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
                             @endforeach
@@ -182,18 +183,40 @@
                             <div id="item">
                                 <input type="hidden" name="item[]" value="{{ true }}">
                                 <div class="row">
-                                    <div class="{{ $operation->status != 3 ? 'col-md-8' : 'col-md-9' }}">
+                                    <div class="{{ $operation->status != 3 ? 'col-md-6' : 'col-md-7' }}">
                                         <div class="form-group">
-                                            <select class="form-select" name="om_item_id[]">
-                                                @foreach($item as $i)
-                                                    <option value="{{ $i->id }}" {{ $om->itemStock->item_id == $i->id ? 'selected' : '' }}>{{ $i->name }}</option>
-                                                @endforeach
-                                            </select>
+                                            @if($operation->status == 3 || $om->dispensary_id != $operation->operationable->dispensary_id)
+                                                <input type="hidden" name="om_dispensary_item_stock_id[]" value="{{ $om->dispensary_item_stock_id }}">
+                                            @endif
+                                            @if($om->dispensary_id == $operation->operationable->dispensary_id)
+                                                <select class="form-select select2" name="om_dispensary_item_stock_id[]" {{ $operation->status == 3 || $om->dispensary_id != $operation->operationable->dispensary_id ? 'disabled' : '' }}>
+                                                    <option value="">-- Pilih Item --</option>
+                                                    @foreach($dispensaryItem as $di)
+                                                        <option value="{{ $di->fifoStock()->id }}" {{ ($om->dispensary_item_stock_id ?? null) == $di->fifoStock()->id ? 'selected' : '' }}>{{ $di->item->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <input type="text" class="form-control" value="{{ $om->dispensaryItemStock->dispensaryItem->item->name ?? '-' }}" disabled>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <input type="number" class="form-control" name="om_qty[]" min="1" value="{{ $om->qty }}" placeholder="Masukan jumlah">
+                                            <input type="text" class="form-control" value="{{ $om->dispensary->name }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                @if($operation->status == 3 || $om->dispensary_id != $operation->operationable->dispensary_id)
+                                                    <input type="hidden" name="om_qty[]" value="{{ $om->qty }}">
+                                                @endif
+                                                @if($om->dispensary_id == $operation->operationable->dispensary_id)
+                                                    <input type="number" class="form-control" name="om_qty[]" value="{{ $om->qty }}" placeholder="Jumlah" {{ $operation->status == 3 || $om->dispensary_id != $operation->operationable->dispensary_id ? 'disabled' : '' }}>
+                                                @else
+                                                    <input type="number" class="form-control" value="{{ $om->qty }}" placeholder="0" disabled>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                     @if($operation->status != 3)
@@ -266,10 +289,7 @@
     function checkStatus() {
         var status = '{{ $operation->status }}';
 
-        if(status != 3) {
-            $('.form-control').attr('disabled', false);
-            $('.form-select').attr('disabled', false);
-        } else {
+        if(status == 3) {
             $('.form-control').attr('disabled', true);
             $('.form-select').attr('disabled', true);
         }
@@ -280,18 +300,24 @@
             <div id="item">
                 <input type="hidden" name="item[]" value="{{ true }}">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <div class="form-group">
-                            <select class="form-select" name="om_item_id[]">
-                                @foreach($item as $i)
-                                    <option value="{{ $i->id }}">{{ $i->name }}</option>
+                            <select class="form-select select2" name="om_dispensary_item_stock_id[]">
+                                <option value="">-- Pilih Item --</option>
+                                @foreach($dispensaryItem as $di)
+                                    <option value="{{ $di->fifoStock()->id }}">{{ $di->item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input type="number" class="form-control" name="om_qty[]" min="1" placeholder="Masukan jumlah">
+                            <input type="text" class="form-control" value="{{ $operation->operationable->dispensary->name }}" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input type="number" class="form-control" name="om_qty[]" min="1" placeholder="Jumlah">
                         </div>
                     </div>
                     <div class="col-md-1">

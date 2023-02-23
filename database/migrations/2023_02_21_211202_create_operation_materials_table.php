@@ -16,7 +16,8 @@ class CreateOperationMaterialsTable extends Migration
         Schema::create('operation_materials', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('operation_id')->nullable();
-            $table->unsignedBigInteger('item_stock_id')->nullable();
+            $table->unsignedBigInteger('dispensary_item_stock_id')->nullable();
+            $table->unsignedBigInteger('dispensary_id')->nullable();
             $table->integer('qty')->default(0);
             $table->double('price_purchase')->nullable();
             $table->double('price_sell')->nullable();

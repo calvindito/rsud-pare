@@ -31,12 +31,32 @@ class OperationMaterial extends Model
     protected $guarded = ['id'];
 
     /**
-     * itemStock
+     * dispensaryItemStock
      *
      * @return void
      */
-    public function itemStock()
+    public function dispensaryItemStock()
     {
-        return $this->belongsTo(ItemStock::class);
+        return $this->belongsTo(DispensaryItemStock::class);
+    }
+
+    /**
+     * dispensary
+     *
+     * @return void
+     */
+    public function dispensary()
+    {
+        return $this->belongsTo(Dispensary::class);
+    }
+
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->belongsTo(Operation::class);
     }
 }

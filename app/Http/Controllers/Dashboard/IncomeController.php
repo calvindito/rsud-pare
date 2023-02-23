@@ -3,19 +3,17 @@
 namespace App\Http\Controllers\Dashboard;
 
 use Carbon\Carbon;
-use App\Models\ItemStock;
 use App\Models\Operation;
 use Illuminate\Http\Request;
-use App\Models\DispensaryRequest;
+use App\Models\OperationMaterial;
 use Illuminate\Support\Facades\DB;
+use App\Models\DispensaryItemStock;
 use App\Http\Controllers\Controller;
 
 class IncomeController extends Controller
 {
     public function index()
     {
-        return view('errors.coming-soon');
-
         $data = [
             'content' => 'dashboard.income'
         ];
@@ -32,8 +30,16 @@ class IncomeController extends Controller
 
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
-                $data['nominal'][] = ItemStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_purchase * (stock + sold)'));
-                $data['qty'][] = ItemStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('stock + sold'));
+
+                $data['nominal'][] = DispensaryItemStock::where('type', 1)
+                    ->whereMonth('created_at', $i)
+                    ->whereYear('created_at', $year)
+                    ->sum(DB::raw('price_purchase * qty'));
+
+                $data['qty'][] = DispensaryItemStock::where('type', 1)
+                    ->whereMonth('created_at', $i)
+                    ->whereYear('created_at', $year)
+                    ->sum('qty');
             }
 
             $response = [
@@ -78,8 +84,16 @@ class IncomeController extends Controller
 
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
-                $data['nominal'][] = DispensaryRequest::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_sell * qty'));
-                $data['qty'][] = DispensaryRequest::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum('qty');
+
+                $data['nominal'][] = DispensaryItemStock::where('type', 2)
+                    ->whereMonth('created_at', $i)
+                    ->whereYear('created_at', $year)
+                    ->sum(DB::raw('price_sell * qty'));
+
+                $data['qty'][] = DispensaryItemStock::where('type', 2)
+                    ->whereMonth('created_at', $i)
+                    ->whereYear('created_at', $year)
+                    ->sum('qty');
             }
 
             $response = [
@@ -124,8 +138,16 @@ class IncomeController extends Controller
 
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
-                $data['purchase'][] = ItemStock::whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_purchase * (stock + sold)'));
-                $data['sell'][] = DispensaryRequest::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_sell * qty'));
+
+                $data['purchase'][] = DispensaryItemStock::where('type', 1)
+                    ->whereMonth('created_at', $i)
+                    ->whereYear('created_at', $year)
+                    ->sum(DB::raw('price_purchase * qty'));
+
+                $data['sell'][] = DispensaryItemStock::where('type', 2)
+                    ->whereMonth('created_at', $i)
+                    ->whereYear('created_at', $year)
+                    ->sum(DB::raw('price_sell * qty'));
             }
 
             $response = [
@@ -166,7 +188,10 @@ class IncomeController extends Controller
 
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
-                $data[] = DispensaryRequest::where('status', 4)->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('(price_sell - price_purchase) * qty'));
+                $data[] = DispensaryItemStock::where('type', 2)
+                    ->whereMonth('created_at', $i)
+                    ->whereYear('created_at', $year)
+                    ->sum(DB::raw('(price_sell - price_purchase) * qty'));
             }
 
             $response = [
@@ -192,7 +217,8 @@ class IncomeController extends Controller
 
             for ($i = 1; $i <= 12; $i++) {
                 $month[] = Carbon::parse($year . '-' . $i)->isoFormat('MMM');
-                $data[] = Operation::whereIn('status', [2, 3])
+
+                $totalOperation = Operation::where('status', 3)
                     ->whereMonth('created_at', $i)
                     ->whereYear('created_at', $year)
                     ->sum(DB::raw('
@@ -201,10 +227,15 @@ class IncomeController extends Controller
                         doctor_anesthetist +
                         nurse_operating_room +
                         nurse_anesthetist +
-                        material +
                         monitoring +
                         nursing_care
                     '));
+
+                $totalOperationMaterial = OperationMaterial::whereHas('operation', function ($query) {
+                    $query->where('status', 3);
+                })->whereMonth('created_at', $i)->whereYear('created_at', $year)->sum(DB::raw('price_sell * qty'));
+
+                $data[] = $totalOperation + $totalOperationMaterial;
             }
 
             $response = [

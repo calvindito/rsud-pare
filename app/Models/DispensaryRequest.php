@@ -89,12 +89,24 @@ class DispensaryRequest extends Model
     {
         $type = $this->dispensary_requestable_type;
         $id = $this->dispensary_requestable_id;
-        $falseable = DispensaryRequest::where('dispensary_requestable_type', $type)->where('dispensary_requestable_id', $id)->whereNull('status')->count();
+        $dispensaryId = $this->dispensary_id;
+
+        $falseable = DispensaryRequest::where('dispensary_requestable_type', $type)
+            ->where('dispensary_requestable_id', $id)
+            ->where('dispensary_id', $dispensaryId)
+            ->whereNull('status')
+            ->count();
+
+        $trueable = DispensaryRequest::where('dispensary_requestable_type', $type)
+            ->where('dispensary_requestable_id', $id)
+            ->where('dispensary_id', $dispensaryId)
+            ->whereNotNull('status')
+            ->count();
 
         if ($falseable > 0) {
-            $result = $html ? '<span class="badge bg-primary">Menunggu Konfirmasi</span>' : false;
+            $result = $html ? '<span class="badge bg-primary">' . $falseable . ' Item Menunggu Konfirmasi</span>' : false;
         } else {
-            $result = $html ? '<span class="badge bg-success">Sudah Dikonfirmasi</span>' : true;
+            $result = $html ? '<span class="badge bg-success">' . $trueable . ' Item Sudah Dikonfirmasi</span>' : true;
         }
 
         return $result;
@@ -144,5 +156,15 @@ class DispensaryRequest extends Model
         }
 
         return $text;
+    }
+
+    /**
+     * dispensary
+     *
+     * @return void
+     */
+    public function dispensary()
+    {
+        return $this->belongsTo(Dispensary::class);
     }
 }

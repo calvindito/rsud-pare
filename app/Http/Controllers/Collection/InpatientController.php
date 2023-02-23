@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Collection;
 
-use App\Models\Item;
 use App\Models\Unit;
 use App\Helpers\Simrs;
 use App\Models\Doctor;
@@ -12,9 +11,9 @@ use App\Models\Employee;
 use App\Models\Religion;
 use App\Models\RoomType;
 use App\Models\Inpatient;
-use App\Models\ItemStock;
 use App\Models\Operation;
 use App\Models\Radiology;
+use App\Models\Dispensary;
 use App\Models\LabRequest;
 use App\Models\ActionOther;
 use App\Models\LabItemGroup;
@@ -201,7 +200,8 @@ class InpatientController extends Controller
                 'date_of_entry' => 'required',
                 'room_type_id' => 'required',
                 'functional_service_id' => 'required',
-                'doctor_id' => 'required'
+                'doctor_id' => 'required',
+                'dispensary_id' => 'required'
             ], [
                 'patient_id' => 'mohon memilih pasien',
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -214,7 +214,8 @@ class InpatientController extends Controller
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'room_type_id.required' => 'mohon memilih kamar',
                 'functional_service_id.required' => 'mohon memilih upf',
-                'doctor_id.required' => 'mohon memilih dokter'
+                'doctor_id.required' => 'mohon memilih dokter',
+                'dispensary_id.required' => 'mohon memilih apotek'
             ]);
 
             if ($validation->fails()) {
@@ -253,6 +254,8 @@ class InpatientController extends Controller
                             'patient_id' => $patientId,
                             'room_type_id' => $request->room_type_id,
                             'functional_service_id' => $request->functional_service_id,
+                            'doctor_id' => $request->doctor_id,
+                            'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry
                         ]);
@@ -278,6 +281,7 @@ class InpatientController extends Controller
             'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
             'doctor' => Doctor::all(),
+            'dispensary' => Dispensary::all(),
             'content' => 'collection.inpatient-register-patient'
         ];
 
@@ -445,6 +449,7 @@ class InpatientController extends Controller
     public function recipe(Request $request, $id)
     {
         $inpatient = Inpatient::findOrFail($id);
+        $dispensaryId = $inpatient->dispensary_id;
 
         if ($request->ajax()) {
             $validation = Validator::make($request->all(), [
@@ -482,6 +487,7 @@ class InpatientController extends Controller
                                         'user_id' => auth()->id(),
                                         'patient_id' => $inpatient->patient_id,
                                         'dispensary_item_stock_id' => $dispensaryItemStockId,
+                                        'dispensary_id' => $dispensaryId,
                                         'qty' => $qty,
                                         'price_purchase' => $dispensaryItemStock->price_purchase ?? null,
                                         'price_sell' => $dispensaryItemStock->price_sell ?? null,
@@ -511,7 +517,7 @@ class InpatientController extends Controller
             'inpatient' => $inpatient,
             'patient' => $inpatient->patient,
             'dispensaryRequest' => $inpatient->dispensaryRequest,
-            'dispensaryItem' => DispensaryItem::available()->get(),
+            'dispensaryItem' => DispensaryItem::available()->where('dispensary_id', $dispensaryId)->get(),
             'content' => 'collection.inpatient-recipe'
         ];
 
@@ -756,8 +762,6 @@ class InpatientController extends Controller
 
     public function operatingRoom(Request $request, $id)
     {
-        return view('errors.coming-soon');
-
         $inpatient = Inpatient::findOrFail($id);
         $patientId = $inpatient->patient->id;
         $operation = $inpatient->operation;
@@ -1042,7 +1046,8 @@ class InpatientController extends Controller
                 'date_of_entry' => 'required',
                 'room_type_id' => 'required',
                 'functional_service_id' => 'required',
-                'doctor_id' => 'required'
+                'doctor_id' => 'required',
+                'dispensary_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
                 'identity_number.numeric' => 'no identitas harus angka',
@@ -1054,7 +1059,8 @@ class InpatientController extends Controller
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'room_type_id.required' => 'mohon memilih kamar',
                 'functional_service_id.required' => 'mohon memilih upf',
-                'doctor_id.required' => 'mohon memilih dokter'
+                'doctor_id.required' => 'mohon memilih dokter',
+                'dispensary_id.required' => 'mohon memilih apotek'
             ]);
 
             if ($validation->fails()) {
@@ -1079,6 +1085,7 @@ class InpatientController extends Controller
                             'room_type_id' => $request->room_type_id,
                             'functional_service_id' => $request->functional_service_id,
                             'doctor_id' => $request->doctor_id,
+                            'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
                             'date_of_entry' => $request->date_of_entry
                         ]);
@@ -1106,6 +1113,7 @@ class InpatientController extends Controller
             'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
             'doctor' => Doctor::all(),
+            'dispensary' => Dispensary::all(),
             'content' => 'collection.inpatient-update'
         ];
 

@@ -61,25 +61,38 @@
                             <input type="hidden" name="item[]" value="{{ true }}">
                             <input type="hidden" name="dr_status[]" value="{{ $dr->status }}">
                             <div class="row">
-                                <div class="col-md-7">
+                                <div class="col-md-5">
                                     <div class="form-group">
-                                        @if(!empty($dr->status))
+                                        @if(!empty($dr->status) || $outpatient->dispensary_id != $dr->dispensary_id)
                                             <input type="hidden" name="dr_dispensary_item_stock_id[]" value="{{ $dr->dispensary_item_stock_id }}">
                                         @endif
-                                        <select class="form-select select2" name="dr_dispensary_item_stock_id[]" {{ !empty($dr->status) || $outpatient->status != 1 ? 'disabled' : '' }}>
-                                            <option value="">-- Pilih Item --</option>
-                                            @foreach($dispensaryItem as $di)
-                                                <option value="{{ $di->fifoStock()->id }}" {{ ($dr->dispensary_item_stock_id ?? null) == $di->fifoStock()->id ? 'selected' : '' }}>{{ $di->item->name }}</option>
-                                            @endforeach
-                                        </select>
+                                        @if($outpatient->dispensary_id == $dr->dispensary_id)
+                                            <select class="form-select select2" name="dr_dispensary_item_stock_id[]" {{ !empty($dr->status) || $outpatient->status != 1 ? 'disabled' : '' }}>
+                                                <option value="">-- Pilih Item --</option>
+                                                @foreach($dispensaryItem as $di)
+                                                    <option value="{{ $di->fifoStock()->id }}" {{ ($dr->dispensary_item_stock_id ?? null) == $di->fifoStock()->id ? 'selected' : '' }}>{{ $di->item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        @else
+                                            <input type="text" class="form-control" value="{{ $dr->dispensaryItemStock->dispensaryItem->item->name ?? '-' }}" disabled>
+                                        @endif
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <div class="form-group">
-                                        @if(!empty($dr->status))
+                                        <input type="text" class="form-control" value="{{ $dr->dispensary->name }}" disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="form-group">
+                                        @if(!empty($dr->status) || $outpatient->dispensary_id != $dr->dispensary_id)
                                             <input type="hidden" name="dr_qty[]" value="{{ $dr->qty }}">
                                         @endif
-                                        <input type="number" class="form-control" name="dr_qty[]" value="{{ $dr->qty }}" placeholder="Jumlah" {{ !empty($dr->status) || $outpatient->status != 1 ? 'disabled' : '' }}>
+                                        @if($outpatient->dispensary_id == $dr->dispensary_id)
+                                            <input type="number" class="form-control" name="dr_qty[]" value="{{ $dr->qty }}" placeholder="Jumlah" {{ !empty($dr->status) || $outpatient->status != 1 ? 'disabled' : '' }}>
+                                        @else
+                                            <input type="number" class="form-control" value="{{ $dr->qty }}" placeholder="0" disabled>
+                                        @endif
                                     </div>
                                 </div>
                                 @if(!empty($dr->status) || $outpatient->status != 1)
@@ -143,7 +156,7 @@
                 <input type="hidden" name="item[]" value="{{ true }}">
                 <input type="hidden" name="dr_status[]" value="{{ null }}">
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <select class="form-select select2" name="dr_dispensary_item_stock_id[]">
                                 <option value="">-- Pilih Item --</option>
@@ -153,7 +166,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" class="form-control" value="{{ $outpatient->dispensary->name }}" disabled>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
                         <div class="form-group">
                             <input type="number" class="form-control" name="dr_qty[]" placeholder="Jumlah">
                         </div>

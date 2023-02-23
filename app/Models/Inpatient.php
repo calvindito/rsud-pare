@@ -485,4 +485,14 @@ class Inpatient extends Model
 
         return $result;
     }
+
+    /**
+     * dispensary
+     *
+     * @return void
+     */
+    public function dispensary()
+    {
+        return $this->belongsTo(Dispensary::class);
+    }
 }

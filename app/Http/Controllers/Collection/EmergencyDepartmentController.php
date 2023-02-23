@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Collection;
 
-use App\Models\Item;
 use App\Helpers\Simrs;
 use App\Models\Doctor;
 use App\Models\LabItem;
 use App\Models\Patient;
 use App\Models\Religion;
-use App\Models\ItemStock;
 use App\Models\Radiology;
+use App\Models\Dispensary;
 use App\Models\LabRequest;
 use App\Models\ActionOther;
 use App\Models\LabItemGroup;
@@ -180,7 +179,8 @@ class EmergencyDepartmentController extends Controller
                 'type' => 'required',
                 'date_of_entry' => 'required',
                 'functional_service_id' => 'required',
-                'doctor_id' => 'required'
+                'doctor_id' => 'required',
+                'dispensary_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
                 'identity_number.numeric' => 'no identitas harus angka',
@@ -193,7 +193,8 @@ class EmergencyDepartmentController extends Controller
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'functional_service_id.required' => 'mohon memilih upf',
-                'doctor_id.required' => 'mohon memilih dokter'
+                'doctor_id.required' => 'mohon memilih dokter',
+                'dispensary_id.required' => 'mohon memilih apotek'
             ]);
 
             if ($validation->fails()) {
@@ -241,6 +242,7 @@ class EmergencyDepartmentController extends Controller
                             'patient_id' => $patientId,
                             'functional_service_id' => $request->functional_service_id,
                             'doctor_id' => $request->doctor_id,
+                            'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry
                         ]);
@@ -265,6 +267,7 @@ class EmergencyDepartmentController extends Controller
             'doctor' => Doctor::all(),
             'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
+            'dispensary' => Dispensary::all(),
             'content' => 'collection.emergency-department-register-patient'
         ];
 
@@ -397,6 +400,7 @@ class EmergencyDepartmentController extends Controller
     public function recipe(Request $request, $id)
     {
         $emergencyDepartment = EmergencyDepartment::findOrFail($id);
+        $dispensaryId = $emergencyDepartment->dispensary_id;
 
         if ($request->ajax()) {
             $validation = Validator::make($request->all(), [
@@ -434,6 +438,7 @@ class EmergencyDepartmentController extends Controller
                                         'user_id' => auth()->id(),
                                         'patient_id' => $emergencyDepartment->patient_id,
                                         'dispensary_item_stock_id' => $dispensaryItemStockId,
+                                        'dispensary_id' => $dispensaryId,
                                         'qty' => $qty,
                                         'price_purchase' => $dispensaryItemStock->price_purchase ?? null,
                                         'price_sell' => $dispensaryItemStock->price_sell ?? null,
@@ -463,7 +468,7 @@ class EmergencyDepartmentController extends Controller
             'emergencyDepartment' => $emergencyDepartment,
             'patient' => $emergencyDepartment->patient,
             'dispensaryRequest' => $emergencyDepartment->dispensaryRequest,
-            'dispensaryItem' => DispensaryItem::available()->get(),
+            'dispensaryItem' => DispensaryItem::available()->where('dispensary_id', $dispensaryId)->get(),
             'content' => 'collection.emergency-department-recipe'
         ];
 
@@ -825,7 +830,8 @@ class EmergencyDepartmentController extends Controller
                 'type' => 'required',
                 'date_of_entry' => 'required',
                 'functional_service_id' => 'required',
-                'doctor_id' => 'required'
+                'doctor_id' => 'required',
+                'dispensary_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
                 'identity_number.numeric' => 'no identitas harus angka',
@@ -838,7 +844,8 @@ class EmergencyDepartmentController extends Controller
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'functional_service_id.required' => 'mohon memilih upf',
-                'doctor_id.required' => 'mohon memilih dokter'
+                'doctor_id.required' => 'mohon memilih dokter',
+                'dispensary_id.required' => 'mohon memilih apotek'
             ]);
 
             if ($validation->fails()) {
@@ -873,6 +880,7 @@ class EmergencyDepartmentController extends Controller
                             'user_id' => auth()->id(),
                             'functional_service_id' => $request->functional_service_id,
                             'doctor_id' => $request->doctor_id,
+                            'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
                             'date_of_entry' => $request->date_of_entry
                         ]);
@@ -899,6 +907,7 @@ class EmergencyDepartmentController extends Controller
             'doctor' => Doctor::all(),
             'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
+            'dispensary' => Dispensary::all(),
             'content' => 'collection.emergency-department-update'
         ];
 

@@ -216,4 +216,14 @@ class Outpatient extends Model
     {
         return $this->morphMany(DispensaryRequest::class, 'dispensary_requestable');
     }
+
+    /**
+     * dispensary
+     *
+     * @return void
+     */
+    public function dispensary()
+    {
+        return $this->belongsTo(Dispensary::class);
+    }
 }
