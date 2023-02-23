@@ -109,6 +109,19 @@
                                     </div>
                                 @endif
                             </div>
+                            @if(!empty($dr->status) || $emergencyDepartment->dispensary_id != $dr->dispensary_id)
+                                <input type="hidden" name="dr_consumed[]" value="{{ $dr->consumed }}">
+                            @endif
+                            @if($emergencyDepartment->dispensary_id == $dr->dispensary_id)
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="dr_consumed[]" value="{{ $dr->consumed }}" placeholder="Aturan pemakaian ..." {{ !empty($dr->status) || $emergencyDepartment->status != 1 ? 'disabled' : '' }}>
+                                </div>
+                            @else
+                                <div class="form-group">
+                                    <input type="text" class="form-control" value="{{ $dr->consumed }}" placeholder="Aturan pemakaian ..." disabled>
+                                </div>
+                            @endif
+                            <div class="form-group"><hr class="mt-0 mb-0"></div>
                         </div>
                     @endforeach
                 </div>
@@ -182,6 +195,10 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="dr_consumed[]" placeholder="Aturan pemakaian ...">
+                </div>
+                <div class="form-group"><hr class="mt-0 mb-0"></div>
             </div>
         `).hide().fadeIn(500);
 

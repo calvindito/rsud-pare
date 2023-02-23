@@ -471,6 +471,7 @@ class InpatientController extends Controller
                         foreach ($request->item as $key => $i) {
                             $dispensaryItemStockId = isset($request->dr_dispensary_item_stock_id[$key]) ? $request->dr_dispensary_item_stock_id[$key] : null;
                             $status = isset($request->dr_status[$key]) ? $request->dr_status[$key] : null;
+                            $consumed = isset($request->dr_consumed[$key]) ? $request->dr_consumed[$key] : null;
 
                             if ($dispensaryItemStockId && empty($status)) {
                                 $dispensaryItemStock = DispensaryItemStock::find($dispensaryItemStockId);
@@ -491,7 +492,8 @@ class InpatientController extends Controller
                                         'qty' => $qty,
                                         'price_purchase' => $dispensaryItemStock->price_purchase ?? null,
                                         'price_sell' => $dispensaryItemStock->price_sell ?? null,
-                                        'discount' => $dispensaryItemStock->discount ?? null
+                                        'discount' => $dispensaryItemStock->discount ?? null,
+                                        'consumed' => $consumed
                                     ]);
                                 }
                             }
