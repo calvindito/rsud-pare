@@ -26,7 +26,7 @@ class StockController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = DispensaryItemStock::query();
+        $data = DispensaryItemStock::where('type', 1);
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {

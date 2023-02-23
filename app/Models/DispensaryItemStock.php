@@ -109,7 +109,7 @@ class DispensaryItemStock extends Model
      */
     public function sold()
     {
-        return DispensaryItemStock::where('dispensary_item_id', $this->item_id)
+        return DispensaryItemStock::where('dispensary_item_id', $this->dispensary_item_id)
             ->where('expired_date', $this->expired_date)
             ->where('type', 2)
             ->sum('qty');

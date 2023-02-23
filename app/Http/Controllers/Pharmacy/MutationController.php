@@ -7,17 +7,13 @@ use App\Models\Item;
 use App\Models\ItemStock;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\DispensaryRequest;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
 class MutationController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        return view('errors.coming-soon');
-
         $data = [
             'content' => 'pharmacy.mutation'
         ];
@@ -54,21 +50,32 @@ class MutationController extends Controller
 
                 for ($i = 0; $i <= $diff; $i++) {
                     $date = date('Y-m-d', strtotime("+$i days", strtotime($startDate)));
-                    $remaining = ItemStock::whereDate('created_at', '<', $date)->where('item_id', $itemId)->sum('stock');
-                    $stockIn = ItemStock::whereDate('created_at', $date)->where('item_id', $itemId)->sum(DB::raw('stock + sold'));
-                    $stockOut = DispensaryRequest::whereDate('created_at', $date)
-                        ->whereHas('itemStock', function ($query) use ($date, $itemId) {
-                            $query->where('item_id', $itemId)
-                                ->whereDate('created_at', $date);
-                        })
-                        ->where('status', 4)
+
+                    $beforeIn = ItemStock::where('type', 1)
+                        ->where('item_id', $itemId)
+                        ->whereDate('created_at', '<', $date)
+                        ->sum('qty');
+
+                    $beforeOut = ItemStock::where('type', 2)
+                        ->where('item_id', $itemId)
+                        ->whereDate('created_at', '<', $date)
+                        ->sum('qty');
+
+                    $currentIn = ItemStock::where('type', 1)
+                        ->where('item_id', $itemId)
+                        ->whereDate('created_at', $date)
+                        ->sum('qty');
+
+                    $currentOut = ItemStock::where('type', 2)
+                        ->where('item_id', $itemId)
+                        ->whereDate('created_at', $date)
                         ->sum('qty');
 
                     $data[] = [
                         'date' => $date,
-                        'stock_in' => $stockIn,
-                        'stock_out' => $stockOut,
-                        'remaining' => ($remaining - $stockOut) + $stockIn
+                        'stock_in' => $currentIn,
+                        'stock_out' => $currentOut,
+                        'remaining' => ($beforeIn - $beforeOut) + ($currentIn - $currentOut)
                     ];
                 }
 
@@ -113,28 +120,39 @@ class MutationController extends Controller
 
             for ($i = 0; $i <= $diff; $i++) {
                 $date = date('Y-m-d', strtotime("+$i days", strtotime($startDate)));
-                $remaining = ItemStock::whereDate('created_at', '<', $date)->where('item_id', $itemId)->sum('stock');
-                $stockIn = ItemStock::whereDate('created_at', $date)->where('item_id', $itemId)->sum(DB::raw('stock + sold'));
-                $stockOut = DispensaryRequest::whereDate('created_at', $date)
-                    ->whereHas('itemStock', function ($query) use ($date, $itemId) {
-                        $query->where('item_id', $itemId)
-                            ->whereDate('created_at', $date);
-                    })
-                    ->where('status', 4)
+
+                $beforeIn = ItemStock::where('type', 1)
+                    ->where('item_id', $itemId)
+                    ->whereDate('created_at', '<', $date)
+                    ->sum('qty');
+
+                $beforeOut = ItemStock::where('type', 2)
+                    ->where('item_id', $itemId)
+                    ->whereDate('created_at', '<', $date)
+                    ->sum('qty');
+
+                $currentIn = ItemStock::where('type', 1)
+                    ->where('item_id', $itemId)
+                    ->whereDate('created_at', $date)
+                    ->sum('qty');
+
+                $currentOut = ItemStock::where('type', 2)
+                    ->where('item_id', $itemId)
+                    ->whereDate('created_at', $date)
                     ->sum('qty');
 
                 $data[] = [
                     'date' => $date,
-                    'stock_in' => $stockIn,
-                    'stock_out' => $stockOut,
-                    'remaining' => ($remaining - $stockOut) + $stockIn
+                    'stock_in' => $currentIn,
+                    'stock_out' => $currentOut,
+                    'remaining' => ($beforeIn - $beforeOut) + ($currentIn - $currentOut)
                 ];
             }
 
             $pdf = Pdf::setOptions([
                 'adminUsername' => auth()->user()->username
-            ])->loadView('pdf.mutation', [
-                'title' => 'Mutasi Stok Item',
+            ])->loadView('pdf.mutation-pharmacy', [
+                'title' => 'Mutasi Stok Item Farmasi',
                 'item' => $item,
                 'data' => $data,
                 'startDate' => $startDate,
@@ -142,7 +160,7 @@ class MutationController extends Controller
                 'diff' => $diff
             ]);
 
-            return $pdf->stream('Mutasi Stok Item' . ' - ' . date('YmdHis') . '.pdf');
+            return $pdf->stream('Mutasi Stok Item Farmasi' . ' - ' . date('YmdHis') . '.pdf');
         }
     }
 }
