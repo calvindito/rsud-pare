@@ -223,7 +223,6 @@ function dragAndDropFile(config = {}) {
 function textEditor(selector = '.text-editor', placeholder = 'Masukan sesuatu ...') {
     $(selector).summernote({
         placeholder: placeholder,
-        tabsize: 2,
         height: 400,
         lang: 'id-ID',
         fontNames: ['Arial', 'Arial Black'],

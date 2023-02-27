@@ -83,33 +83,23 @@
                         <div class="wizard-form steps-all-1">
                             <h6>Askep</h6>
                             <fieldset>
-                                <textarea class="form-control text-editor" name="nursing_care_value" id="nursing_care_value">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->value ?? '' !!}
-                                </textarea>
+                                <textarea class="form-control text-editor" name="nursing_care_value" id="nursing_care_value"></textarea>
                             </fieldset>
                             <h6>Subjective</h6>
                             <fieldset>
-                                <textarea class="form-control text-editor" name="nursing_care_subjective" id="nursing_care_subjective">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->subjective ?? '' !!}
-                                </textarea>
+                                <textarea class="form-control text-editor" name="nursing_care_subjective" id="nursing_care_subjective"></textarea>
                             </fieldset>
                             <h6>Objective</h6>
                             <fieldset>
-                                <textarea class="form-control text-editor" name="nursing_care_objective" id="nursing_care_objective">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->objective ?? '' !!}
-                                </textarea>
+                                <textarea class="form-control text-editor" name="nursing_care_objective" id="nursing_care_objective"></textarea>
                             </fieldset>
                             <h6>Assessment</h6>
                             <fieldset>
-                                <textarea class="form-control text-editor" name="nursing_care_assessment" id="nursing_care_assessment">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->assessment ?? '' !!}
-                                </textarea>
+                                <textarea class="form-control text-editor" name="nursing_care_assessment" id="nursing_care_assessment"></textarea>
                             </fieldset>
                             <h6>Planning</h6>
                             <fieldset>
-                                <textarea class="form-control text-editor" name="nursing_care_planning" id="nursing_care_planning">
-                                    {!! $outpatientSoap->firstWhere('type', 1)->planning ?? '' !!}
-                                </textarea>
+                                <textarea class="form-control text-editor" name="nursing_care_planning" id="nursing_care_planning"></textarea>
                             </fieldset>
                         </div>
                     </div>
@@ -117,27 +107,19 @@
                         <div class="wizard-form steps-all-2">
                             <h6>Subjective</h6>
                             <fieldset>
-                                <textarea class="form-control text-editor" name="checkup_subjective" id="checkup_subjective">
-                                    {!! $outpatientSoap->firstWhere('type', 2)->subjective ?? '' !!}
-                                </textarea>
+                                <textarea class="form-control text-editor" name="checkup_subjective" id="checkup_subjective"></textarea>
                             </fieldset>
                             <h6>Objective</h6>
                             <fieldset>
-                                <textarea class="form-control text-editor" name="checkup_objective" id="checkup_objective">
-                                    {!! $outpatientSoap->firstWhere('type', 2)->objective ?? '' !!}
-                                </textarea>
+                                <textarea class="form-control text-editor" name="checkup_objective" id="checkup_objective"></textarea>
                             </fieldset>
                             <h6>Assessment</h6>
                             <fieldset>
-                                <textarea class="form-control text-editor" name="checkup_assessment" id="checkup_assessment">
-                                    {!! $outpatientSoap->firstWhere('type', 2)->assessment ?? '' !!}
-                                </textarea>
+                                <textarea class="form-control text-editor" name="checkup_assessment" id="checkup_assessment"></textarea>
                             </fieldset>
                             <h6>Planning</h6>
                             <fieldset>
-                                <textarea class="form-control text-editor" name="checkup_planning" id="checkup_planning">
-                                {!! $outpatientSoap->firstWhere('type', 2)->planning ?? '' !!}
-                                </textarea>
+                                <textarea class="form-control text-editor" name="checkup_planning" id="checkup_planning"></textarea>
                             </fieldset>
                         </div>
                     </div>
@@ -152,9 +134,22 @@
         fullWidthAllDevice();
         initFormStep();
         checkStatus();
+        setValueAllSOAP();
 
         $('#form-data .actions').addClass('mt-3');
     });
+
+    function setValueAllSOAP() {
+        $('#nursing_care_value').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->value ?? "" !!}');
+        $('#nursing_care_subjective').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->subjective ?? "" !!}');
+        $('#nursing_care_objective').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->objective ?? "" !!}');
+        $('#nursing_care_assessment').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->assessment ?? "" !!}');
+        $('#nursing_care_planning').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->planning ?? "" !!}');
+        $('#checkup_subjective').summernote('code', '{!! $outpatientSoap->firstWhere("type", 2)->subjective ?? "" !!}');
+        $('#checkup_objective').summernote('code', '{!! $outpatientSoap->firstWhere("type", 2)->objective ?? "" !!}');
+        $('#checkup_assessment').summernote('code', '{!! $outpatientSoap->firstWhere("type", 2)->assessment ?? "" !!}');
+        $('#checkup_planning').summernote('code', '{!! $outpatientSoap->firstWhere("type", 2)->planning ?? "" !!}');
+    }
 
     function checkStatus() {
         var status = '{{ $outpatient->status }}';
@@ -185,46 +180,51 @@
             },
             onStepChanging: function (event, currentIndex, newIndex) {
                 var value = $('#nursing_care_value').summernote('isEmpty');
+                var valueLength = $('#nursing_care_value').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var subjective = $('#nursing_care_subjective').summernote('isEmpty');
+                var subjectiveLength = $('#nursing_care_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var obejctive = $('#nursing_care_objective').summernote('isEmpty');
+                var obejctiveLength = $('#nursing_care_objective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var assessment = $('#nursing_care_assessment').summernote('isEmpty');
+                var assessmentLength = $('#nursing_care_assessment').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var planning = $('#nursing_care_planning').summernote('isEmpty');
+                var planningLength = $('#nursing_care_planning').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
 
                 if (currentIndex == 0) {
-                    if(value) {
-                        Swal.fire('Oops...', 'mohon mengisi askep terlebih dahulu', 'info');
+                    if(value || valueLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi askep terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
                 }
 
                 if (currentIndex == 1) {
-                    if(subjective) {
-                        Swal.fire('Oops...', 'mohon mengisi subjective terlebih dahulu', 'info');
+                    if(subjective || subjectiveLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi subjective terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
                 }
 
                 if (currentIndex == 2) {
-                    if(obejctive) {
-                        Swal.fire('Oops...', 'mohon mengisi obejctive terlebih dahulu', 'info');
+                    if(obejctive || obejctiveLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi obejctive terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
                 }
 
                 if (currentIndex == 3) {
-                    if(assessment) {
-                        Swal.fire('Oops...', 'mohon mengisi assessment terlebih dahulu', 'info');
+                    if(assessment || assessmentLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi assessment terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
                 }
 
                 if (planning == 4) {
-                    if(assessment) {
-                        Swal.fire('Oops...', 'mohon mengisi planning terlebih dahulu', 'info');
+                    if(assessment || planningLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi planning terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
@@ -259,37 +259,41 @@
             },
             onStepChanging: function (event, currentIndex, newIndex) {
                 var subjective = $('#checkup_subjective').summernote('isEmpty');
+                var subjectiveLength = $('#checkup_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var obejctive = $('#checkup_objective').summernote('isEmpty');
+                var subjectiveLength = $('#checkup_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var assessment = $('#checkup_assessment').summernote('isEmpty');
+                var subjectiveLength = $('#checkup_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var planning = $('#checkup_planning').summernote('isEmpty');
+                var subjectiveLength = $('#checkup_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
 
                 if (currentIndex == 0) {
-                    if(subjective) {
-                        Swal.fire('Oops...', 'mohon mengisi subjective terlebih dahulu', 'info');
+                    if(subjective || subjectiveLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi subjective terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
                 }
 
                 if (currentIndex == 1) {
-                    if(obejctive) {
-                        Swal.fire('Oops...', 'mohon mengisi obejctive terlebih dahulu', 'info');
+                    if(obejctive || obejctiveLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi obejctive terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
                 }
 
                 if (currentIndex == 2) {
-                    if(assessment) {
-                        Swal.fire('Oops...', 'mohon mengisi assessment terlebih dahulu', 'info');
+                    if(assessment || assessmentLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi assessment terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
                 }
 
                 if (planning == 3) {
-                    if(assessment) {
-                        Swal.fire('Oops...', 'mohon mengisi planning terlebih dahulu', 'info');
+                    if(assessment || planningLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi planning terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
