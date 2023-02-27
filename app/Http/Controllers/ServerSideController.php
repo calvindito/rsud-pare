@@ -14,7 +14,7 @@ class ServerSideController extends Controller
 {
     public function location(Request $request)
     {
-        $show = isset($request->show) ? $request->show : null;
+        $show = $request->has('show') ? $request->show : null;
         $search = $request->search;
         $response = [];
         $result = [];

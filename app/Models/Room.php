@@ -38,6 +38,6 @@ class Room extends Model
      */
     public function unit()
     {
-        return $this->belongsTo(Unit::class)->withTrashed();
+        return $this->belongsTo(Unit::class);
     }
 }

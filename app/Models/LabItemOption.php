@@ -38,6 +38,6 @@ class LabItemOption extends Model
      */
     public function labItem()
     {
-        return $this->belongsTo(LabItem::class)->withTrashed();
+        return $this->belongsTo(LabItem::class);
     }
 }

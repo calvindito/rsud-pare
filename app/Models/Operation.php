@@ -77,7 +77,7 @@ class Operation extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class)->withTrashed();
+        return $this->belongsTo(Patient::class);
     }
 
     /**
@@ -97,7 +97,7 @@ class Operation extends Model
      */
     public function unit()
     {
-        return $this->belongsTo(Unit::class)->withTrashed();
+        return $this->belongsTo(Unit::class);
     }
 
     /**
@@ -107,7 +107,7 @@ class Operation extends Model
      */
     public function functionalService()
     {
-        return $this->belongsTo(FunctionalService::class)->withTrashed();
+        return $this->belongsTo(FunctionalService::class);
     }
 
     /**
@@ -117,7 +117,7 @@ class Operation extends Model
      */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class)->withTrashed();
+        return $this->belongsTo(Doctor::class);
     }
 
     /**
@@ -127,7 +127,7 @@ class Operation extends Model
      */
     public function code()
     {
-        return sprintf('%06s', $this->id);
+        return sprintf('%07s', $this->id);
     }
 
     /**
@@ -181,7 +181,7 @@ class Operation extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -191,7 +191,7 @@ class Operation extends Model
      */
     public function operatingRoomAction()
     {
-        return $this->belongsTo(OperatingRoomAction::class)->withTrashed();
+        return $this->belongsTo(OperatingRoomAction::class);
     }
 
     /**
@@ -201,7 +201,7 @@ class Operation extends Model
      */
     public function operatingRoomAnesthetist()
     {
-        return $this->belongsTo(OperatingRoomAnesthetist::class)->withTrashed();
+        return $this->belongsTo(OperatingRoomAnesthetist::class);
     }
 
     /**
@@ -211,7 +211,7 @@ class Operation extends Model
      */
     public function doctorOperation()
     {
-        return $this->belongsTo(Doctor::class, 'doctor_operation_id')->withTrashed();
+        return $this->belongsTo(Doctor::class, 'doctor_operation_id');
     }
 
     /**

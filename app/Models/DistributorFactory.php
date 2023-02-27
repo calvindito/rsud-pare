@@ -37,6 +37,6 @@ class DistributorFactory extends Model
      */
     public function factory()
     {
-        return $this->belongsTo(Factory::class)->withTrashed();
+        return $this->belongsTo(Factory::class);
     }
 }

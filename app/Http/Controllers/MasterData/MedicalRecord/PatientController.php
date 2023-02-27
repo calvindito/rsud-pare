@@ -31,7 +31,7 @@ class PatientController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('id', 'like', "%$search%")
+                    $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
                         ->orWhere('name', 'like', "%$search%")
                         ->orWhere('address', 'like', "%$search%")
                         ->orWhere('parent_name', 'like', "%$search%")

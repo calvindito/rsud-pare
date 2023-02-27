@@ -37,7 +37,7 @@ class OutpatientAction extends Model
      */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class)->withTrashed();
+        return $this->belongsTo(Doctor::class);
     }
 
     /**
@@ -47,7 +47,7 @@ class OutpatientAction extends Model
      */
     public function unitAction()
     {
-        return $this->belongsTo(UnitAction::class)->withTrashed();
+        return $this->belongsTo(UnitAction::class);
     }
 
     /**
@@ -92,6 +92,6 @@ class OutpatientAction extends Model
      */
     public function outpatient()
     {
-        return $this->belongsTo(Outpatient::class)->withTrashed();
+        return $this->belongsTo(Outpatient::class);
     }
 }

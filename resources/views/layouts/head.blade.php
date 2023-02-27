@@ -18,6 +18,7 @@
 	<script src="{{ asset('template/assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/ui/moment/moment.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/tables/datatables/datatables.min.js') }}"></script>
+	<script src="{{ asset('template/assets/js/vendor/tables/datatables/extensions/fixed_columns.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/visualization/echarts/echarts.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/notifications/sweet_alert.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/vendor/notifications/noty.min.js') }}"></script>

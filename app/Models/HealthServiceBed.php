@@ -38,7 +38,7 @@ class HealthServiceBed extends Model
      */
     public function classType()
     {
-        return $this->belongsTo(ClassType::class)->withTrashed();
+        return $this->belongsTo(ClassType::class);
     }
 
     /**
@@ -48,6 +48,6 @@ class HealthServiceBed extends Model
      */
     public function functionalService()
     {
-        return $this->belongsTo(FunctionalService::class)->withTrashed();
+        return $this->belongsTo(FunctionalService::class);
     }
 }

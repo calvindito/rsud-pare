@@ -50,10 +50,10 @@ class OutpatientController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->whereRaw("LPAD(id, 6, 0) LIKE '%$search%'")
+                    $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
                         ->orWwhere('description', 'like', "%$search%")
                         ->whereHas('patient', function ($query) use ($search) {
-                            $query->where('id', 'like', "%$search%")
+                            $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
                                 ->orWhere('name', 'like', "%$search%")
                                 ->orWhere('address', 'like', "%$search%")
                                 ->orWhere('parent_name', 'like', "%$search%")
@@ -77,6 +77,15 @@ class OutpatientController extends Controller
                 }
 
                 return $patientName;
+            })
+            ->addColumn('patient_id', function (Outpatient $query) {
+                $patientId = null;
+
+                if (isset($query->patient)) {
+                    $patientId = $query->patient->no_medical_record;
+                }
+
+                return $patientId;
             })
             ->addColumn('patient_gender', function (Outpatient $query) {
                 $patientGender = null;

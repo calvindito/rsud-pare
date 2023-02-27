@@ -29,7 +29,7 @@ class LabController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('patient_id', 'like', "%$search%")
+                    $query->whereRaw("LPAD(patient_id, 7, 0) LIKE '%$search%'")
                         ->orWhereHas('patient', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");
                         })
@@ -54,6 +54,15 @@ class LabController extends Controller
                 }
 
                 return $employeeName;
+            })
+            ->addColumn('patient_id', function (LabRequest $query) {
+                $patientId = null;
+
+                if (isset($query->patient)) {
+                    $patientId = $query->patient->no_medical_record;
+                }
+
+                return $patientId;
             })
             ->addColumn('patient_name', function (LabRequest $query) {
                 $patientName = null;

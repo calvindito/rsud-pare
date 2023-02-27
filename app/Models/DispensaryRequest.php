@@ -67,7 +67,7 @@ class DispensaryRequest extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class)->withTrashed();
+        return $this->belongsTo(Patient::class);
     }
 
     /**
@@ -77,7 +77,7 @@ class DispensaryRequest extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -166,5 +166,21 @@ class DispensaryRequest extends Model
     public function dispensary()
     {
         return $this->belongsTo(Dispensary::class);
+    }
+
+    /**
+     * dispensaryRequestItem
+     *
+     * @return void
+     */
+    public function dispensaryRequestItem()
+    {
+        $data = DispensaryRequest::with('dispensaryItemStock')
+            ->where('dispensary_requestable_type', $this->dispensary_requestable_type)
+            ->where('dispensary_requestable_id', $this->dispensary_requestable_id)
+            ->where('dispensary_id', $this->dispensary_id)
+            ->get();
+
+        return $data;
     }
 }

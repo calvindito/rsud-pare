@@ -38,7 +38,7 @@ class UnitAction extends Model
      */
     public function unit()
     {
-        return $this->belongsTo(Unit::class)->withTrashed();
+        return $this->belongsTo(Unit::class);
     }
 
     /**
@@ -48,6 +48,6 @@ class UnitAction extends Model
      */
     public function action()
     {
-        return $this->belongsTo(Action::class)->withTrashed();
+        return $this->belongsTo(Action::class);
     }
 }

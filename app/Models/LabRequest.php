@@ -47,7 +47,7 @@ class LabRequest extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -67,7 +67,7 @@ class LabRequest extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class)->withTrashed();
+        return $this->belongsTo(Patient::class);
     }
 
     /**
@@ -77,7 +77,7 @@ class LabRequest extends Model
      */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class)->withTrashed();
+        return $this->belongsTo(Doctor::class);
     }
 
     /**

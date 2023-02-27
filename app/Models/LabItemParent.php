@@ -38,7 +38,7 @@ class LabItemParent extends Model
      */
     public function parent()
     {
-        return $this->belongsTo(LabItem::class, 'parent_id')->withTrashed();
+        return $this->belongsTo(LabItem::class, 'parent_id');
     }
 
     /**
@@ -48,7 +48,7 @@ class LabItemParent extends Model
      */
     public function labItem()
     {
-        return $this->belongsTo(LabItem::class)->withTrashed();
+        return $this->belongsTo(LabItem::class);
     }
 
     /**

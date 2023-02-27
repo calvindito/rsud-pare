@@ -38,7 +38,7 @@ class OperatingRoomAction extends Model
      */
     public function classType()
     {
-        return $this->belongsTo(ClassType::class)->withTrashed();
+        return $this->belongsTo(ClassType::class);
     }
 
     /**
@@ -48,7 +48,7 @@ class OperatingRoomAction extends Model
      */
     public function operatingRoomActionType()
     {
-        return $this->belongsTo(OperatingRoomActionType::class)->withTrashed();
+        return $this->belongsTo(OperatingRoomActionType::class);
     }
 
     /**
@@ -58,7 +58,7 @@ class OperatingRoomAction extends Model
      */
     public function operatingRoomGroup()
     {
-        return $this->belongsTo(OperatingRoomGroup::class)->withTrashed();
+        return $this->belongsTo(OperatingRoomGroup::class);
     }
 
     /**

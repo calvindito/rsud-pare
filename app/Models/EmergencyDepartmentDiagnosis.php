@@ -49,4 +49,14 @@ class EmergencyDepartmentDiagnosis extends Model
 
         return $text;
     }
+
+    /**
+     * emergencyDepartment
+     *
+     * @return void
+     */
+    public function emergencyDepartment()
+    {
+        return $this->belongsTo(EmergencyDepartment::class);
+    }
 }

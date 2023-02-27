@@ -123,7 +123,7 @@ class EmergencyDepartment extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class)->withTrashed();
+        return $this->belongsTo(Patient::class);
     }
 
     /**
@@ -133,7 +133,7 @@ class EmergencyDepartment extends Model
      */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class)->withTrashed();
+        return $this->belongsTo(Doctor::class);
     }
 
     /**
@@ -143,7 +143,7 @@ class EmergencyDepartment extends Model
      */
     public function functionalService()
     {
-        return $this->belongsTo(FunctionalService::class)->withTrashed();
+        return $this->belongsTo(FunctionalService::class);
     }
 
     /**
@@ -175,7 +175,7 @@ class EmergencyDepartment extends Model
      */
     public function code()
     {
-        return sprintf('%06s', $this->id);
+        return sprintf('%07s', $this->id);
     }
 
     /**
@@ -424,6 +424,16 @@ class EmergencyDepartment extends Model
      */
     public function operation()
     {
-        return $this->morphOne(Operation::class, 'operationable')->withTrashed();
+        return $this->morphOne(Operation::class, 'operationable');
+    }
+
+    /**
+     * user
+     *
+     * @return void
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

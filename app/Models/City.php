@@ -38,6 +38,6 @@ class City extends Model
      */
     public function province()
     {
-        return $this->belongsTo(Province::class)->withTrashed();
+        return $this->belongsTo(Province::class);
     }
 }

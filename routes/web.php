@@ -659,6 +659,14 @@ Route::middleware('auth')->group(function () {
                 Route::get('datatable', 'ItemController@datatable');
             });
 
+            Route::prefix('medical-record')->namespace('MedicalRecord')->group(function () {
+                Route::prefix('patient')->group(function () {
+                    Route::get('/', 'PatientController@index');
+                    Route::get('datatable', 'PatientController@datatable');
+                    Route::get('detail/{id}', 'PatientController@detail');
+                });
+            });
+
             Route::prefix('finance')->namespace('Finance')->group(function () {
                 Route::prefix('budget')->group(function () {
                     Route::get('/', 'BudgetController@index');

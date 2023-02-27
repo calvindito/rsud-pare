@@ -54,9 +54,9 @@ class InpatientController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->whereRaw("LPAD(id, 6, 0) LIKE '%$search%'")
+                    $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
                         ->orWhereHas('patient', function ($query) use ($search) {
-                            $query->where('id', 'like', "$search%")
+                            $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
                                 ->orWhere('name', 'like', "%$search%");
                         })
                         ->orWhereHas('roomType', function ($query) use ($search) {
@@ -87,6 +87,15 @@ class InpatientController extends Controller
                 }
 
                 return $patientName;
+            })
+            ->addColumn('patient_id', function (Inpatient $query) {
+                $patientId = null;
+
+                if (isset($query->patient)) {
+                    $patientId = $query->patient->no_medical_record;
+                }
+
+                return $patientId;
             })
             ->addColumn('room_type_name', function (Inpatient $query) {
                 $roomTypeName = null;

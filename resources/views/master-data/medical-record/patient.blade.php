@@ -327,7 +327,7 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'id', name: 'id', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'no_medical_record', name: 'id', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'date_of_birth', name: 'name', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'address', name: 'address', orderable: true, searchable: true, className: 'align-middle nowrap' },

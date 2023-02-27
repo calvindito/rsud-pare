@@ -30,7 +30,7 @@ class DataController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->whereRaw("LPAD(id, 6, 0) LIKE '%$search%'")
+                    $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
                         ->orWhere('patient_id', 'like', "%$search%")
                         ->orWhereHas('patient', function ($query) use ($search) {
                             $query->where('name', 'like', "%$search%");

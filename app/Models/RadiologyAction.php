@@ -38,7 +38,7 @@ class RadiologyAction extends Model
      */
     public function radiology()
     {
-        return $this->belongsTo(Radiology::class)->withTrashed();
+        return $this->belongsTo(Radiology::class);
     }
 
     /**
@@ -48,6 +48,6 @@ class RadiologyAction extends Model
      */
     public function classType()
     {
-        return $this->belongsTo(ClassType::class)->withTrashed();
+        return $this->belongsTo(ClassType::class);
     }
 }

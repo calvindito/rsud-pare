@@ -53,7 +53,7 @@
                 <h6 class="hstack gap-2 mb-0">Permintaan Item</h6>
             </div>
             <div class="card-body">
-                <div class="alert alert-secondary text-center fs-5 fw-bold">{{ $dispensaryRequest->dispensary->name }}</div>
+                <div class="alert alert-secondary text-center fs-5 fw-bold">{{ $dispensaryRequest->dispensary->name ?? '-' }}</div>
                 <table class="table table-bordered">
                     <thead class="bg-light">
                         <tr>

@@ -75,7 +75,7 @@ class Radiology extends Model
      */
     public function actionSupporting()
     {
-        return $this->belongsTo(ActionSupporting::class)->withTrashed();
+        return $this->belongsTo(ActionSupporting::class);
     }
 
     /**
@@ -85,6 +85,6 @@ class Radiology extends Model
      */
     public function radiologyAction()
     {
-        return $this->hasOne(RadiologyAction::class)->withTrashed();
+        return $this->hasOne(RadiologyAction::class);
     }
 }

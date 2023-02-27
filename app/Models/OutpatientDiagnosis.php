@@ -49,4 +49,14 @@ class OutpatientDiagnosis extends Model
 
         return $text;
     }
+
+    /**
+     * outpatient
+     *
+     * @return void
+     */
+    public function outpatient()
+    {
+        return $this->belongsTo(Outpatient::class);
+    }
 }

@@ -95,7 +95,7 @@ class Outpatient extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class)->withTrashed();
+        return $this->belongsTo(Patient::class);
     }
 
     /**
@@ -105,7 +105,7 @@ class Outpatient extends Model
      */
     public function unit()
     {
-        return $this->belongsTo(Unit::class)->withTrashed();
+        return $this->belongsTo(Unit::class);
     }
 
     /**
@@ -115,7 +115,7 @@ class Outpatient extends Model
      */
     public function operation()
     {
-        return $this->morphOne(Operation::class, 'operationable')->withTrashed();
+        return $this->morphOne(Operation::class, 'operationable');
     }
 
     public function status()
@@ -144,7 +144,7 @@ class Outpatient extends Model
      */
     public function code()
     {
-        return sprintf('%06s', $this->id);
+        return sprintf('%07s', $this->id);
     }
 
     /**
@@ -164,7 +164,7 @@ class Outpatient extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class);
     }
 
     /**

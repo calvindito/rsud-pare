@@ -38,6 +38,6 @@ class ActionOther extends Model
      */
     public function classType()
     {
-        return $this->belongsTo(ClassType::class)->withTrashed();
+        return $this->belongsTo(ClassType::class);
     }
 }

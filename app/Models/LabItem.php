@@ -38,7 +38,7 @@ class LabItem extends Model
      */
     public function labCategory()
     {
-        return $this->belongsTo(LabCategory::class)->withTrashed();
+        return $this->belongsTo(LabCategory::class);
     }
 
     /**
@@ -48,7 +48,7 @@ class LabItem extends Model
      */
     public function labItemGroup()
     {
-        return $this->belongsTo(LabItemGroup::class)->withTrashed();
+        return $this->belongsTo(LabItemGroup::class);
     }
 
     /**
@@ -58,7 +58,7 @@ class LabItem extends Model
      */
     public function labItemParent()
     {
-        return $this->hasOne(LabItemParent::class)->withTrashed();
+        return $this->hasOne(LabItemParent::class);
     }
 
     /**
@@ -68,7 +68,7 @@ class LabItem extends Model
      */
     public function labFee()
     {
-        return $this->hasOne(LabFee::class)->withTrashed();
+        return $this->hasOne(LabFee::class);
     }
 
     /**

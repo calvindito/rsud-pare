@@ -81,7 +81,7 @@ class Item extends Model
      */
     public function distributor()
     {
-        return $this->belongsTo(Distributor::class)->withTrashed();
+        return $this->belongsTo(Distributor::class);
     }
 
     /**

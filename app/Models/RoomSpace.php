@@ -38,6 +38,6 @@ class RoomSpace extends Model
      */
     public function roomType()
     {
-        return $this->belongsTo(RoomType::class)->withTrashed();
+        return $this->belongsTo(RoomType::class);
     }
 }

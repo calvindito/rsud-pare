@@ -60,7 +60,7 @@ class ChartOfAccount extends Model
      */
     public function parent()
     {
-        return $this->belongsTo(ChartOfAccount::class, 'parent_id')->withTrashed();
+        return $this->belongsTo(ChartOfAccount::class, 'parent_id');
     }
 
     /**

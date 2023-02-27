@@ -38,7 +38,7 @@ class LabFee extends Model
      */
     public function labItem()
     {
-        return $this->belongsTo(LabItem::class)->withTrashed();
+        return $this->belongsTo(LabItem::class);
     }
 
     /**
@@ -48,7 +48,7 @@ class LabFee extends Model
      */
     public function classType()
     {
-        return $this->belongsTo(ClassType::class)->withTrashed();
+        return $this->belongsTo(ClassType::class);
     }
 
     /**

@@ -69,6 +69,6 @@ class Bed extends Model
      */
     public function roomSpace()
     {
-        return $this->belongsTo(RoomSpace::class)->withTrashed();
+        return $this->belongsTo(RoomSpace::class);
     }
 }

@@ -65,7 +65,7 @@ class CashBank extends Model
      */
     public function chartOfAccount()
     {
-        return $this->belongsTo(ChartOfAccount::class)->withTrashed();
+        return $this->belongsTo(ChartOfAccount::class);
     }
 
     /**
@@ -75,6 +75,6 @@ class CashBank extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class);
     }
 }

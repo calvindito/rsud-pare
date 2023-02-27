@@ -49,4 +49,14 @@ class InpatientDiagnosis extends Model
 
         return $text;
     }
+
+    /**
+     * inpatient
+     *
+     * @return void
+     */
+    public function inpatient()
+    {
+        return $this->belongsTo(Inpatient::class);
+    }
 }

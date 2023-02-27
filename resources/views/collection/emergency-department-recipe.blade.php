@@ -80,7 +80,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" value="{{ $dr->dispensary->name }}" disabled>
+                                        <input type="text" class="form-control" value="{{ $dr->dispensary->name ?? '-' }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-1">
@@ -181,7 +181,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input type="text" class="form-control" value="{{ $emergencyDepartment->dispensary->name }}" disabled>
+                            <input type="text" class="form-control" value="{{ $emergencyDepartment->dispensary->name ?? '-' }}" disabled>
                         </div>
                     </div>
                     <div class="col-md-1">

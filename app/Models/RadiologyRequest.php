@@ -64,7 +64,7 @@ class RadiologyRequest extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -74,7 +74,7 @@ class RadiologyRequest extends Model
      */
     public function patient()
     {
-        return $this->belongsTo(Patient::class)->withTrashed();
+        return $this->belongsTo(Patient::class);
     }
 
     /**
@@ -84,7 +84,7 @@ class RadiologyRequest extends Model
      */
     public function doctor()
     {
-        return $this->belongsTo(Doctor::class)->withTrashed();
+        return $this->belongsTo(Doctor::class);
     }
 
     /**
@@ -94,7 +94,7 @@ class RadiologyRequest extends Model
      */
     public function radiology()
     {
-        return $this->belongsTo(Radiology::class)->withTrashed();
+        return $this->belongsTo(Radiology::class);
     }
 
     /**

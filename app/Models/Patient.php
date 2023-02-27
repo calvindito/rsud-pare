@@ -36,7 +36,7 @@ class Patient extends Model
      *
      * @var array
      */
-    protected $appends = ['gender_format_result', 'type_format_result', 'no_medical_record'];
+    protected $appends = ['gender_format_result', 'type_format_result', 'no_medical_record', 'blood_group_format_result', 'greeted_format_result', 'marital_status_format_result'];
 
     /**
      * getGenderAttribute
@@ -78,12 +78,90 @@ class Patient extends Model
         return $text;
     }
 
+    /**
+     * getNoMedicalRecordAttribute
+     *
+     * @return void
+     */
     protected function getNoMedicalRecordAttribute()
     {
-        $totalData = strlen(Patient::count());
         $id = isset($this->attributes['id']) ? $this->attributes['id'] : null;
 
-        return sprintf('%0' . $totalData . 's', $id);
+        return sprintf('%07s', $id);
+    }
+
+    /**
+     * getBloodGroupFormatResultAttribute
+     *
+     * @return void
+     */
+    protected function getBloodGroupFormatResultAttribute()
+    {
+        $bloodGroup = isset($this->attributes['blood_group']) ? $this->attributes['blood_group'] : null;
+
+        if ($bloodGroup == 1) {
+            $text = 'A';
+        } else if ($bloodGroup == 2) {
+            $text = 'B';
+        } else if ($bloodGroup == 3) {
+            $text = 'AB';
+        } else if ($bloodGroup == 4) {
+            $text = 'O';
+        } else {
+            $text = 'Tidak Ada';
+        }
+
+        return $text;
+    }
+
+    /**
+     * getMaritalStatusFormatResultAttribute
+     *
+     * @return void
+     */
+    protected function getMaritalStatusFormatResultAttribute()
+    {
+        $maritalStatus = isset($this->attributes['marital_status']) ? $this->attributes['marital_status'] : null;
+
+        if ($maritalStatus == 1) {
+            $text = 'Belum Menikah';
+        } else if ($maritalStatus == 2) {
+            $text = 'Menikah';
+        } else if ($maritalStatus == 3) {
+            $text = 'Cerai Hidup';
+        } else if ($maritalStatus == 4) {
+            $text = 'Cerai Mati';
+        } else {
+            $text = 'Tidak Ada';
+        }
+
+        return $text;
+    }
+
+    /**
+     * getGreetedFormatResultAttribute
+     *
+     * @return void
+     */
+    protected function getGreetedFormatResultAttribute()
+    {
+        $greeted = isset($this->attributes['greeted']) ? $this->attributes['greeted'] : null;
+
+        if ($greeted == 1) {
+            $text = 'Tuan';
+        } else if ($greeted == 2) {
+            $text = 'Nyonya';
+        } else if ($greeted == 3) {
+            $text = 'Saudara';
+        } else if ($greeted == 4) {
+            $text = 'Nona';
+        } else if ($greeted == 4) {
+            $text = 'Anak';
+        } else {
+            $text = 'Tidak Ada';
+        }
+
+        return $text;
     }
 
     /**
@@ -93,7 +171,7 @@ class Patient extends Model
      */
     public function province()
     {
-        return $this->belongsTo(Province::class)->withTrashed();
+        return $this->belongsTo(Province::class);
     }
 
     /**
@@ -103,7 +181,7 @@ class Patient extends Model
      */
     public function city()
     {
-        return $this->belongsTo(City::class)->withTrashed();
+        return $this->belongsTo(City::class);
     }
 
     /**
@@ -113,7 +191,7 @@ class Patient extends Model
      */
     public function district()
     {
-        return $this->belongsTo(District::class)->withTrashed();
+        return $this->belongsTo(District::class);
     }
 
     /**
@@ -154,5 +232,45 @@ class Patient extends Model
     public function religion()
     {
         return $this->belongsTo(Religion::class);
+    }
+
+    /**
+     * labRequest
+     *
+     * @return void
+     */
+    public function labRequest()
+    {
+        return $this->hasMany(LabRequest::class);
+    }
+
+    /**
+     * radiologyRequest
+     *
+     * @return void
+     */
+    public function radiologyRequest()
+    {
+        return $this->hasMany(RadiologyRequest::class);
+    }
+
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->hasMany(Operation::class);
+    }
+
+    /**
+     * dispensaryRequest
+     *
+     * @return void
+     */
+    public function dispensaryRequest()
+    {
+        return $this->hasMany(DispensaryRequest::class);
     }
 }

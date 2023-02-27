@@ -628,6 +628,21 @@ return [
                 'sub' => null
             ],
             [
+                'name' => 'medical-record',
+                'menu' => 'Rekam Medis',
+                'icon' => null,
+                'link' => 'javascript:void(0);',
+                'sub' => [
+                    [
+                        'name' => 'patient',
+                        'menu' => 'Pasien',
+                        'icon' => null,
+                        'link' => 'report/medical-record/patient',
+                        'sub' => null
+                    ],
+                ]
+            ],
+            [
                 'name' => 'finance',
                 'menu' => 'Keuangan',
                 'icon' => null,

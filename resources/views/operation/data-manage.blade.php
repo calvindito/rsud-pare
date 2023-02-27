@@ -202,7 +202,7 @@
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
-                                            <input type="text" class="form-control" value="{{ $om->dispensary->name }}" disabled>
+                                            <input type="text" class="form-control" value="{{ $om->dispensary->name ?? '-' }}" disabled>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -312,7 +312,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input type="text" class="form-control" value="{{ $operation->operationable->dispensary->name }}" disabled>
+                            <input type="text" class="form-control" value="{{ $operation->operationable->dispensary->name ?? '-' }}" disabled>
                         </div>
                     </div>
                     <div class="col-md-2">

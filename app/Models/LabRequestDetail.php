@@ -37,7 +37,7 @@ class LabRequestDetail extends Model
      */
     public function labItem()
     {
-        return $this->belongsTo(LabItem::class)->withTrashed();
+        return $this->belongsTo(LabItem::class);
     }
 
     /**
@@ -47,7 +47,7 @@ class LabRequestDetail extends Model
      */
     public function labItemParent()
     {
-        return $this->belongsTo(LabItemParent::class)->withTrashed();
+        return $this->belongsTo(LabItemParent::class);
     }
 
     /**
@@ -57,6 +57,6 @@ class LabRequestDetail extends Model
      */
     public function labItemCondition()
     {
-        return $this->belongsTo(LabItemCondition::class)->withTrashed();
+        return $this->belongsTo(LabItemCondition::class);
     }
 }

@@ -38,7 +38,7 @@ class RoomType extends Model
      */
     public function classType()
     {
-        return $this->belongsTo(ClassType::class)->withTrashed();
+        return $this->belongsTo(ClassType::class);
     }
 
     /**
@@ -48,7 +48,7 @@ class RoomType extends Model
      */
     public function room()
     {
-        return $this->belongsTo(Room::class)->withTrashed();
+        return $this->belongsTo(Room::class);
     }
 
     /**
@@ -58,7 +58,7 @@ class RoomType extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class)->withTrashed();
+        return $this->belongsTo(User::class);
     }
 
     /**

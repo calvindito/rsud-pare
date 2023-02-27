@@ -38,6 +38,6 @@ class ICD extends Model
      */
     public function dtd()
     {
-        return $this->belongsTo(DTD::class)->withTrashed();
+        return $this->belongsTo(DTD::class);
     }
 }
