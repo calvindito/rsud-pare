@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendataan - Rawat Jalan - <span class="fw-normal">SOAP</span>
+                Pendataan - IGD - <span class="fw-normal">SOAP</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('collection/outpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+            <a href="{{ url('collection/emergency-department') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
             <a href="{{ url()->full() }}" class="btn btn-flat-primary">Refresh</a>
         </div>
     </div>
@@ -30,18 +30,18 @@
                     <tr>
                         <th class="align-middle">Tanggal Masuk</th>
                         <th class="align-middle" width="1%">:</th>
-                        <td class="align-middle" width="30%">{{ $outpatient->date_of_entry }}</td>
+                        <td class="align-middle" width="30%">{{ $emergencyDepartment->date_of_entry }}</td>
                         <th class="align-middle">Tanggal Keluar</th>
                         <th class="align-middle" width="1%">:</th>
-                        <td class="align-middle" width="30%">{{ !empty($outpatient->date_of_out) ? $outpatient->date_of_out : '-' }}</td>
+                        <td class="align-middle" width="30%">{{ !empty($emergencyDepartment->date_of_out) ? $emergencyDepartment->date_of_out : '-' }}</td>
                     </tr>
                     <tr>
-                        <th class="align-middle">Poli</th>
+                        <th class="align-middle">UPF</th>
                         <th class="align-middle" width="1%">:</th>
-                        <td class="align-middle" width="30%">{{ $outpatient->unit->name }}</td>
+                        <td class="align-middle" width="30%">{{ $emergencyDepartment->functionalService->name }}</td>
                         <th class="align-middle">Kehadiran</th>
                         <th class="align-middle" width="1%">:</th>
-                        <td class="align-middle" width="30%">{{ $outpatient->presence_format_result }}</td>
+                        <td class="align-middle" width="30%">{{ $emergencyDepartment->presence_format_result }}</td>
                     </tr>
                     <tr>
                         <th class="align-middle">Alamat</th>
@@ -49,14 +49,14 @@
                         <td class="align-middle" width="30%">{{ $patient->address }}</td>
                         <th class="align-middle">Status</th>
                         <th class="align-middle" width="1%">:</th>
-                        <td class="align-middle" width="30%">{{ $outpatient->status() }}</tr>
+                        <td class="align-middle" width="30%">{!! $emergencyDepartment->status() !!}</tr>
                     <tr>
                         <th class="align-middle">Tanggal Lahir</th>
                         <th class="align-middle" width="1%">:</th>
                         <td class="align-middle" width="30%">{{ $patient->date_of_birth }}</td>
                         <th class="align-middle">Golongan</th>
                         <th class="align-middle" width="1%">:</th>
-                        <td class="align-middle" width="30%">{{ $outpatient->type_format_result }}</td>
+                        <td class="align-middle" width="30%">{{ $emergencyDepartment->type_format_result }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -140,19 +140,19 @@
     });
 
     function setValueAllSOAP() {
-        $('#nursing_care_value').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->value ?? "" !!}');
-        $('#nursing_care_subjective').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->subjective ?? "" !!}');
-        $('#nursing_care_objective').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->objective ?? "" !!}');
-        $('#nursing_care_assessment').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->assessment ?? "" !!}');
-        $('#nursing_care_planning').summernote('code', '{!! $outpatientSoap->firstWhere("type", 1)->planning ?? "" !!}');
-        $('#checkup_subjective').summernote('code', '{!! $outpatientSoap->firstWhere("type", 2)->subjective ?? "" !!}');
-        $('#checkup_objective').summernote('code', '{!! $outpatientSoap->firstWhere("type", 2)->objective ?? "" !!}');
-        $('#checkup_assessment').summernote('code', '{!! $outpatientSoap->firstWhere("type", 2)->assessment ?? "" !!}');
-        $('#checkup_planning').summernote('code', '{!! $outpatientSoap->firstWhere("type", 2)->planning ?? "" !!}');
+        $('#nursing_care_value').summernote('code', '{!! $emergencyDepartmentSoap->firstWhere("type", 1)->value ?? "" !!}');
+        $('#nursing_care_subjective').summernote('code', '{!! $emergencyDepartmentSoap->firstWhere("type", 1)->subjective ?? "" !!}');
+        $('#nursing_care_objective').summernote('code', '{!! $emergencyDepartmentSoap->firstWhere("type", 1)->objective ?? "" !!}');
+        $('#nursing_care_assessment').summernote('code', '{!! $emergencyDepartmentSoap->firstWhere("type", 1)->assessment ?? "" !!}');
+        $('#nursing_care_planning').summernote('code', '{!! $emergencyDepartmentSoap->firstWhere("type", 1)->planning ?? "" !!}');
+        $('#checkup_subjective').summernote('code', '{!! $emergencyDepartmentSoap->firstWhere("type", 2)->subjective ?? "" !!}');
+        $('#checkup_objective').summernote('code', '{!! $emergencyDepartmentSoap->firstWhere("type", 2)->objective ?? "" !!}');
+        $('#checkup_assessment').summernote('code', '{!! $emergencyDepartmentSoap->firstWhere("type", 2)->assessment ?? "" !!}');
+        $('#checkup_planning').summernote('code', '{!! $emergencyDepartmentSoap->firstWhere("type", 2)->planning ?? "" !!}');
     }
 
     function checkStatus() {
-        var status = '{{ $outpatient->status }}';
+        var status = '{{ $emergencyDepartment->status }}';
 
         if(status != 4) {
             textEditor('.text-editor');
@@ -234,7 +234,7 @@
                     }
                 }
 
-                var status = '{{ $outpatient->status }}';
+                var status = '{{ $emergencyDepartment->status }}';
 
                 if(status == 4) {
                     $('#form-data a[href="#finish"]').hide();
@@ -307,7 +307,7 @@
                     }
                 }
 
-                var status = '{{ $outpatient->status }}';
+                var status = '{{ $emergencyDepartment->status }}';
 
                 if(status == 4) {
                     $('#form-data a[href="#finish"]').hide();
@@ -323,7 +323,7 @@
 
     function submitted() {
         $.ajax({
-            url: '{{ url("collection/outpatient/soap/" . $outpatient->id) }}',
+            url: '{{ url("collection/emergency-department/soap/" . $emergencyDepartment->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -358,7 +358,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/outpatient/soap/" . $outpatient->id) }}');
+                        window.location.replace('{{ url("collection/emergency-department/soap/" . $emergencyDepartment->id) }}');
                     });
                 } else {
                     swalInit.fire({

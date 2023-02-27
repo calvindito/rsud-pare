@@ -132,6 +132,10 @@ class InpatientController extends Controller
                                 <i class="ph-drop-half-bottom me-2"></i>
                                 E-Resep
                             </a>
+                            <a href="' . url('collection/inpatient/soap/' . $query->id) . '" class="dropdown-item fs-13">
+                                <i class="ph-chat-centered-text me-2"></i>
+                                SOAP
+                            </a>
                             <a href="' . url('collection/inpatient/diagnosis/' . $query->id) . '" class="dropdown-item fs-13">
                                 <i class="ph-bezier-curve me-2"></i>
                                 Diagnosa
@@ -521,6 +525,60 @@ class InpatientController extends Controller
             'dispensaryRequest' => $inpatient->dispensaryRequest,
             'dispensaryItem' => DispensaryItem::available()->where('dispensary_id', $dispensaryId)->get(),
             'content' => 'collection.inpatient-recipe'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
+    public function soap(Request $request, $id)
+    {
+        $inpatient = Inpatient::findOrFail($id);
+
+        if ($request->ajax()) {
+            $inpatient->inpatientSoap()->delete();
+
+            try {
+                $fill = [
+                    [
+                        'value' => $request->nursing_care_value,
+                        'subjective' => $request->nursing_care_subjective,
+                        'objective' => $request->nursing_care_objective,
+                        'assessment' => $request->nursing_care_assessment,
+                        'planning' => $request->nursing_care_planning,
+                        'type' => 1
+                    ],
+                    [
+                        'subjective' => $request->checkup_subjective,
+                        'objective' => $request->checkup_objective,
+                        'assessment' => $request->checkup_assessment,
+                        'planning' => $request->checkup_planning,
+                        'type' => 2
+                    ]
+                ];
+
+                foreach ($fill as $f) {
+                    $inpatient->inpatientSoap()->create($f);
+                }
+
+                $response = [
+                    'code' => 200,
+                    'message' => 'Data SOAP berhasil disimpan'
+                ];
+            } catch (\Exception $e) {
+                $response = [
+                    'code' => $e->getCode(),
+                    'message' => $e->getMessage()
+                ];
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'inpatient' => $inpatient,
+            'patient' => $inpatient->patient,
+            'inpatientSoap' => $inpatient->inpatientSoap,
+            'content' => 'collection.inpatient-soap'
         ];
 
         return view('layouts.index', ['data' => $data]);

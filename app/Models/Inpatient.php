@@ -495,4 +495,14 @@ class Inpatient extends Model
     {
         return $this->belongsTo(Dispensary::class);
     }
+
+    /**
+     * inpatientSoap
+     *
+     * @return void
+     */
+    public function inpatientSoap()
+    {
+        return $this->hasMany(InpatientSoap::class);
+    }
 }

@@ -457,6 +457,7 @@ Route::middleware('auth')->group(function () {
                 Route::match(['get', 'post'], 'register-patient', 'InpatientController@registerPatient');
                 Route::match(['get', 'post'], 'action/{id}', 'InpatientController@action');
                 Route::match(['get', 'post'], 'recipe/{id}', 'InpatientController@recipe');
+                Route::match(['get', 'post'], 'soap/{id}', 'InpatientController@soap');
                 Route::match(['get', 'post'], 'diagnosis/{id}', 'InpatientController@diagnosis');
                 Route::match(['get', 'post'], 'lab/{id}', 'InpatientController@lab');
                 Route::get('lab/print/{id}', 'InpatientController@labPrint');
@@ -476,6 +477,7 @@ Route::middleware('auth')->group(function () {
                 Route::match(['get', 'post'], 'register-patient', 'EmergencyDepartmentController@registerPatient');
                 Route::match(['get', 'post'], 'action/{id}', 'EmergencyDepartmentController@action');
                 Route::match(['get', 'post'], 'recipe/{id}', 'EmergencyDepartmentController@recipe');
+                Route::match(['get', 'post'], 'soap/{id}', 'EmergencyDepartmentController@soap');
                 Route::match(['get', 'post'], 'diagnosis/{id}', 'EmergencyDepartmentController@diagnosis');
                 Route::match(['get', 'post'], 'lab/{id}', 'EmergencyDepartmentController@lab');
                 Route::get('lab/print/{id}', 'EmergencyDepartmentController@labPrint');
