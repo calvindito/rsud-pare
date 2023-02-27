@@ -521,6 +521,63 @@ return [
         ]
     ],
     [
+        'name' => 'bill',
+        'menu' => 'Tagihan',
+        'icon' => 'ph-scroll',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'outpatient',
+                'menu' => 'Rawat Jalan',
+                'icon' => null,
+                'link' => 'bill/outpatient',
+                'sub' => null
+            ],
+            [
+                'name' => 'inpatient',
+                'menu' => 'Rawat Inap',
+                'icon' => null,
+                'link' => 'bill/inpatient',
+                'sub' => null
+            ],
+            [
+                'name' => 'emergency-department',
+                'menu' => 'IGD',
+                'icon' => null,
+                'link' => 'bill/emergency-department',
+                'sub' => null
+            ],
+            [
+                'name' => 'radiology',
+                'menu' => 'Radiologi',
+                'icon' => null,
+                'link' => 'bill/radiology',
+                'sub' => null
+            ],
+            [
+                'name' => 'lab',
+                'menu' => 'Laboratorium',
+                'icon' => null,
+                'link' => 'bill/lab',
+                'sub' => null
+            ],
+            [
+                'name' => 'operation',
+                'menu' => 'Operasi',
+                'icon' => null,
+                'link' => 'bill/operation',
+                'sub' => null
+            ],
+            [
+                'name' => 'medicine-and-tool',
+                'menu' => 'Obat & Alkes',
+                'icon' => null,
+                'link' => 'bill/medicine-and-tool',
+                'sub' => null
+            ],
+        ]
+    ],
+    [
         'name' => 'pharmacy',
         'menu' => 'Farmasi',
         'icon' => 'ph-thermometer',

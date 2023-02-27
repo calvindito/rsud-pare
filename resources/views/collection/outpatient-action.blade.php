@@ -8,12 +8,6 @@
         <div class="my-auto ms-auto">
             <a href="{{ url('collection/outpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
             <a href="{{ url()->full() }}" class="btn btn-flat-primary">Refresh</a>
-            @if($outpatient->status != 1)
-                <button type="button" class="btn btn-flat-primary" data-bs-toggle="modal" data-bs-target="#modal-form" onclick="onReset()">
-                    <i class="ph-plus-circle me-1"></i>
-                    Entry Tindakan
-                </button>
-            @endif
         </div>
     </div>
 </div>

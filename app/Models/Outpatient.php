@@ -236,4 +236,45 @@ class Outpatient extends Model
     {
         return $this->belongsTo(Doctor::class);
     }
+
+    /**
+     * paid
+     *
+     * @return void
+     */
+    public function paid()
+    {
+        $paid = $this->paid;
+
+        if ($paid == 1) {
+            $html = '<span class="badge bg-success">Terbayar</span>';
+        } else if ($paid == 0) {
+            $html = '<span class="badge bg-danger">Belum Bayar</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
+
+    /**
+     * totalAction
+     *
+     * @return float
+     */
+    public function totalAction()
+    {
+        $outpatientAction = $this->outpatientAction;
+        $total = 0;
+
+        if ($outpatientAction->count() > 0) {
+            foreach ($outpatientAction as $oa) {
+                $total += $oa->consumables;
+                $total += $oa->hospital_service;
+                $total += $oa->service;
+            }
+        }
+
+        return $total;
+    }
 }

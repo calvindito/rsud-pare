@@ -563,6 +563,15 @@ Route::middleware('auth')->group(function () {
             });
         });
 
+        Route::prefix('bill')->namespace('Bill')->group(function () {
+            Route::prefix('outpatient')->group(function () {
+                Route::get('/', 'OutpatientController@index');
+                Route::get('datatable', 'OutpatientController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'OutpatientController@detail');
+                Route::get('print/{id}', 'OutpatientController@print');
+            });
+        });
+
         Route::prefix('pharmacy')->namespace('Pharmacy')->group(function () {
             Route::prefix('distributor')->group(function () {
                 Route::get('/', 'DistributorController@index');
