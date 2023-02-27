@@ -154,7 +154,7 @@
     function checkStatus() {
         var status = '{{ $inpatient->status }}';
 
-        if(status != 4) {
+        if(status == 1) {
             textEditor('.text-editor');
         } else {
             $('.text-editor').each(function () {
@@ -236,7 +236,7 @@
 
                 var status = '{{ $inpatient->status }}';
 
-                if(status == 4) {
+                if(status != 1) {
                     $('#form-data a[href="#finish"]').hide();
                 }
 
@@ -309,7 +309,7 @@
 
                 var status = '{{ $inpatient->status }}';
 
-                if(status == 4) {
+                if(status != 1) {
                     $('#form-data a[href="#finish"]').hide();
                 }
 

@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendataan - Rawat Inap - <span class="fw-normal">Kamar Operasi</span>
+                Pendataan - IGD - <span class="fw-normal">Kamar Operasi</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('collection/inpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+            <a href="{{ url('collection/emergency-department') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
         </div>
     </div>
 </div>
@@ -23,7 +23,7 @@
                     </div>
                 @else
                     <div class="alert alert-primary text-center mb-0">
-                        Buat Data Kamar Operasi Pasien <b class="fst-italic">{{ $inpatient->patient->name }}</b>
+                        Buat Data Kamar Operasi Pasien <b class="fst-italic">{{ $emergencyDepartment->patient->name }}</b>
                     </div>
                 @endif
             </div>
@@ -196,7 +196,7 @@
                                         <div class="form-group">
                                             <input type="hidden" name="item[]" value="{{ true }}">
                                             <div class="row">
-                                                <div class="{{ $inpatient->status == 1 ? 'col-md-11' : 'col-md-12' }}">
+                                                <div class="{{ $emergencyDepartment->status == 1 ? 'col-md-11' : 'col-md-12' }}">
                                                     <select class="form-select select2" name="o_employee_id[]">
                                                         <option value="">-- Pilih --</option>
                                                         @foreach($employee as $e)
@@ -204,7 +204,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                @if($inpatient->status == 1)
+                                                @if($emergencyDepartment->status == 1)
                                                     <div class="col-md-1">
                                                         <button type="button" class="btn btn-light col-12 btn-sm" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
                                                     </div>
@@ -217,18 +217,18 @@
                         </div>
                     </div>
                 </div>
-                @if($inpatient->status == 1)
+                @if($emergencyDepartment->status == 1)
                     <div class="form-group">
                         <button type="button" class="btn btn-teal col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Asisten</button>
                     </div>
                 @endif
             </div>
         </div>
-        @if($inpatient->status == 1)
+        @if($emergencyDepartment->status == 1)
             <div class="card">
                 <div class="card-body">
                     <div class="text-end">
-                        <a href="{{ url('collection/inpatient') }}" class="btn btn-danger">
+                        <a href="{{ url('collection/emergency-department') }}" class="btn btn-danger">
                             <i class="ph-x me-1"></i>
                             Batalkan Perubahan
                         </a>
@@ -252,7 +252,7 @@
     });
 
     function checkStatus() {
-        var status = '{{ $inpatient->status }}';
+        var status = '{{ $emergencyDepartment->status }}';
 
         if(status == 1) {
             $('.form-control').attr('disabled', false);
@@ -307,11 +307,11 @@
 
     function loadPatient() {
         $.ajax({
-            url: '{{ url("collection/inpatient/load-patient") }}',
+            url: '{{ url("collection/emergency-department/load-patient") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {
-                id: '{{ $inpatient->patient->id }}'
+                id: '{{ $emergencyDepartment->patient->id }}'
             },
             beforeSend: function() {
                 onLoading('show', '.content');
@@ -342,7 +342,7 @@
 
     function submitted() {
         $.ajax({
-            url: '{{ url("collection/inpatient/operating-room/" . $inpatient->id) }}',
+            url: '{{ url("collection/emergency-department/operating-room/" . $emergencyDepartment->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -378,7 +378,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/inpatient/operating-room/" . $inpatient->id) }}');
+                        window.location.replace('{{ url("collection/emergency-department/operating-room/" . $emergencyDepartment->id) }}');
                     });
                 } else if(response.code == 400) {
                     $('.btn-to-top button').click();

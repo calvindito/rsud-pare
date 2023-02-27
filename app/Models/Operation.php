@@ -165,6 +165,8 @@ class Operation extends Model
             $text = 'Rawat Inap';
         } else if ($model == 'App\Models\Outpatient') {
             $text = 'Rawat Jalan';
+        } else if ($model == 'App\Models\EmergencyDepartment') {
+            $text = 'IGD';
         } else {
             $text = 'Tidak Ada';
         }

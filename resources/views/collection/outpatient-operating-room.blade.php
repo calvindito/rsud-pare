@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendaftaran - Rawat Jalan - <span class="fw-normal">Kamar Operasi</span>
+                Pendataan - Rawat Jalan - <span class="fw-normal">Kamar Operasi</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">

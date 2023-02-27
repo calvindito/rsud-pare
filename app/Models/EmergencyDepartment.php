@@ -416,4 +416,14 @@ class EmergencyDepartment extends Model
     {
         return $this->belongsTo(Dispensary::class);
     }
+
+    /**
+     * operation
+     *
+     * @return void
+     */
+    public function operation()
+    {
+        return $this->morphOne(Operation::class, 'operationable')->withTrashed();
+    }
 }
