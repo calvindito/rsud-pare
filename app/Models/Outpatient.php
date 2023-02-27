@@ -226,4 +226,14 @@ class Outpatient extends Model
     {
         return $this->belongsTo(Dispensary::class);
     }
+
+    /**
+     * doctor
+     *
+     * @return void
+     */
+    public function doctor()
+    {
+        return $this->belongsTo(Doctor::class);
+    }
 }

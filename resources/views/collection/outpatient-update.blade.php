@@ -310,6 +310,19 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-3">Dokter <span class="text-danger fw-bold">*</span></label>
+                        <div class="col-md-9">
+                            <select class="form-select" name="doctor_id" id="doctor_id">
+                                <option value="">-- Pilih --</option>
+                                @foreach($doctor as $d)
+                                    <option value="{{ $d->id }}" {{ $outpatient->doctor_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Keterangan</label>
                     <div class="col-md-9">
