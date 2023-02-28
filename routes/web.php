@@ -570,6 +570,48 @@ Route::middleware('auth')->group(function () {
                 Route::match(['get', 'post'], 'detail/{id}', 'OutpatientController@detail');
                 Route::get('print/{id}', 'OutpatientController@print');
             });
+
+            Route::prefix('inpatient')->group(function () {
+                Route::get('/', 'InpatientController@index');
+                Route::get('datatable', 'InpatientController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'InpatientController@detail');
+                Route::get('print/{id}', 'InpatientController@print');
+            });
+
+            Route::prefix('emergency-department')->group(function () {
+                Route::get('/', 'EmergencyDepartmentController@index');
+                Route::get('datatable', 'EmergencyDepartmentController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'EmergencyDepartmentController@detail');
+                Route::get('print/{id}', 'EmergencyDepartmentController@print');
+            });
+
+            Route::prefix('radiology')->group(function () {
+                Route::get('/', 'RadiologyController@index');
+                Route::get('datatable', 'RadiologyController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'RadiologyController@detail');
+                Route::get('print/{id}', 'RadiologyController@print');
+            });
+
+            Route::prefix('lab')->group(function () {
+                Route::get('/', 'LabController@index');
+                Route::get('datatable', 'LabController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'LabController@detail');
+                Route::get('print/{id}', 'LabController@print');
+            });
+
+            Route::prefix('operation')->group(function () {
+                Route::get('/', 'OperationController@index');
+                Route::get('datatable', 'OperationController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'OperationController@detail');
+                Route::get('print/{id}', 'OperationController@print');
+            });
+
+            Route::prefix('medicine-and-tool')->group(function () {
+                Route::get('/', 'MedicineAndToolController@index');
+                Route::get('datatable', 'MedicineAndToolController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'MedicineAndToolController@detail');
+                Route::get('print/{id}', 'MedicineAndToolController@print');
+            });
         });
 
         Route::prefix('pharmacy')->namespace('Pharmacy')->group(function () {

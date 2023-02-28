@@ -29,6 +29,7 @@ class CreateRadiologyRequestsTable extends Migration
             $table->double('hospital_service')->nullable();
             $table->double('service')->nullable();
             $table->double('fee')->nullable();
+            $table->boolean('paid')->default(0);
             $table->char('status', 1)->default(1);
             $table->timestamps();
         });

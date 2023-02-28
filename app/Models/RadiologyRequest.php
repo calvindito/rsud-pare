@@ -146,7 +146,7 @@ class RadiologyRequest extends Model
     /**
      * total
      *
-     * @return void
+     * @return float
      */
     public function total()
     {
@@ -157,5 +157,25 @@ class RadiologyRequest extends Model
         $total = $consumables + $hospitalService + $service + $fee;
 
         return $total;
+    }
+
+    /**
+     * paid
+     *
+     * @return void
+     */
+    public function paid()
+    {
+        $paid = $this->paid;
+
+        if ($paid == 1) {
+            $html = '<span class="badge bg-success">Terbayar</span>';
+        } else if ($paid == 0) {
+            $html = '<span class="badge bg-danger">Belum Bayar</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
     }
 }

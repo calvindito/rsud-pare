@@ -20,6 +20,7 @@ class CreateLabRequestsTable extends Migration
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->nullableMorphs('lab_requestable');
             $table->timestamp('date_of_request')->nullable();
+            $table->boolean('paid')->default(0);
             $table->char('status', 1)->default(1);
             $table->timestamps();
         });

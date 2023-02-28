@@ -116,7 +116,7 @@
                     <td>{{ $lrd->labItem->labItemGroup->name }}</td>
                     <td>{{ $lrd->labItem->name }}</td>
                     <td>{{ $lrd->result }}</td>
-                    <td class="align-middle" nowrap>
+                    <td nowrap>
                         @isset($lrd->labItemParent)
                             @if($lrd->labItemParent->limit_lower && $lrd->labItemParent->limit_upper)
                                 {{ $lrd->labItemParent->limit_lower . ' - ' . $lrd->labItemParent->limit_upper }}

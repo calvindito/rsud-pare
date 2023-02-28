@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendataan - IGD - <span class="fw-normal">Tindakan</span>
+                Tagihan - IGD - <span class="fw-normal">Detail</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('collection/emergency-department') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+            <a href="{{ url('bill/emergency-department') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
         </div>
     </div>
 </div>
@@ -109,7 +109,7 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control number-format" name="observation_nominal" id="observation_nominal" value="{{ $emergencyDepartment->observation->nominal ?? (App\Models\ActionEmergencyCare::find(2)->fee ?? 0) }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="observation_nominal" id="observation_nominal" value="{{ $emergencyDepartment->observation->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
                                         </div>
                                     </td>
                                 </tr>
@@ -119,7 +119,7 @@
                                         Pengawasan Dokter
                                     </td>
                                     <td class="align-middle">
-                                        <select class="form-select" name="supervision_doctor_doctor_id" id="supervision_doctor_doctor_id">
+                                        <select class="form-select" name="supervision_doctor_doctor_id" id="supervision_doctor_doctor_id" disabled>
                                             @foreach($doctor as $key => $d)
                                                 <option value="{{ $d->id }}" {{ ($emergencyDepartment->supervision_doctor->doctor_id ?? 1) == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
                                             @endforeach
@@ -128,7 +128,7 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control number-format" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $emergencyDepartment->supervision_doctor->nominal ?? (App\Models\ActionEmergencyCare::find(4)->fee ?? 0) }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $emergencyDepartment->supervision_doctor->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
                                         </div>
                                     </td>
                                 </tr>
@@ -145,7 +145,7 @@
                                                 {{ $ms->name }}
                                             </td>
                                             <td class="align-middle">
-                                                <select class="form-select" name="eds_doctor_id[]">
+                                                <select class="form-select" name="eds_doctor_id[]" disabled>
                                                     @foreach($doctor as $key => $d)
                                                         <option value="{{ $d->id }}" {{ ($check->doctor_id ?? 1) == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
                                                     @endforeach
@@ -154,8 +154,8 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="eds_nominal[]" value="{{ $check->nominal ?? $ms->emergency_care }}" onkeyup="total()" placeholder="0">
-                                                    <select class="form-select w-auto flex-grow-0" name="eds_qty[]" onchange="total()">
+                                                    <input type="text" class="form-control number-format" name="eds_nominal[]" value="{{ $check->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
+                                                    <select class="form-select w-auto flex-grow-0" name="eds_qty[]" onchange="total()" disabled>
                                                         @for($i = 1; $i <= 100; $i++)
                                                             <option value="{{ $i }}" {{ ($check->qty ?? 1) == $i ? 'selected' : '' }}>{{ $i }}</option>
                                                         @endfor
@@ -193,7 +193,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="edno_nominal[]" value="{{ $check->nominal ?? $ano->emergency_care }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edno_nominal[]" value="{{ $check->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
                                                 </div>
                                             </td>
                                         </tr>
@@ -226,7 +226,7 @@
                                                 {{ $as->name }}
                                             </td>
                                             <td class="align-middle">
-                                                <select class="form-select" name="edss_doctor_id[]">
+                                                <select class="form-select" name="edss_doctor_id[]" disabled>
                                                     <option value="">Tidak Ada Dokter</option>
                                                     @foreach($doctor as $key => $d)
                                                         <option value="{{ $d->id }}" {{ ($check->doctor_id ?? '') == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
@@ -236,7 +236,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="edss_nominal[]" value="{{ $check->nominal ?? $as->emergency_care }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edss_nominal[]" value="{{ $check->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
                                                 </div>
                                             </td>
                                         </tr>
@@ -270,7 +270,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="edh_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edh_nominal[]" value="{{ $check->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
                                                 </div>
                                             </td>
                                         </tr>
@@ -304,7 +304,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="edo_nominal[]" value="{{ $check->nominal ?? $ao->emergency_care }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edo_nominal[]" value="{{ $check->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
                                                 </div>
                                             </td>
                                         </tr>
@@ -332,21 +332,21 @@
                                 <div class="input-group">
                                     <span class="input-group-text">1</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[0]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[0]->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
                                 </div>
                             </td>
                             <td class="align-middle">
                                 <div class="input-group">
                                     <span class="input-group-text">2</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[1]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[1]->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
                                 </div>
                             </td>
                             <td class="align-middle">
                                 <div class="input-group">
                                     <span class="input-group-text">3</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[2]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[2]->nominal ?? 0 }}" onkeyup="total()" placeholder="0" disabled>
                                 </div>
                             </td>
                         </tr>
@@ -367,6 +367,7 @@
                             <th class="text-center align-middle" rowspan="2" nowrap>
                                 <h6 class="text-uppercase">Jumlah Yang Harus Dibayar</h6>
                                 <h3 class="fw-bold text-primary" id="grandtotal"></h3>
+                                {!! $emergencyDepartment->paid() !!}
                             </th>
                         </tr>
                         <tr>
@@ -381,10 +382,17 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-end">
-                        <button type="button" class="btn btn-warning" onclick="submitted()">
-                            <i class="ph-floppy-disk me-2"></i>
-                            Simpan Data
-                        </button>
+                        @if($emergencyDepartment->paid == false)
+                            <button type="button" class="btn btn-success" onclick="submitted()">
+                                <i class="ph-check-circle me-2"></i>
+                                Tandai Sudah Terbayar
+                            </button>
+                        @else
+                            <a href="{{ url('bill/emergency-department/print/' . $emergencyDepartment->id) }}" target="_blank" class="btn btn-teal">
+                                <i class="ph-printer me-1"></i>
+                                Cetak Bukti Bayar
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -397,20 +405,7 @@
         sidebarMini();
         fullWidthAllDevice();
         total();
-        checkStatus();
     });
-
-    function checkStatus() {
-        var status = '{{ $emergencyDepartment->status }}';
-
-        if(status == 1) {
-            $('.form-control').attr('disabled', false);
-            $('.form-select').attr('disabled', false);
-        } else {
-            $('.form-control').attr('disabled', true);
-            $('.form-select').attr('disabled', true);
-        }
-    }
 
     function total() {
         var observationNominal = numberable(parseFloat($('input[name="observation_nominal"]').val()));
@@ -484,23 +479,9 @@
         }
     }
 
-    function clearValidation() {
-        $('#validation-element').addClass('d-none');
-        $('#validation-data').html('');
-    }
-
-    function showValidation(data) {
-        $('#validation-element').removeClass('d-none');
-        $('#validation-data').html('');
-
-        $.each(data, function(index, value) {
-            $('#validation-data').append('<li>' + value + '</li>');
-        });
-    }
-
     function submitted() {
         $.ajax({
-            url: '{{ url("collection/emergency-department/action/" . $emergencyDepartment->id) }}',
+            url: '{{ url("bill/emergency-department/detail/" . $emergencyDepartment->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -509,7 +490,6 @@
             },
             beforeSend: function() {
                 onLoading('show', '.content');
-                clearValidation();
             },
             success: function(response) {
                 onLoading('close', '.content');
@@ -536,11 +516,8 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/emergency-department/action/" . $emergencyDepartment->id) }}');
+                        window.location.replace('{{ url("bill/emergency-department/detail/" . $emergencyDepartment->id) }}');
                     });
-                } else if(response.code == 400) {
-                    $('.btn-to-top button').click();
-                    showValidation(response.error);
                 } else {
                     swalInit.fire({
                         title: 'Error',

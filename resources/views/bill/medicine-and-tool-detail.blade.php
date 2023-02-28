@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Apotek - Permintaan - <span class="fw-normal">Detail</span>
+                Tagihan - Obat & Alkes - <span class="fw-normal">Detail</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('dispensary/request') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+            <a href="{{ url('bill/medicine-and-tool') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
             <a href="{{ url()->full() }}" class="btn btn-flat-primary">Refresh</a>
         </div>
     </div>
@@ -50,7 +50,7 @@
     <form id="form-data">
         <div class="card">
             <div class="card-header">
-                <h6 class="hstack gap-2 mb-0">Permintaan Item</h6>
+                <h6 class="hstack gap-2 mb-0">Data Tagihan</h6>
             </div>
             <div class="card-body">
                 <div class="alert alert-secondary text-center fs-5 fw-bold">{{ $dispensaryRequest->dispensary->name ?? '-' }}</div>
@@ -63,13 +63,11 @@
                             <th nowrap>Satuan</th>
                             <th nowrap>Harga</th>
                             <th nowrap>Diskon</th>
-                            <th nowrap>Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($dispensaryRequestItem as $key => $dri)
                             <tr>
-                                <input type="hidden" name="id[]" value="{{ $dri->id }}">
                                 <td class="align-middle text-center">{{ $key + 1 }}</td>
                                 <td class="align-middle" nowrap>{{ $dri->dispensaryItemStock->dispensaryItem->item->name }}</td>
                                 <td class="align-middle" nowrap>{{ $dri->qty }}</td>
@@ -90,38 +88,37 @@
                                     @endif
                                 </td>
                                 <td class="align-middle" nowrap>{{ $dri->discount }} %</td>
-                                <td class="align-middle" nowrap>
-                                    @if(!empty($dri->status))
-                                        <input type="hidden" name="status[]" value="{{ null }}">
-                                        <input type="text" class="form-control" value="{{ $dri->status() }}" disabled>
-                                    @else
-                                        <select class="form-select" name="status[]">
-                                            <option value="">-- Pilih --</option>
-                                            <option value="1" {{ $dri->status == 1 ? 'selected' : '' }}>Stok Tidak Cukup</option>
-                                            <option value="2" {{ $dri->status == 2 ? 'selected' : '' }}>Stok Kosong</option>
-                                            <option value="3" {{ $dri->status == 3 ? 'selected' : '' }}>Tolak</option>
-                                            <option value="4" {{ $dri->status == 4 ? 'selected' : '' }}>Setujui</option>
-                                        </select>
-                                    @endif
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+                <div class="form-group"><hr></div>
+                <div class="text-center">
+                    <h6 class="text-uppercase fw-bold">Jumlah Yang Harus Dibayar</h6>
+                    <h3 class="text-primary fw-bold mb-0">{{ Simrs::formatRupiah($dispensaryRequest->total()) }}</h3>
+                </div>
+                <div class="form-group"><hr></div>
+                <span class="fst-italic">Terbilang : {{ Simrs::numerator($dispensaryRequest->total()) }}</span>
+                <span class="float-end">{!! $dispensaryRequest->paid() !!}</span>
             </div>
         </div>
-        @if($dispensaryRequest->statusable() == false)
-            <div class="card">
-                <div class="card-body">
-                    <div class="text-end">
-                        <button type="button" class="btn btn-primary" onclick="submitted()">
-                            <i class="ph-check me-1"></i>
-                            Submit
+        <div class="card">
+            <div class="card-body">
+                <div class="text-end">
+                    @if($dispensaryRequest->paid == false)
+                        <button type="button" class="btn btn-success" onclick="submitted()">
+                            <i class="ph-check-circle me-2"></i>
+                            Tandai Sudah Terbayar
                         </button>
-                    </div>
+                    @else
+                        <a href="{{ url('bill/medicine-and-tool/print/' . $dispensaryRequest->id) }}" target="_blank" class="btn btn-teal">
+                            <i class="ph-printer me-1"></i>
+                            Cetak Bukti Bayar
+                        </a>
+                    @endif
                 </div>
             </div>
-        @endif
+        </div>
     </form>
 </div>
 
@@ -129,21 +126,11 @@
     $(function() {
         fullWidthAllDevice();
         sidebarMini();
-        checkStatus();
     });
-
-    function checkStatus() {
-        var status = '{{ $dispensaryRequest->statusable() }}';
-
-        if(status == 1) {
-            $('input').attr('disabled', true);
-            $('select').attr('disabled', true);
-        }
-    }
 
     function submitted(param) {
         $.ajax({
-            url: '{{ url("dispensary/request/detail/" . $dispensaryRequest->id) }}',
+            url: '{{ url("bill/medicine-and-tool/detail/" . $dispensaryRequest->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -178,7 +165,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("dispensary/request/detail/" . $dispensaryRequest->id) }}');
+                        window.location.replace('{{ url("bill/medicine-and-tool/detail/" . $dispensaryRequest->id) }}');
                     });
                 } else {
                     swalInit.fire({

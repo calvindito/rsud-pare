@@ -27,9 +27,9 @@
             <td style="font-weight:bold;">Tanggal Masuk</td>
             <td>:</td>
             <td>{{ date('d-m-Y', strtotime($data->date_of_entry)) }}</td>
-            <td style="font-weight:bold;">Poli</td>
+            <td style="font-weight:bold;">UPF</td>
             <td>:</td>
-            <td>{{ $data->unit->name }}</td>
+            <td>{{ $data->functionalService->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
             <td style="font-weight:bold;">Jam Masuk</td>
@@ -43,9 +43,9 @@
             <td style="font-weight:bold;">Tangal Lahir</td>
             <td>:</td>
             <td>{{ $data->patient->date_of_birth }}</td>
-            <td style="font-weight:bold;">Kehadiran</td>
+            <td style="font-weight:bold;">Hasil</td>
             <td>:</td>
-            <td>{{ $data->presence_format_result }}</td>
+            <td>{{ $data->ending_format_result }}</td>
         </tr>
         <tr style="font-size:14px;">
             <td style="font-weight:bold;">Tangal Cetak</td>

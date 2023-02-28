@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Tagihan - <span class="fw-normal">Rawat Jalan</span>
+                Tagihan - <span class="fw-normal">Operasi</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -28,7 +28,7 @@
                         <th nowrap>Pasien</th>
                         <th nowrap>Tertagih</th>
                         <th class="text-center" nowrap>Status</th>
-                        <th nowrap>Tanggal</th>
+                        <th nowrap>Tanggal Operasi</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
                 </thead>
@@ -56,7 +56,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("bill/outpatient/datatable") }}',
+                url: '{{ url("bill/operation/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');
@@ -79,9 +79,9 @@
                 { data: 'code', name: 'id', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'patient_id', name: 'patient_id', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'patient_name', name: 'patient_name', orderable: false, searchable: false, className: 'align-middle' },
-                { data: 'total_action', name: 'total_action', orderable: false, searchable: false, className: 'align-middle' },
+                { data: 'total', name: 'total', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'paid', name: 'paid', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'created_at', name: 'created_at', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'date_of_entry', name: 'date_of_entry', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
             ]
         });

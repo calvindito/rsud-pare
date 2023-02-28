@@ -112,7 +112,7 @@
                 @if($outpatient->paid == false)
                     <button type="button" class="btn btn-success" onclick="submitted()">
                         <i class="ph-check-circle me-2"></i>
-                        Sudah Terbayar
+                        Tandai Sudah Terbayar
                     </button>
                 @else
                     <a href="{{ url('bill/outpatient/print/' . $outpatient->id) }}" target="_blank" class="btn btn-teal">

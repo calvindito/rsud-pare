@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Tagihan - <span class="fw-normal">Rawat Jalan</span>
+                Tagihan - <span class="fw-normal">IGD</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -56,7 +56,7 @@
             destroy: true,
             order: [[0, 'desc']],
             ajax: {
-                url: '{{ url("bill/outpatient/datatable") }}',
+                url: '{{ url("bill/emergency-department/datatable") }}',
                 dataType: 'JSON',
                 beforeSend: function() {
                     onLoading('show', '.datatable-scroll');

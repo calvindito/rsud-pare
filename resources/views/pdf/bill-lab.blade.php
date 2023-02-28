@@ -16,51 +16,27 @@
             <td>{{ $data->doctor->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Jenis Kelamin</td>
+            <td style="font-weight:bold;">Tanggal Permintaan</td>
             <td>:</td>
-            <td>{{ $data->patient->gender_format_result }}</td>
-            <td style="font-weight:bold;">Golongan</td>
+            <td>{{ date('d-m-Y', strtotime($data->date_of_request)) }}</td>
+            <td style="font-weight:bold;">Ref</td>
             <td>:</td>
-            <td>{{ $data->type_format_result ?? '-' }}</td>
+            <td>{{ $data->ref() }}</td>
         </tr>
         <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Tanggal Masuk</td>
-            <td>:</td>
-            <td>{{ date('d-m-Y', strtotime($data->date_of_entry)) }}</td>
-            <td style="font-weight:bold;">Poli</td>
-            <td>:</td>
-            <td>{{ $data->unit->name }}</td>
-        </tr>
-        <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Jam Masuk</td>
+            <td style="font-weight:bold;">Jam Permintaan</td>
             <td>:</td>
             <td>{{ date('H:i:s', strtotime($data->date_of_request)) }}</td>
-            <td style="font-weight:bold;">Didata Oleh</td>
+            <td style="font-weight:bold;">Pemeriksa</td>
             <td>:</td>
             <td>{{ $data->user->employee->name ?? '-' }}</td>
-        </tr>
-        <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Tangal Lahir</td>
-            <td>:</td>
-            <td>{{ $data->patient->date_of_birth }}</td>
-            <td style="font-weight:bold;">Kehadiran</td>
-            <td>:</td>
-            <td>{{ $data->presence_format_result }}</td>
-        </tr>
-        <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Tangal Cetak</td>
-            <td>:</td>
-            <td>{{ now() }}</td>
-            <td style="font-weight:bold;">Kode</td>
-            <td>:</td>
-            <td>{{ $data->code() }}</td>
         </tr>
     </table>
     <hr style="margin-top:20px; margin-bottom:20px;">
     <div style="text-align:center; margin-bottom:10px;">NOMINAL YANG TERBAYAR</div>
-    <div style="text-align:center; font-weight:bold; font-size:25px;">{{ Simrs::formatRupiah($data->totalAction()) }}</div>
+    <div style="text-align:center; font-weight:bold; font-size:25px;">{{ Simrs::formatRupiah($data->total()) }}</div>
     <div style="text-align:center; font-weight:400; font-style:italic; margin-top:10px; font-size:14px;">
-        Terbilang : {{ Simrs::numerator($data->totalAction()) }}
+        Terbilang : {{ Simrs::numerator($data->total()) }}
     </div>
     <hr style="margin-top:20px; margin-bottom:20px;">
     <table style="width:100%;">

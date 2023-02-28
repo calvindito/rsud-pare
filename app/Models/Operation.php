@@ -219,7 +219,7 @@ class Operation extends Model
      *
      * @return void
      */
-    public function total()
+    public function total($all = true)
     {
         $total = 0;
         $total += $this->hospital_service;
@@ -229,7 +229,10 @@ class Operation extends Model
         $total += $this->nurse_anesthetist;
         $total += $this->monitoring;
         $total += $this->nursing_care;
-        $total += $this->totalMaterial();
+
+        if ($all == true) {
+            $total += $this->totalMaterial();
+        }
 
         return $total;
     }
@@ -270,5 +273,25 @@ class Operation extends Model
     public function operationMaterial()
     {
         return $this->hasMany(OperationMaterial::class);
+    }
+
+    /**
+     * paid
+     *
+     * @return void
+     */
+    public function paid()
+    {
+        $paid = $this->paid;
+
+        if ($paid == 1) {
+            $html = '<span class="badge bg-success">Terbayar</span>';
+        } else if ($paid == 0) {
+            $html = '<span class="badge bg-danger">Belum Bayar</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
     }
 }

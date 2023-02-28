@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\Bill;
 
 use App\Helpers\Simrs;
-use App\Models\Outpatient;
+use App\Models\Doctor;
+use App\Models\Operation;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 
-class OutpatientController extends Controller
+class OperationController extends Controller
 {
     public function index()
     {
         $data = [
-            'content' => 'bill.outpatient'
+            'content' => 'bill.operation'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -23,29 +24,29 @@ class OutpatientController extends Controller
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Outpatient::query();
+        $data = Operation::query();
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
                     $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
-                        ->orWhereHas('patient', function ($query) use ($search) {
+                        ->whereHas('patient', function ($query) use ($search) {
                             $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
                                 ->orWhere('name', 'like', "%$search%");
                         });
                 }
             })
-            ->editColumn('created_at', '{{ date("Y-m-d", strtotime($created_at)) }}')
-            ->addColumn('paid', function (Outpatient $query) {
+            ->editColumn('date_of_entry', '{{ date("Y-m-d", strtotime($date_of_entry)) }}')
+            ->editColumn('paid', function (Operation $query) {
                 return $query->paid();
             })
-            ->addColumn('code', function (Outpatient $query) {
+            ->addColumn('code', function (Operation $query) {
                 return $query->code();
             })
-            ->addColumn('total_action', function (Outpatient $query) {
-                return Simrs::formatRupiah($query->totalAction());
+            ->addColumn('total', function (Operation $query) {
+                return Simrs::formatRupiah($query->total(false));
             })
-            ->addColumn('patient_name', function (Outpatient $query) {
+            ->addColumn('patient_name', function (Operation $query) {
                 $patientName = null;
 
                 if (isset($query->patient)) {
@@ -54,7 +55,7 @@ class OutpatientController extends Controller
 
                 return $patientName;
             })
-            ->addColumn('patient_id', function (Outpatient $query) {
+            ->addColumn('patient_id', function (Operation $query) {
                 $patientId = null;
 
                 if (isset($query->patient)) {
@@ -63,9 +64,9 @@ class OutpatientController extends Controller
 
                 return $patientId;
             })
-            ->addColumn('action', function (Outpatient $query) {
+            ->addColumn('action', function (Operation $query) {
                 return '
-                    <a href="' . url('bill/outpatient/detail/' . $query->id) . '" class="btn btn-light text-primary btn-sm fw-semibold">
+                    <a href="' . url('bill/operation/detail/' . $query->id) . '" class="btn btn-light text-primary btn-sm fw-semibold">
                         <i class="ph-info me-1"></i>
                         Detail
                     </a>
@@ -79,18 +80,11 @@ class OutpatientController extends Controller
 
     public function detail(Request $request, $id)
     {
-        $outpatient = Outpatient::findOrFail($id);
-        $unit = $outpatient->unit;
+        $operation = Operation::findOrFail($id);
 
         if ($request->ajax()) {
             try {
-                if ($outpatient->outpatientAction->count() > 0) {
-                    foreach ($outpatient->outpatientAction as $oa) {
-                        $oa->update(['status' => true]);
-                    }
-                }
-
-                $outpatient->update(['paid' => true]);
+                $operation->update(['paid' => true]);
 
                 $response = [
                     'code' => 200,
@@ -107,11 +101,11 @@ class OutpatientController extends Controller
         }
 
         $data = [
-            'outpatient' => $outpatient,
-            'patient' => $outpatient->patient,
-            'outpatientAction' => $outpatient->outpatientAction,
-            'unit' => $unit,
-            'content' => 'bill.outpatient-detail'
+            'operation' => $operation,
+            'operationMaterial' => $operation->operationMaterial,
+            'patient' => $operation->patient,
+            'doctor' => Doctor::all(),
+            'content' => 'bill.operation-detail'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -119,14 +113,14 @@ class OutpatientController extends Controller
 
     public function print($id)
     {
-        $data = Outpatient::where('paid', true)->findOrFail($id);
+        $data = Operation::where('paid', true)->findOrFail($id);
         $pdf = Pdf::setOptions([
             'adminUsername' => auth()->user()->username
-        ])->loadView('pdf.bill-outpatient', [
-            'title' => 'Bukti Pembayaran Tagihan Rawat Jalan',
+        ])->loadView('pdf.bill-operation', [
+            'title' => 'Bukti Pembayaran Tagihan Operasi',
             'data' => $data
         ]);
 
-        return $pdf->stream('Bukti Pembayaran Tagihan Rawat Jalan' . ' - ' . date('YmdHis') . '.pdf');
+        return $pdf->stream('Bukti Pembayaran Tagihan Operasi' . ' - ' . date('YmdHis') . '.pdf');
     }
 }

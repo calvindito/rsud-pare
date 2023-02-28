@@ -13,54 +13,46 @@
             <td>{{ $data->patient->name }}</td>
             <td style="font-weight:bold;">Dokter</td>
             <td>:</td>
-            <td>{{ $data->doctor->name ?? '-' }}</td>
+            <td>{{ $data->doctorOperation->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Jenis Kelamin</td>
-            <td>:</td>
-            <td>{{ $data->patient->gender_format_result }}</td>
-            <td style="font-weight:bold;">Golongan</td>
-            <td>:</td>
-            <td>{{ $data->type_format_result ?? '-' }}</td>
-        </tr>
-        <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Tanggal Masuk</td>
+            <td style="font-weight:bold;">Tanggal Operasi</td>
             <td>:</td>
             <td>{{ date('d-m-Y', strtotime($data->date_of_entry)) }}</td>
-            <td style="font-weight:bold;">Poli</td>
+            <td style="font-weight:bold;">Ref</td>
             <td>:</td>
-            <td>{{ $data->unit->name }}</td>
+            <td>{{ $data->ref() }}</td>
         </tr>
         <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Jam Masuk</td>
+            <td style="font-weight:bold;">Tanggal Selesai</td>
             <td>:</td>
-            <td>{{ date('H:i:s', strtotime($data->date_of_request)) }}</td>
-            <td style="font-weight:bold;">Didata Oleh</td>
+            <td>{{ date('d-m-Y', strtotime($data->date_of_out)) }}</td>
+            <td style="font-weight:bold;">Kelas</td>
             <td>:</td>
-            <td>{{ $data->user->employee->name ?? '-' }}</td>
+            <td>{{ $data->operatingRoomAction->classType->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Tangal Lahir</td>
+            <td style="font-weight:bold;">Golongan Operasi</td>
             <td>:</td>
-            <td>{{ $data->patient->date_of_birth }}</td>
-            <td style="font-weight:bold;">Kehadiran</td>
+            <td>{{ $data->operatingRoomAction->operatingRoomGroup->name ?? '-' }}</td>
+            <td style="font-weight:bold;">Jenis Tindakan</td>
             <td>:</td>
-            <td>{{ $data->presence_format_result }}</td>
+            <td>{{ $data->operatingRoomAction->operatingRoomActionType->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
-            <td style="font-weight:bold;">Tangal Cetak</td>
+            <td style="font-weight:bold;">Unit</td>
             <td>:</td>
-            <td>{{ now() }}</td>
-            <td style="font-weight:bold;">Kode</td>
+            <td>{{ $data->unit->name ?? '-' }}</td>
+            <td style="font-weight:bold;">UPF</td>
             <td>:</td>
-            <td>{{ $data->code() }}</td>
+            <td>{{ $data->functionalService->name ?? '-' }}</td>
         </tr>
     </table>
     <hr style="margin-top:20px; margin-bottom:20px;">
     <div style="text-align:center; margin-bottom:10px;">NOMINAL YANG TERBAYAR</div>
-    <div style="text-align:center; font-weight:bold; font-size:25px;">{{ Simrs::formatRupiah($data->totalAction()) }}</div>
+    <div style="text-align:center; font-weight:bold; font-size:25px;">{{ Simrs::formatRupiah($data->total(false)) }}</div>
     <div style="text-align:center; font-weight:400; font-style:italic; margin-top:10px; font-size:14px;">
-        Terbilang : {{ Simrs::numerator($data->totalAction()) }}
+        Terbilang : {{ Simrs::numerator($data->total(false)) }}
     </div>
     <hr style="margin-top:20px; margin-bottom:20px;">
     <table style="width:100%;">

@@ -436,4 +436,49 @@ class EmergencyDepartment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * paid
+     *
+     * @return void
+     */
+    public function paid()
+    {
+        $paid = $this->paid;
+
+        if ($paid == 1) {
+            $html = '<span class="badge bg-success">Terbayar</span>';
+        } else if ($paid == 0) {
+            $html = '<span class="badge bg-danger">Belum Bayar</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
+
+    /**
+     * totalAction
+     *
+     * @return float
+     */
+    public function totalAction()
+    {
+        $total = 0;
+        $total += $this->observation->nominal ?? 0;
+        $total += $this->supervision_doctor->nominal ?? 0;
+        $total += $this->emergencyDepartmentHealth->sum('nominal');
+        $total += $this->emergencyDepartmentNonOperative->sum('nominal');
+        $total += $this->emergencyDepartmentPackage->sum('nominal');
+        $total += $this->emergencyDepartmentSupporting->sum('nominal');
+        $total += $this->emergencyDepartmentOther->sum('nominal');
+
+        foreach ($this->emergencyDepartmentService as $is) {
+            $qty = $is->qty ?? 0;
+            $nominal = $is->nominal ?? 0;
+            $total += $nominal * $qty;
+        }
+
+        return $total;
+    }
 }

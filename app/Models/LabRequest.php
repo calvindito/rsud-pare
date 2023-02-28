@@ -125,4 +125,39 @@ class LabRequest extends Model
 
         return $html;
     }
+
+    /**
+     * paid
+     *
+     * @return void
+     */
+    public function paid()
+    {
+        $paid = $this->paid;
+
+        if ($paid == 1) {
+            $html = '<span class="badge bg-success">Terbayar</span>';
+        } else if ($paid == 0) {
+            $html = '<span class="badge bg-danger">Belum Bayar</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
+
+    /**
+     * total
+     *
+     * @return float
+     */
+    public function total()
+    {
+        $total = 0;
+        $total += $this->labRequestDetail->sum('consumables');
+        $total += $this->labRequestDetail->sum('hospital_service');
+        $total += $this->labRequestDetail->sum('service');
+
+        return $total;
+    }
 }

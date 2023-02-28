@@ -183,4 +183,57 @@ class DispensaryRequest extends Model
 
         return $data;
     }
+
+    /**
+     * paid
+     *
+     * @return void
+     */
+    public function paid()
+    {
+        $paid = $this->paid;
+
+        if ($paid == 1) {
+            $html = '<span class="badge bg-success">Terbayar</span>';
+        } else if ($paid == 0) {
+            $html = '<span class="badge bg-danger">Belum Bayar</span>';
+        } else {
+            $html = '<span class="badge bg-warning">Invalid</span>';
+        }
+
+        return $html;
+    }
+
+    /**
+     * total
+     *
+     * @return float
+     */
+    public function total()
+    {
+        $total = 0;
+
+        $data = DispensaryRequest::with('dispensaryItemStock')
+            ->where('dispensary_requestable_type', $this->dispensary_requestable_type)
+            ->where('dispensary_requestable_id', $this->dispensary_requestable_id)
+            ->where('dispensary_id', $this->dispensary_id)
+            ->get();
+
+        if ($data->count() > 0) {
+            foreach ($data as $d) {
+                $price = $d->price_sell;
+                $discount = $d->discount;
+                $qty = $d->qty;
+                $nett = $price * $qty;
+
+                if ($discount > 0) {
+                    $nett = ($price - (($discount / 100) * $price)) * $qty;
+                }
+
+                $total += $nett;
+            }
+        }
+
+        return $total;
+    }
 }

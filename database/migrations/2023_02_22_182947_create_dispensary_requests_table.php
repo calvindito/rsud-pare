@@ -25,6 +25,7 @@ class CreateDispensaryRequestsTable extends Migration
             $table->double('price_sell')->nullable();
             $table->double('discount')->nullable();
             $table->string('consumed')->nullable();
+            $table->boolean('paid')->default(0);
             $table->char('status', 1)->nullable();
             $table->timestamps();
         });

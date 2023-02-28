@@ -31,6 +31,7 @@ class CreateInpatientsTable extends Migration
             $table->double('fee_nursing_care')->nullable();
             $table->double('fee_nutritional_care')->nullable();
             $table->integer('fee_nutritional_care_qty')->nullable();
+            $table->boolean('paid')->default(0);
             $table->char('status', 1)->default(1);
             $table->char('ending', 1)->nullable();
             $table->timestamps();

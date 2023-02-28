@@ -35,6 +35,7 @@ class CreateOperationsTable extends Migration
             $table->double('nurse_anesthetist')->nullable();
             $table->double('monitoring')->nullable();
             $table->double('nursing_care')->nullable();
+            $table->boolean('paid')->default(0);
             $table->char('status', 1)->default(1);
             $table->timestamps();
             $table->softDeletes();
