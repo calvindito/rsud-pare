@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Finance;
 
-use App\Helpers\Simrs;
 use App\Models\Budget;
 use Illuminate\Http\Request;
 use App\Models\ChartOfAccount;
@@ -16,10 +15,36 @@ class BudgetController extends Controller
     public function index()
     {
         $data = [
+            'chartOfAccount' => ChartOfAccount::with('sub')->whereNull('parent_id')->where('status', true)->orderBy('code')->get(),
             'content' => 'finance.budget'
         ];
 
         return view('layouts.index', ['data' => $data]);
+    }
+
+    public function settingChartOfAccount(Request $request)
+    {
+        try {
+            ChartOfAccount::query()->update(['budgetable' => false]);
+
+            if ($request->has('budgetable')) {
+                foreach ($request->budgetable as $b) {
+                    ChartOfAccount::find($b)->update(['budgetable' => true]);
+                }
+            }
+
+            $response = [
+                'code' => 200,
+                'message' => 'Pengaturan bagan akun telah disimpan'
+            ];
+        } catch (\Exception $e) {
+            $response = [
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ];
+        }
+
+        return response()->json($response);
     }
 
     public function datatable(Request $request)
@@ -92,7 +117,7 @@ class BudgetController extends Controller
     {
         $data = [
             'budget' => Budget::whereIn('status', [2, 4, 5])->findOrFail($id),
-            'chartOfAccount' => ChartOfAccount::with('sub')->whereNull('parent_id')->where('status', true)->orderBy('code')->get(),
+            'chartOfAccount' => ChartOfAccount::where('budgetable', true)->where('status', true)->orderBy('code')->get(),
             'content' => 'finance.budget-detail'
         ];
 
@@ -157,7 +182,7 @@ class BudgetController extends Controller
         }
 
         $data = [
-            'chartOfAccount' => ChartOfAccount::with('sub')->whereNull('parent_id')->where('status', true)->orderBy('code')->get(),
+            'chartOfAccount' => ChartOfAccount::where('budgetable', true)->where('status', true)->orderBy('code')->get(),
             'content' => 'finance.budget-create'
         ];
 
@@ -226,7 +251,7 @@ class BudgetController extends Controller
 
         $data = [
             'budget' => $budget,
-            'chartOfAccount' => ChartOfAccount::with('sub')->whereNull('parent_id')->where('status', true)->orderBy('code')->get(),
+            'chartOfAccount' => ChartOfAccount::where('budgetable', true)->where('status', true)->orderBy('code')->get(),
             'content' => 'finance.budget-update'
         ];
 

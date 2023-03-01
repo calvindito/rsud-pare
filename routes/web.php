@@ -687,6 +687,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('finance')->namespace('Finance')->group(function () {
             Route::prefix('budget')->group(function () {
                 Route::get('/', 'BudgetController@index');
+                Route::post('setting-chart-of-account', 'BudgetController@settingChartOfAccount');
                 Route::get('datatable', 'BudgetController@datatable');
                 Route::get('detail/{id}', 'BudgetController@detail');
                 Route::match(['get', 'post'], 'create', 'BudgetController@create');

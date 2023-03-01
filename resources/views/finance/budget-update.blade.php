@@ -57,24 +57,16 @@
                     </thead>
                     <tbody>
                         @foreach($chartOfAccount as $coa)
-                            @if($coa->sub->count() > 0)
-                                <tr>
-                                    <td colspan="3">{{ $coa->name }}</td>
-                                </tr>
-
-                                @include('finance.budget-recursive', ['sub' => $coa->sub, 'left' => 20, 'budget' => $budget, 'disabled' => false])
-                            @else
-                                <tr>
-                                    <input type="hidden" name="bd_chart_of_account_id[]" value="{{ $coa->id }}">
-                                    <td>{{ $coa->name }}</td>
-                                    <td>
-                                        <input type="text" class="form-custom number-format" name="bd_nominal[]" value="{{ $budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->nominal ?? '' }}" placeholder="0">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-custom number-format" name="bd_limit_blud[]"value="{{ $budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->limit_blud ?? '' }}" placeholder="0">
-                                    </td>
-                                </tr>
-                            @endif
+                            <tr>
+                                <input type="hidden" name="bd_chart_of_account_id[]" value="{{ $coa->id }}">
+                                <td>{{ $coa->fullname }}</td>
+                                <td>
+                                    <input type="text" class="form-control number-format" name="bd_nominal[]" value="{{ $budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->nominal ?? '' }}" placeholder="0">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control number-format" name="bd_limit_blud[]"value="{{ $budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->limit_blud ?? '' }}" placeholder="0">
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

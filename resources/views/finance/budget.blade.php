@@ -13,6 +13,10 @@
                     <a href="{{ url()->full() }}" class="dropdown-item">Halaman</a>
                 </div>
             </div>
+            <button type="button" class="btn btn-flat-primary" data-bs-toggle="modal" data-bs-target="#modal-form">
+                <i class="ph-gear-six me-1"></i>
+                Atur Bagan Akun
+            </button>
             <a href="{{ url('finance/budget/create') }}" class="btn btn-flat-primary">
                 <i class="ph-plus-circle me-1"></i>
                 Buat Anggaran
@@ -40,11 +44,118 @@
     </div>
 </div>
 
+<div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Atur Bagan Akun</h5>
+                <button type="button" class="btn btn-light btn-sm" data-bs-dismiss="modal">
+                    <i class="ph-x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger d-none" id="validation-element">
+                    <ul class="mb-0" id="validation-data"></ul>
+                </div>
+                <form id="form-data">
+                    <table class="table table-bordered table-hover">
+                        @foreach($chartOfAccount as $coa)
+                            @if($coa->sub->count() > 0)
+                                <tr>
+                                    <td>{{ $coa->name }}</td>
+                                    <td class="fw-bold" width="5%">Parent</td>
+                                </tr>
+
+                                @include('finance.budget-recursive', ['sub' => $coa->sub, 'left' => 20])
+                            @else
+                                <tr>
+                                    <td>{{ $coa->name }}</td>
+                                    <td width="5%">
+                                        <div class="form-check form-switch justify-content-center">
+                                            <input type="checkbox" class="form-check-input form-check-input-success" name="budgetable[]" value="{{ $coa->id }}" {{ $coa->budgetable ? 'checked' : '' }}>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-end">
+                <button class="btn btn-warning" onclick="settingChartOfAccount()">
+                    <i class="ph-floppy-disk me-1"></i>
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(function() {
         loadData();
         sidebarMini();
     });
+
+    function settingChartOfAccount() {
+        $.ajax({
+            url: '{{ url("finance/budget/setting-chart-of-account") }}',
+            type: 'POST',
+            dataType: 'JSON',
+            data: $('#form-data').serialize(),
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            beforeSend: function() {
+                onLoading('show', '.modal-content');
+            },
+            success: function(response) {
+                onLoading('close', '.modal-content');
+
+                if(response.code == 200) {
+                    let timerInterval;
+                    swalInit.fire({
+                        title: 'Berhasil',
+                        html: response.message + ', halaman akan disegarkan dalam waktu <b></b> detik',
+                        icon: 'success',
+                        timer: 2000,
+                        timerProgressBar: true,
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+
+                            const b = Swal.getHtmlContainer().querySelector('b');
+                            timerInterval = setInterval(() => {
+                                var seconds = Math.floor((Swal.getTimerLeft() / 1000) % 60);
+                                b.textContent = seconds;
+                            }, 100);
+                        },
+                        willClose: () => {
+                            clearInterval(timerInterval);
+                        }
+                    }).then((result) => {
+                        window.location.replace('{{ url("finance/budget") }}');
+                    });
+                } else {
+                    swalInit.fire({
+                        title: 'Error',
+                        text: response.message,
+                        icon: 'error',
+                        showCloseButton: true
+                    });
+                }
+            },
+            error: function(response) {
+                onLoading('close', '.modal-content');
+
+                swalInit.fire({
+                    html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
+                    icon: 'error',
+                    showCloseButton: true
+                });
+            }
+        });
+    }
 
     function onReloadTable() {
         window.gDataTable.ajax.reload(null, false);
