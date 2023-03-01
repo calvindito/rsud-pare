@@ -564,6 +564,10 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::prefix('bill')->namespace('Bill')->group(function () {
+            Route::prefix('whole')->group(function () {
+                Route::match(['get', 'post'], '/', 'WholeController@index');
+            });
+
             Route::prefix('outpatient')->group(function () {
                 Route::get('/', 'OutpatientController@index');
                 Route::get('datatable', 'OutpatientController@datatable');

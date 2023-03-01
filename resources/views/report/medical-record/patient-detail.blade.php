@@ -1036,7 +1036,7 @@
                                         <th>Ref</th>
                                         <th>Apotek</th>
                                         <th>Tanggal</th>
-                                        <th class="text-center">Status</th>
+                                        <th>Status</th>
                                         <th class="text-center"><i class="ph-gear"></i></th>
                                     </tr>
                                 </thead>

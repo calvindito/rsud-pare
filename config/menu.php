@@ -527,6 +527,13 @@ return [
         'link' => 'javascript:void(0);',
         'sub' => [
             [
+                'name' => 'whole',
+                'menu' => 'Keseluruhan',
+                'icon' => null,
+                'link' => 'bill/whole',
+                'sub' => null
+            ],
+            [
                 'name' => 'outpatient',
                 'menu' => 'Rawat Jalan',
                 'icon' => null,
