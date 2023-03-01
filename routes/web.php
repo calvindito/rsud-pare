@@ -727,6 +727,11 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::prefix('setting')->namespace('Setting')->group(function () {
+            Route::prefix('chart-of-account')->group(function () {
+                Route::get('/', 'ChartOfAccountController@index');
+                Route::post('update', 'ChartOfAccountController@update');
+            });
+
             Route::prefix('role')->group(function () {
                 Route::get('/', 'RoleController@index');
                 Route::get('datatable', 'RoleController@datatable');

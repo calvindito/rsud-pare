@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Bill;
 
 use App\Helpers\Simrs;
+use App\Models\Setting;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\RadiologyRequest;
@@ -80,6 +82,13 @@ class RadiologyController extends Controller
         if ($request->ajax()) {
             try {
                 $radiologyRequest->update(['paid' => true]);
+
+                Transaction::create([
+                    'chart_of_account_id' => Setting::firstWhere('slug', 'coa-bill')->settingable_id ?? null,
+                    'transactionable_type' => RadiologyRequest::class,
+                    'transactionable_id' => $radiologyRequest->id,
+                    'nominal' => $radiologyRequest->total()
+                ]);
 
                 $response = [
                     'code' => 200,

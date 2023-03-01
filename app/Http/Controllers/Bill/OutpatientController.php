@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Bill;
 
 use App\Helpers\Simrs;
+use App\Models\Setting;
 use App\Models\Outpatient;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
@@ -91,6 +93,13 @@ class OutpatientController extends Controller
                 }
 
                 $outpatient->update(['paid' => true]);
+
+                Transaction::create([
+                    'chart_of_account_id' => Setting::firstWhere('slug', 'coa-bill')->settingable_id ?? null,
+                    'transactionable_type' => Outpatient::class,
+                    'transactionable_id' => $outpatient->id,
+                    'nominal' => $outpatient->totalAction()
+                ]);
 
                 $response = [
                     'code' => 200,

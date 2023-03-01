@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Bill;
 
 use App\Helpers\Simrs;
 use App\Models\Doctor;
+use App\Models\Setting;
 use App\Models\Operation;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
@@ -85,6 +87,13 @@ class OperationController extends Controller
         if ($request->ajax()) {
             try {
                 $operation->update(['paid' => true]);
+
+                Transaction::create([
+                    'chart_of_account_id' => Setting::firstWhere('slug', 'coa-bill')->settingable_id ?? null,
+                    'transactionable_type' => Operation::class,
+                    'transactionable_id' => $operation->id,
+                    'nominal' => $operation->total(false)
+                ]);
 
                 $response = [
                     'code' => 200,

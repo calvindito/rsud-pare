@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Bill;
 
 use App\Helpers\Simrs;
+use App\Models\Setting;
 use App\Models\LabRequest;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\LabItemCondition;
@@ -81,6 +83,13 @@ class LabController extends Controller
         if ($request->ajax()) {
             try {
                 $labRequest->update(['paid' => true]);
+
+                Transaction::create([
+                    'chart_of_account_id' => Setting::firstWhere('slug', 'coa-bill')->settingable_id ?? null,
+                    'transactionable_type' => LabRequest::class,
+                    'transactionable_id' => $labRequest->id,
+                    'nominal' => $labRequest->total()
+                ]);
 
                 $response = [
                     'code' => 200,

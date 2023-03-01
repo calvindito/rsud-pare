@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Bill;
 
 use App\Helpers\Simrs;
 use App\Models\Doctor;
+use App\Models\Setting;
 use App\Models\Inpatient;
 use App\Models\ActionOther;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\MedicalService;
 use App\Models\ActionOperative;
@@ -92,6 +94,13 @@ class InpatientController extends Controller
         if ($request->ajax()) {
             try {
                 $inpatient->update(['paid' => true]);
+
+                Transaction::create([
+                    'chart_of_account_id' => Setting::firstWhere('slug', 'coa-bill')->settingable_id ?? null,
+                    'transactionable_type' => Inpatient::class,
+                    'transactionable_id' => $inpatient->id,
+                    'nominal' => $inpatient->totalAction()
+                ]);
 
                 $response = [
                     'code' => 200,

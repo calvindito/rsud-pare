@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Bill;
 
 use App\Helpers\Simrs;
+use App\Models\Setting;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\DispensaryRequest;
@@ -110,6 +112,24 @@ class MedicineAndToolController extends Controller
                     ->where('dispensary_requestable_id', $dispensaryRequest->dispensary_requestable_id)
                     ->where('dispensary_id', $dispensaryRequest->dispensary_id)
                     ->update(['paid' => true]);
+
+                foreach ($dispensaryRequestItem as $dri) {
+                    $price = $dri->price_sell;
+                    $discount = $dri->discount;
+                    $qty = $dri->qty;
+                    $nett = $price * $qty;
+
+                    if ($discount > 0) {
+                        $nett = ($price - (($discount / 100) * $price)) * $qty;
+                    }
+
+                    Transaction::create([
+                        'chart_of_acccount_id' => Setting::firstWhere('slug', 'coa-bill')->settingable_id ?? null,
+                        'transactionable_type' => DispensaryRequest::class,
+                        'transactionable_id' => $dri->id,
+                        'nominal' => $nett
+                    ]);
+                }
 
                 $response = [
                     'code' => 200,

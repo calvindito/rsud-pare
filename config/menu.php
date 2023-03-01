@@ -723,6 +723,13 @@ return [
         'link' => 'javascript:void(0);',
         'sub' => [
             [
+                'name' => 'chart-of-account',
+                'menu' => 'Bagan Akun',
+                'icon' => null,
+                'link' => 'setting/chart-of-account',
+                'sub' => null
+            ],
+            [
                 'name' => 'role',
                 'menu' => 'Hak Akses',
                 'icon' => null,

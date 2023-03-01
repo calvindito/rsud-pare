@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Bill;
 
 use App\Helpers\Simrs;
 use App\Models\Doctor;
+use App\Models\Setting;
 use App\Models\ActionOther;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\MedicalService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -89,6 +91,13 @@ class EmergencyDepartmentController extends Controller
         if ($request->ajax()) {
             try {
                 $emergencyDepartment->update(['paid' => true]);
+
+                Transaction::create([
+                    'chart_of_account_id' => Setting::firstWhere('slug', 'coa-bill')->settingable_id ?? null,
+                    'transactionable_type' => EmergencyDepartment::class,
+                    'transactionable_id' => $emergencyDepartment->id,
+                    'nominal' => $emergencyDepartment->totalAction()
+                ]);
 
                 $response = [
                     'code' => 200,
