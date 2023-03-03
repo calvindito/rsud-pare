@@ -32,6 +32,39 @@ class Budget extends Model
     protected $guarded = ['id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['status_format_result'];
+
+    /**
+     * getStatusFormatResultAttribute
+     *
+     * @return void
+     */
+    protected function getStatusFormatResultAttribute()
+    {
+        $status = isset($this->attributes['status']) ? $this->attributes['status'] : null;
+
+        if ($status == 1) {
+            $text = 'Draft';
+        } else if ($status == 2) {
+            $text = 'Diajukan';
+        } else if ($status == 3) {
+            $text = 'Revisi';
+        } else if ($status == 4) {
+            $text = 'Disetujui';
+        } else if ($status == 5) {
+            $text = 'Ditolak';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
+
+    /**
      * code
      *
      * @return void
@@ -63,9 +96,9 @@ class Budget extends Model
         if ($status == 1) {
             $html = '<span class="badge bg-secondary">Draft</span>';
         } else if ($status == 2) {
-            $html = '<span class="badge bg-primary">Sedang Diajukan</span>';
+            $html = '<span class="badge bg-primary">Diajukan</span>';
         } else if ($status == 3) {
-            $html = '<span class="badge bg-warning">Direvisi</span>';
+            $html = '<span class="badge bg-warning">Revisi</span>';
         } else if ($status == 4) {
             $html = '<span class="badge bg-success">Disetujui</span>';
         } else if ($status == 5) {
@@ -85,5 +118,15 @@ class Budget extends Model
     public function budgetDetail()
     {
         return $this->hasMany(BudgetDetail::class);
+    }
+
+    /**
+     * budgetHistory
+     *
+     * @return void
+     */
+    public function budgetHistory()
+    {
+        return $this->hasMany(BudgetHistory::class);
     }
 }

@@ -670,6 +670,13 @@ return [
                 'sub' => null
             ],
             [
+                'name' => 'submission',
+                'menu' => 'Pengajuan',
+                'icon' => null,
+                'link' => 'finance/submission',
+                'sub' => null
+            ],
+            [
                 'name' => 'cash-bank',
                 'menu' => 'Kas & Bank',
                 'icon' => null,

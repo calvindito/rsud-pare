@@ -700,6 +700,12 @@ Route::middleware('auth')->group(function () {
                 Route::delete('destroy-data', 'BudgetController@destroyData');
             });
 
+            Route::prefix('submission')->group(function () {
+                Route::get('/', 'SubmissionController@index');
+                Route::get('datatable', 'SubmissionController@datatable');
+                Route::match(['get', 'post'], 'detail/{id}', 'SubmissionController@detail');
+            });
+
             Route::prefix('cash-bank')->group(function () {
                 Route::get('/', 'CashBankController@index');
                 Route::get('datatable', 'CashBankController@datatable');

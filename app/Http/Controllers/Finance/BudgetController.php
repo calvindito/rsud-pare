@@ -152,6 +152,13 @@ class BudgetController extends Controller
                             'status' => $request->status
                         ]);
 
+                        if ($createData->status == 2) {
+                            $createData->budgetHistory()->create([
+                                'user_id' => auth()->id(),
+                                'status' => $createData->status_format_result
+                            ]);
+                        }
+
                         if ($request->has('bd_chart_of_account_id')) {
                             foreach ($request->bd_chart_of_account_id as $key => $coai) {
                                 $nominal = isset($request->bd_nominal[$key]) ? $request->bd_nominal[$key] : null;
@@ -218,7 +225,15 @@ class BudgetController extends Controller
                             'status' => $request->status
                         ]);
 
+                        $budget->refresh();
                         $budget->budgetDetail()->delete();
+
+                        if ($budget->status == 2) {
+                            $budget->budgetHistory()->create([
+                                'user_id' => auth()->id(),
+                                'status' => $budget->status_format_result
+                            ]);
+                        }
 
                         if ($request->has('bd_chart_of_account_id')) {
                             foreach ($request->bd_chart_of_account_id as $key => $coai) {

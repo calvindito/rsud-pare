@@ -19,67 +19,109 @@
     <form id="form-data">
         <div class="card">
             <div class="card-body">
-                <div class="form-group row">
-                    <label class="col-form-label col-lg-1">Tanggal <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-11">
-                        <input type="date" class="form-control" name="date" id="date" value="{{ $budget->date }}" disabled>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-lg-1">Status <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-11">
-                        <select class="form-select" name="status" id="status" disabled>
-                            <option value="">-- Pilih --</option>
-                            <option value="1" {{ $budget->status == 1 || $budget->status == 3 ? 'selected' : '' }}>Draft</option>
-                            <option value="2" {{ $budget->status == 2 ? 'selected' : '' }}>Ajukan Sekarang</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-lg-1">Keterangan <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-11">
-                        <textarea class="form-control" name="description" id="description" style="resize:none;" placeholder="Masukan keterangan" disabled>{{ $budget->description }}</textarea>
-                    </div>
-                </div>
-                @if($budget->status == 3)
-                    <div class="alert alert-warning">
-                        Anggaran anda sementara belum bisa disetujui dan ada beberapa hal yang harus anda perbaiki, mohon untuk merevisi data anggaran anda
-                    </div>
-                @endif
-                <div class="form-group"><hr></div>
-                <table class="table table-bordered table-hover">
-                    <thead class="bg-light">
-                        <tr>
-                            <th>Bagan Akun</th>
-                            <th>Nominal</th>
-                            <th>Limit BLUD</th>
-                        </tr>
-                    </thead>
+                <table class="table table-bordered">
                     <tbody>
-                        @foreach($chartOfAccount as $coa)
-                            <tr>
-                                <input type="hidden" name="bd_chart_of_account_id[]" value="{{ $coa->id }}">
-                                <td>{{ $coa->fullname }}</td>
-                                <td>
-                                    <input type="text" class="form-control number-format" name="bd_nominal[]" value="{{ $budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->nominal ?? '' }}" placeholder="0" disabled>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control number-format" name="bd_limit_blud[]"value="{{ $budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->limit_blud ?? '' }}" placeholder="0" disabled>
-                                </td>
-                            </tr>
-                        @endforeach
+                        <tr>
+                            <th width="15%">Tanggal Dibuat</th>
+                            <th width="1%" class="text-center">:</th>
+                            <td>{{ $budget->created_at->format('Y-m-d') }}</td>
+                        </tr>
+                        <tr>
+                            <th width="15%">Tanggal Anggaran</th>
+                            <th width="1%" class="text-center">:</th>
+                            <td>{{ $budget->date }}</td>
+                        </tr>
+                        <tr>
+                            <th width="15%">Status</th>
+                            <th width="1%" class="text-center">:</th>
+                            <td>{!! $budget->status() !!}</td>
+                        </tr>
+                        <tr>
+                            <th width="15%">Keterangan</th>
+                            <th width="1%" class="text-center">:</th>
+                            <td>{{ $budget->description }}</td>
+                        </tr>
                     </tbody>
                 </table>
+                <div class="form-group"><hr></div>
+                <ul class="nav nav-tabs nav-tabs-solid nav-justified mb-3">
+                    <li class="nav-item">
+                        <a href="#tabs-1" class="nav-link active" data-bs-toggle="tab">Form</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#tabs-2" class="nav-link" data-bs-toggle="tab">Histori</a>
+                    </li>
+                </ul>
+                <div class="tab-content flex-lg-fill">
+                    <div class="tab-pane fade show active" id="tabs-1">
+                        <table class="table table-bordered table-hover">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Bagan Akun</th>
+                                    <th>Nominal</th>
+                                    <th>Limit BLUD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($chartOfAccount as $coa)
+                                    <tr>
+                                        <td>{{ $coa->fullname }}</td>
+                                        <td>
+                                            {{ Simrs::formatRupiah($budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->nominal ?? 0) }}
+                                        </td>
+                                        <td>
+                                            {{ Simrs::formatRupiah($budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->limit_blud ?? 0) }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="tabs-2">
+                        <table class="table table-bordered">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th>User</th>
+                                    <th>Status</th>
+                                    <th>Keterangan</th>
+                                    <th>Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($budget->budgetHistory->count() > 0)
+                                    @foreach($budget->budgetHistory as $key => $bh)
+                                        <tr>
+                                            <td class="text-center">{{ $key + 1 }}</td>
+                                            <td>{{ $bh->user->employee->name }}</td>
+                                            <td>{{ $bh->status }}</td>
+                                            <td>{{ $bh->reason }}</td>
+                                            <td>{{ $bh->created_at }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="4" class="text-center">Tidak ada histori</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card">
             <div class="card-body">
                 @if($budget->status == 2)
-                    <div class="alert alert-primary text-center mb-0">Data anda sedang diajukan, dimohon menunggu data anggaran yang anda kirim akan segera diproses</div>
+                    <div class="alert alert-primary text-center mb-0">Data anda sedang diajukan, dimohon menunggu, data anggaran yang anda ajukan akan segera diproses</div>
                 @elseif($budget->status == 4)
                     <div class="alert alert-success text-center mb-0">Selamat, anggaran anda telah disetujui</div>
                 @elseif($budget->status == 5)
-                    <div class="alert alert-danger text-center mb-0">Mohon maaf sekali, anggaran yang anda ajukan telah ditolak</div>
+                    <div class="alert alert-danger text-center mb-0">
+                        Mohon maaf sekali, anggaran yang anda ajukan telah ditolak
+                        <div class="form-group"><hr></div>
+                        <span class="fw-semibold">Alasan : {{ $budget->budgetHistory()->latest()->first()->reason ?? '-' }}</span>
+                    </div>
                 @else
                     <div class="alert alert-warning text-center mb-0">Invalid</div>
                 @endif
