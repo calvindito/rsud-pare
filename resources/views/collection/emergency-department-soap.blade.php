@@ -183,8 +183,8 @@
                 var valueLength = $('#nursing_care_value').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var subjective = $('#nursing_care_subjective').summernote('isEmpty');
                 var subjectiveLength = $('#nursing_care_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
-                var obejctive = $('#nursing_care_objective').summernote('isEmpty');
-                var obejctiveLength = $('#nursing_care_objective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
+                var objective = $('#nursing_care_objective').summernote('isEmpty');
+                var objectiveLength = $('#nursing_care_objective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var assessment = $('#nursing_care_assessment').summernote('isEmpty');
                 var assessmentLength = $('#nursing_care_assessment').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var planning = $('#nursing_care_planning').summernote('isEmpty');
@@ -211,8 +211,8 @@
                 }
 
                 if (currentIndex == 2) {
-                    if(obejctive || obejctiveLength < 10) {
-                        Swal.fire('Oops...', 'mohon mengisi obejctive terlebih dahulu (minimal 10 karakter)', 'info');
+                    if(objective || objectiveLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi objective terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
@@ -227,16 +227,16 @@
                 }
 
                 if (planning == 4) {
-                    if(assessment || planningLength < 10) {
+                    if(planning || planningLength < 10) {
                         Swal.fire('Oops...', 'mohon mengisi planning terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
                 }
 
-                var status = '{{ $emergencyDepartment->status }}';
+                var status = '{{ $outpatient->status }}';
 
-                if(status != 1) {
+                if(status == 4) {
                     $('#form-data a[href="#finish"]').hide();
                 }
 
@@ -264,12 +264,12 @@
             onStepChanging: function (event, currentIndex, newIndex) {
                 var subjective = $('#checkup_subjective').summernote('isEmpty');
                 var subjectiveLength = $('#checkup_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
-                var obejctive = $('#checkup_objective').summernote('isEmpty');
-                var subjectiveLength = $('#checkup_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
+                var objective = $('#checkup_objective').summernote('isEmpty');
+                var objectiveLength = $('#checkup_objective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var assessment = $('#checkup_assessment').summernote('isEmpty');
-                var subjectiveLength = $('#checkup_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
+                var assessmentLength = $('#checkup_assessment').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
                 var planning = $('#checkup_planning').summernote('isEmpty');
-                var subjectiveLength = $('#checkup_subjective').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
+                var planningLength = $('#checkup_planning').summernote('code').replace(/(<([^>]+)>)/ig, "").length;
 
                 if(currentIndex > newIndex) {
                     return true;
@@ -284,8 +284,8 @@
                 }
 
                 if (currentIndex == 1) {
-                    if(obejctive || obejctiveLength < 10) {
-                        Swal.fire('Oops...', 'mohon mengisi obejctive terlebih dahulu (minimal 10 karakter)', 'info');
+                    if(objective || objectiveLength < 10) {
+                        Swal.fire('Oops...', 'mohon mengisi objective terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
@@ -300,16 +300,16 @@
                 }
 
                 if (planning == 3) {
-                    if(assessment || planningLength < 10) {
+                    if(planning || planningLength < 10) {
                         Swal.fire('Oops...', 'mohon mengisi planning terlebih dahulu (minimal 10 karakter)', 'info');
 
                         return false;
                     }
                 }
 
-                var status = '{{ $emergencyDepartment->status }}';
+                var status = '{{ $outpatient->status }}';
 
-                if(status != 1) {
+                if(status == 4) {
                     $('#form-data a[href="#finish"]').hide();
                 }
 
