@@ -32,6 +32,7 @@
                         <th nowrap>No RM</th>
                         <th nowrap>Pasien</th>
                         <th nowrap>Kamar</th>
+                        <th nowrap>Tempat Tidur</th>
                         <th nowrap>Tanggal Masuk</th>
                         <th nowrap>Tanggal Keluar</th>
                         <th nowrap>Hasil</th>
@@ -87,7 +88,8 @@
                 { data: 'parentable', name: 'parent_id', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'patient_id', name: 'patient_id', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'patient_name', name: 'patient_name', orderable: false, searchable: false, className: 'align-middle' },
-                { data: 'room_type_name', name: 'room_type_name', orderable: false, searchable: false, className: 'align-middle' },
+                { data: 'room_type_name', name: 'room_type_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'bed_name', name: 'bed_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'date_of_entry', name: 'date_of_entry', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'date_of_out', name: 'date_of_out', orderable: true, searchable: false, className: 'align-middle nowrap' },
                 { data: 'ending_format_result', name: 'ending', orderable: true, searchable: false, className: 'align-middle nowrap' },

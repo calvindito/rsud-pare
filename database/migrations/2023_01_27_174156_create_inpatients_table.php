@@ -17,7 +17,7 @@ class CreateInpatientsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('patient_id')->nullable();
-            $table->unsignedBigInteger('room_type_id')->nullable();
+            $table->unsignedBigInteger('bed_id')->nullable();
             $table->unsignedBigInteger('functional_service_id')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();

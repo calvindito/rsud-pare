@@ -43,7 +43,9 @@
                         <td class="align-middle">{{ $inpatient->date_of_entry }}</td>
                         <th class="align-middle">Kamar</th>
                         <td class="align-middle" width="1%">:</td>
-                        <td class="align-middle">{{ $inpatient->roomType->name . ' | ' . $inpatient->roomType->classType->name }}</td>
+                        <td class="align-middle">
+                            {{ $inpatient->bed->roomSpace->roomType->name . ' | ' . $inpatient->bed->roomSpace->roomType->classType->name }}
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -71,7 +73,13 @@
                         <div class="form-group row">
                             <label class="col-form-label col-lg-3">Kamar Sebelumnya</label>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->roomType->name . ' | ' . $inpatient->roomType->classType->name }}">
+                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->bed->roomSpace->roomType->name . ' | ' . $inpatient->bed->roomSpace->roomType->classType->name }}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-3">Tempat Tidur Sebelumnya</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->bed->name }}">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -87,16 +95,9 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-form-label col-lg-3">Kamar Baru <span class="text-danger fw-bold">*</span></label>
+                            <label class="col-form-label col-lg-3">Kamar Tempat Tidur Baru <span class="text-danger fw-bold">*</span></label>
                             <div class="col-lg-9">
-                                <select class="form-select" name="room_type_id" id="room_type_id">
-                                    <option value="">-- Pilih --</option>
-                                    @foreach($roomType as $rt)
-                                        <option value="{{ $rt->id }}">
-                                            {{ $rt->name . ' | ' . $rt->classType->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <select class="form-select select2-form" name="bed_id" id="bed_id"></select>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -167,6 +168,11 @@
 <script>
     $(function() {
         formStatus();
+        loadBed();
+
+        $('.select2-form').select2({
+            placeholder: '-- Pilih --'
+        });
     });
 
     function formStatus() {
@@ -195,6 +201,46 @@
 
         $.each(data, function(index, value) {
             $('#validation-data').append('<li>' + value + '</li>');
+        });
+    }
+
+    function loadBed() {
+        $.ajax({
+            url: '{{ url("collection/inpatient/load-bed") }}',
+            type: 'GET',
+            dataType: 'JSON',
+            data: {
+                gender: '{{ $inpatient->patient->gender }}'
+            },
+            beforeSend: function() {
+                onLoading('show', '.content');
+                $('#bed_id').html('');
+            },
+            success: function(response) {
+                onLoading('close', '.content');
+
+                $.each(response, function(i, val) {
+                    $('#bed_id').append(`
+                        <option value="` + val.id + `">
+                            ` + val.room_space.room_type.room.name + ` |
+                            ` + val.room_space.room_type.name + ` |
+                            ` + val.room_space.room_type.class_type.name + ` |
+                            ` + val.room_space.name + ` |
+                            ` + val.name + `
+                            (` + val.type_format_result + `)
+                        </option>
+                    `);
+                });
+            },
+            error: function(response) {
+                onLoading('close', '.content');
+
+                swalInit.fire({
+                    html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
+                    icon: 'error',
+                    showCloseButton: true
+                });
+            }
         });
     }
 

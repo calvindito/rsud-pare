@@ -348,7 +348,7 @@
                                                 <td class="align-middle">{{ $i->code() }}</td>
                                                 <td class="align-middle">{{ $i->created_at->format('Y-m-d') }}</td>
                                                 <td class="align-middle">{{ $i->type_format_result }}</td>
-                                                <td class="align-middle">{{ $i->roomType->classType->name ?? '-' }}</td>
+                                                <td class="align-middle">{{ $i->bed->roomSpace->roomType->classType->name ?? '-' }}</td>
                                                 <td class="align-middle">{!! $i->status() !!}</td>
                                                 <td class="align-middle">
                                                     <div class="text-center">
@@ -375,11 +375,11 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <th class="bg-light" width="25%">Kamar</th>
-                                                                                <td>{{ $i->roomType->name ?? '-' }}</td>
+                                                                                <td>{{ $i->bed->roomSpace->roomType->name ?? '-' }}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <th class="bg-light" width="25%">Kelas</th>
-                                                                                <td>{{ $i->roomType->classType->name ?? '-' }}</td>
+                                                                                <td>{{ $i->bed->roomSpace->roomType->classType->name ?? '-' }}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <th class="bg-light" width="25%">UPF</th>

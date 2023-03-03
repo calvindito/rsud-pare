@@ -88,7 +88,7 @@ class InpatientController extends Controller
     public function detail(Request $request, $id)
     {
         $inpatient = Inpatient::findOrFail($id);
-        $roomType = $inpatient->roomType;
+        $roomType = $inpatient->bed->roomSpace->roomType;
         $classType = $roomType->classType;
 
         if ($request->ajax()) {

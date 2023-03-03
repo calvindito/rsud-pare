@@ -45,7 +45,7 @@
             <td>{{ $data->patient->name ?? '-' }}</td>
             <td style="font-weight:bold;">Kamar</td>
             <td>:</td>
-            <td>{{ $data->roomType->room->name ?? '-' }}</td>
+            <td>{{ $data->bed->roomSpace->roomType->room->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
             <td style="font-weight:bold;">No RM</td>
@@ -53,7 +53,7 @@
             <td>{{ $data->patient->id ?? '-' }}</td>
             <td style="font-weight:bold;">Kelas</td>
             <td>:</td>
-            <td>{{ $data->roomType->classType->name ?? '-' }}</td>
+            <td>{{ $data->bed->roomSpace->roomType->classType->name ?? '-' }}</td>
         </tr>
         <tr style="font-size:14px;">
             <td style="font-weight:bold;">Jenis Kelamin</td>

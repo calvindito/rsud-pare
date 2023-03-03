@@ -56,7 +56,7 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Jenis Kelamin <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="gender" id="gender">
+                        <select class="form-select" name="gender" id="gender" onchange="loadBed()">
                             <option value="">-- Pilih --</option>
                             <option value="1">Laki - Laki</option>
                             <option value="2">Perempuan</option>
@@ -124,26 +124,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-3">Kamar <span class="text-danger fw-bold">*</span></label>
+                    <label class="col-form-label col-lg-3">Kamar Tempat Tidur <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="room_type_id" id="room_type_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach($roomType as $rt)
-                                <option value="{{ $rt->id }}">
-                                    {{ $rt->name }}
-
-                                    @if($rt->classType)
-                                        - {{ $rt->classType->name }}
-                                    @endif
-                                </option>
-                            @endforeach
-                        </select>
+                        <select class="form-select select2-form" name="bed_id" id="bed_id"></select>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">UPF <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="functional_service_id" id="functional_service_id">
+                        <select class="form-select select2-form" name="functional_service_id" id="functional_service_id">
                             <option value="">-- Pilih --</option>
                             @foreach($functionalService as $fs)
                                 <option value="{{ $fs->id }}">
@@ -156,7 +145,7 @@
                 <div class="form-group row">
                     <label class="col-form-label col-lg-3">Dokter <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
-                        <select class="form-select" name="doctor_id" id="doctor_id">
+                        <select class="form-select select2-form" name="doctor_id" id="doctor_id">
                             <option value="">-- Pilih --</option>
                             @foreach($doctor as $d)
                                 <option value="{{ $d->id }}">
@@ -196,7 +185,12 @@
 
 <script>
     $(function() {
+        $('.select2-form').select2({
+            placeholder: '-- Pilih --'
+        });
+
         select2Ajax('#patient_id', 'patient', false);
+        loadBed();
     });
 
     function clearValidation() {
@@ -217,11 +211,52 @@
         $('#table-history-inpatient tbody').html('');
     }
 
+    function loadBed() {
+        $.ajax({
+            url: '{{ url("collection/inpatient/load-bed") }}',
+            type: 'GET',
+            dataType: 'JSON',
+            data: {
+                gender: $('#gender').val()
+            },
+            beforeSend: function() {
+                onLoading('show', '.content');
+                $('#bed_id').html('');
+            },
+            success: function(response) {
+                onLoading('close', '.content');
+
+                $.each(response, function(i, val) {
+                    $('#bed_id').append(`
+                        <option value="` + val.id + `">
+                            ` + val.room_space.room_type.room.name + ` |
+                            ` + val.room_space.room_type.name + ` |
+                            ` + val.room_space.room_type.class_type.name + ` |
+                            ` + val.room_space.name + ` |
+                            ` + val.name + `
+                            (` + val.type_format_result + `)
+                        </option>
+                    `);
+                });
+            },
+            error: function(response) {
+                onLoading('close', '.content');
+
+                swalInit.fire({
+                    html: '<b>' + response.responseJSON.exception + '</b><br>' + response.responseJSON.message,
+                    icon: 'error',
+                    showCloseButton: true
+                });
+            }
+        });
+    }
+
     function loadPatient() {
         $.ajax({
             url: '{{ url("collection/inpatient/load-patient") }}',
             type: 'GET',
             dataType: 'JSON',
+            async: false,
             data: {
                 id: $('#patient_id').val()
             },
@@ -245,11 +280,13 @@
                         <tr>
                             <td nowrap>` + val.date_of_entry + `</td>
                             <td nowrap>` + val.type_format_result + `</td>
-                            <td nowrap>` + val.room_type.name + ` - ` + val.room_type.class_type.name + `</td>
+                            <td nowrap>` + val.bed.room_space.room_type.name + ` - ` + val.bed.room_space.room_type.class_type.name + `</td>
                             <td nowrap>` + val.functional_service.name + `</td>
                         </tr>
                     `);
                 });
+
+                loadBed();
             },
             error: function(response) {
                 onLoading('close', '.content');

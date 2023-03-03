@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Collection;
 
+use App\Models\Bed;
 use App\Models\Unit;
 use App\Helpers\Simrs;
 use App\Models\Doctor;
@@ -9,7 +10,6 @@ use App\Models\LabItem;
 use App\Models\Patient;
 use App\Models\Employee;
 use App\Models\Religion;
-use App\Models\RoomType;
 use App\Models\Inpatient;
 use App\Models\Operation;
 use App\Models\Radiology;
@@ -59,8 +59,13 @@ class InpatientController extends Controller
                             $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
                                 ->orWhere('name', 'like', "%$search%");
                         })
-                        ->orWhereHas('roomType', function ($query) use ($search) {
-                            $query->where('name', 'like', "%$search%");
+                        ->orWhereHas('bed', function ($query) use ($search) {
+                            $query->where('name', 'like', "%%$search%")
+                                ->orWhereHas('roomSpace', function ($query) use ($search) {
+                                    $query->whereHas('roomType', function ($query) use ($search) {
+                                        $query->where('name', 'like', "%$search%");
+                                    });
+                                });
                         });
                 }
             })
@@ -100,11 +105,24 @@ class InpatientController extends Controller
             ->addColumn('room_type_name', function (Inpatient $query) {
                 $roomTypeName = null;
 
-                if (isset($query->roomType)) {
-                    $roomTypeName = $query->roomType->name . ' | ' . $query->roomType->classType->name;
+                if (isset($query->bed)) {
+                    if (isset($query->bed->roomSpace)) {
+                        if (isset($query->bed->roomSpace->roomType)) {
+                            $roomTypeName = $query->bed->roomSpace->roomType->name . ' | ' . $query->bed->roomSpace->roomType->classType->name;
+                        }
+                    }
                 }
 
                 return $roomTypeName;
+            })
+            ->addColumn('bed_name', function (Inpatient $query) {
+                $bedName = null;
+
+                if (isset($query->bed)) {
+                    $bedName = $query->bed->name;
+                }
+
+                return $bedName;
             })
             ->addColumn('action', function (Inpatient $query) {
                 $fullAction = '';
@@ -193,10 +211,32 @@ class InpatientController extends Controller
     {
         $id = $request->id;
         $data = Patient::with([
-            'inpatient' => fn ($q) => $q->with(['roomType.classType', 'functionalService'])
+            'inpatient' => fn ($q) => $q->with(['bed.roomSpace.roomType.classType', 'functionalService'])
         ])->whereNotNull('verified_at')->findOrFail($id);
 
         return response()->json($data);
+    }
+
+    public function loadBed(Request $request)
+    {
+        $gender = $request->gender;
+        $response = [];
+
+        if ($gender) {
+            $response = Bed::with(['roomSpace.roomType' => fn ($q) => $q->with(['room', 'classType'])])
+                ->whereIn('type', [$gender, 3, 4])
+                ->whereHas('roomSpace', function ($query) {
+                    $query->whereHas('roomType', function ($query) {
+                        $query->whereHas('room', function ($query) {
+                            $query->where('code', '!=', 'IGD');
+                        });
+                    });
+                })
+                ->orderBy('name')
+                ->get();
+        }
+
+        return response()->json($response);
     }
 
     public function registerPatient(Request $request)
@@ -204,19 +244,17 @@ class InpatientController extends Controller
         if ($request->ajax()) {
             $patientId = $request->patient_id;
             $validation = Validator::make($request->all(), [
-                'patient_id' => 'required',
                 'identity_number' => 'nullable|digits:16|numeric|unique:patients,identity_number,' . $patientId,
                 'name' => 'required',
                 'gender' => 'required',
                 'religion_id' => 'required',
                 'type' => 'required',
                 'date_of_entry' => 'required',
-                'room_type_id' => 'required',
+                'bed_id' => 'required',
                 'functional_service_id' => 'required',
                 'doctor_id' => 'required',
                 'dispensary_id' => 'required'
             ], [
-                'patient_id' => 'mohon memilih pasien',
                 'identity_number.digits' => 'no identitas harus 16 karakter',
                 'identity_number.numeric' => 'no identitas harus angka',
                 'identity_number.unique' => 'no identitas telah digunakan',
@@ -225,7 +263,7 @@ class InpatientController extends Controller
                 'religion_id.required' => 'mohon memilih agama',
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
-                'room_type_id.required' => 'mohon memilih kamar',
+                'bed_id.required' => 'mohon memilih kamar tempat tidur',
                 'functional_service_id.required' => 'mohon memilih upf',
                 'doctor_id.required' => 'mohon memilih dokter',
                 'dispensary_id.required' => 'mohon memilih apotek'
@@ -265,7 +303,7 @@ class InpatientController extends Controller
                         Inpatient::create([
                             'user_id' => $userId,
                             'patient_id' => $patientId,
-                            'room_type_id' => $request->room_type_id,
+                            'bed_id' => $request->bed_id,
                             'functional_service_id' => $request->functional_service_id,
                             'doctor_id' => $request->doctor_id,
                             'dispensary_id' => $request->dispensary_id,
@@ -290,7 +328,6 @@ class InpatientController extends Controller
         }
 
         $data = [
-            'roomType' => RoomType::where('status', true)->orderBy('name')->get(),
             'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
             'doctor' => Doctor::all(),
@@ -304,7 +341,7 @@ class InpatientController extends Controller
     public function action(Request $request, $id)
     {
         $inpatient = Inpatient::findOrFail($id);
-        $roomType = $inpatient->roomType;
+        $roomType = $inpatient->bed->roomSpace->roomType;
         $classType = $roomType->classType;
 
         if ($request->ajax()) {
@@ -802,7 +839,7 @@ class InpatientController extends Controller
         }
 
         $radiology = Radiology::whereHas('radiologyAction', function ($query) use ($inpatient) {
-            $query->where('class_type_id', $inpatient->roomType->class_type_id);
+            $query->where('class_type_id', $inpatient->bed->roomSpace->roomType->class_type_id);
         })->orderBy('type')->get();
 
         $data = [
@@ -949,7 +986,7 @@ class InpatientController extends Controller
 
             return response()->json($response);
         } else {
-            $operatingRoomAction = OperatingRoomAction::where('class_type_id', $inpatient->roomType->class_type_id)
+            $operatingRoomAction = OperatingRoomAction::where('class_type_id', $inpatient->bed->roomSpace->roomType->class_type_id)
                 ->where('status', true)
                 ->orderBy('operating_room_group_id')
                 ->orderBy('operating_room_action_type_id')
@@ -1017,12 +1054,12 @@ class InpatientController extends Controller
             if ($status == 2) {
                 $ruleMessage = [
                     'rule' => [
-                        'room_type_id' => 'required',
+                        'bed_id' => 'required',
                         'type' => 'required',
                         'functional_service_id' => 'required',
                     ],
                     'message' => [
-                        'room_type_id.required' => 'mohon memilih kelas kamar baru',
+                        'bed_id.required' => 'mohon memilih kamar tempat tidur',
                         'type.required' => 'mohon memilih golongan baru',
                         'functional_service_id.required' => 'mohon memilih upf baru'
                     ]
@@ -1053,7 +1090,7 @@ class InpatientController extends Controller
                         Inpatient::create([
                             'user_id' => auth()->id(),
                             'patient_id' => $inpatient->patient_id,
-                            'room_type_id' => $request->room_type_id,
+                            'bed_id' => $request->bed_id,
                             'functional_service_id' => $request->functional_service_id,
                             'parent_id' => $inpatient->id,
                             'type' => $request->type,
@@ -1092,7 +1129,6 @@ class InpatientController extends Controller
         $data = [
             'inpatient' => $inpatient,
             'patient' => $inpatient->patient,
-            'roomType' => RoomType::where('status', true)->orderBy('class_type_id')->get(),
             'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'content' => 'collection.inpatient-checkout'
         ];
@@ -1113,7 +1149,6 @@ class InpatientController extends Controller
                 'religion_id' => 'required',
                 'type' => 'required',
                 'date_of_entry' => 'required',
-                'room_type_id' => 'required',
                 'functional_service_id' => 'required',
                 'doctor_id' => 'required',
                 'dispensary_id' => 'required'
@@ -1126,7 +1161,6 @@ class InpatientController extends Controller
                 'religion_id.required' => 'mohon memilih agama',
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
-                'room_type_id.required' => 'mohon memilih kamar',
                 'functional_service_id.required' => 'mohon memilih upf',
                 'doctor_id.required' => 'mohon memilih dokter',
                 'dispensary_id.required' => 'mohon memilih apotek'
@@ -1151,7 +1185,6 @@ class InpatientController extends Controller
 
                         $inpatient->update([
                             'user_id' => auth()->id(),
-                            'room_type_id' => $request->room_type_id,
                             'functional_service_id' => $request->functional_service_id,
                             'doctor_id' => $request->doctor_id,
                             'dispensary_id' => $request->dispensary_id,
@@ -1178,7 +1211,6 @@ class InpatientController extends Controller
         $data = [
             'inpatient' => $inpatient,
             'patient' => $patient,
-            'roomType' => RoomType::where('status', true)->orderBy('name')->get(),
             'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
             'doctor' => Doctor::all(),

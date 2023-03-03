@@ -113,23 +113,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-3">Kamar <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-9">
-                        <select class="form-select" name="room_type_id" id="room_type_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach($roomType as $rt)
-                                <option value="{{ $rt->id }}" {{ $inpatient->room_type_id == $rt->id ? 'selected' : '' }}>
-                                    {{ $rt->name }}
-
-                                    @if($rt->classType)
-                                        - {{ $rt->classType->name }}
-                                    @endif
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label class="col-form-label col-lg-3">UPF <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
                         <select class="form-select" name="functional_service_id" id="functional_service_id">

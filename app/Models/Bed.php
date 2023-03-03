@@ -71,4 +71,14 @@ class Bed extends Model
     {
         return $this->belongsTo(RoomSpace::class);
     }
+
+    /**
+     * inpatient
+     *
+     * @return void
+     */
+    public function inpatient()
+    {
+        return $this->hasMany(Inpatient::class);
+    }
 }

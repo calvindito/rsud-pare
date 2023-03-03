@@ -137,13 +137,13 @@ class Inpatient extends Model
     }
 
     /**
-     * roomType
+     * bed
      *
      * @return void
      */
-    public function roomType()
+    public function bed()
     {
-        return $this->belongsTo(RoomType::class);
+        return $this->belongsTo(Bed::class);
     }
 
     /**

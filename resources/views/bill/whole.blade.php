@@ -321,7 +321,7 @@
                                                     <td class="align-middle">{{ $i->code() }}</td>
                                                     <td class="align-middle">{{ $i->created_at->format('Y-m-d') }}</td>
                                                     <td class="align-middle">{{ $i->type_format_result }}</td>
-                                                    <td class="align-middle">{{ $i->roomType->classType->name ?? '-' }}</td>
+                                                    <td class="align-middle">{{ $i->bed->roomSpace->roomType->classType->name ?? '-' }}</td>
                                                     <td class="align-middle">{{ Simrs::formatRupiah($i->totalAction()) }}</td>
                                                     <td class="align-middle">
                                                         <div class="text-center">

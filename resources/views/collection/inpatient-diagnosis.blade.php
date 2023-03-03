@@ -43,7 +43,9 @@
                         <td class="align-middle">{{ $inpatient->date_of_entry }}</td>
                         <th class="align-middle">Kamar</th>
                         <td class="align-middle" width="1%">:</td>
-                        <td class="align-middle">{{ $inpatient->roomType->name . ' | ' . $inpatient->roomType->classType->name }}</td>
+                        <td class="align-middle">
+                            {{ $inpatient->bed->roomSpace->roomType->name . ' | ' . $inpatient->bed->roomSpace->roomType->classType->name }}
+                        </td>
                     </tr>
                 </tbody>
             </table>

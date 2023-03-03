@@ -38,10 +38,10 @@
                     <tr>
                         <th class="align-middle">Kamar</th>
                         <th class="align-middle" width="1%">:</th>
-                        <td class="align-middle" width="30%">{{ $inpatient->roomType->name }}</td>
+                        <td class="align-middle" width="30%">{{ $inpatient->bed->roomSpace->roomType->name }}</td>
                         <th class="align-middle">Kelas</th>
                         <th class="align-middle" width="1%">:</th>
-                        <td class="align-middle" width="30%">{{ $inpatient->roomType->classType->name ?? '-' }}</td>
+                        <td class="align-middle" width="30%">{{ $inpatient->bed->roomSpace->roomType->classType->name ?? '-' }}</td>
                     </tr>
                     <tr>
                         <th class="align-middle">Alamat</th>
@@ -234,7 +234,7 @@
                     }
                 }
 
-                var status = '{{ $outpatient->status }}';
+                var status = '{{ $inpatient->status }}';
 
                 if(status == 4) {
                     $('#form-data a[href="#finish"]').hide();
@@ -307,7 +307,7 @@
                     }
                 }
 
-                var status = '{{ $outpatient->status }}';
+                var status = '{{ $inpatient->status }}';
 
                 if(status == 4) {
                     $('#form-data a[href="#finish"]').hide();
