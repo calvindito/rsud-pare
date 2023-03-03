@@ -98,6 +98,13 @@ return [
                         'link' => 'master-data/general/unit',
                         'sub' => null
                     ],
+                    [
+                        'name' => 'installation',
+                        'menu' => 'Instalasi',
+                        'icon' => null,
+                        'link' => 'master-data/general/installation',
+                        'sub' => null
+                    ],
                 ]
             ],
             [

@@ -15,6 +15,7 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('installation_id')->nullable();
             $table->unsignedBigInteger('distributor_id')->nullable();
             $table->unsignedBigInteger('item_unit_id')->nullable();
             $table->string('code')->nullable();

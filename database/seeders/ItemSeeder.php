@@ -18,6 +18,7 @@ class ItemSeeder extends Seeder
         DB::connection('clone')->table('m_obat_akhp')->orderBy('kd_barang')->chunk(1000, function ($query) {
             foreach ($query as $q) {
                 $create = Item::create([
+                    'installation_id' => 1,
                     'code' => $q->kd_barang,
                     'code_t' => $q->kd_t,
                     'code_type' => $q->kd_js,

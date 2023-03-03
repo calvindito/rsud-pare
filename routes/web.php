@@ -123,6 +123,15 @@ Route::middleware('auth')->group(function () {
                     Route::post('update-data', 'UnitController@updateData');
                     Route::delete('destroy-data', 'UnitController@destroyData');
                 });
+
+                Route::prefix('installation')->group(function () {
+                    Route::get('/', 'InstallationController@index');
+                    Route::get('datatable', 'InstallationController@datatable');
+                    Route::post('create-data', 'InstallationController@createData');
+                    Route::get('show-data', 'InstallationController@showData');
+                    Route::post('update-data', 'InstallationController@updateData');
+                    Route::delete('destroy-data', 'InstallationController@destroyData');
+                });
             });
 
             Route::prefix('location')->namespace('Location')->group(function () {

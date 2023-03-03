@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Pharmacy;
 use App\Models\Item;
 use App\Models\ItemUnit;
 use App\Models\Distributor;
+use App\Models\Installation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
@@ -17,6 +18,7 @@ class ItemController extends Controller
         $data = [
             'distributor' => Distributor::all(),
             'itemUnit' => ItemUnit::all(),
+            'installation' => Installation::all(),
             'content' => 'pharmacy.item'
         ];
 
@@ -44,6 +46,15 @@ class ItemController extends Controller
                 $html .= '<div><small><b>Tersedia : </b>' . $query->stock('available') . '</small></div>';
 
                 return '<button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$html'" . ')">Klik Disini</button>';
+            })
+            ->addColumn('installation_name', function (Item $query) {
+                $installationName = null;
+
+                if (isset($query->installation)) {
+                    $installationName = $query->installation->name;
+                }
+
+                return $installationName;
             })
             ->addColumn('item_unit_name', function (Item $query) {
                 $itemUnitName = null;
@@ -110,6 +121,7 @@ class ItemController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
+            'installation_id' => 'required',
             'distributor_id' => 'required',
             'item_unit_id' => 'required',
             'type' => 'required',
@@ -118,6 +130,7 @@ class ItemController extends Controller
             'name' => 'required',
             'name_generic' => 'required'
         ], [
+            'installation_id.required' => 'mohon memilih instalasi',
             'distributor_id.required' => 'mohon memilih distributor',
             'item_unit_id.required' => 'mohon memilih satuan',
             'type.required' => 'mohon memilih jenis',
@@ -137,6 +150,7 @@ class ItemController extends Controller
         } else {
             try {
                 $createData = Item::create([
+                    'installation_id' => $request->installation_id,
                     'distributor_id' => $request->distributor_id,
                     'item_unit_id' => $request->item_unit_id,
                     'code' => $request->code,
@@ -183,6 +197,7 @@ class ItemController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
+            'installation_id' => 'required',
             'distributor_id' => 'required',
             'item_unit_id' => 'required',
             'type' => 'required',
@@ -191,6 +206,7 @@ class ItemController extends Controller
             'name' => 'required',
             'name_generic' => 'required'
         ], [
+            'installation_id.required' => 'mohon memilih instalasi',
             'distributor_id.required' => 'mohon memilih distributor',
             'item_unit_id.required' => 'mohon memilih satuan',
             'type.required' => 'mohon memilih jenis',
@@ -210,6 +226,7 @@ class ItemController extends Controller
         } else {
             try {
                 $updateData = Item::findOrFail($id)->update([
+                    'installation_id' => $request->installation_id,
                     'distributor_id' => $request->distributor_id,
                     'item_unit_id' => $request->item_unit_id,
                     'code' => $request->code,

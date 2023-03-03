@@ -51,6 +51,8 @@ class Item extends Model
             $text = 'Obat';
         } else if ($type == 2) {
             $text = 'Alat Kesehatan';
+        } else if ($type == 3) {
+            $text = 'Lainnya';
         } else {
             $text = 'Invalid';
         }
@@ -134,5 +136,15 @@ class Item extends Model
     public function itemUnit()
     {
         return $this->belongsTo(ItemUnit::class);
+    }
+
+    /**
+     * installation
+     *
+     * @return void
+     */
+    public function installation()
+    {
+        return $this->belongsTo(Installation::class);
     }
 }
