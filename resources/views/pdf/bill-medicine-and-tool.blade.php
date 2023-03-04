@@ -61,7 +61,7 @@
             <thead style="background:#E5E7EB;">
                 <tr>
                     <th>Item</th>
-                    <th>Jumlah</th>
+                    <th>Kuantitas</th>
                     <th>Satuan</th>
                     <th>Harga</th>
                     <th>Diskon</th>

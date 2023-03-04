@@ -20,6 +20,17 @@
         <div class="card">
             <div class="card-body">
                 <div class="form-group row">
+                    <label class="col-form-label col-lg-1">Instalasi</label>
+                    <div class="col-md-11">
+                        <select class="form-select" name="installation_id" id="installation_id">
+                            <option value="">-- Pilih --</option>
+                            @foreach($installation as $i)
+                                <option value="{{ $i->id }}">{{ $i->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-form-label col-lg-1">Tanggal <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-11">
                         <input type="date" class="form-control" name="date" id="date">

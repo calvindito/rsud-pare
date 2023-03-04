@@ -709,6 +709,16 @@ Route::middleware('auth')->group(function () {
                 Route::delete('destroy-data', 'BudgetController@destroyData');
             });
 
+            Route::prefix('planning')->group(function () {
+                Route::get('/', 'PlanningController@index');
+                Route::get('datatable', 'PlanningController@datatable');
+                Route::get('load-item', 'PlanningController@loadItem');
+                Route::get('detail/{id}', 'PlanningController@detail');
+                Route::match(['get', 'post'], 'create', 'PlanningController@create');
+                Route::match(['get', 'post'], 'update/{id}', 'PlanningController@update');
+                Route::delete('destroy-data', 'PlanningController@destroyData');
+            });
+
             Route::prefix('submission')->group(function () {
                 Route::get('/', 'SubmissionController@index');
                 Route::get('datatable', 'SubmissionController@datatable');

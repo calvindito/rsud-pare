@@ -29,8 +29,8 @@
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Kelas</th>
                         <th nowrap>UPF</th>
-                        <th nowrap>Jumlah Laki - Laki</th>
-                        <th nowrap>Jumlah Perempuan</th>
+                        <th nowrap>Total Laki - Laki</th>
+                        <th nowrap>Total Perempuan</th>
                         <th nowrap>Total</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                     </tr>
@@ -78,15 +78,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Jumlah Laki - Laki</label>
+                        <label class="col-form-label col-lg-3">Total Laki - Laki</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="qty_man" id="qty_man" placeholder="Masukan jumlah laki - laki">
+                            <input type="number" class="form-control" name="qty_man" id="qty_man" placeholder="Masukan total laki - laki">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Jumlah Perempuan</label>
+                        <label class="col-form-label col-lg-3">Total Perempuan</label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="qty_woman" id="qty_woman" placeholder="Masukan jumlah perempuan">
+                            <input type="number" class="form-control" name="qty_woman" id="qty_woman" placeholder="Masukan total perempuan">
                         </div>
                     </div>
                 </form>

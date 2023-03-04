@@ -55,7 +55,7 @@ class IncomeController extends Controller
                         'data' => $data['nominal']
                     ],
                     [
-                        'name' => 'Jumlah',
+                        'name' => 'Kuantitas',
                         'type' => 'line',
                         'smooth' => true,
                         'stack' => 'Total',
@@ -109,7 +109,7 @@ class IncomeController extends Controller
                         'data' => $data['nominal']
                     ],
                     [
-                        'name' => 'Jumlah',
+                        'name' => 'Kuantitas',
                         'type' => 'line',
                         'smooth' => true,
                         'stack' => 'Total',

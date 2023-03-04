@@ -365,7 +365,7 @@
                             <th class="align-middle">Subtotal</th>
                             <td class="align-middle" id="subtotal-emergency-department"></td>
                             <th class="text-center align-middle" rowspan="2" nowrap>
-                                <h6 class="text-uppercase">Jumlah Yang Harus Dibayar</h6>
+                                <h6 class="text-uppercase">Total Yang Harus Dibayar</h6>
                                 <h3 class="fw-bold text-primary" id="grandtotal"></h3>
                                 {!! $emergencyDepartment->paid() !!}
                             </th>

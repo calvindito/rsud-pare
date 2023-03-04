@@ -212,7 +212,7 @@
                                                     <input type="hidden" name="om_qty[]" value="{{ $om->qty }}">
                                                 @endif
                                                 @if($om->dispensary_id == $operation->operationable->dispensary_id)
-                                                    <input type="number" class="form-control" name="om_qty[]" value="{{ $om->qty }}" placeholder="Jumlah" {{ $operation->status == 3 || $om->dispensary_id != $operation->operationable->dispensary_id ? 'disabled' : '' }}>
+                                                    <input type="number" class="form-control" name="om_qty[]" value="{{ $om->qty }}" placeholder="Kuantitas" {{ $operation->status == 3 || $om->dispensary_id != $operation->operationable->dispensary_id ? 'disabled' : '' }}>
                                                 @else
                                                     <input type="number" class="form-control" value="{{ $om->qty }}" placeholder="0" disabled>
                                                 @endif
@@ -317,7 +317,7 @@
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <input type="number" class="form-control" name="om_qty[]" min="1" placeholder="Jumlah">
+                            <input type="number" class="form-control" name="om_qty[]" min="1" placeholder="Kuantitas">
                         </div>
                     </div>
                     <div class="col-md-1">

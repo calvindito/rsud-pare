@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Finance;
 
+use App\Models\Item;
 use App\Models\Budget;
 use App\Models\Installation;
 use Illuminate\Http\Request;
@@ -11,47 +12,21 @@ use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-class BudgetController extends Controller
+class PlanningController extends Controller
 {
     public function index()
     {
         $data = [
-            'chartOfAccount' => ChartOfAccount::with('sub')->whereNull('parent_id')->where('status', true)->orderBy('code')->get(),
-            'content' => 'finance.budget'
+            'content' => 'finance.planning'
         ];
 
         return view('layouts.index', ['data' => $data]);
     }
 
-    public function settingChartOfAccount(Request $request)
-    {
-        try {
-            ChartOfAccount::query()->update(['budgetable' => false]);
-
-            if ($request->has('budgetable')) {
-                foreach ($request->budgetable as $b) {
-                    ChartOfAccount::find($b)->update(['budgetable' => true]);
-                }
-            }
-
-            $response = [
-                'code' => 200,
-                'message' => 'Pengaturan bagan akun telah disimpan'
-            ];
-        } catch (\Exception $e) {
-            $response = [
-                'code' => $e->getCode(),
-                'message' => $e->getMessage()
-            ];
-        }
-
-        return response()->json($response);
-    }
-
     public function datatable(Request $request)
     {
         $search = $request->search['value'];
-        $data = Budget::doesntHave('budgetPlanning');
+        $data = Budget::has('budgetPlanning');
 
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
@@ -98,7 +73,7 @@ class BudgetController extends Controller
                         <div class="btn-group">
                             <button type="button" class="btn btn-light text-primary btn-sm fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Aksi</button>
                             <div class="dropdown-menu">
-                                <a href="' . url('finance/budget/update/' . $query->id) . '" class="dropdown-item fs-13">
+                                <a href="' . url('finance/planning/update/' . $query->id) . '" class="dropdown-item fs-13">
                                     <i class="ph-pen me-2"></i>
                                     Ubah Data
                                 </a>
@@ -111,7 +86,7 @@ class BudgetController extends Controller
                     ';
                 } else {
                     $action = '
-                        <a href="' . url('finance/budget/detail/' . $query->id) . '" class="btn btn-light text-info btn-sm fw-semibold">
+                        <a href="' . url('finance/planning/detail/' . $query->id) . '" class="btn btn-light text-info btn-sm fw-semibold">
                             <i class="ph-eye me-2"></i>
                             Lihat Detail
                         </a>
@@ -126,11 +101,33 @@ class BudgetController extends Controller
             ->toJson();
     }
 
+    public function loadItem(Request $request)
+    {
+        $installationId = $request->installation_id;
+        $itemId = $request->has('item_id') ? $request->item_id : [];
+        $search = $request->search;
+        $response = [];
+
+        if ($installationId) {
+            $response = Item::wherehas('itemStock', function ($query) {
+                $query->where('type', 1)->where('price_purchase', '>', 0);
+            })->where('installation_id', $installationId)->whereNotIn('id', $itemId)->where('name', 'like', "%$search%")->limit(100)->get()->map(function ($item) {
+                return [
+                    'id' => $item->id . ';' . $item->name . ';' . $item->newStock->price_purchase . ';' . $item->type_format_result,
+                    'text' => $item->name
+                ];
+            });
+        }
+
+        return response()->json($response);
+    }
+
     public function detail($id)
     {
         $data = [
-            'budget' => Budget::doesntHave('budgetPlanning')->whereIn('status', [2, 4, 5])->findOrFail($id),
-            'content' => 'finance.budget-detail'
+            'budget' => Budget::has('budgetPlanning')->whereIn('status', [2, 4, 5])->findOrFail($id),
+            'chartOfAccount' => ChartOfAccount::where('budgetable', true)->where('status', true)->orderBy('code')->get(),
+            'content' => 'finance.planning-detail'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -142,11 +139,17 @@ class BudgetController extends Controller
             $validation = Validator::make($request->all(), [
                 'status' => 'required',
                 'date' => 'required',
-                'description' => 'required'
+                'description' => 'required',
+                'chart_of_account_id' => 'required',
+                'installation_id' => 'required',
+                'bp_item_id' => 'required'
             ], [
                 'status.required' => 'mohon memilih status',
                 'date.required' => 'tanggal tidak boleh kosong',
-                'description.required' => 'keterangan tidak boleh kosong'
+                'description.required' => 'keterangan tidak boleh kosong',
+                'chart_of_account_id.required' => 'mohon memilih bagan akun',
+                'installation_id.required' => 'mohon memilih instalasi',
+                'bp_item_id.required' => 'mohon memilih salah satu item'
             ]);
 
             if ($validation->fails()) {
@@ -172,18 +175,30 @@ class BudgetController extends Controller
                             ]);
                         }
 
-                        if ($request->has('bd_chart_of_account_id')) {
-                            foreach ($request->bd_chart_of_account_id as $key => $coai) {
-                                $nominal = isset($request->bd_nominal[$key]) ? $request->bd_nominal[$key] : null;
-                                $limitBlud = isset($request->bd_limit_blud[$key]) ? $request->bd_limit_blud[$key] : null;
+                        $nominal = 0;
 
-                                $createData->budgetDetail()->create([
-                                    'chart_of_account_id' => $coai,
-                                    'nominal' => $nominal,
-                                    'limit_blud' => $limitBlud
-                                ]);
+                        if ($request->has('bp_item_id')) {
+                            foreach ($request->bp_item_id as $key => $ii) {
+                                $item = Item::find($ii);
+                                $qty = isset($request->bp_qty[$key]) ? $request->bp_qty[$key] : null;
+
+                                if ($item && $qty) {
+                                    $price = $item->newStock->price_purchase ?? 0;
+                                    $nominal += $price * $qty;
+
+                                    $createData->budgetPlanning()->create([
+                                        'item_id' => $ii,
+                                        'qty' => $qty,
+                                        'price' => $price
+                                    ]);
+                                }
                             }
                         }
+
+                        $createData->budgetDetail()->create([
+                            'chart_of_account_id' => $request->chart_of_account_id,
+                            'nominal' => $nominal
+                        ]);
                     });
 
                     $response = [
@@ -204,7 +219,7 @@ class BudgetController extends Controller
         $data = [
             'chartOfAccount' => ChartOfAccount::where('budgetable', true)->where('status', true)->orderBy('code')->get(),
             'installation' => Installation::all(),
-            'content' => 'finance.budget-create'
+            'content' => 'finance.planning-create'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -212,17 +227,21 @@ class BudgetController extends Controller
 
     public function update(Request $request, $id)
     {
-        $budget = Budget::doesntHave('budgetPlanning')->whereIn('status', [1, 3])->findOrFail($id);
+        $budget = Budget::has('budgetPlanning')->whereIn('status', [1, 3])->findOrFail($id);
 
         if ($request->ajax()) {
             $validation = Validator::make($request->all(), [
                 'status' => 'required',
                 'date' => 'required',
-                'description' => 'required'
+                'description' => 'required',
+                'installation_id' => 'required',
+                'bp_item_id' => 'required'
             ], [
                 'status.required' => 'mohon memilih status',
                 'date.required' => 'tanggal tidak boleh kosong',
-                'description.required' => 'keterangan tidak boleh kosong'
+                'description.required' => 'keterangan tidak boleh kosong',
+                'installation_id.required' => 'mohon memilih instalasi',
+                'bp_item_id.required' => 'mohon memilih salah satu item'
             ]);
 
             if ($validation->fails()) {
@@ -242,6 +261,7 @@ class BudgetController extends Controller
 
                         $budget->refresh();
                         $budget->budgetDetail()->delete();
+                        $budget->budgetPlanning()->delete();
 
                         if ($budget->status == 2) {
                             $budget->budgetHistory()->create([
@@ -250,18 +270,30 @@ class BudgetController extends Controller
                             ]);
                         }
 
-                        if ($request->has('bd_chart_of_account_id')) {
-                            foreach ($request->bd_chart_of_account_id as $key => $coai) {
-                                $nominal = isset($request->bd_nominal[$key]) ? $request->bd_nominal[$key] : null;
-                                $limitBlud = isset($request->bd_limit_blud[$key]) ? $request->bd_limit_blud[$key] : null;
+                        $nominal = 0;
 
-                                $budget->budgetDetail()->create([
-                                    'chart_of_account_id' => $coai,
-                                    'nominal' => $nominal,
-                                    'limit_blud' => $limitBlud
-                                ]);
+                        if ($request->has('bp_item_id')) {
+                            foreach ($request->bp_item_id as $key => $ii) {
+                                $item = Item::find($ii);
+                                $qty = isset($request->bp_qty[$key]) ? $request->bp_qty[$key] : null;
+
+                                if ($item && $qty) {
+                                    $price = $item->newStock->price_purchase ?? 0;
+                                    $nominal += $price * $qty;
+
+                                    $budget->budgetPlanning()->create([
+                                        'item_id' => $ii,
+                                        'qty' => $qty,
+                                        'price' => $price
+                                    ]);
+                                }
                             }
                         }
+
+                        $budget->budgetDetail()->create([
+                            'chart_of_account_id' => $request->chart_of_account_id,
+                            'nominal' => $nominal
+                        ]);
                     });
 
                     $response = [
@@ -283,7 +315,7 @@ class BudgetController extends Controller
             'budget' => $budget,
             'chartOfAccount' => ChartOfAccount::where('budgetable', true)->where('status', true)->orderBy('code')->get(),
             'installation' => Installation::all(),
-            'content' => 'finance.budget-update'
+            'content' => 'finance.planning-update'
         ];
 
         return view('layouts.index', ['data' => $data]);
@@ -294,7 +326,7 @@ class BudgetController extends Controller
         $id = $request->id;
 
         try {
-            Budget::doesntHave('budgetPlanning')->destroy($id);
+            Budget::has('budgetPlanning')->destroy($id);
 
             $response = [
                 'code' => 200,

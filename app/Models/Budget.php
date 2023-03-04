@@ -129,4 +129,24 @@ class Budget extends Model
     {
         return $this->hasMany(BudgetHistory::class);
     }
+
+    /**
+     * budgetPlanning
+     *
+     * @return void
+     */
+    public function budgetPlanning()
+    {
+        return $this->hasMany(BudgetPlanning::class);
+    }
+
+    /**
+     * installation
+     *
+     * @return void
+     */
+    public function installation()
+    {
+        return $this->belongsTo(Installation::class);
+    }
 }

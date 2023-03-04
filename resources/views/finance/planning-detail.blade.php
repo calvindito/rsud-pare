@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Keuangan - Anggaran - <span class="fw-normal">Detail Data</span>
+                Keuangan - Perencanaan - <span class="fw-normal">Detail Data</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('finance/budget') }}" class="btn btn-flat-primary">
+            <a href="{{ url('finance/planning') }}" class="btn btn-flat-primary">
                 Kembali ke Daftar
             </a>
         </div>
@@ -42,6 +42,11 @@
                             <td>{!! $budget->status() !!}</td>
                         </tr>
                         <tr>
+                            <th width="15%">Bagan Akun</th>
+                            <th width="1%" class="text-center">:</th>
+                            <td>{{  $budget->budgetDetail()->first()->chartOfAccount->fullname ?? '-'  }}</td>
+                        </tr>
+                        <tr>
                             <th width="15%">Keterangan</th>
                             <th width="1%" class="text-center">:</th>
                             <td>{{ $budget->description }}</td>
@@ -59,28 +64,48 @@
                 </ul>
                 <div class="tab-content flex-lg-fill">
                     <div class="tab-pane fade show active" id="tabs-1">
-                        <table class="table table-bordered table-hover">
-                            <thead class="bg-light">
-                                <tr>
-                                    <th>Bagan Akun</th>
-                                    <th>Nominal</th>
-                                    <th>Limit BLUD</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($budget->budgetDetail as $bd)
+                        <div class="table-fix-header">
+                            <table class="table table-bordered table-hover">
+                                <thead class="bg-light">
                                     <tr>
-                                        <td>{{ $bd->chartOfAccount->fullname }}</td>
-                                        <td>
-                                            {{ Simrs::formatRupiah($bd->nominal ?? 0) }}
-                                        </td>
-                                        <td>
-                                            {{ Simrs::formatRupiah($bd->limit_blud ?? 0) }}
-                                        </td>
+                                        <th>Item</th>
+                                        <th>Kuantitas</th>
+                                        <th>Harga</th>
+                                        <th>Jenis</th>
+                                        <th>Subtotal</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody id="data-item">
+                                    @php $total = 0; $totalQty = 0; @endphp
+                                    @foreach($budget->budgetPlanning as $bp)
+                                        @php
+                                            $qty = $bp->qty;
+                                            $price = $bp->price;
+                                            $subtotal = $price * $qty;
+                                            $totalQty += $qty;
+                                            $total += $subtotal;
+                                        @endphp
+                                        <tr>
+                                            <td>{{ $bp->item->name ?? '-' }}</td>
+                                            <td width="15%">{{ number_format($qty) }}</td>
+                                            <td>{{ Simrs::formatRupiah($price) }}</td>
+                                            <td>{{ $bp->item->type_format_result ?? '-' }}</td>
+                                            <td>{{ Simrs::formatRupiah($subtotal) }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot class="bg-light">
+                                    <tr>
+                                        <th colspan="4">TOTAL KUANTITAS</th>
+                                        <th>{{ number_format($totalQty) }}</th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="4">TOTAL KESELURUHAN</th>
+                                        <th>{{ Simrs::formatRupiah($total) }}</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
                     </div>
                     <div class="tab-pane fade" id="tabs-2">
                         <table class="table table-bordered">

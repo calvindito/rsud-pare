@@ -59,7 +59,7 @@
                         <tr>
                             <th class="text-center" nowrap>No</th>
                             <th nowrap>Item</th>
-                            <th nowrap>Jumlah</th>
+                            <th nowrap>Kuantitas</th>
                             <th nowrap>Satuan</th>
                             <th nowrap>Harga</th>
                             <th nowrap>Diskon</th>

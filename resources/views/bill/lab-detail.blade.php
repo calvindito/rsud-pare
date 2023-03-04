@@ -145,7 +145,7 @@
                 </table>
                 <div class="form-group"><hr></div>
                 <div class="text-center">
-                    <h6 class="text-uppercase fw-bold">Jumlah Yang Harus Dibayar</h6>
+                    <h6 class="text-uppercase fw-bold">Total Yang Harus Dibayar</h6>
                     <h3 class="text-primary fw-bold mb-0">{{ Simrs::formatRupiah($labRequest->total()) }}</h3>
                 </div>
                 <div class="form-group"><hr></div>

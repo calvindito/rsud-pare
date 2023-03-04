@@ -27,7 +27,7 @@
                                 <th>Status</th>
                                 <th>Item</th>
                                 <th>Apotek</th>
-                                <th>Jumlah Permintaan</th>
+                                <th>Total Permintaan</th>
                                 <th>Ketersediaan Stok</th>
                             </tr>
                         </thead>

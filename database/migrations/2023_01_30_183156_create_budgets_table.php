@@ -15,6 +15,7 @@ class CreateBudgetsTable extends Migration
     {
         Schema::create('budgets', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('installation_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->text('description')->nullable();
             $table->date('date')->nullable();

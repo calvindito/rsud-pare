@@ -108,7 +108,7 @@ class StockController extends Controller
         ], [
             'item_id.required' => 'mohon memilih item',
             'expired_date.required' => 'tanggal kadaluwarsa tidak boleh kosong',
-            'qty.required' => 'jumlah tidak boleh kosong',
+            'qty.required' => 'kuantitas tidak boleh kosong',
             'price_purchase.required' => 'harga beli tidak boleh kosong',
             'price_sell.required' => 'harga jual tidak boleh kosong',
             'discount.required' => 'diskon tidak boleh kosong',
@@ -169,7 +169,7 @@ class StockController extends Controller
         ], [
             'item_id.required' => 'mohon memilih item',
             'expired_date.required' => 'tanggal kadaluwarsa tidak boleh kosong',
-            'qty.required' => 'jumlah tidak boleh kosong',
+            'qty.required' => 'kuantitas tidak boleh kosong',
             'price_purchase.required' => 'harga beli tidak boleh kosong',
             'price_sell.required' => 'harga jual tidak boleh kosong',
             'discount.required' => 'diskon tidak boleh kosong',

@@ -484,7 +484,7 @@
                             <th class="align-middle">Total Rawat Inap</th>
                             <td class="align-middle" id="subtotal-inpatient"></td>
                             <th class="text-center align-middle" rowspan="3" nowrap>
-                                <h6 class="text-uppercase">Jumlah Yang Harus Dibayar</h6>
+                                <h6 class="text-uppercase">Total Yang Harus Dibayar</h6>
                                 <h3 class="fw-bold text-primary" id="grandtotal"></h3>
                             </th>
                         </tr>

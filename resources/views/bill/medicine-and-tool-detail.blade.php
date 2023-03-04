@@ -59,7 +59,7 @@
                         <tr>
                             <th class="text-center" nowrap>No</th>
                             <th nowrap>Item</th>
-                            <th nowrap>Jumlah</th>
+                            <th nowrap>Kuantitas</th>
                             <th nowrap>Satuan</th>
                             <th nowrap>Harga</th>
                             <th nowrap>Diskon</th>
@@ -94,7 +94,7 @@
                 </table>
                 <div class="form-group"><hr></div>
                 <div class="text-center">
-                    <h6 class="text-uppercase fw-bold">Jumlah Yang Harus Dibayar</h6>
+                    <h6 class="text-uppercase fw-bold">Total Yang Harus Dibayar</h6>
                     <h3 class="text-primary fw-bold mb-0">{{ Simrs::formatRupiah($dispensaryRequest->total()) }}</h3>
                 </div>
                 <div class="form-group"><hr></div>

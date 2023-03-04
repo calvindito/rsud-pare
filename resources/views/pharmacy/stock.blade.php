@@ -76,9 +76,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Jumlah <span class="text-danger fw-bold">*</span></label>
+                        <label class="col-form-label col-lg-3">Kuantitas <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
-                            <input type="number" class="form-control" name="qty" id="qty" placeholder="Masukan jumlah">
+                            <input type="number" class="form-control" name="qty" id="qty" placeholder="Masukan kuantitas">
                         </div>
                     </div>
                     <div class="form-group row">

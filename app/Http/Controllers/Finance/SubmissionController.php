@@ -31,6 +31,9 @@ class SubmissionController extends Controller
                 if ($search) {
                     $query->whereRaw("LPAD(id, 6, 0) LIKE '%$search%'")
                         ->orWhere('description', 'like', "%$search%")
+                        ->orWhereHas('installation', function ($query) use ($search) {
+                            $query->where('name', 'like', "%$search%");
+                        })
                         ->orWhereHas('user', function ($query) use ($search) {
                             $query->whereHas('employee', function ($query) use ($search) {
                                 $query->where('name', 'like', "%$search%");
@@ -43,6 +46,15 @@ class SubmissionController extends Controller
             })
             ->editColumn('status', function (Budget $query) {
                 return $query->status();
+            })
+            ->addColumn('installation_name', function (Budget $query) {
+                $installationName = '-';
+
+                if (isset($query->installation)) {
+                    $installationName = $query->installation->name;
+                }
+
+                return $installationName;
             })
             ->addColumn('employee_name', function (Budget $query) {
                 $employeeName = null;
@@ -113,7 +125,6 @@ class SubmissionController extends Controller
 
         $data = [
             'budget' => Budget::findOrFail($id),
-            'chartOfAccount' => ChartOfAccount::where('budgetable', true)->where('status', true)->orderBy('code')->get(),
             'content' => 'finance.submission-detail'
         ];
 

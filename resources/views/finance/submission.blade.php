@@ -24,6 +24,7 @@
                     <tr>
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Kode</th>
+                        <th nowrap>Instalasi</th>
                         <th nowrap>Karyawan</th>
                         <th nowrap>Tanggal</th>
                         <th nowrap>Keterangan</th>
@@ -72,6 +73,7 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'id', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'installation_name', name: 'installation_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'employee_name', name: 'employee_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'date', name: 'date', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'description', name: 'description', orderable: true, searchable: true, className: 'align-middle' },

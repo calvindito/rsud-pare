@@ -91,7 +91,7 @@
                                             <input type="hidden" name="dr_qty[]" value="{{ $dr->qty }}">
                                         @endif
                                         @if($inpatient->dispensary_id == $dr->dispensary_id)
-                                            <input type="number" class="form-control" name="dr_qty[]" value="{{ $dr->qty }}" placeholder="Jumlah" {{ !empty($dr->status) || $inpatient->status != 1 ? 'disabled' : '' }}>
+                                            <input type="number" class="form-control" name="dr_qty[]" value="{{ $dr->qty }}" placeholder="Kuantitas" {{ !empty($dr->status) || $inpatient->status != 1 ? 'disabled' : '' }}>
                                         @else
                                             <input type="number" class="form-control" value="{{ $dr->qty }}" placeholder="0" disabled>
                                         @endif
@@ -188,7 +188,7 @@
                     </div>
                     <div class="col-md-1">
                         <div class="form-group">
-                            <input type="number" class="form-control" name="dr_qty[]" placeholder="Jumlah">
+                            <input type="number" class="form-control" name="dr_qty[]" placeholder="Kuantitas">
                         </div>
                     </div>
                     <div class="col-md-3">

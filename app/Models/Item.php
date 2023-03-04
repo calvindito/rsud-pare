@@ -147,4 +147,24 @@ class Item extends Model
     {
         return $this->belongsTo(Installation::class);
     }
+
+    /**
+     * budgetPlanning
+     *
+     * @return void
+     */
+    public function budgetPlanning()
+    {
+        return $this->hasMany(BudgetPlanning::class);
+    }
+
+    /**
+     * newStock
+     *
+     * @return void
+     */
+    public function newStock()
+    {
+        return $this->hasOne(ItemStock::class)->latest();
+    }
 }

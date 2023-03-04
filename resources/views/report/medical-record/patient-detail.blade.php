@@ -1072,7 +1072,7 @@
                                                                                 <th>Item</th>
                                                                                 <th>Tanggal Kadaluwarsa</th>
                                                                                 <th>Jenis</th>
-                                                                                <th>Jumlah</th>
+                                                                                <th>Kuantitas</th>
                                                                                 <th>Status</th>
                                                                             </tr>
                                                                         </thead>

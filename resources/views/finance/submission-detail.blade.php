@@ -22,6 +22,11 @@
                 <table class="table table-bordered">
                     <tbody>
                         <tr>
+                            <th width="15%">Instalasi</th>
+                            <th width="1%" class="text-center">:</th>
+                            <td>{{ $budget->installation->name ?? '-' }}</td>
+                        </tr>
+                        <tr>
                             <th width="15%">User</th>
                             <th width="1%" class="text-center">:</th>
                             <td>{{ $budget->user->employee->name }}</td>
@@ -51,10 +56,15 @@
                 <div class="form-group"><hr></div>
                 <ul class="nav nav-tabs nav-tabs-solid nav-justified mb-3">
                     <li class="nav-item">
-                        <a href="#tabs-1" class="nav-link active" data-bs-toggle="tab">Form</a>
+                        <a href="#tabs-1" class="nav-link active" data-bs-toggle="tab">Data</a>
                     </li>
+                    @if($budget->budgetPlanning->count() > 0)
+                        <li class="nav-item">
+                            <a href="#tabs-2" class="nav-link" data-bs-toggle="tab">Detail</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
-                        <a href="#tabs-2" class="nav-link" data-bs-toggle="tab">Histori</a>
+                        <a href="#tabs-3" class="nav-link" data-bs-toggle="tab">Histori</a>
                     </li>
                 </ul>
                 <div class="tab-content flex-lg-fill">
@@ -68,21 +78,67 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($chartOfAccount as $coa)
+                                @foreach($budget->budgetDetail as $bd)
                                     <tr>
-                                        <td>{{ $coa->fullname }}</td>
+                                        <td>{{ $bd->chartOfAccount->fullname }}</td>
                                         <td>
-                                            {{ Simrs::formatRupiah($budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->nominal ?? 0) }}
+                                            {{ Simrs::formatRupiah($bd->nominal ?? 0) }}
                                         </td>
                                         <td>
-                                            {{ Simrs::formatRupiah($budget->budgetDetail()->firstWhere('chart_of_account_id', $coa->id)->limit_blud ?? 0) }}
+                                            {{ Simrs::formatRupiah($bd->limit_blud ?? 0) }}
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    <div class="tab-pane fade" id="tabs-2">
+                    @if($budget->budgetPlanning->count() > 0)
+                        <div class="tab-pane fade" id="tabs-2">
+                            <div class="table-fix-header">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th>Item</th>
+                                            <th>Kuantitas</th>
+                                            <th>Harga</th>
+                                            <th>Jenis</th>
+                                            <th>Subtotal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data-item">
+                                        @php $total = 0; $totalQty = 0; @endphp
+                                        @foreach($budget->budgetPlanning as $bp)
+                                            @php
+                                                $qty = $bp->qty;
+                                                $price = $bp->price;
+                                                $subtotal = $price * $qty;
+                                                $totalQty += $qty;
+                                                $total += $subtotal;
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $bp->item->name ?? '-' }}</td>
+                                                <td width="15%">{{ number_format($qty) }}</td>
+                                                <td>{{ Simrs::formatRupiah($price) }}</td>
+                                                <td>{{ $bp->item->type_format_result ?? '-' }}</td>
+                                                <td>{{ Simrs::formatRupiah($subtotal) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot class="bg-light">
+                                        <tr>
+                                            <th colspan="4">TOTAL KUANTITAS</th>
+                                            <th>{{ number_format($totalQty) }}</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="4">TOTAL KESELURUHAN</th>
+                                            <th>{{ Simrs::formatRupiah($total) }}</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+                    <div class="tab-pane fade" id="tabs-3">
                         <table class="table table-bordered">
                             <thead class="bg-light">
                                 <tr>

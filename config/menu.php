@@ -677,6 +677,13 @@ return [
                 'sub' => null
             ],
             [
+                'name' => 'planning',
+                'menu' => 'Perencanaan',
+                'icon' => null,
+                'link' => 'finance/planning',
+                'sub' => null
+            ],
+            [
                 'name' => 'submission',
                 'menu' => 'Pengajuan',
                 'icon' => null,

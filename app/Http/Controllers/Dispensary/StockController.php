@@ -134,7 +134,7 @@ class StockController extends Controller
             'dispensary_id.required' => 'mohon memilih apotek',
             'item_id.required' => 'mohon memilih item',
             'expired_date.required' => 'tanggal kadaluwarsa tidak boleh kosong',
-            'qty.required' => 'jumlah tidak boleh kosong'
+            'qty.required' => 'kuantitas tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
