@@ -98,17 +98,15 @@ class EmergencyDepartment extends Model
         if ($ending == 1) {
             $text = 'Sembuh';
         } else if ($ending == 2) {
-            $text = 'Rujuk';
-        } else if ($ending == 3) {
             $text = 'Pulang Paksa';
-        } else if ($ending == 4) {
+        } else if ($ending == 3) {
             $text = 'Meniggal < 48 Jam';
-        } else if ($ending == 5) {
+        } else if ($ending == 4) {
             $text = 'Meniggal > 48 Jam';
-        } else if ($ending == 6) {
+        } else if ($ending == 5) {
             $text = 'Tidak Diketahui';
-        } else if ($ending == 7) {
-            $text = 'Konsul ke Poli Lain';
+        } else if ($ending == 6) {
+            $text = 'Dirujuk ke UPF Lain';
         } else {
             $text = 'Belum Ada Hasil';
         }
@@ -161,6 +159,8 @@ class EmergencyDepartment extends Model
             $html = '<span class="badge bg-success">Pulang</span>';
         } else if ($status == 3) {
             $html = '<span class="badge bg-teal">Keluar Kamar</span>';
+        } else if ($status == 4) {
+            $html = '<span class="badge bg-secondary">Rujukan</span>';
         } else {
             $html = '<span class="badge bg-warning">Invalid</span>';
         }
@@ -480,5 +480,15 @@ class EmergencyDepartment extends Model
         }
 
         return $total;
+    }
+
+    /**
+     * parent
+     *
+     * @return void
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Outpatient::class, 'parent_id');
     }
 }

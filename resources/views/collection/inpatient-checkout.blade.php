@@ -73,25 +73,25 @@
                         <div class="form-group row">
                             <label class="col-form-label col-lg-3">Kamar Sebelumnya</label>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->bed->roomSpace->roomType->name . ' | ' . $inpatient->bed->roomSpace->roomType->classType->name }}">
+                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->bed->roomSpace->roomType->name . ' | ' . $inpatient->bed->roomSpace->roomType->classType->name }}" readonly>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-form-label col-lg-3">Tempat Tidur Sebelumnya</label>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->bed->name }}">
+                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->bed->name }}" readonly>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-form-label col-lg-3">Golongan Sebelumnya</label>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->type_format_result }}">
+                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->type_format_result }}" readonly>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-form-label col-lg-3">UPF Sebelumnya</label>
                             <div class="col-lg-9">
-                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->functionalService->name }}">
+                                <input type="text" class="form-control form-control-plaintext" value="{{ $inpatient->functionalService->name }}" readonly>
                             </div>
                         </div>
                         <div class="form-group row">

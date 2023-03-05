@@ -1060,8 +1060,8 @@ class InpatientController extends Controller
                     ],
                     'message' => [
                         'bed_id.required' => 'mohon memilih kamar tempat tidur',
-                        'type.required' => 'mohon memilih golongan baru',
-                        'functional_service_id.required' => 'mohon memilih upf baru'
+                        'type.required' => 'mohon memilih golongan',
+                        'functional_service_id.required' => 'mohon memilih upf'
                     ]
                 ];
             } else if ($status == 3 || $status == 4) {

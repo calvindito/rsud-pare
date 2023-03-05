@@ -130,6 +130,8 @@ class Outpatient extends Model
             $text = 'Sedang Ditangani';
         } else if ($status == 4) {
             $text = 'Selesai / Pulang';
+        } else if ($status == 5) {
+            $text = 'Rujuk ke Poli Lain';
         } else {
             $text = 'Invalid';
         }
@@ -276,5 +278,15 @@ class Outpatient extends Model
         }
 
         return $total;
+    }
+
+    /**
+     * parent
+     *
+     * @return void
+     */
+    public function parent()
+    {
+        return $this->belongsTo(Outpatient::class, 'parent_id');
     }
 }

@@ -65,6 +65,15 @@ class EmergencyDepartmentController extends Controller
             ->addColumn('code', function (EmergencyDepartment $query) {
                 return $query->code();
             })
+            ->addColumn('parentable', function (EmergencyDepartment $query) {
+                $parentable = 'Tidak Ada';
+
+                if ($query->parent) {
+                    $parentable = $query->parent->code();
+                }
+
+                return $parentable;
+            })
             ->addColumn('patient_name', function (EmergencyDepartment $query) {
                 $patientName = null;
 
@@ -988,6 +997,21 @@ class EmergencyDepartmentController extends Controller
                         'date_of_out.required' => 'tanggal keluar tidak boleh kosong'
                     ]
                 ];
+            } else if ($status == 4) {
+                $ruleMessage = [
+                    'rule' => [
+                        'doctor_id' => 'required',
+                        'functional_service_id' => 'required',
+                        'dispensary_id' => 'required',
+                        'date_of_out' => 'required'
+                    ],
+                    'message' => [
+                        'doctor_id.required' => 'mohon memilih dokter',
+                        'functional_service_id.required' => 'mohon memilih upf',
+                        'dispensary_id.required' => 'mohon memilih apotek',
+                        'date_of_out.required' => 'tanggal keluar tidak boleh kosong'
+                    ]
+                ];
             }
 
             $validation = Validator::make($request->all(), $ruleMessage['rule'], $ruleMessage['message']);
@@ -1003,6 +1027,22 @@ class EmergencyDepartmentController extends Controller
                         $emergencyDepartment->update([
                             'date_of_out' => $request->date_of_out,
                             'ending' => $request->ending
+                        ]);
+                    } else if ($status == 4) {
+                        EmergencyDepartment::create([
+                            'user_id' => auth()->id(),
+                            'patient_id' => $emergencyDepartment->patient_id,
+                            'functional_service_id' => $request->functional_service_id,
+                            'doctor_id' => $request->doctor_id,
+                            'dispensary_id' => $request->dispensary_id,
+                            'parent_id' => $emergencyDepartment->id,
+                            'type' => $emergencyDepartment->type,
+                            'date_of_entry' => now()
+                        ]);
+
+                        $emergencyDepartment->update([
+                            'date_of_out' => now(),
+                            'ending' => 6
                         ]);
                     }
 
@@ -1028,6 +1068,9 @@ class EmergencyDepartmentController extends Controller
         $data = [
             'emergencyDepartment' => $emergencyDepartment,
             'patient' => $emergencyDepartment->patient,
+            'doctor' => Doctor::all(),
+            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
+            'dispensary' => Dispensary::all(),
             'content' => 'collection.emergency-department-checkout'
         ];
 

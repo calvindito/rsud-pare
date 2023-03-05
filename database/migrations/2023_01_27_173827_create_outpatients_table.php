@@ -20,6 +20,7 @@ class CreateOutpatientsTable extends Migration
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedBigInteger('dispensary_id')->nullable();
             $table->unsignedBigInteger('doctor_id')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->char('type', 1)->nullable();
             $table->timestamp('date_of_entry')->nullable();
             $table->timestamp('date_of_out')->nullable();

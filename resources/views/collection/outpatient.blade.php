@@ -28,6 +28,7 @@
                     <tr>
                         <th class="text-center" nowrap>No</th>
                         <th nowrap>Kode</th>
+                        <th nowrap>Ref</th>
                         <th nowrap>No RM</th>
                         <th nowrap>Pasien</th>
                         <th nowrap>Jenis Kelamin</th>
@@ -86,6 +87,7 @@
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'id', orderable: true, searchable: true, className: 'align-middle' },
+                { data: 'parentable', name: 'parent_id', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'patient_id', name: 'patient_id', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'patient_name', name: 'patient_name', orderable: false, searchable: false, className: 'align-middle' },
                 { data: 'patient_gender', name: 'patient_gender', orderable: false, searchable: false, className: 'align-middle' },

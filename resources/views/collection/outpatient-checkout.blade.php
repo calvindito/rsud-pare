@@ -2,11 +2,11 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Pendataan - IGD - <span class="fw-normal">Check-Out</span>
+                Pendataan - Rawat Jalan - <span class="fw-normal">Check-Out</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
-            <a href="{{ url('collection/emergency-department') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
+            <a href="{{ url('collection/outpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
         </div>
     </div>
 </div>
@@ -40,10 +40,10 @@
                     <tr>
                         <th class="align-middle">Tanggal Masuk</th>
                         <td class="align-middle" width="1%">:</td>
-                        <td class="align-middle">{{ $emergencyDepartment->date_of_entry }}</td>
-                        <th class="align-middle">UPF</th>
+                        <td class="align-middle">{{ $outpatient->date_of_entry }}</td>
+                        <th class="align-middle">Golongan</th>
                         <td class="align-middle" width="1%">:</td>
-                        <td class="align-middle">{{ $emergencyDepartment->functionalService->name ?? '-' }}</td>
+                        <td class="align-middle">{{ $outpatient->type_format_result }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -60,91 +60,70 @@
                     <div class="col-md-9">
                         <select class="form-select" name="status" id="status" onchange="formStatus()">
                             <option value="">-- Pilih --</option>
-                            <option value="2">Pulang</option>
-                            <option value="3">Keluar Kamar</option>
-                            <option value="4">Rujukan</option>
+                            <option value="2">Pasien Tidak Ada</option>
+                            <option value="4">Selesai / Pulang</option>
+                            <option value="5">Rujuk ke Poli Lain</option>
                         </select>
                     </div>
                 </div>
-                <div id="form-status-2-3">
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Hasil <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-lg-9">
-                            <select class="form-select" name="ending" id="ending">
-                                <option value="">-- Pilih --</option>
-                                <option value="1">Sembuh</option>
-                                <option value="2">Rujuk</option>
-                                <option value="3">Pulang Paksa</option>
-                                <option value="4">Meninggal < 48 Jam</option>
-                                <option value="5">Meninggal > 48 Jam</option>
-                                <option value="6">Tidak Diketahui</option>
-                                <option value="7">Konsul ke Poli Lain</option>
-                            </select>
+                <div id="form-status-5">
+                    <div class="form-group">
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-3">Apotek Sebelumnya</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control form-control-plaintext" value="{{ $outpatient->dispensary->name ?? '-' }}" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Tanggal Keluar <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-lg-9">
-                            <input type="datetime-local" class="form-control" name="date_of_out" id="date_of_entry" value="{{ date('Y-m-d H:i') }}">
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-3">Poli Sebelumnya</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control form-control-plaintext" value="{{ $outpatient->unit->name }}" readonly>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div id="form-status-4">
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Dokter Sebelumnya</label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control form-control-plaintext" value="{{ $emergencyDepartment->doctor->name }}" readonly>
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-3">Dokter Sebelumnya</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control form-control-plaintext" value="{{ $outpatient->doctor->name }}" readonly>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">UPF Sebelumnya</label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control form-control-plaintext" value="{{ $emergencyDepartment->functionalService->name }}" readonly>
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-3">Apotek Baru <span class="text-danger fw-bold">*</span></label>
+                            <div class="col-lg-9">
+                                <select class="form-select" name="dispensary_id" id="dispensary_id">
+                                    <option value="">-- Pilih --</option>
+                                    @foreach($dispensary as $d)
+                                        <option value="{{ $d->id }}">{{ $d->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Apotek Sebelumnya</label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control form-control-plaintext" value="{{ $emergencyDepartment->dispensary->name }}" readonly>
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-3">Poli Baru <span class="text-danger fw-bold">*</span></label>
+                            <div class="col-lg-9">
+                                <select class="form-select" name="unit_id" id="unit_id">
+                                    <option value="">-- Pilih --</option>
+                                    @foreach($unit as $u)
+                                        <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Dokter Baru <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="doctor_id" id="doctor_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($doctor as $d)
-                                    <option value="{{ $d->id }}">
-                                        {{ $d->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-3">Dokter Baru <span class="text-danger fw-bold">*</span></label>
+                            <div class="col-lg-9">
+                                <select class="form-select" name="doctor_id" id="doctor_id">
+                                    <option value="">-- Pilih --</option>
+                                    @foreach($doctor as $d)
+                                        <option value="{{ $d->id }}">{{ $d->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">UPF Baru <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="functional_service_id" id="functional_service_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($functionalService as $fs)
-                                    <option value="{{ $fs->id }}">
-                                        {{ $fs->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Apotek Baru <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <select class="form-select" name="dispensary_id" id="dispensary_id">
-                                <option value="">-- Pilih --</option>
-                                @foreach($dispensary as $d)
-                                    <option value="{{ $d->id }}">
-                                        {{ $d->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        <div class="form-group row">
+                            <label class="col-form-label col-lg-3">Keterangan</label>
+                            <div class="col-md-9">
+                                <textarea class="form-control" name="description" id="description" style="resize:none;" placeholder="Masukan keterangan"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -169,15 +148,10 @@
     function formStatus() {
         var status = $('#status').val();
 
-        if(status == 2 || status == 3) {
-            $('#form-status-2-3').fadeIn(500);
-            $('#form-status-4').hide();
-        } else if(status == 4) {
-            $('#form-status-2-3').hide();
-            $('#form-status-4').fadeIn(500);
+        if(status == 5) {
+            $('#form-status-5').fadeIn(500);
         } else {
-            $('#form-status-2-3').hide();
-            $('#form-status-4').hide();
+            $('#form-status-5').hide();
         }
     }
 
@@ -197,7 +171,7 @@
 
     function submitted() {
         $.ajax({
-            url: '{{ url("collection/emergency-department/checkout/" . $emergencyDepartment->id) }}',
+            url: '{{ url("collection/outpatient/checkout/" . $outpatient->id) }}',
             type: 'POST',
             dataType: 'JSON',
             data: $('#form-data').serialize(),
@@ -233,7 +207,7 @@
                             clearInterval(timerInterval);
                         }
                     }).then((result) => {
-                        window.location.replace('{{ url("collection/emergency-department") }}');
+                        window.location.replace('{{ url("collection/outpatient") }}');
                     });
                 } else if(response.code == 400) {
                     $('.btn-to-top button').click();

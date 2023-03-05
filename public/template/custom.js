@@ -105,8 +105,7 @@ function select2Ajax(selector, endpoint, onModal = true) {
     $(selector).select2({
         placeholder: '-- Pilih --',
         dropdownParent: onModal == true ? $('.modal') : '',
-        minimumInputLength: 3,
-        allowClear: true,
+        minimumInputLength: 2,
         cache: true,
         ajax: {
             url: window.gBaseUrl + '/serverside/' + endpoint,

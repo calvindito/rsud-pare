@@ -69,6 +69,15 @@ class OutpatientController extends Controller
             ->addColumn('code', function (Outpatient $query) {
                 return $query->code();
             })
+            ->addColumn('parentable', function (Outpatient $query) {
+                $parentable = 'Tidak Ada';
+
+                if ($query->parent) {
+                    $parentable = $query->parent->code();
+                }
+
+                return $parentable;
+            })
             ->addColumn('patient_name', function (Outpatient $query) {
                 $patientName = null;
 
@@ -107,8 +116,11 @@ class OutpatientController extends Controller
             })
             ->addColumn('action', function (Outpatient $query) {
                 $fullAction = '';
-                if ($query->status != 4) {
+                if (in_array($query->status, [1, 3])) {
                     $fullAction = '
+                        <a href="' . url('collection/outpatient/checkout/' . $query->id) . '" class="btn btn-light text-secondary btn-sm fw-semibold">
+                            Check-Out
+                        </a>
                         <div class="btn-group">
                             <button type="button" class="btn btn-light text-warning btn-sm btn-block fw-semibold dropdown-toggle" data-bs-toggle="dropdown">Lainnya</button>
                             <div class="dropdown-menu">
@@ -786,6 +798,101 @@ class OutpatientController extends Controller
         return $pdf->stream('Hasil Pemeriksaan Radiologi - ' . date('YmdHis') . '.pdf');
     }
 
+    public function checkout(Request $request, $id)
+    {
+        $outpatient = Outpatient::whereIn('status', [1, 3])->findOrFail($id);
+
+        if ($request->ajax()) {
+            $status = $request->status;
+            $ruleMessage = [
+                'rule' => [
+                    'status' => 'required'
+                ],
+                'message' => [
+                    'status.required' => 'mohon memilih status'
+                ]
+            ];
+
+            if ($status == 5) {
+                $ruleMessage = [
+                    'rule' => [
+                        'unit_id' => 'required',
+                        'dispensary_id' => 'required',
+                        'doctor_id' => 'required'
+                    ],
+                    'message' => [
+                        'unit_id.required' => 'mohon memilih poli',
+                        'dispensary_id.required' => 'mohon memilih apotek',
+                        'doctor_id.required' => 'mohon memilih dokter'
+                    ]
+                ];
+            }
+
+            $validation = Validator::make($request->all(), $ruleMessage['rule'], $ruleMessage['message']);
+
+            if ($validation->fails()) {
+                $response = [
+                    'code' => 400,
+                    'error' => $validation->errors()->all(),
+                ];
+            } else {
+                try {
+                    if ($status == 5) {
+                        Outpatient::create([
+                            'user_id' => auth()->id(),
+                            'patient_id' => $outpatient->patient_id,
+                            'unit_id' => $request->unit_id,
+                            'dispensary_id' => $request->dispensary_id,
+                            'doctor_id' => $request->doctor_id,
+                            'parent_id' => $outpatient->id,
+                            'type' => $outpatient->type,
+                            'date_of_entry' => now(),
+                            'presence' => $outpatient->presence,
+                            'description' => $request->description
+                        ]);
+
+                        $outpatient->update([
+                            'date_of_out' => now()
+                        ]);
+                    }
+
+                    $outpatient->update([
+                        'status' => $status
+                    ]);
+
+                    $next = Outpatient::where('status', 1)->where('unit_id', $outpatient->unit_id)->oldest('date_of_entry')->first();
+
+                    if ($next) {
+                        Outpatient::find($next->id)->update(['status' => 3]);
+                    }
+
+                    $response = [
+                        'code' => 200,
+                        'message' => 'Rawat jalan berhasil di checkout'
+                    ];
+                } catch (\Exception $e) {
+                    $response = [
+                        'code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                    ];
+                }
+            }
+
+            return response()->json($response);
+        }
+
+        $data = [
+            'outpatient' => $outpatient,
+            'patient' => $outpatient->patient,
+            'unit' => Unit::where('type', 2)->orderBy('name')->get(),
+            'dispensary' => Dispensary::all(),
+            'doctor' => Doctor::all(),
+            'content' => 'collection.outpatient-checkout'
+        ];
+
+        return view('layouts.index', ['data' => $data]);
+    }
+
     public function updateData(Request $request, $id)
     {
         $outpatient = Outpatient::findOrFail($id);
@@ -803,10 +910,8 @@ class OutpatientController extends Controller
                 'type' => 'required',
                 'date_of_entry' => 'required',
                 'presence' => 'required',
-                'unit_id' => 'required',
                 'dispensary_id' => 'required',
-                'doctor_id' => 'required',
-                'status' => 'required'
+                'doctor_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
                 'identity_number.numeric' => 'no identitas harus angka',
@@ -822,10 +927,8 @@ class OutpatientController extends Controller
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'presence.required' => 'mohon memilih kehadiran',
-                'unit_id.required' => 'mohon memilih poli',
                 'dispensary_id.required' => 'mohon memilih apotek',
-                'doctor_id.required' => 'mohon memilih dokter',
-                'status.required' => 'mohon memilih status'
+                'doctor_id.required' => 'mohon memilih dokter'
             ]);
 
             if ($validation->fails()) {
@@ -869,15 +972,12 @@ class OutpatientController extends Controller
                         $fillOutpatient = [
                             'user_id' => $userId,
                             'patient_id' => $patientId,
-                            'unit_id' => $request->unit_id,
                             'dispensary_id' => $request->dispensary_id,
                             'doctor_id' => $request->doctor_id,
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry,
-                            'date_of_out' => in_array($request->status, [2, 4]) ? now() : null,
                             'presence' => $request->presence,
-                            'description' => $request->description,
-                            'status' => $request->status
+                            'description' => $request->description
                         ];
 
                         $outpatient->patient()->update($fillPatient);
