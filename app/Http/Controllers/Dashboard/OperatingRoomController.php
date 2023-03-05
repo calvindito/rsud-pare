@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\Operation;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\FunctionalService;
 use App\Http\Controllers\Controller;
 use App\Models\OperatingRoomActionType;
 use App\Models\OperatingRoomAnesthetist;

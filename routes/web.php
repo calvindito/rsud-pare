@@ -54,8 +54,9 @@ Route::middleware('auth')->group(function () {
                 Route::get('status', 'OperatingRoomController@status');
             });
 
-            Route::prefix('poly')->group(function () {
-                Route::get('/', 'PolyController@general');
+            Route::prefix('poly-queue')->group(function () {
+                Route::get('/', 'PolyQueueController@general');
+                Route::get('load-long-line', 'PolyQueueController@loadLongLine');
             });
         });
 

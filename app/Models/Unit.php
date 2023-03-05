@@ -61,13 +61,13 @@ class Unit extends Model
     }
 
     /**
-     * outpatientPoly
+     * outpatient
      *
      * @return void
      */
-    public function outpatientPoly()
+    public function outpatient()
     {
-        return $this->hasMany(OutpatientPoly::class);
+        return $this->hasMany(outpatient::class);
     }
 
     /**

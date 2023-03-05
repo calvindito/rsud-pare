@@ -49,16 +49,6 @@ class Simrs
         return 'Rp ' . number_format($number, 0, '.', '.');
     }
 
-    public static function todayLongLinePoly($unitId)
-    {
-        $data = Outpatient::where('unit_id', $unitId)->whereDate('date_of_entry', date('Y-m-d'))->get();
-
-        return (object)[
-            'total' => $data->count(),
-            'data' => $data
-        ];
-    }
-
     public static function tool($id = null)
     {
         $collect = ['Obat-Obatan', 'Infus', 'Alkes & BHP', 'Bank Darah', 'O2'];

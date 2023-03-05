@@ -29,10 +29,10 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'poly',
-                'menu' => 'Poli',
+                'name' => 'poly-queue',
+                'menu' => 'Antrian Poli',
                 'icon' => null,
-                'link' => 'dashboard/poly',
+                'link' => 'dashboard/poly-queue',
                 'sub' => null
             ],
         ]
