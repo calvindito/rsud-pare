@@ -1,4 +1,13 @@
-<div class="content">
+<div class="page-header page-header-light border rounded mb-3">
+    <div class="page-header-content d-flex">
+        <div class="page-title">
+            <h5 class="mb-0">
+                Dashboard - <span class="fw-normal">Antrian Poli</span>
+            </h5>
+        </div>
+    </div>
+</div>
+<div class="content pt-0">
     <div class="row">
         <div class="col-md-4">
             <div class="card">
@@ -73,7 +82,7 @@
 
     function changeLongLine(param, unitId) {
         $.ajax({
-            url: '{{ url("dashboard/poly-queue/load-long-line") }}',
+            url: '{{ url("dashboard/poly-long-line/load-long-line") }}',
             type: 'GET',
             dataType: 'JSON',
             data: {

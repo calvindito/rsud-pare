@@ -7,13 +7,13 @@ use App\Models\Outpatient;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class PolyQueueController extends Controller
+class PolyLongLineController extends Controller
 {
     public function general()
     {
         $data = [
             'unit' => Unit::where('type', 2)->orderBy('name')->get(),
-            'content' => 'dashboard.poly-queue'
+            'content' => 'dashboard.poly-long-line'
         ];
 
         return view('layouts.index', ['data' => $data]);

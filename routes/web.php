@@ -47,16 +47,20 @@ Route::middleware('auth')->group(function () {
                 Route::get('operating-room', 'IncomeController@operatingRoom');
             });
 
-            Route::prefix('operating-room')->group(function () {
-                Route::get('/', 'OperatingRoomController@index');
-                Route::get('per-year', 'OperatingRoomController@perYear');
-                Route::get('anesthetist', 'OperatingRoomController@anesthetist');
-                Route::get('status', 'OperatingRoomController@status');
+            Route::prefix('operation')->group(function () {
+                Route::get('/', 'OperationController@index');
+                Route::get('per-year', 'OperationController@perYear');
+                Route::get('anesthetist', 'OperationController@anesthetist');
+                Route::get('status', 'OperationController@status');
             });
 
-            Route::prefix('poly-queue')->group(function () {
-                Route::get('/', 'PolyQueueController@general');
-                Route::get('load-long-line', 'PolyQueueController@loadLongLine');
+            Route::prefix('poly-long-line')->group(function () {
+                Route::get('/', 'PolyLongLineController@general');
+                Route::get('load-long-line', 'PolyLongLineController@loadLongLine');
+            });
+
+            Route::prefix('room')->group(function () {
+                Route::get('/', 'RoomController@index');
             });
         });
 

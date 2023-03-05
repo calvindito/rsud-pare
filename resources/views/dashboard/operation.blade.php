@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Dashboard - <span class="fw-normal">Kamar Operasi</span>
+                Dashboard - <span class="fw-normal">Operasi</span>
             </h5>
         </div>
     </div>
@@ -94,7 +94,7 @@
 
     function chart1() {
         $.ajax({
-            url: '{{ url("dashboard/operating-room/per-year") }}',
+            url: '{{ url("dashboard/operation/per-year") }}',
             type: 'GET',
             dataType: 'JSON',
             data: $('#form-chart-1').serialize(),
@@ -181,7 +181,7 @@
 
     function chart2() {
         $.ajax({
-            url: '{{ url("dashboard/operating-room/anesthetist") }}',
+            url: '{{ url("dashboard/operation/anesthetist") }}',
             type: 'GET',
             dataType: 'JSON',
             data: $('#form-chart-2').serialize(),
@@ -233,7 +233,7 @@
 
     function chart3() {
         $.ajax({
-            url: '{{ url("dashboard/operating-room/status") }}',
+            url: '{{ url("dashboard/operation/status") }}',
             type: 'GET',
             dataType: 'JSON',
             data: $('#form-chart-3').serialize(),

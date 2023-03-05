@@ -10,12 +10,12 @@ use App\Http\Controllers\Controller;
 use App\Models\OperatingRoomActionType;
 use App\Models\OperatingRoomAnesthetist;
 
-class OperatingRoomController extends Controller
+class OperationController extends Controller
 {
     public function index()
     {
         $data = [
-            'content' => 'dashboard.operating-room'
+            'content' => 'dashboard.operation'
         ];
 
         return view('layouts.index', ['data' => $data]);

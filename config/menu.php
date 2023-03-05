@@ -22,17 +22,24 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'operating-room',
-                'menu' => 'Kamar Operasi',
+                'name' => 'operation',
+                'menu' => 'Operasi',
                 'icon' => null,
-                'link' => 'dashboard/operating-room',
+                'link' => 'dashboard/operation',
                 'sub' => null
             ],
             [
-                'name' => 'poly-queue',
+                'name' => 'poly-long-line',
                 'menu' => 'Antrian Poli',
                 'icon' => null,
-                'link' => 'dashboard/poly-queue',
+                'link' => 'dashboard/poly-long-line',
+                'sub' => null
+            ],
+            [
+                'name' => 'room',
+                'menu' => 'Kamar',
+                'icon' => null,
+                'link' => 'dashboard/room',
                 'sub' => null
             ],
         ]
