@@ -17,7 +17,7 @@
     <form id="form-data">
         <div class="card">
             <div class="card-body">
-                @if($outpatient->status == 4)
+                @if(!in_array($outpatient->status, [1, 3]))
                     <div class="alert alert-success text-center mb-0">
                         Kunjungan Telah Selesai
                     </div>
@@ -286,18 +286,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-3">Status <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-9">
-                        <select class="form-select" name="status" id="status">
-                            <option value="">-- Pilih --</option>
-                            <option value="1" {{ $outpatient->status == 1 ? 'selected' : '' }}>Dalam Antrian</option>
-                            <option value="2" {{ $outpatient->status == 2 ? 'selected' : '' }}>Pasien Tidak Ada</option>
-                            <option value="3" {{ $outpatient->status == 3 ? 'selected' : '' }}>Sedang Ditangani</option>
-                            <option value="4" {{ $outpatient->status == 4 ? 'selected' : '' }}>Selesai / Pulang</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label class="col-form-label col-lg-3">Apotek <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
                         <select class="form-select" name="dispensary_id" id="dispensary_id">
@@ -331,7 +319,7 @@
                 </div>
             </div>
         </div>
-        @if($outpatient->status != 4)
+        @if(in_array($outpatient->status, [1, 3]))
             <div class="card">
                 <div class="card-body">
                     <div class="text-end">
@@ -361,7 +349,7 @@
     function checkStatus() {
         var status = '{{ $outpatient->status }}';
 
-        if(status != 4) {
+        if(status == 1 || status == 3) {
             $('.form-control').attr('disabled', false);
             $('.form-select').attr('disabled', false);
         } else {

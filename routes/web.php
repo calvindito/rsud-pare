@@ -753,6 +753,12 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'PatientController@datatable');
                     Route::get('detail/{id}', 'PatientController@detail');
                 });
+
+                Route::prefix('outpatient')->group(function () {
+                    Route::get('/', 'OutpatientController@index');
+                    Route::get('datatable', 'OutpatientController@datatable');
+                    Route::get('detail/{id}', 'OutpatientController@detail');
+                });
             });
 
             Route::prefix('finance')->namespace('Finance')->group(function () {

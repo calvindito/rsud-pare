@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="diagnosis[]" value="{{ $id->value }}" placeholder="Masukan diagnosa">
-                                    @if($outpatient->status != 4)
+                                    @if(in_array($outpatient->status, [1, 3]))
                                         <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
                                     @endif
                                 </div>
@@ -69,7 +69,7 @@
                         @endforeach
                     @endif
                 </div>
-                @if($outpatient->status != 4)
+                @if(in_array($outpatient->status, [1, 3]))
                     <div class="form-group">
                         <button type="button" class="btn btn-teal col-12" onclick="addItem('diagnosis')"><i class="ph-plus me-2"></i> Tambah Diagnosa</button>
                     </div>
@@ -87,7 +87,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="action[]" value="{{ $id->value }}" placeholder="Masukan tindakan">
-                                    @if($outpatient->status != 4)
+                                    @if(in_array($outpatient->status, [1, 3]))
                                         <button type="button" class="btn btn-light" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
                                     @endif
                                 </div>
@@ -95,14 +95,14 @@
                         @endforeach
                     @endif
                 </div>
-                @if($outpatient->status != 4)
+                @if(in_array($outpatient->status, [1, 3]))
                     <div class="form-group">
                         <button type="button" class="btn btn-teal col-12" onclick="addItem('action')"><i class="ph-plus me-2"></i> Tambah Tindakan</button>
                     </div>
                 @endif
             </div>
         </div>
-        @if($outpatient->status != 4)
+        @if(in_array($outpatient->status, [1, 3]))
             <div class="card">
                 <div class="card-body">
                     <div class="text-end">
@@ -125,7 +125,7 @@
     function checkStatus() {
         var status = '{{ $outpatient->status }}';
 
-        if(status != 4) {
+        if(status == 1 || status == 3) {
             $('.form-control').attr('disabled', false);
             $('.form-select').attr('disabled', false);
         } else {

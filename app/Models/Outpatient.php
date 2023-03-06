@@ -289,4 +289,109 @@ class Outpatient extends Model
     {
         return $this->belongsTo(Outpatient::class, 'parent_id');
     }
+
+    /**
+     * costBreakdown
+     *
+     * @return void
+     */
+    public function costBreakdown()
+    {
+        $action = $this->totalAction();
+        $dispensaryRequest = 0;
+        $lab = 0;
+        $radiology = 0;
+        $operation = 0;
+
+        $radiology += $this->radiologyRequest->sum('consumables');
+        $radiology += $this->radiologyRequest->sum('hospital_service');
+        $radiology += $this->radiologyRequest->sum('service');
+        $radiology += $this->radiologyRequest->sum('fee');
+
+        $operation += $this->operation->hospital_service ?? 0;
+        $operation += $this->operation->doctor_operating_room ?? 0;
+        $operation += $this->operation->doctor_anesthetist ?? 0;
+        $operation += $this->operation->nurse_operating_room ?? 0;
+        $operation += $this->operation->nurse_anesthetist ?? 0;
+        $operation += $this->operation->material ?? 0;
+        $operation += $this->operation->monitoring ?? 0;
+        $operation += $this->operation->nursing_care ?? 0;
+
+        foreach ($this->dispensaryRequest as $dr) {
+            $qty = $dr->qty;
+            $price = $dr->price_sell;
+            $discount = $dr->discount;
+
+            if ($discount > 0) {
+                $totalDiscount = ($discount / 100) * $price;
+                $price -= $totalDiscount;
+            }
+
+            $dispensaryRequest += $price * $qty;
+        }
+
+        foreach ($this->labRequest as $lr) {
+            $consumables = $lr->labRequestDetail->sum('consumables');
+            $hospitalService = $lr->labRequestDetail->sum('hospital_service');
+            $service = $lr->labRequestDetail->sum('service');
+            $lab += $consumables + $hospitalService + $service;
+        }
+
+        $result = (object) [
+            'action' => $action,
+            'dispensaryRequest' => $dispensaryRequest,
+            'lab' => $lab,
+            'radiology' => $radiology,
+            'operation' => $operation
+        ];
+
+        return $result;
+    }
+
+    /**
+     * total
+     *
+     * @return float
+     */
+    public function total()
+    {
+        $total = 0;
+        $total += $this->totalAction();
+
+        $total += $this->radiologyRequest->sum('consumables');
+        $total += $this->radiologyRequest->sum('hospital_service');
+        $total += $this->radiologyRequest->sum('service');
+        $total += $this->radiologyRequest->sum('fee');
+
+        $total += $this->operation->hospital_service ?? 0;
+        $total += $this->operation->doctor_operating_room ?? 0;
+        $total += $this->operation->doctor_anesthetist ?? 0;
+        $total += $this->operation->nurse_operating_room ?? 0;
+        $total += $this->operation->nurse_anesthetist ?? 0;
+        $total += $this->operation->material ?? 0;
+        $total += $this->operation->monitoring ?? 0;
+        $total += $this->operation->nursing_care ?? 0;
+
+        foreach ($this->dispensaryRequest as $dr) {
+            $qty = $dr->qty;
+            $price = $dr->price_sell;
+            $discount = $dr->discount;
+
+            if ($discount > 0) {
+                $totalDiscount = ($discount / 100) * $price;
+                $price -= $totalDiscount;
+            }
+
+            $total += $price * $qty;
+        }
+
+        foreach ($this->labRequest as $lr) {
+            $consumables = $lr->labRequestDetail->sum('consumables');
+            $hospitalService = $lr->labRequestDetail->sum('hospital_service');
+            $service = $lr->labRequestDetail->sum('service');
+            $total += $consumables + $hospitalService + $service;
+        }
+
+        return $total;
+    }
 }

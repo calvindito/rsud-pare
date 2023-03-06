@@ -237,3 +237,32 @@ function textEditor(selector = '.text-editor', placeholder = 'Masukan sesuatu ..
         ]
     });
 }
+
+function datePickerable(selector) {
+    $(selector).daterangepicker({
+        parentEl: '.content-inner',
+        autoUpdateInput: false,
+        showDropdowns: true,
+        ranges: {
+            'Hari Ini': [moment(), moment()],
+            'Kemarin': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '7 Hari Terakhir': [moment().subtract(6, 'days'), moment()],
+            '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
+            'Bulan Ini': [moment().startOf('month'), moment().endOf('month')],
+            'Akhir Bulan': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        locale: {
+            applyLabel: 'Terapkan',
+            cancelLabel: 'Batal',
+            startLabel: 'Dari Tanggal',
+            endLabel: 'Sampai Tanggal',
+            customRangeLabel: 'Pilih Sendiri',
+            daysOfWeek: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat','Sabtu'],
+            monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+            firstDay: 1,
+            format: 'YYYY/MM/DD'
+        }
+    }).on('apply.daterangepicker', function (e, picker) {
+        picker.element.val(picker.startDate.format(picker.locale.format) + ' - ' + picker.endDate.format(picker.locale.format));
+    });
+}

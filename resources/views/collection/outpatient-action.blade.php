@@ -67,7 +67,7 @@
             <h6 class="hstack gap-2 mb-0">Data Tindakan</h6>
         </div>
         <div class="card-body">
-            @if($outpatient->status != 4)
+            @if(in_array($outpatient->status, [1, 3]))
                 <div class="alert alert-warning">
                     Harap klik <b>Simpan Data</b> terlebih dahulu setelah mengisi semua field agar semua aksi yang dibutuhkan muncul dan data tercatat dalam sistem
                 </div>
@@ -118,13 +118,13 @@
                                                 </a>
                                             </div>
                                         @else
-                                            <div class="{{ $outpatient->status != 4 ? 'col-md-6' : 'col-md-12' }}">
+                                            <div class="{{ in_array($outpatient->status, [1, 3]) ? 'col-md-6' : 'col-md-12' }}">
                                                 <a href="{{ url('collection/outpatient/action/print/' . $oa->id . '?slug=payment-letter') }}" target="_blank" class="btn btn-primary btn-sm col-12">
                                                     <i class="ph-printer me-1"></i>
                                                     Surat Bayar
                                                 </a>
                                             </div>
-                                            @if($outpatient->status != 4)
+                                            @if(in_array($outpatient->status, [1, 3]))
                                                 <div class="col-md-6">
                                                     <button type="button" class="btn btn-danger btn-sm col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
                                                 </div>
@@ -137,14 +137,14 @@
                     </div>
                 @endforeach
             </form>
-            @if($outpatient->status != 4)
+            @if(in_array($outpatient->status, [1, 3]))
                 <div class="form-group mb-0">
                     <button type="button" class="btn btn-success col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Data</button>
                 </div>
             @endif
         </div>
     </div>
-    @if($outpatient->status != 4)
+    @if(in_array($outpatient->status, [1, 3]))
         <div class="card">
             <div class="card-body">
                 <div class="text-end">
@@ -168,7 +168,7 @@
     function checkStatus() {
         var status = '{{ $outpatient->status }}';
 
-        if(status != 4) {
+        if(status == 1 || status == 3) {
             $('.form-control').attr('disabled', false);
             $('.form-select').attr('disabled', false);
         } else {

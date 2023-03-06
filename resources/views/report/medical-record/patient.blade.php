@@ -122,7 +122,7 @@
             deferRender: true,
             scrollX: true,
             destroy: true,
-            order: [[0, 'desc']],
+            order: [[1, 'desc']],
             ajax: {
                 url: '{{ url("report/medical-record/patient/datatable") }}',
                 dataType: 'JSON',

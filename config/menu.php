@@ -732,6 +732,13 @@ return [
                         'link' => 'report/medical-record/patient',
                         'sub' => null
                     ],
+                    [
+                        'name' => 'outpatient',
+                        'menu' => 'Rawat Jalan',
+                        'icon' => null,
+                        'link' => 'report/medical-record/outpatient',
+                        'sub' => null
+                    ],
                 ]
             ],
             [

@@ -8,7 +8,7 @@
         <div class="my-auto ms-auto">
             <a href="{{ url('collection/outpatient') }}" class="btn btn-flat-primary">Kembali ke Daftar</a>
             <a href="{{ url()->full() }}" class="btn btn-flat-primary">Refresh</a>
-            @if($outpatient->status != 4)
+            @if(in_array($outpatient->status, [1, 3]))
                 <button type="button" class="btn btn-flat-primary" data-bs-toggle="modal" data-bs-target="#modal-form" onclick="onReset()">
                     <i class="ph-plus-circle me-1"></i>
                     Permintaan Cek
@@ -211,7 +211,7 @@
     </div>
 </div>
 
-@if($outpatient->status != 4)
+@if(in_array($outpatient->status, [1, 3]))
     <div id="modal-form" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
         <div class="modal-dialog modal-dialog-scrollable modal-xl">
             <div class="modal-content">

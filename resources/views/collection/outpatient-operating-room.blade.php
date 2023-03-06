@@ -197,7 +197,7 @@
                                         <div class="form-group">
                                             <input type="hidden" name="item[]" value="{{ true }}">
                                             <div class="row">
-                                                <div class="{{ $outpatient->status != 4 ? 'col-md-11' : 'col-md-12' }}">
+                                                <div class="{{ in_array($outpatient->status, [1, 3]) ? 'col-md-11' : 'col-md-12' }}">
                                                     <select class="form-select select2" name="o_employee_id[]">
                                                         <option value="">-- Pilih --</option>
                                                         @foreach($employee as $e)
@@ -205,7 +205,7 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                @if($outpatient->status != 4)
+                                                @if(in_array($outpatient->status, [1, 3]))
                                                     <div class="col-md-1">
                                                         <button type="button" class="btn btn-light col-12 btn-sm" onclick="removeItem(this)"><i class="ph-trash fw-bold text-danger"></i></button>
                                                     </div>
@@ -218,14 +218,14 @@
                         </div>
                     </div>
                 </div>
-                @if($outpatient->status != 4)
+                @if(in_array($outpatient->status, [1, 3]))
                     <div class="form-group">
                         <button type="button" class="btn btn-teal col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Asisten</button>
                     </div>
                 @endif
             </div>
         </div>
-        @if($outpatient->status != 4)
+        @if(in_array($outpatient->status, [1, 3]))
             <div class="card">
                 <div class="card-body">
                     <div class="text-end">
@@ -255,7 +255,7 @@
     function checkStatus() {
         var status = '{{ $outpatient->status }}';
 
-        if(status != 4) {
+        if(status ==1 1 || status == 3) {
             $('.form-control').attr('disabled', false);
             $('.form-select').attr('disabled', false);
         } else {
