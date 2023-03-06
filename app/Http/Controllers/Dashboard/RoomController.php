@@ -21,8 +21,10 @@ class RoomController extends Controller
         $roomTypeId = $request->has('room_type_id') ? $request->room_type_id : [];
         $roomSpaceId = $request->has('room_space_id') ? $request->room_space_id : [];
         $typeId = $request->has('type_id') ? $request->type_id : [];
+        $search = $request->has('search') ? $request->search : null;
+        $status = $request->has('status') ? $request->status : null;
 
-        $bed = Bed::where(function ($query) use ($unitId, $roomId, $classTypeId, $roomTypeId, $roomSpaceId, $typeId) {
+        $bed = Bed::where(function ($query) use ($unitId, $roomId, $classTypeId, $roomTypeId, $roomSpaceId, $typeId, $search, $status) {
             if ($unitId || $roomId || $classTypeId || $roomTypeId || $roomSpaceId || $typeId) {
                 if ($typeId) {
                     $query->whereIn('type', $typeId);
@@ -60,7 +62,25 @@ class RoomController extends Controller
                     });
                 }
             }
-        })->where('type', '!=', 4)->paginate(8)->appends($request->except('page'));
+
+            if ($search || $status) {
+                $query->whereHas('inpatient', function ($query) use ($search, $status) {
+                    if ($status) {
+                        if ($status == 'already-occupied') {
+                            $query->havingRaw('COUNT(id) > 0');
+                        } else if ($status == 'empty') {
+                            $query->havingRaw('COUNT(id) < 1');
+                        }
+                    }
+
+                    $query->whereHas('patient', function ($query) use ($search) {
+                        $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'")
+                            ->orWhere('name', 'like', "%$search%")
+                            ->orWhere('identity_number', 'like', "%$search%");
+                    });
+                });
+            }
+        })->paginate(8)->appends($request->except('page'));
 
         $type = [
             [
@@ -74,6 +94,10 @@ class RoomController extends Controller
             [
                 'id' => 3,
                 'name' => 'Campuran'
+            ],
+            [
+                'id' => 4,
+                'name' => 'Antrian'
             ],
         ];
 
@@ -91,6 +115,8 @@ class RoomController extends Controller
             'roomSpaceId' => $roomSpaceId,
             'typeId' => $typeId,
             'bed' => $bed,
+            'search' => $search,
+            'status' => $status,
             'content' => 'dashboard.room'
         ];
 

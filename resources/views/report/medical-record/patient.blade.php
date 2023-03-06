@@ -23,19 +23,13 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label class="form-label">Wilayah</label>
                         <select class="form-select" name="location_id" id="location_id" onchange="loadData()"></select>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label class="form-label">Tanggal Terdaftar</label>
-                        <input type="date" class="form-control" name="date_of_register" max="{{ date('Y-m-d') }}" onchange="loadData()">
-                    </div>
-                </div>
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="form-group">
                         <label class="form-label">Status Pernikahan</label>
                         <select class="form-select" name="marital_status" id="marital_status" onchange="loadData()">
@@ -78,6 +72,12 @@
                             <option value="3">AB</option>
                             <option value="4">O</option>
                         </select>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="form-label">Tanggal Terdaftar</label>
+                        <input type="date" class="form-control" name="date_of_register" max="{{ date('Y-m-d') }}" onchange="loadData()">
                     </div>
                 </div>
             </div>

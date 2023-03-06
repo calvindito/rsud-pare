@@ -232,6 +232,9 @@ class InpatientController extends Controller
                         });
                     });
                 })
+                ->whereHas('inpatient', function ($query) {
+                    $query->where('status', 1)->havingRaw('COUNT(id) < 1');
+                })
                 ->orderBy('name')
                 ->get();
         }
