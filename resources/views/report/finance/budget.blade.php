@@ -48,11 +48,11 @@
                         @endphp
                         @foreach($chartOfAccount as $coa)
                             @php
-                                $sumNominal = $coa->budget()->when($year, function($query, $year) {
+                                $sumNominal = $coa->budgetDetail()->when($year, function($query, $year) {
                                     $query->whereYear('date', $year);
                                 })->sum('nominal');
 
-                                $sumLimitBlud = $coa->budget()->when($year, function($query, $year) {
+                                $sumLimitBlud = $coa->budgetDetail()->when($year, function($query, $year) {
                                     $query->whereYear('date', $year);
                                 })->sum('limit_blud');
 

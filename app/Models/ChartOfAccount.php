@@ -68,9 +68,9 @@ class ChartOfAccount extends Model
      *
      * @return void
      */
-    public function budget()
+    public function budgetDetail()
     {
-        return $this->hasMany(Budget::class);
+        return $this->hasMany(BudgetDetail::class);
     }
 
     /**
