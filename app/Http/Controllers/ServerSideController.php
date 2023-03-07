@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bed;
 use App\Models\City;
 use App\Models\Item;
 use App\Models\Patient;
@@ -86,5 +87,23 @@ class ServerSideController extends Controller
             ->toArray();
 
         return response()->json($data);
+    }
+
+    public function bed(Request $request)
+    {
+        $search = $request->search;
+        $response = [];
+        $data = Bed::when(!empty($search), function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%");
+        })->get();
+
+        foreach ($data as $d) {
+            $response[] = [
+                'id' => $d->id,
+                'name' => $d->name . ' (' . $d->type_format_result . ')'
+            ];
+        }
+
+        return response()->json($response);
     }
 }

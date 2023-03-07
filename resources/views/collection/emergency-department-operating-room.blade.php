@@ -228,10 +228,6 @@
             <div class="card">
                 <div class="card-body">
                     <div class="text-end">
-                        <a href="{{ url('collection/emergency-department') }}" class="btn btn-danger">
-                            <i class="ph-x me-1"></i>
-                            Batalkan Perubahan
-                        </a>
                         <button type="button" class="btn btn-warning" onclick="submitted()">
                             <i class="ph-floppy-disk me-2"></i>
                             Simpan Data

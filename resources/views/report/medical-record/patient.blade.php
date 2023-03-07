@@ -17,67 +17,82 @@
     </div>
 </div>
 <div class="content pt-0">
-    <div class="card">
-        <div class="card-header">
-            <h6 class="hstack gap-2 mb-0">Filter</h6>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">Wilayah</label>
-                        <select class="form-select" name="location_id" id="location_id" onchange="loadData()"></select>
+    <div class="accordion mb-3" id="accordion_collapsed">
+        <div class="accordion-item bg-white">
+            <h2 class="accordion-header">
+                <button type="button" class="accordion-button fw-semibold collapsed fs-6" data-bs-toggle="collapse" data-bs-target="#collapsed-filter">Filter Data</button>
+            </h2>
+            <div id="collapsed-filter" class="accordion-collapse collapse bg-white" data-bs-parent="#accordion_collapsed">
+                <div class="accordion-body">
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Wilayah</label>
+                        <div class="col-lg-10">
+                            <select class="form-select" name="location_id" id="location_id"></select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">Status Pernikahan</label>
-                        <select class="form-select" name="marital_status" id="marital_status" onchange="loadData()">
-                            <option value="">Semua</option>
-                            <option value="1">Belum Menikah</option>
-                            <option value="2">Menikah</option>
-                            <option value="3">Cerai Hidup</option>
-                            <option value="4">Cerai Mati</option>
-                        </select>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Status Pernikahan</label>
+                        <div class="col-lg-10">
+                            <select class="form-select" name="marital_status" id="marital_status">
+                                <option value="">Semua</option>
+                                <option value="1">Belum Menikah</option>
+                                <option value="2">Menikah</option>
+                                <option value="3">Cerai Hidup</option>
+                                <option value="4">Cerai Mati</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">Agama</label>
-                        <select class="form-select" name="religion_id" id="religion_id" onchange="loadData()">
-                            <option value="">Semua</option>
-                            @foreach($religion as $r)
-                                <option value="{{ $r->id }}">{{ $r->name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Agama</label>
+                        <div class="col-lg-10">
+                            <select class="form-select" name="religion_id" id="religion_id">
+                                <option value="">Semua</option>
+                                @foreach($religion as $r)
+                                    <option value="{{ $r->id }}">{{ $r->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">Jenis Kelamin</label>
-                        <select class="form-select" name="gender" id="gender" onchange="loadData()">
-                            <option value="">Semua</option>
-                            <option value="1">Laki - Laki</option>
-                            <option value="2">Perempuan</option>
-                        </select>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Jenis Kelamin</label>
+                        <div class="col-lg-10">
+                            <select class="form-select" name="gender" id="gender">
+                                <option value="">Semua</option>
+                                <option value="1">Laki - Laki</option>
+                                <option value="2">Perempuan</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">Golongan Darah</label>
-                        <select class="form-select" name="blood_group" id="blood_group" onchange="loadData()">
-                            <option value="">Semua</option>
-                            <option value="1">A</option>
-                            <option value="2">B</option>
-                            <option value="3">AB</option>
-                            <option value="4">O</option>
-                        </select>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Golongan Darah</label>
+                        <div class="col-lg-10">
+                            <select class="form-select" name="blood_group" id="blood_group">
+                                <option value="">Semua</option>
+                                <option value="1">A</option>
+                                <option value="2">B</option>
+                                <option value="3">AB</option>
+                                <option value="4">O</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">Tanggal Terdaftar</label>
-                        <input type="date" class="form-control" name="date_of_register" max="{{ date('Y-m-d') }}" onchange="loadData()">
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Tanggal Terdaftar</label>
+                        <div class="col-lg-10">
+                            <input type="date" class="form-control" name="date_of_register" max="{{ date('Y-m-d') }}">
+                        </div>
+                    </div>
+                    <div class="form-group"><hr></div>
+                    <div class="form-group mb-0">
+                        <div class="text-end">
+                            <a href="{{ url()->current() }}" class="btn btn-danger" onclick="onLoading('show', '.content')">
+                                <i class="ph-arrows-counter-clockwise me-1"></i>
+                                Reset Filter
+                            </a>
+                            <button type="button" class="btn btn-primary" onclick="loadData()">
+                                <i class="ph-check-square-offset me-1"></i>
+                                Terapkan
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

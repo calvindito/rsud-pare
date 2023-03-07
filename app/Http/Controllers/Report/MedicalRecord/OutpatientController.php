@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Report\MedicalRecord;
 use Carbon\Carbon;
 use App\Models\Unit;
 use App\Helpers\Simrs;
+use App\Models\Doctor;
 use App\Models\Dispensary;
 use App\Models\Outpatient;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class OutpatientController extends Controller
         $data = [
             'unit' => Unit::where('type', 2)->orderBy('name')->get(),
             'dispensary' => Dispensary::all(),
-            'doctor' => Dispensary::all(),
+            'doctor' => Doctor::all(),
             'type' => Simrs::nursingType(),
             'content' => 'report.medical-record.outpatient'
         ];
@@ -144,7 +145,7 @@ class OutpatientController extends Controller
 
         $data = [
             'outpatient' => $outpatient,
-            'soap' => $outpatient->outpatientSoap(),
+            'soap' => $outpatient->outpatientSoap,
             'diagnosis' => $outpatient->outpatientDiagnosis,
             'laboratorium' => $outpatient->labRequest,
             'radiology' => $outpatient->radiologyRequest,

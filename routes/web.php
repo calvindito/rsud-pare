@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
         Route::get('location', 'ServerSideController@location');
         Route::get('patient', 'ServerSideController@patient');
         Route::get('item', 'ServerSideController@item');
+        Route::get('bed', 'ServerSideController@bed');
     });
 
     Route::middleware('verify.permission')->group(function () {
@@ -758,6 +759,12 @@ Route::middleware('auth')->group(function () {
                     Route::get('/', 'OutpatientController@index');
                     Route::get('datatable', 'OutpatientController@datatable');
                     Route::get('detail/{id}', 'OutpatientController@detail');
+                });
+
+                Route::prefix('inpatient')->group(function () {
+                    Route::get('/', 'InpatientController@index');
+                    Route::get('datatable', 'InpatientController@datatable');
+                    Route::get('detail/{id}', 'InpatientController@detail');
                 });
             });
 

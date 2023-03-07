@@ -389,6 +389,7 @@ class Inpatient extends Model
      */
     public function costBreakdown()
     {
+        $action = 0;
         $actionService = 0;
         $actionOperative = 0;
         $actionNonOperative = 0;
@@ -469,7 +470,16 @@ class Inpatient extends Model
             $lab += $consumables + $hospitalService + $service;
         }
 
+        $action += $actionService;
+        $action += $actionOperative;
+        $action += $actionNonOperative;
+        $action += $actionSupporting;
+        $action += $actionHealth;
+        $action += $actionOther;
+        $action += $actionPackage;
+
         $result = (object) [
+            'action' => $action,
             'actionService' => $actionService,
             'actionOperative' => $actionOperative,
             'actionNonOperative' => $actionNonOperative,

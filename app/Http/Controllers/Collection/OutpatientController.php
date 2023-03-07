@@ -1038,7 +1038,7 @@ class OutpatientController extends Controller
                 'name.required' => 'nama tidak boleh kosong',
                 'gender.required' => 'mohon memilih jenis kelamin',
                 'date_of_birth.required' => 'tanggal lahir tidak boleh kosong',
-                'village.required' => 'nama tidak boleh kosong',
+                'village.required' => 'desa tidak boleh kosong',
                 'address.required' => 'alamat tidak boleh kosong',
                 'unit_id.required' => 'mohon memilih poli',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',

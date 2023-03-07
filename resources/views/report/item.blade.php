@@ -17,43 +17,58 @@
     </div>
 </div>
 <div class="content pt-0">
-    <div class="card">
-        <div class="card-header">
-            <h6 class="hstack gap-2 mb-0">Filter</h6>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">Distributor</label>
-                        <select class="form-select select2" name="distributor_id" id="distributor_id" onchange="loadData()">
-                            <option value="">Semua</option>
-                            @foreach($distributor as $d)
-                                <option value="{{ $d->id }}">{{ $d->name }}</option>
-                            @endforeach
-                        </select>
+    <div class="accordion mb-3" id="accordion_collapsed">
+        <div class="accordion-item bg-white">
+            <h2 class="accordion-header">
+                <button type="button" class="accordion-button fw-semibold collapsed fs-6" data-bs-toggle="collapse" data-bs-target="#collapsed-filter">Filter Data</button>
+            </h2>
+            <div id="collapsed-filter" class="accordion-collapse collapse bg-white" data-bs-parent="#accordion_collapsed">
+                <div class="accordion-body">
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Distributor</label>
+                        <div class="col-lg-10">
+                            <select class="form-select select2" name="distributor_id" id="distributor_id">
+                                <option value="">Semua</option>
+                                @foreach($distributor as $d)
+                                    <option value="{{ $d->id }}">{{ $d->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">Pabrik</label>
-                        <select class="form-select select2" name="factory_id" id="factory_id" onchange="loadData()">
-                            <option value="">Semua</option>
-                            @foreach($factory as $f)
-                                <option value="{{ $f->id }}">{{ $f->name }}</option>
-                            @endforeach
-                        </select>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Pabrik</label>
+                        <div class="col-lg-10">
+                            <select class="form-select select2" name="factory_id" id="factory_id">
+                                <option value="">Semua</option>
+                                @foreach($factory as $f)
+                                    <option value="{{ $f->id }}">{{ $f->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label class="form-label">Stok</label>
-                        <select class="form-select" name="stock" id="stock" onchange="loadData()">
-                            <option value="">Semua</option>
-                            <option value="many">Lebih Dari 1000</option>
-                            <option value="available">Lebih Dari 0</option>
-                            <option value="empty">Kosong</option>
-                        </select>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-2">Stok</label>
+                        <div class="col-lg-10">
+                            <select class="form-select" name="stock" id="stock">
+                                <option value="">Semua</option>
+                                <option value="many">Lebih Dari 1000</option>
+                                <option value="available">Lebih Dari 0</option>
+                                <option value="empty">Kosong</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group"><hr></div>
+                    <div class="form-group mb-0">
+                        <div class="text-end">
+                            <a href="{{ url()->current() }}" class="btn btn-danger" onclick="onLoading('show', '.content')">
+                                <i class="ph-arrows-counter-clockwise me-1"></i>
+                                Reset Filter
+                            </a>
+                            <button type="button" class="btn btn-primary" onclick="loadData()">
+                                <i class="ph-check-square-offset me-1"></i>
+                                Terapkan
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

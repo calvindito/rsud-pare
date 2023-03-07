@@ -739,6 +739,13 @@ return [
                         'link' => 'report/medical-record/outpatient',
                         'sub' => null
                     ],
+                    [
+                        'name' => 'inpatient',
+                        'menu' => 'Rawat Inap',
+                        'icon' => null,
+                        'link' => 'report/medical-record/inpatient',
+                        'sub' => null
+                    ],
                 ]
             ],
             [

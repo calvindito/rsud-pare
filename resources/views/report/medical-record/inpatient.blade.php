@@ -2,7 +2,7 @@
     <div class="page-header-content d-flex">
         <div class="page-title">
             <h5 class="mb-0">
-                Laporan - Rekam Medis - <span class="fw-normal">Rawat Jalan</span>
+                Laporan - Rekam Medis - <span class="fw-normal">Rawat Inap</span>
             </h5>
         </div>
         <div class="my-auto ms-auto">
@@ -31,12 +31,40 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-1">Poli</label>
+                        <label class="col-form-label col-lg-1">Kelas</label>
                         <div class="col-md-11">
-                            <select class="form-select select2-form" name="unit_id" id="unit_id">
+                            <select class="form-select select2-form" name="class_type_id" id="class_type_id">
                                 <option value=""></option>
-                                @foreach($unit as $u)
-                                    <option value="{{ $u->id }}">{{ $u->name }}</option>
+                                @foreach($classType as $ct)
+                                    <option value="{{ $ct->id }}">{{ $ct->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-1">Kamar</label>
+                        <div class="col-md-11">
+                            <select class="form-select select2-form" name="room_type_id" id="room_type_id">
+                                <option value=""></option>
+                                @foreach($roomType as $ri)
+                                    <option value="{{ $ri->id }}">{{ $ri->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-1">Tempat Tidur</label>
+                        <div class="col-md-11">
+                            <select class="form-select" name="bed_id" id="bed_id"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-lg-1">UPF</label>
+                        <div class="col-md-11">
+                            <select class="form-select select2-form" name="functional_service_id" id="functional_service_id">
+                                <option value=""></option>
+                                @foreach($functionalService as $fs)
+                                    <option value="{{ $fs->id }}">{{ $fs->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -88,20 +116,17 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-1">Kehadiran</label>
+                        <label class="col-form-label col-lg-1">Hasil</label>
                         <div class="col-md-11">
-                            <select class="form-select select2-form" name="presence" id="presence">
+                            <select class="form-select select2-form" name="ending" id="ending">
                                 <option value="">Semua</option>
-                                <option value="1">Datang Sendiri</option>
-                                <option value="2">Rujukan Dari Puskesmas</option>
-                                <option value="3">Rujukan Dokter</option>
-                                <option value="4">Rujukan Dari Rumah Sakit Lain</option>
-                                <option value="5">Lahir Didalam Rumah Sakit</option>
-                                <option value="6">Rujukan Dari Bidan</option>
-                                <option value="7">Rujukan Klinik</option>
-                                <option value="8">Rujukan Balai Pengobatan</option>
-                                <option value="9">Diantar Polisi</option>
-                                <option value="10">Diantar Ambulans</option>
+                                <option value="1">Sembuh</option>
+                                <option value="2">Rujuk</option>
+                                <option value="3">Pulang Paksa</option>
+                                <option value="4">Meninggal < 48 Jam</option>
+                                <option value="5">Meniggal > 48 Jam</option>
+                                <option value="6">Tidak Diketahui</option>
+                                <option value="7">Konsul ke Poli Lain</option>
                             </select>
                         </div>
                     </div>
@@ -143,12 +168,15 @@
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
                         <th nowrap>Kode</th>
                         <th nowrap>Pasien</th>
-                        <th nowrap>Poli</th>
-                        <th nowrap>Apotek</th>
+                        <th nowrap>Kelas</th>
+                        <th nowrap>Kamar</th>
+                        <th nowrap>Tempat Tidur</th>
+                        <th nowrap>UPF</th>
                         <th nowrap>Dokter</th>
+                        <th nowrap>Apotek</th>
                         <th nowrap>Golongan</th>
                         <th nowrap>Tanggal</th>
-                        <th nowrap>Kehadiran</th>
+                        <th nowrap>Hasil</th>
                         <th class="text-center" nowrap>Pembayaran</th>
                         <th class="text-center" nowrap>Status</th>
                     </tr>
@@ -164,6 +192,7 @@
         sidebarMini();
         datePickerable('.daterange-picker');
         select2Ajax('#patient_id', 'patient', false);
+        select2Ajax('#bed_id', 'bed', false);
 
         $('.select2-form').select2({
             placeholder: '-- Pilih --'
@@ -183,17 +212,20 @@
             destroy: true,
             order: [[1, 'desc']],
             ajax: {
-                url: '{{ url("report/medical-record/outpatient/datatable") }}',
+                url: '{{ url("report/medical-record/inpatient/datatable") }}',
                 dataType: 'JSON',
                 data: {
                     patient_id: $('#patient_id').val(),
-                    unit_id: $('#unit_id').val(),
-                    dispensary_id: $('#dispensary_id').val(),
+                    class_type_id: $('#class_type_id').val(),
+                    room_type_id: $('#room_type_id').val(),
+                    bed_id: $('#bed_id').val(),
+                    functional_service_id: $('#functional_service_id').val(),
                     doctor_id: $('#doctor_id').val(),
+                    dispensary_id: $('#dispensary_id').val(),
                     type: $('#type').val(),
                     date: $('#date').val(),
                     column_date: $('#column_date').val(),
-                    presence: $('#presence').val(),
+                    ending: $('#ending').val(),
                     status: $('#status').val()
                 },
                 beforeSend: function() {
@@ -216,12 +248,15 @@
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
                 { data: 'code', name: 'id', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'patient_name', name: 'patient_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'unit_name', name: 'unit_name', orderable: false, searchable: true, className: 'align-middle' },
-                { data: 'dispensary_name', name: 'dispensary_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'class_type_name', name: 'class_type_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'room_type_name', name: 'room_type_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'bed_name', name: 'bed_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'functional_service_name', name: 'functional_service_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'doctor_name', name: 'doctor_name', orderable: false, searchable: true, className: 'align-middle' },
+                { data: 'dispensary_name', name: 'dispensary_name', orderable: false, searchable: true, className: 'align-middle' },
                 { data: 'type_format_result', name: 'type', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'date', name: 'date', orderable: false, searchable: false, className: 'align-middle' },
-                { data: 'presence_format_result', name: 'presence', orderable: true, searchable: false, className: 'align-middle' },
+                { data: 'ending_format_result', name: 'ending', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'paid', name: 'paid', orderable: true, searchable: false, className: 'align-middle text-center' },
                 { data: 'status', name: 'status', orderable: true, searchable: false, className: 'align-middle text-center' },
             ]

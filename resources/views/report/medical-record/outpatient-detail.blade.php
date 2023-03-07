@@ -93,6 +93,10 @@
                                     <td>{{ $outpatient->patient->name ?? '-' }}</td>
                                 </tr>
                                 <tr>
+                                    <th class="bg-light" width="25%">No RM</th>
+                                    <td>{{ $outpatient->patient->no_medical_record ?? '-' }}</td>
+                                </tr>
+                                <tr>
                                     <th class="bg-light" width="25%">Poli</th>
                                     <td>{{ $outpatient->unit->name ?? '-' }}</td>
                                 </tr>
@@ -196,41 +200,41 @@
                             <div class="tab-pane fade show active" id="tabs-soap-1">
                                 <div class="mb-5 mt-5">
                                     <div class="fw-semibold border-bottom pb-2 mb-3 fs-5">Askep</div>
-                                    {!! $soap->where('type', 1)->value ?? 'Tidak Ada' !!}
+                                    {!! $soap->firstWhere('type', 1)->value ?? 'Tidak Ada' !!}
                                 </div>
                                 <div class="mb-5">
                                     <div class="fw-semibold border-bottom pb-2 mb-3 fs-5">Subjective</div>
-                                    {!! $soap->where('type', 1)->subjective ?? 'Tidak Ada' !!}
+                                    {!! $soap->firstWhere('type', 1)->subjective ?? 'Tidak Ada' !!}
                                 </div>
                                 <div class="mb-5">
                                     <div class="fw-semibold border-bottom pb-2 mb-3 fs-5">Objective</div>
-                                    {!! $soap->where('type', 1)->objective ?? 'Tidak Ada' !!}
+                                    {!! $soap->firstWhere('type', 1)->objective ?? 'Tidak Ada' !!}
                                 </div>
                                 <div class="mb-5">
                                     <div class="fw-semibold border-bottom pb-2 mb-3 fs-5">Assessment</div>
-                                    {!! $soap->where('type', 1)->assessment ?? 'Tidak Ada' !!}
+                                    {!! $soap->firstWhere('type', 1)->assessment ?? 'Tidak Ada' !!}
                                 </div>
                                 <div class="mb-5">
                                     <div class="fw-semibold border-bottom pb-2 mb-3 fs-5">Planning</div>
-                                    {!! $soap->where('type', 1)->planning ?? 'Tidak Ada' !!}
+                                    {!! $soap->firstWhere('type', 1)->planning ?? 'Tidak Ada' !!}
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="tabs-soap-2">
                                 <div class="mb-5 mt-5">
                                     <div class="fw-semibold border-bottom pb-2 mb-3 fs-5">Subjective</div>
-                                    {!! $soap->where('type', 2)->subjective ?? 'Tidak Ada' !!}
+                                    {!! $soap->firstWhere('type', 2)->subjective ?? 'Tidak Ada' !!}
                                 </div>
                                 <div class="mb-5">
                                     <div class="fw-semibold border-bottom pb-2 mb-3 fs-5">Objective</div>
-                                    {!! $soap->where('type', 2)->objective ?? 'Tidak Ada' !!}
+                                    {!! $soap->firstWhere('type', 2)->objective ?? 'Tidak Ada' !!}
                                 </div>
                                 <div class="mb-5">
                                     <div class="fw-semibold border-bottom pb-2 mb-3 fs-5">Assessment</div>
-                                    {!! $soap->where('type', 2)->assessment ?? 'Tidak Ada' !!}
+                                    {!! $soap->firstWhere('type', 2)->assessment ?? 'Tidak Ada' !!}
                                 </div>
                                 <div class="mb-5">
                                     <div class="fw-semibold border-bottom pb-2 mb-3 fs-5">Planning</div>
-                                    {!! $soap->where('type', 2)->planning ?? 'Tidak Ada' !!}
+                                    {!! $soap->firstWhere('type', 2)->planning ?? 'Tidak Ada' !!}
                                 </div>
                             </div>
                         </div>
