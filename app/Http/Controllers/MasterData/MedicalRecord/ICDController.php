@@ -39,11 +39,7 @@ class ICDController extends Controller
             ->editColumn('created_at', '{{ date("Y-m-d H:i:s", strtotime($created_at)) }}')
             ->editColumn('updated_at', '{{ date("Y-m-d H:i:s", strtotime($updated_at)) }}')
             ->addColumn('dtd_name', function (ICD $query) {
-                $dtdName = null;
-
-                if (isset($query->dtd)) {
-                    $dtdName = $query->dtd->name;
-                }
+                $dtdName = $query->dtd->name ?? null;
 
                 return $dtdName;
             })

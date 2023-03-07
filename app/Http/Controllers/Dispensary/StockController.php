@@ -54,35 +54,17 @@ class StockController extends Controller
                 return $query->status == 2 ? $query->sold() : '-';
             })
             ->addColumn('dispensary_name', function (DispensaryItemStock $query) {
-                $dispensaryName = null;
-
-                if (isset($query->dispensaryItem)) {
-                    if (isset($query->dispensaryItem->dispensary)) {
-                        $dispensaryName = $query->dispensaryItem->dispensary->name;
-                    }
-                }
+                $dispensaryName = $query->dispensaryItem->dispensary->name ?? null;
 
                 return $dispensaryName;
             })
             ->addColumn('item_name', function (DispensaryItemStock $query) {
-                $itemName = null;
-
-                if (isset($query->dispensaryItem)) {
-                    if (isset($query->dispensaryItem->item)) {
-                        $itemName = $query->dispensaryItem->item->name;
-                    }
-                }
+                $itemName = $query->dispensaryItem->item->name ?? null;
 
                 return $itemName;
             })
             ->addColumn('item_type', function (DispensaryItemStock $query) {
-                $itemType = null;
-
-                if (isset($query->dispensaryItem)) {
-                    if (isset($query->dispensaryItem->item)) {
-                        $itemType = $query->dispensaryItem->item->type_format_result;
-                    }
-                }
+                $itemType = $query->dispensaryItem->item->type_format_result ?? null;
 
                 return $itemType;
             })

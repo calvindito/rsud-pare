@@ -41,11 +41,7 @@ class NonOperativeController extends Controller
             ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
             ->editColumn('emergency_care', '{{ Simrs::formatRupiah($emergency_care) }}')
             ->addColumn('class_type_name', function (ActionNonOperative $query) {
-                $classTypeName = null;
-
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
-                }
+                $classTypeName = $query->classType->name ?? null;
 
                 return $classTypeName;
             })

@@ -47,29 +47,17 @@ class ActionController extends Controller
             ->editColumn('created_at', '{{ date("Y-m-d H:i:s", strtotime($created_at)) }}')
             ->editColumn('updated_at', '{{ date("Y-m-d H:i:s", strtotime($updated_at)) }}')
             ->addColumn('unit_name', function (UnitAction $query) {
-                $unitName = null;
-
-                if (isset($query->unit)) {
-                    $unitName = $query->unit->name;
-                }
+                $unitName = $query->unit->name ?? null;
 
                 return $unitName;
             })
             ->addColumn('action_name', function (UnitAction $query) {
-                $actionName = null;
-
-                if (isset($query->action)) {
-                    $actionName = $query->action->name;
-                }
+                $actionName = $query->action->name ?? null;
 
                 return $actionName;
             })
             ->addColumn('action_fee', function (UnitAction $query) {
-                $actionFee = 0;
-
-                if (isset($query->action)) {
-                    $actionFee = $query->action->fee;
-                }
+                $actionFee = $query->action->fee ?? 0;
 
                 return Simrs::formatRupiah($actionFee);
             })

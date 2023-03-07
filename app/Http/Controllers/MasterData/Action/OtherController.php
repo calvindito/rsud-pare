@@ -41,11 +41,7 @@ class OtherController extends Controller
             ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
             ->editColumn('service', '{{ Simrs::formatRupiah($service) }}')
             ->addColumn('class_type_name', function (ActionOther $query) {
-                $classTypeName = null;
-
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
-                }
+                $classTypeName = $query->classType->name ?? null;
 
                 return $classTypeName;
             })

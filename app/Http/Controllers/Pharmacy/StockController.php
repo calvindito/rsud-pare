@@ -44,20 +44,12 @@ class StockController extends Controller
                 return $query->cut();
             })
             ->addColumn('item_name', function (ItemStock $query) {
-                $itemName = null;
-
-                if (isset($query->item)) {
-                    $itemName = $query->item->name;
-                }
+                $itemName = $query->item->name ?? null;
 
                 return $itemName;
             })
             ->addColumn('item_type_format_result', function (ItemStock $query) {
-                $itemTypeFormatResultName = null;
-
-                if (isset($query->item)) {
-                    $itemTypeFormatResultName = $query->item->type_format_result;
-                }
+                $itemTypeFormatResultName = $query->item->type_format_result ?? null;
 
                 return $itemTypeFormatResultName;
             })

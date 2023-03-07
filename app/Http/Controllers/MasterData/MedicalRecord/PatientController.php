@@ -41,11 +41,7 @@ class PatientController extends Controller
                 }
             })
             ->addColumn('district_name', function (Patient $query) {
-                $districtName = null;
-
-                if (isset($query->district)) {
-                    $districtName = $query->district->name;
-                }
+                $districtName = $query->district->name ?? null;
 
                 return $districtName;
             })

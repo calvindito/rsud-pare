@@ -41,20 +41,12 @@ class BedController extends Controller
                 }
             })
             ->addColumn('class_type_name', function (HealthServiceBed $query) {
-                $classTypeName = null;
-
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
-                }
+                $classTypeName = $query->classType->name ?? null;
 
                 return $classTypeName;
             })
             ->addColumn('functional_service_name', function (HealthServiceBed $query) {
-                $functionalServiceName = null;
-
-                if (isset($query->functionalService)) {
-                    $functionalServiceName = $query->functionalService->name;
-                }
+                $functionalServiceName = $query->functionalService->name ?? null;
 
                 return $functionalServiceName;
             })

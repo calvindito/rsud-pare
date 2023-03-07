@@ -54,20 +54,12 @@ class InpatientController extends Controller
                 return Simrs::formatRupiah($query->totalAction());
             })
             ->addColumn('patient_name', function (Inpatient $query) {
-                $patientName = null;
-
-                if (isset($query->patient)) {
-                    $patientName = $query->patient->name;
-                }
+                $patientName = $query->patient->name ?? null;
 
                 return $patientName;
             })
             ->addColumn('patient_id', function (Inpatient $query) {
-                $patientId = null;
-
-                if (isset($query->patient)) {
-                    $patientId = $query->patient->no_medical_record;
-                }
+                $patientId = $query->patient->no_medical_record ?? null;
 
                 return $patientId;
             })

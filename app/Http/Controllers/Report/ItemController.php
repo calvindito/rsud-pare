@@ -71,11 +71,7 @@ class ItemController extends Controller
                 return '<button type="button" class="btn btn-light btn-sm" onclick="onPopover(this, ' . "'$html'" . ')">Klik Disini</button>';
             })
             ->addColumn('distributor_name', function (Item $query) {
-                $distributorName = null;
-
-                if (isset($query->distributor)) {
-                    $distributorName = $query->distributor->name;
-                }
+                $distributorName = $query->distributor->name ?? null;
 
                 return $distributorName;
             })

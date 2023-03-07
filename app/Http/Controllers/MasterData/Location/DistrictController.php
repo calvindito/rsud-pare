@@ -33,11 +33,7 @@ class DistrictController extends Controller
                 }
             })
             ->addColumn('city_name', function (District $query) {
-                $cityName = null;
-
-                if (isset($query->city)) {
-                    $cityName = $query->city->name;
-                }
+                $cityName = $query->city->name ?? null;
 
                 return $cityName;
             })

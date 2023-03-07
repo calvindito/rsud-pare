@@ -41,11 +41,7 @@ class MedicalServiceController extends Controller
                 return $query->status();
             })
             ->addColumn('class_type_name', function (MedicalService $query) {
-                $classTypeName = null;
-
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
-                }
+                $classTypeName = $query->classType->name ?? null;
 
                 return $classTypeName;
             })

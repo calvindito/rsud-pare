@@ -38,11 +38,7 @@ class FactoryController extends Controller
                 }
             })
             ->addColumn('city_name', function (Factory $query) {
-                $cityName = null;
-
-                if (isset($query->city)) {
-                    $cityName = $query->city->name;
-                }
+                $cityName = $query->city->name ?? null;
 
                 return $cityName;
             })

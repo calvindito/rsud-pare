@@ -40,67 +40,37 @@ class ItemController extends Controller
                 }
             })
             ->addColumn('dispensary_name', function (DispensaryItem $query) {
-                $dispensaryName = null;
-
-                if (isset($query->dispensary)) {
-                    $dispensaryName = $query->dispensary->name;
-                }
+                $dispensaryName = $query->dispensary->name ?? null;
 
                 return $dispensaryName;
             })
             ->addColumn('item_code', function (DispensaryItem $query) {
-                $itemCode = null;
-
-                if (isset($query->item)) {
-                    $itemCode = $query->item->code;
-                }
+                $itemCode = $query->item->code ?? null;
 
                 return $itemCode;
             })
             ->addColumn('item_code_t', function (DispensaryItem $query) {
-                $itemCodeT = null;
-
-                if (isset($query->item)) {
-                    $itemCodeT = $query->item->code_t;
-                }
+                $itemCodeT = $query->item->code_t ?? null;
 
                 return $itemCodeT;
             })
             ->addColumn('item_code_type', function (DispensaryItem $query) {
-                $itemCodeType = null;
-
-                if (isset($query->item)) {
-                    $itemCodeType = $query->item->code_type;
-                }
+                $itemCodeType = $query->item->code_type ?? null;
 
                 return $itemCodeType;
             })
             ->addColumn('item_unit_name', function (DispensaryItem $query) {
-                $itemUnitName = null;
-
-                if (isset($query->item)) {
-                    if (isset($query->item->itemUnit)) {
-                        $itemUnitName = $query->item->itemUnit->name;
-                    }
-                }
+                $itemUnitName = $query->item->itemUnit->name ?? null;
 
                 return $itemUnitName;
             })
             ->addColumn('item_type', function (DispensaryItem $query) {
-                $itemType = null;
-
-                if (isset($query->item)) {
-                    $itemType = $query->item->type_format_result;
-                }
+                $itemType = $query->item->type_format_result ?? null;
 
                 return $itemType;
             })
             ->addColumn('item_name', function (DispensaryItem $query) {
-                $itemName = null;
-
-                if (isset($query->item)) {
-                    $itemName = $query->item->name;
-                }
+                $itemName = $query->item->name ?? null;
 
                 return $itemName;
             })

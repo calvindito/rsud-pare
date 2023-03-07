@@ -44,20 +44,12 @@ class UserController extends Controller
                 return $query->status();
             })
             ->addColumn('employee_name', function (User $query) {
-                $employeeName = null;
-
-                if (isset($query->employee)) {
-                    $employeeName = $query->employee->name;
-                }
+                $employeeName = $query->employee->name ?? null;
 
                 return $employeeName;
             })
             ->addColumn('role_name', function (User $query) {
-                $roleName = null;
-
-                if (isset($query->role)) {
-                    $roleName = $query->role->name;
-                }
+                $roleName = $query->role->name ?? null;
 
                 return $roleName;
             })

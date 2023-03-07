@@ -36,11 +36,7 @@ class DataController extends Controller
                 }
             })
             ->addColumn('dispensary_location_name', function (Dispensary $query) {
-                $dispensaryLocationName = null;
-
-                if ($query->dispensaryLocation) {
-                    $dispensaryLocationName = $query->dispensaryLocation->name;
-                }
+                $dispensaryLocationName = $query->dispensaryLocation->name ?? null;
 
                 return $dispensaryLocationName;
             })

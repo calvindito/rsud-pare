@@ -79,38 +79,22 @@ class OutpatientController extends Controller
                 return $parentable;
             })
             ->addColumn('patient_name', function (Outpatient $query) {
-                $patientName = null;
-
-                if (isset($query->patient)) {
-                    $patientName = $query->patient->name;
-                }
+                $patientName = $query->patient->name ?? null;
 
                 return $patientName;
             })
             ->addColumn('patient_id', function (Outpatient $query) {
-                $patientId = null;
-
-                if (isset($query->patient)) {
-                    $patientId = $query->patient->no_medical_record;
-                }
+                $patientId = $query->patient->no_medical_record ?? null;
 
                 return $patientId;
             })
             ->addColumn('patient_gender', function (Outpatient $query) {
-                $patientGender = null;
-
-                if (isset($query->patient)) {
-                    $patientGender = $query->patient->gender_format_result;
-                }
+                $patientGender = $query->patient->gender_format_result ?? null;
 
                 return $patientGender;
             })
             ->addColumn('unit_name', function (Outpatient $query) {
-                $unitName = null;
-
-                if (isset($query->unit->name)) {
-                    $unitName = $query->unit->name;
-                }
+                $unitName = $query->unit->name ?? null;
 
                 return $unitName;
             })

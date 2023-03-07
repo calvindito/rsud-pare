@@ -44,29 +44,17 @@ class RequestController extends Controller
                 return $query->statusable(true);
             })
             ->addColumn('employee_name', function (DispensaryRequest $query) {
-                $employeeName = 'Belum Ada';
-
-                if (isset($query->user->employee)) {
-                    $employeeName = $query->user->employee->name;
-                }
+                $employeeName = $query->user->employee->name ?? 'Belum Ada';
 
                 return $employeeName;
             })
             ->addColumn('dispensary_name', function (DispensaryRequest $query) {
-                $dispensaryName = 'Belum Ada';
-
-                if (isset($query->dispensary)) {
-                    $dispensaryName = $query->dispensary->name;
-                }
+                $dispensaryName = $query->dispensary->name ?? 'Belum Ada';
 
                 return $dispensaryName;
             })
             ->addColumn('patient_name', function (DispensaryRequest $query) {
-                $patientName = null;
-
-                if (isset($query->patient)) {
-                    $patientName = $query->patient->name;
-                }
+                $patientName = $query->patient->name ?? null;
 
                 return $patientName;
             })

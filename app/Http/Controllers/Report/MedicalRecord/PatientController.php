@@ -70,11 +70,7 @@ class PatientController extends Controller
                 }
             })
             ->addColumn('religion_name', function (Patient $query) {
-                $religionName = null;
-
-                if (isset($query->religion)) {
-                    $religionName = $query->religion->name;
-                }
+                $religionName = $query->religion->name ?? null;
 
                 return $religionName;
             })

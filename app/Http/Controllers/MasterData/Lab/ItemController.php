@@ -44,20 +44,12 @@ class ItemController extends Controller
                 return $query->status();
             })
             ->addColumn('lab_category_name', function (LabItem $query) {
-                $labCategoryName = null;
-
-                if (isset($query->labCategory)) {
-                    $labCategoryName = $query->labCategory->name;
-                }
+                $labCategoryName = $query->labCategory->name ?? null;
 
                 return $labCategoryName;
             })
             ->addColumn('lab_item_group_name', function (LabItem $query) {
-                $labItemGroupName = null;
-
-                if (isset($query->labItemGroup)) {
-                    $labItemGroupName = $query->labItemGroup->name;
-                }
+                $labItemGroupName = $query->labItemGroup->name ?? null;
 
                 return $labItemGroupName;
             })

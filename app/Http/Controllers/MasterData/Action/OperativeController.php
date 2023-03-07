@@ -39,11 +39,7 @@ class OperativeController extends Controller
             ->editColumn('hospital_service', '{{ Simrs::formatRupiah($hospital_service) }}')
             ->editColumn('doctor_operating', '{{ Simrs::formatRupiah($doctor_operating) }}')
             ->addColumn('class_type_name', function (ActionOperative $query) {
-                $classTypeName = null;
-
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
-                }
+                $classTypeName = $query->classType->name ?? null;
 
                 return $classTypeName;
             })

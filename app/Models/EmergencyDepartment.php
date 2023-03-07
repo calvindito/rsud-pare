@@ -353,6 +353,7 @@ class EmergencyDepartment extends Model
         $dispensaryRequest = 0;
         $lab = 0;
         $radiology = 0;
+        $operation = 0;
 
         $actionService += $this->observation->nominal ?? 0;
         $actionService += $this->supervision_doctor->nominal ?? 0;
@@ -365,6 +366,15 @@ class EmergencyDepartment extends Model
         $radiology += $this->radiologyRequest->sum('hospital_service');
         $radiology += $this->radiologyRequest->sum('service');
         $radiology += $this->radiologyRequest->sum('fee');
+
+        $operation += $this->operation->hospital_service ?? 0;
+        $operation += $this->operation->doctor_operating_room ?? 0;
+        $operation += $this->operation->doctor_anesthetist ?? 0;
+        $operation += $this->operation->nurse_operating_room ?? 0;
+        $operation += $this->operation->nurse_anesthetist ?? 0;
+        $operation += $this->operation->material ?? 0;
+        $operation += $this->operation->monitoring ?? 0;
+        $operation += $this->operation->nursing_care ?? 0;
 
         foreach ($this->emergencyDepartmentService as $is) {
             $qty = $is->qty ?? 0;
@@ -401,7 +411,8 @@ class EmergencyDepartment extends Model
             'actionPackage' => $actionPackage,
             'dispensaryRequest' => $dispensaryRequest,
             'lab' => $lab,
-            'radiology' => $radiology
+            'radiology' => $radiology,
+            'operation' => $operation
         ];
 
         return $result;
@@ -490,5 +501,15 @@ class EmergencyDepartment extends Model
     public function parent()
     {
         return $this->belongsTo(Outpatient::class, 'parent_id');
+    }
+
+    /**
+     * emergencyDepartmentSoap
+     *
+     * @return void
+     */
+    public function emergencyDepartmentSoap()
+    {
+        return $this->hasMany(EmergencyDepartmentSoap::class);
     }
 }

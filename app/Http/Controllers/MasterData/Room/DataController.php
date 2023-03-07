@@ -37,11 +37,7 @@ class DataController extends Controller
                 }
             })
             ->addColumn('unit_name', function (Room $query) {
-                $unitName = null;
-
-                if (isset($query->unit)) {
-                    $unitName = $query->unit->name;
-                }
+                $unitName = $query->unit->name ?? null;
 
                 return $unitName;
             })

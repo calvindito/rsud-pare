@@ -39,11 +39,7 @@ class DataController extends Controller
                 }
             })
             ->addColumn('action_supporting_name', function (Radiology $query) {
-                $actionSupportingName = null;
-
-                if (isset($query->actionSupporting)) {
-                    $actionSupportingName = $query->actionSupporting->name;
-                }
+                $actionSupportingName = $query->actionSupporting->name ?? null;
 
                 return $actionSupportingName;
             })

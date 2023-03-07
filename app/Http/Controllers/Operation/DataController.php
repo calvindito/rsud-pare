@@ -52,47 +52,27 @@ class DataController extends Controller
                 return $query->code();
             })
             ->addColumn('employee_name', function (Operation $query) {
-                $employeeName = 'Belum Ada';
-
-                if (isset($query->user->employee)) {
-                    $employeeName = $query->user->employee->name;
-                }
+                $employeeName = $query->user->employee->name ?? 'Belum Ada';
 
                 return $employeeName;
             })
             ->addColumn('patient_name', function (Operation $query) {
-                $patientName = null;
-
-                if (isset($query->patient)) {
-                    $patientName = $query->patient->name;
-                }
+                $patientName = $query->patient->name ?? null;
 
                 return $patientName;
             })
             ->addColumn('doctor_name', function (Operation $query) {
-                $doctorName = 'Tidak Ada';
-
-                if (isset($query->doctor)) {
-                    $doctorName = $query->doctor->name;
-                }
+                $doctorName = $query->doctor->name ?? 'Tidak Ada';
 
                 return $doctorName;
             })
             ->addColumn('unit_name', function (Operation $query) {
-                $unitName = null;
-
-                if (isset($query->unit)) {
-                    $unitName = $query->unit->name;
-                }
+                $unitName = $query->unit->name ?? null;
 
                 return $unitName;
             })
             ->addColumn('functional_service_name', function (Operation $query) {
-                $functionalServiceName = null;
-
-                if (isset($query->functionalService)) {
-                    $functionalServiceName = $query->functionalService->name;
-                }
+                $functionalServiceName = $query->functionalService->name ?? null;
 
                 return $functionalServiceName;
             })

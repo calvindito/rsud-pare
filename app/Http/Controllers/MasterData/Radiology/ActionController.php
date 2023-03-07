@@ -47,38 +47,22 @@ class ActionController extends Controller
             ->editColumn('service', '{{ Simrs::formatRupiah($service) }}')
             ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
             ->addColumn('radiology_type', function (RadiologyAction $query) {
-                $radiologyType = null;
-
-                if (isset($query->radiology)) {
-                    $radiologyType = $query->radiology->type;
-                }
+                $radiologyType = $query->radiology->type ?? null;
 
                 return $radiologyType;
             })
             ->addColumn('radiology_object', function (RadiologyAction $query) {
-                $radiologyObject = null;
-
-                if (isset($query->radiology)) {
-                    $radiologyObject = $query->radiology->object;
-                }
+                $radiologyObject = $query->radiology->object ?? null;
 
                 return $radiologyObject;
             })
             ->addColumn('radiology_projection', function (RadiologyAction $query) {
-                $radiologyProjection = null;
-
-                if (isset($query->radiology)) {
-                    $radiologyProjection = $query->radiology->projection;
-                }
+                $radiologyProjection = $query->radiology->projection ?? null;
 
                 return $radiologyProjection;
             })
             ->addColumn('class_type_name', function (RadiologyAction $query) {
-                $classTypeName = null;
-
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
-                }
+                $classTypeName = $query->classType->name ?? null;
 
                 return $classTypeName;
             })

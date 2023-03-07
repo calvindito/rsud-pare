@@ -55,16 +55,12 @@ class RoomClassController extends Controller
                 return $query->status();
             })
             ->addColumn('class_type_name', function (RoomType $query) {
-                $classTypeName = null;
-
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
-                }
+                $classTypeName = $query->classType->name ?? null;
 
                 return $classTypeName;
             })
             ->addColumn('room_name', function (RoomType $query) {
-                $roomName = null;
+                $roomName = $query->room->name ?? null;
 
                 if (isset($query->room)) {
                     $roomName = $query->room->name;
@@ -73,7 +69,7 @@ class RoomClassController extends Controller
                 return $roomName;
             })
             ->addColumn('employee_name', function (RoomType $query) {
-                $employeeName = null;
+                $employeeName = $query->user->employee->name ?? null;
 
                 if (isset($query->user)) {
                     if (isset($query->user->employee)) {

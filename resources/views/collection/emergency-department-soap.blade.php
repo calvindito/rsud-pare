@@ -234,7 +234,7 @@
                     }
                 }
 
-                var status = '{{ $outpatient->status }}';
+                var status = '{{ $emergencyDepartment->status }}';
 
                 if(status == 4) {
                     $('#form-data a[href="#finish"]').hide();
@@ -307,7 +307,7 @@
                     }
                 }
 
-                var status = '{{ $outpatient->status }}';
+                var status = '{{ $emergencyDepartment->status }}';
 
                 if(status == 4) {
                     $('#form-data a[href="#finish"]').hide();

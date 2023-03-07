@@ -47,20 +47,12 @@ class FeeController extends Controller
                 return $query->status();
             })
             ->addColumn('lab_item_name', function (LabFee $query) {
-                $labItemName = null;
-
-                if (isset($query->labItem)) {
-                    $labItemName = $query->labItem->name;
-                }
+                $labItemName = $query->labItem->name ?? null;
 
                 return $labItemName;
             })
             ->addColumn('class_type_name', function (LabFee $query) {
-                $classTypeName = null;
-
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
-                }
+                $classTypeName = $query->classType->name ?? null;
 
                 return $classTypeName;
             })

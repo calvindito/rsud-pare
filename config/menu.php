@@ -746,6 +746,13 @@ return [
                         'link' => 'report/medical-record/inpatient',
                         'sub' => null
                     ],
+                    [
+                        'name' => 'emergency-department',
+                        'menu' => 'IGD',
+                        'icon' => null,
+                        'link' => 'report/medical-record/emergency-department',
+                        'sub' => null
+                    ],
                 ]
             ],
             [

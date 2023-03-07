@@ -53,38 +53,22 @@ class RadiologyController extends Controller
                 return $query->status();
             })
             ->addColumn('employee_name', function (RadiologyRequest $query) {
-                $employeeName = 'Belum Ada';
-
-                if (isset($query->user->employee)) {
-                    $employeeName = $query->user->employee->name;
-                }
+                $employeeName = $query->user->employee->name ?? 'Belum Ada';
 
                 return $employeeName;
             })
             ->addColumn('patient_id', function (RadiologyRequest $query) {
-                $patientId = null;
-
-                if (isset($query->patient)) {
-                    $patientId = $query->patient->no_medical_record;
-                }
+                $patientId = $query->patient->no_medical_record ?? null;
 
                 return $patientId;
             })
             ->addColumn('patient_name', function (RadiologyRequest $query) {
-                $patientName = null;
-
-                if (isset($query->patient)) {
-                    $patientName = $query->patient->name;
-                }
+                $patientName = $query->patient->name ?? null;
 
                 return $patientName;
             })
             ->addColumn('doctor_name', function (RadiologyRequest $query) {
-                $doctorName = 'Tidak Ada';
-
-                if (isset($query->doctor)) {
-                    $doctorName = $query->doctor->name;
-                }
+                $doctorName = $query->doctor->name ?? 'Tidak Ada';
 
                 return $doctorName;
             })

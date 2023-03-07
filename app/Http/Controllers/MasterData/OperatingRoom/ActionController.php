@@ -53,29 +53,17 @@ class ActionController extends Controller
                 return $query->status();
             })
             ->addColumn('operating_room_group_name', function (OperatingRoomAction $query) {
-                $operatingRoomGroupName = null;
-
-                if (isset($query->operatingRoomGroup)) {
-                    $operatingRoomGroupName = $query->operatingRoomGroup->name;
-                }
+                $operatingRoomGroupName = $query->operatingRoomGroup->name ?? null;
 
                 return $operatingRoomGroupName;
             })
             ->addColumn('operating_room_action_type_name', function (OperatingRoomAction $query) {
-                $operatingRoomActionTypeName = null;
-
-                if (isset($query->operatingRoomActionType)) {
-                    $operatingRoomActionTypeName = $query->operatingRoomActionType->name;
-                }
+                $operatingRoomActionTypeName = $query->operatingRoomActionType->name ?? null;
 
                 return $operatingRoomActionTypeName;
             })
             ->addColumn('class_type_name', function (OperatingRoomAction $query) {
-                $classTypeName = null;
-
-                if (isset($query->classType)) {
-                    $classTypeName = $query->classType->name;
-                }
+                $classTypeName = $query->classType->name ?? null;
 
                 return $classTypeName;
             })

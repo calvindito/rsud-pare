@@ -11,7 +11,6 @@
 	<link href="{{ asset('template/assets/icons/phosphor/styles.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('template/assets/css/ltr/all.min.css') }}" id="stylesheet" rel="stylesheet">
 	<link href="{{ asset('template/custom.css') }}" id="stylesheet" rel="stylesheet">
-	<script src="{{ asset('template/assets/demo/demo_configurator.js') }}"></script>
 	<script src="{{ asset('template/assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/app.js') }}"></script>
 </head>

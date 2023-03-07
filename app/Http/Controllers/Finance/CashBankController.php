@@ -44,29 +44,17 @@ class CashBankController extends Controller
             })
             ->editColumn('nominal', '{{ Simrs::formatRupiah($nominal) }}')
             ->addColumn('chart_of_account_code', function (CashBank $query) {
-                $chartOfAccountCode = null;
-
-                if (isset($query->chartOfAccount->code)) {
-                    $chartOfAccountCode = $query->chartOfAccount->code;
-                }
+                $chartOfAccountCode = $query->chartOfAccount->code ?? null;
 
                 return $chartOfAccountCode;
             })
             ->addColumn('chart_of_account_name', function (CashBank $query) {
-                $chartOfAccountName = null;
-
-                if (isset($query->chartOfAccount->name)) {
-                    $chartOfAccountName = $query->chartOfAccount->name;
-                }
+                $chartOfAccountName = $query->chartOfAccount->name ?? null;
 
                 return $chartOfAccountName;
             })
             ->addColumn('employee_name', function (CashBank $query) {
-                $employeeName = null;
-
-                if (isset($query->user->employee->name)) {
-                    $employeeName = $query->user->employee->name;
-                }
+                $employeeName = $query->user->employee->name ?? null;
 
                 return $employeeName;
             })

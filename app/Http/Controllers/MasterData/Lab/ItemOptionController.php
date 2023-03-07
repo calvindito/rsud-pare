@@ -36,11 +36,7 @@ class ItemOptionController extends Controller
                 }
             })
             ->addColumn('lab_item_name', function (LabItemOption $query) {
-                $labItemName = null;
-
-                if (isset($query->labItem)) {
-                    $labItemName = $query->labItem->name;
-                }
+                $labItemName = $query->labItem->name ?? null;
 
                 return $labItemName;
             })

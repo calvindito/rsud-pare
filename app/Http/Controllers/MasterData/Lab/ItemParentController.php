@@ -52,11 +52,7 @@ class ItemParentController extends Controller
                 return $parentName;
             })
             ->addColumn('lab_item_name', function (LabItemParent $query) {
-                $labItemName = null;
-
-                if (isset($query->labItem)) {
-                    $labItemName = $query->labItem->name;
-                }
+                $labItemName = $query->labItem->name ?? null;
 
                 return $labItemName;
             })

@@ -50,20 +50,12 @@ class PlanningController extends Controller
                 return $query->status();
             })
             ->addColumn('installation_name', function (Budget $query) {
-                $installationName = '-';
-
-                if (isset($query->installation)) {
-                    $installationName = $query->installation->name;
-                }
+                $installationName = $query->installation->name ?? '-';
 
                 return $installationName;
             })
             ->addColumn('employee_name', function (Budget $query) {
-                $employeeName = null;
-
-                if (isset($query->user->employee->name)) {
-                    $employeeName = $query->user->employee->name;
-                }
+                $employeeName = $query->user->employee->name ?? null;
 
                 return $employeeName;
             })
