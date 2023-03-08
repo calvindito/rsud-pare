@@ -756,6 +756,13 @@ return [
                 ]
             ],
             [
+                'name' => 'room',
+                'menu' => 'Kamar',
+                'icon' => null,
+                'link' => 'report/room',
+                'sub' => null
+            ],
+            [
                 'name' => 'finance',
                 'menu' => 'Keuangan',
                 'icon' => null,

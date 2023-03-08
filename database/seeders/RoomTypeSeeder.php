@@ -30,7 +30,6 @@ class RoomTypeSeeder extends Seeder
                     'fee_meal' => $q->biaya_makan,
                     'fee_nursing_care' => $q->biaya_askep,
                     'fee_nutritional_care' => $q->biaya_asnut,
-                    'total_bed' => $q->jumlah_kasur,
                     'tier' => $q->tingkat_kamar,
                     'status' => $q->is_hapus == 1 ? 0 : 1,
                     'created_at' => $q->created ? $q->created : now(),

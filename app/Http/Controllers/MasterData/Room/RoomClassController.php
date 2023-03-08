@@ -62,20 +62,10 @@ class RoomClassController extends Controller
             ->addColumn('room_name', function (RoomType $query) {
                 $roomName = $query->room->name ?? null;
 
-                if (isset($query->room)) {
-                    $roomName = $query->room->name;
-                }
-
                 return $roomName;
             })
             ->addColumn('employee_name', function (RoomType $query) {
                 $employeeName = $query->user->employee->name ?? null;
-
-                if (isset($query->user)) {
-                    if (isset($query->user->employee)) {
-                        $employeeName = $query->user->employee->name;
-                    }
-                }
 
                 return $employeeName;
             })
@@ -142,7 +132,6 @@ class RoomClassController extends Controller
                     'fee_meal' => $request->fee_meal,
                     'fee_nursing_care' => $request->fee_nursing_care,
                     'fee_nutritional_care' => $request->fee_nutritional_care,
-                    'total_bed' => $request->total_bed,
                     'tier' => $request->tier
                 ]);
 
@@ -210,7 +199,6 @@ class RoomClassController extends Controller
                     'fee_meal' => $request->fee_meal,
                     'fee_nursing_care' => $request->fee_nursing_care,
                     'fee_nutritional_care' => $request->fee_nutritional_care,
-                    'total_bed' => $request->total_bed,
                     'tier' => $request->tier,
                     'status' => $request->status
                 ]);

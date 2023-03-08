@@ -774,6 +774,13 @@ Route::middleware('auth')->group(function () {
                 });
             });
 
+            Route::prefix('room')->group(function () {
+                Route::get('/', 'RoomController@index');
+                Route::get('datatable', 'RoomController@datatable');
+                Route::get('datatable-detail', 'RoomController@datatableDetail');
+                Route::get('detail', 'RoomController@detail');
+            });
+
             Route::prefix('finance')->namespace('Finance')->group(function () {
                 Route::prefix('budget')->group(function () {
                     Route::get('/', 'BudgetController@index');

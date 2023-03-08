@@ -23,7 +23,6 @@ class CreateRoomTypesTable extends Migration
             $table->double('fee_meal')->nullable();
             $table->double('fee_nursing_care')->nullable();
             $table->double('fee_nutritional_care')->nullable();
-            $table->integer('total_bed')->nullable();
             $table->integer('tier')->nullable();
             $table->boolean('status')->default(1);
             $table->timestamps();

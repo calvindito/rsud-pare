@@ -37,11 +37,11 @@ class ItemController extends Controller
                         ->orWhere('name_generic', 'like', "%$search%");
                 }
 
-                if (!empty($request->distributor_id)) {
+                if ($request->distributor_id) {
                     $query->where('distributor_id', $request->distributor_id);
                 }
 
-                if (!empty($request->factory_id)) {
+                if ($request->factory_id) {
                     $query->whereHas('distributor', function ($query) use ($request) {
                         $query->whereHas('distributorFactory', function ($query) use ($request) {
                             $query->where('factory_id', $request->factory_id);
@@ -49,7 +49,7 @@ class ItemController extends Controller
                     });
                 }
 
-                if (!empty($request->stock)) {
+                if ($request->stock) {
                     $query->whereHas('itemStock', function ($query) use ($request) {
                         $query->groupBy('item_id');
 

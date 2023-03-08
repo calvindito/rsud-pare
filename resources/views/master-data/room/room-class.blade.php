@@ -123,12 +123,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Total Kasur</label>
-                        <div class="col-md-9">
-                            <input type="number" class="form-control" name="total_bed" id="total_bed" placeholder="Masukan total kasur">
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-form-label col-lg-3">Tingkatan Kamar <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
                             <input type="number" class="form-control" name="tier" id="tier" placeholder="Masukan tingkatan kamar">
@@ -333,7 +327,6 @@
                 $('#fee_nursing_care').val(response.fee_nursing_care);
                 $('#fee_nutritional_care').val(response.fee_nutritional_care);
                 $('#user_id').val(response.user_id);
-                $('#total_bed').val(response.total_bed);
                 $('#tier').val(response.tier);
                 $('#status').val(response.status);
             },
