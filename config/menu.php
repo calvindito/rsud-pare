@@ -785,6 +785,28 @@ return [
                 ]
             ],
             [
+                'name' => 'radiology',
+                'menu' => 'Radiologi',
+                'icon' => null,
+                'link' => 'javascript:void(0);',
+                'sub' => [
+                    [
+                        'name' => 'data',
+                        'menu' => 'Data',
+                        'icon' => null,
+                        'link' => 'report/radiology/data',
+                        'sub' => null
+                    ],
+                    [
+                        'name' => 'action',
+                        'menu' => 'Tindakan',
+                        'icon' => null,
+                        'link' => 'report/radiology/action',
+                        'sub' => null
+                    ],
+                ]
+            ],
+            [
                 'name' => 'finance',
                 'menu' => 'Keuangan',
                 'icon' => null,

@@ -794,6 +794,19 @@ Route::middleware('auth')->group(function () {
                 });
             });
 
+            Route::prefix('radiology')->namespace('Radiology')->group(function () {
+                Route::prefix('data')->group(function () {
+                    Route::get('/', 'DataController@index');
+                    Route::get('datatable', 'DataController@datatable');
+                    Route::get('detail', 'DataController@detail');
+                });
+
+                Route::prefix('action')->group(function () {
+                    Route::get('/', 'ActionController@index');
+                    Route::get('datatable', 'ActionController@datatable');
+                });
+            });
+
             Route::prefix('finance')->namespace('Finance')->group(function () {
                 Route::prefix('budget')->group(function () {
                     Route::get('/', 'BudgetController@index');

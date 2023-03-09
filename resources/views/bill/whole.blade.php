@@ -470,7 +470,7 @@
                                                 <tr>
                                                     <td class="text-center align-middle">{{ $key + 1 }}</td>
                                                     <td class="text-center align-middle">
-                                                        <a href="{{ $r->image() }}" data-bs-popup="lightbox">
+                                                        <a href="{{ $r->image() }}" data-bs-popup="glightbox">
                                                             <img src="{{ $r->image() }}" class="img-preview rounded">
                                                         </a>
                                                     </td>

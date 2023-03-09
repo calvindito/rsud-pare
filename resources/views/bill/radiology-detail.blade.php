@@ -84,7 +84,7 @@
                 </div>
                 <div class="form-group">
                     <div class="text-center">
-                        <a href="{{ $radiologyRequest->image() }}" data-bs-popup="lightbox">
+                        <a href="{{ $radiologyRequest->image() }}" data-bs-popup="glightbox">
                             <img src="{{ $radiologyRequest->image() }}" class="img-fluid" style="max-width:150px;">
                         </a>
                     </div>

@@ -85,7 +85,7 @@
                 <div class="form-group">
                     @if($radiologyRequest->status == 3)
                         <div class="text-center">
-                            <a href="{{ $radiologyRequest->image() }}" data-bs-popup="lightbox">
+                            <a href="{{ $radiologyRequest->image() }}" data-bs-popup="glightbox">
                                 <img src="{{ $radiologyRequest->image() }}" class="img-fluid" style="max-width:150px;">
                             </a>
                         </div>

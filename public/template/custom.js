@@ -1,5 +1,6 @@
 window.gBaseUrl = '/';
 window.gDataTable = '';
+window.gLightbox = '';
 
 const swalInit = Swal.mixin({
     buttonsStyling: false,
@@ -16,18 +17,27 @@ Noty.overrideDefaults({
     timeout: 2500
 });
 
+lightbox.option({
+    resizeDuration: 200,
+    wrapAround: true
+})
+
 $(function() {
     configDataTable();
     formatInputNumber();
     select2Basic();
     setBaseUrl();
-    lightBox();
     initSwitcher();
 
     $('.sidebar-control').on('click', function() {
         if(window.gDataTable) {
             gDataTable.columns.adjust().draw();
         }
+    });
+
+    GLightbox({
+        selector: '[data-bs-popup="glightbox"]',
+        loop: false
     });
 });
 
@@ -152,13 +162,6 @@ function listBox(selector, config = {}) {
     const listboxButtonsHiddenElement = document.querySelector(selector);
 
     new DualListbox(listboxButtonsHiddenElement, config);
-}
-
-function lightBox() {
-    GLightbox({
-        selector: '[data-bs-popup="lightbox"]',
-        loop: false
-    });
 }
 
 function dragAndDropFile(config = {}) {

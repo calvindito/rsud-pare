@@ -12,6 +12,7 @@
 	<link href="{{ asset('template/assets/css/ltr/all.min.css') }}" id="stylesheet" rel="stylesheet">
 	<link href="{{ asset('template/plugins/waitMe/waitMe.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('template/plugins/summernote/summernote-lite.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('template/plugins/lightbox/dist/css/lightbox.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('template/plugins/switcher/css/bootstrap5-toggle.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('template/custom.css?v=' . uniqid()) }}" rel="stylesheet">
 	<script src="{{ asset('template/assets/js/jquery/jquery.min.js') }}"></script>
@@ -35,6 +36,7 @@
 	<script src="{{ asset('template/plugins/summernote/summernote-lite.min.js') }}"></script>
 	<script src="{{ asset('template/plugins/summernote/lang/summernote-id-ID.min.js') }}"></script>
 	<script src="{{ asset('template/plugins/switcher/js/bootstrap5-toggle.jquery.min.js') }}"></script>
+	<script src="{{ asset('template/plugins/lightbox/dist/js/lightbox.min.js') }}"></script>
 	<script src="{{ asset('template/assets/js/app.js') }}"></script>
 	<script src="{{ asset('template/custom.js?v=' . uniqid()) }}"></script>
 </head>

@@ -86,7 +86,7 @@
                             <tr>
                                 <td class="text-center align-middle">{{ $key + 1 }}</td>
                                 <td class="text-center align-middle">
-                                    <a href="{{ $rr->image() }}" data-bs-popup="lightbox">
+                                    <a href="{{ $rr->image() }}" data-bs-popup="glightbox">
                                         <img src="{{ $rr->image() }}" class="img-preview rounded">
                                     </a>
                                 </td>
@@ -143,7 +143,7 @@
                                                             <tr>
                                                                 <td>Foto</td>
                                                                 <td width="1%">:</td>
-                                                                <td><a href="{{ $rr->image() }}" data-bs-popup="lightbox">Lihat Hasil Foto</a></td>
+                                                                <td><a href="{{ $rr->image() }}" data-bs-popup="glightbox">Lihat Hasil Foto</a></td>
                                                             </tr>
                                                             <tr>
                                                                 <td>Tanggal Permintaan</td>

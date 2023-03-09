@@ -32,6 +32,33 @@ class RadiologyRequest extends Model
     protected $guarded = ['id'];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['critical_format_result'];
+
+    /**
+     * getGenderAttribute
+     *
+     * @return void
+     */
+    protected function getCriticalFormatResultAttribute()
+    {
+        $critical = isset($this->attributes['critical']) ? $this->attributes['critical'] : null;
+
+        if ($critical == 1) {
+            $text = 'Ya';
+        } else if ($critical == 0) {
+            $text = 'Tidak';
+        } else {
+            $text = 'Invalid';
+        }
+
+        return $text;
+    }
+
+    /**
      * image
      *
      * @return void
