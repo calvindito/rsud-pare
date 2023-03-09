@@ -87,4 +87,14 @@ class Radiology extends Model
     {
         return $this->hasOne(RadiologyAction::class);
     }
+
+    /**
+     * radiologyRequest
+     *
+     * @return void
+     */
+    public function radiologyRequest()
+    {
+        return $this->hasMany(RadiologyRequest::class);
+    }
 }
