@@ -34,11 +34,11 @@ class DataController extends Controller
                         $query->where('name', 'like', "%$search%");
                     });
 
-                    $query->whereHas('doctor', function ($query) use ($search) {
+                    $query->orWhereHas('doctor', function ($query) use ($search) {
                         $query->where('name', 'like', "%$search%");
                     });
 
-                    $query->whereHas('labRequestable', function ($query) use ($search) {
+                    $query->orWhereHas('labRequestable', function ($query) use ($search) {
                         $query->whereRaw("LPAD(id, 7, 0) LIKE '%$search%'");
                     });
                 }

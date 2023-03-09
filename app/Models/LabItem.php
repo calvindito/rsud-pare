@@ -90,4 +90,14 @@ class LabItem extends Model
 
         return $html;
     }
+
+    /**
+     * labRequestDetail
+     *
+     * @return void
+     */
+    public function labRequestDetail()
+    {
+        return $this->hasMany(LabRequestDetail::class);
+    }
 }

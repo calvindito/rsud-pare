@@ -775,6 +775,13 @@ return [
                         'link' => 'report/lab/data',
                         'sub' => null
                     ],
+                    [
+                        'name' => 'item',
+                        'menu' => 'Item',
+                        'icon' => null,
+                        'link' => 'report/lab/item',
+                        'sub' => null
+                    ],
                 ]
             ],
             [

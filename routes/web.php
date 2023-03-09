@@ -787,6 +787,11 @@ Route::middleware('auth')->group(function () {
                     Route::get('datatable', 'DataController@datatable');
                     Route::get('detail', 'DataController@detail');
                 });
+
+                Route::prefix('item')->group(function () {
+                    Route::get('/', 'ItemController@index');
+                    Route::get('datatable', 'ItemController@datatable');
+                });
             });
 
             Route::prefix('finance')->namespace('Finance')->group(function () {

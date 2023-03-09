@@ -59,4 +59,14 @@ class LabRequestDetail extends Model
     {
         return $this->belongsTo(LabItemCondition::class);
     }
+
+    /**
+     * labRequest
+     *
+     * @return void
+     */
+    public function labRequest()
+    {
+        return $this->belongsTo(LabRequest::class);
+    }
 }
