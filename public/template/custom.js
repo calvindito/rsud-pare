@@ -260,7 +260,28 @@ function datePickerable(selector) {
             startLabel: 'Dari Tanggal',
             endLabel: 'Sampai Tanggal',
             customRangeLabel: 'Pilih Sendiri',
-            daysOfWeek: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat','Sabtu'],
+            daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum','Sab'],
+            monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+            firstDay: 1,
+            format: 'YYYY/MM/DD'
+        }
+    }).on('apply.daterangepicker', function (e, picker) {
+        picker.element.val(picker.startDate.format(picker.locale.format) + ' - ' + picker.endDate.format(picker.locale.format));
+    });
+}
+
+function datePickerableBasic(selector) {
+    $(selector).daterangepicker({
+        parentEl: '.content-inner',
+        autoUpdateInput: false,
+        showDropdowns: true,
+        locale: {
+            applyLabel: 'Terapkan',
+            cancelLabel: 'Batal',
+            startLabel: 'Dari Tanggal',
+            endLabel: 'Sampai Tanggal',
+            customRangeLabel: 'Pilih Sendiri',
+            daysOfWeek: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum','Sab'],
             monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
             firstDay: 1,
             format: 'YYYY/MM/DD'

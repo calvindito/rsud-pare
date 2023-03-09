@@ -28,15 +28,11 @@ class MutationController extends Controller
         $validation = Validator::make($request->all(), [
             'dispensary_id' => 'required',
             'item_id' => 'required',
-            'date_start' => 'required|before_or_equal:date_end',
-            'date_end' => 'required|after_or_equal:date_start'
+            'date' => 'required'
         ], [
             'dispensary_id.required' => 'mohon memilih apotek',
             'item_id.required' => 'mohon memilih item',
-            'date_start.required' => 'tanggal awal tidak boleh kosong',
-            'date_start.before_or_equal' => 'tanggal awal tidak boleh lebih dari tanggal akhir',
-            'date_end.required' => 'tanggal akhir tidak boleh kosong',
-            'date_end.after_or_equal' => 'tanggal akhir tidak boleh kurang dari tanggal awal'
+            'date.required' => 'tanggal tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -50,8 +46,10 @@ class MutationController extends Controller
                 $dispensaryId = $request->dispensary_id;
                 $itemId = $request->item_id;
                 $dispensaryItem = DispensaryItem::where('dispensary_id', $dispensaryId)->where('item_id', $itemId)->first();
-                $startDate = $request->date_start;
-                $endDate = $request->date_end;
+                $explodeDate = explode(' - ', $request->date);
+                $startDate = date('Y-m-d', strtotime($explodeDate[0]));
+                $endDate = date('Y-m-d', strtotime($explodeDate[1]));
+                $columnFilterDate = $request->column_date;
                 $diff = Carbon::parse($startDate)->diffInDays($endDate);
 
                 for ($i = 0; $i <= $diff; $i++) {
@@ -60,25 +58,25 @@ class MutationController extends Controller
                     $beforeIn = DispensaryItemStock::where('type', 1)
                         ->where('status', 2)
                         ->where('dispensary_item_id', $dispensaryItem->id ?? null)
-                        ->whereDate('created_at', '<', $date)
+                        ->whereDate($columnFilterDate, '<', $date)
                         ->sum('qty');
 
                     $beforeOut = DispensaryItemStock::where('type', 2)
                         ->where('status', 2)
                         ->where('dispensary_item_id', $dispensaryItem->id ?? null)
-                        ->whereDate('created_at', '<', $date)
+                        ->whereDate($columnFilterDate, '<', $date)
                         ->sum('qty');
 
                     $currentIn = DispensaryItemStock::where('type', 1)
                         ->where('status', 2)
                         ->where('dispensary_item_id', $dispensaryItem->id ?? null)
-                        ->whereDate('created_at', $date)
+                        ->whereDate($columnFilterDate, $date)
                         ->sum('qty');
 
                     $currentOut = DispensaryItemStock::where('type', 2)
                         ->where('status', 2)
                         ->where('dispensary_item_id', $dispensaryItem->id ?? null)
-                        ->whereDate('created_at', $date)
+                        ->whereDate($columnFilterDate, $date)
                         ->sum('qty');
 
                     $data[] = [
@@ -109,15 +107,11 @@ class MutationController extends Controller
         $validation = Validator::make($request->all(), [
             'dispensary_id' => 'required',
             'item_id' => 'required',
-            'date_start' => 'required|before_or_equal:date_end',
-            'date_end' => 'required|after_or_equal:date_start'
+            'date' => 'required'
         ], [
             'dispensary_id.required' => 'mohon memilih apotek',
             'item_id.required' => 'mohon memilih item',
-            'date_start.required' => 'tanggal awal tidak boleh kosong',
-            'date_start.before_or_equal' => 'tanggal awal tidak boleh lebih dari tanggal akhir',
-            'date_end.required' => 'tanggal akhir tidak boleh kosong',
-            'date_end.after_or_equal' => 'tanggal akhir tidak boleh kurang dari tanggal awal'
+            'date.required' => 'tanggal tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -127,8 +121,10 @@ class MutationController extends Controller
             $dispensaryId = $request->dispensary_id;
             $itemId = $request->item_id;
             $dispensaryItem = DispensaryItem::where('dispensary_id', $dispensaryId)->where('item_id', $itemId)->first();
-            $startDate = $request->date_start;
-            $endDate = $request->date_end;
+            $explodeDate = explode(' - ', $request->date);
+            $startDate = date('Y-m-d', strtotime($explodeDate[0]));
+            $endDate = date('Y-m-d', strtotime($explodeDate[1]));
+            $columnFilterDate = $request->column_date;
             $diff = Carbon::parse($startDate)->diffInDays($endDate);
 
             for ($i = 0; $i <= $diff; $i++) {
@@ -137,25 +133,25 @@ class MutationController extends Controller
                 $beforeIn = DispensaryItemStock::where('type', 1)
                     ->where('status', 2)
                     ->where('dispensary_item_id', $dispensaryItem->id ?? null)
-                    ->whereDate('created_at', '<', $date)
+                    ->whereDate($columnFilterDate, '<', $date)
                     ->sum('qty');
 
                 $beforeOut = DispensaryItemStock::where('type', 2)
                     ->where('status', 2)
                     ->where('dispensary_item_id', $dispensaryItem->id ?? null)
-                    ->whereDate('created_at', '<', $date)
+                    ->whereDate($columnFilterDate, '<', $date)
                     ->sum('qty');
 
                 $currentIn = DispensaryItemStock::where('type', 1)
                     ->where('status', 2)
                     ->where('dispensary_item_id', $dispensaryItem->id ?? null)
-                    ->whereDate('created_at', $date)
+                    ->whereDate($columnFilterDate, $date)
                     ->sum('qty');
 
                 $currentOut = DispensaryItemStock::where('type', 2)
                     ->where('status', 2)
                     ->where('dispensary_item_id', $dispensaryItem->id ?? null)
-                    ->whereDate('created_at', $date)
+                    ->whereDate($columnFilterDate, $date)
                     ->sum('qty');
 
                 $data[] = [
@@ -166,6 +162,14 @@ class MutationController extends Controller
                 ];
             }
 
+            if ($columnFilterDate == 'created_at') {
+                $columnDate = 'Tanggal Masuk';
+            } else if ($columnFilterDate == 'expired_date') {
+                $columnDate = 'Tanggal Kadaluwarsa';
+            } else {
+                $columnDate = 'Invalid';
+            }
+
             $pdf = Pdf::setOptions([
                 'adminUsername' => auth()->user()->username
             ])->loadView('pdf.mutation-dispensary', [
@@ -174,6 +178,7 @@ class MutationController extends Controller
                 'data' => $data,
                 'startDate' => $startDate,
                 'endDate' => $endDate,
+                'columnDate' => $columnDate,
                 'diff' => $diff
             ]);
 

@@ -35,6 +35,14 @@
     <hr style="margin-top:20px; margin-bottom:20px;">
     <table style="width:100%; margin-bottom:20px;">
         <tr style="font-size:14px;">
+            <td style="font-weight:bold;">Kode</td>
+            <td>:</td>
+            <td>{{ $item->code }}</td>
+            <td style="font-weight:bold;">Berdasarkan</td>
+            <td>:</td>
+            <td>{{ $columnDate }}</td>
+        </tr>
+        <tr style="font-size:14px;">
             <td style="font-weight:bold;">Tanggal Cetak</td>
             <td>:</td>
             <td>{{ date('Y-m-d') }}</td>

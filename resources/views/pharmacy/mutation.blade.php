@@ -18,21 +18,21 @@
             </div>
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-2">Item <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-10">
+                    <label class="col-form-label col-lg-1">Item <span class="text-danger fw-bold">*</span></label>
+                    <div class="col-md-11">
                         <select class="form-select" name="item_id" id="item_id"></select>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-2">Tanggal Awal <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-10">
-                        <input type="date" class="form-control" name="date_start" id="date_start" max="{{ date('Y-m-d') }}">
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label col-lg-2">Tanggal Akhir <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-10">
-                        <input type="date" class="form-control" name="date_end" id="date_end" max="{{ date('Y-m-d') }}">
+                    <label class="col-form-label col-lg-1">Tanggal</label>
+                    <div class="col-md-11">
+                        <div class="input-group">
+                            <select class="form-select w-auto flex-grow-0" name="column_date" id="column_date">
+                                <option value="created_at" selected>Tanggal Masuk</option>
+                                <option value="expired_date">Tanggal Kadaluwarsa</option>
+                            </select>
+                            <input type="text" class="form-control daterange-picker" name="date" id="date" placeholder="Pilih Tanggal" readonly>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,6 +78,7 @@
 <script>
     $(function() {
         select2Ajax('#item_id', 'item', false);
+        datePickerableBasic('.daterange-picker');
     });
 
     function clearValidation() {
@@ -142,15 +143,15 @@
 
     function printData() {
         var itemId = $('#item_id').val();
-        var dateStart = $('#date_start').val();
-        var dateEnd = $('#date_end').val();
+        var date = $('#date').val();
+        var columnDate = $('#column_date').val();
 
-        if(itemId != '' && dateStart != '' && dateEnd != '') {
+        if(itemId != '' && date != '' && columnDate != '') {
             var parseUrl = '{{ url("pharmacy/mutation/print?") }}' + $.param({
                 _token: '{{ csrf_token() }}',
                 item_id: itemId,
-                date_start: dateStart,
-                date_end: dateEnd
+                date: date,
+                column_date: columnDate
             });
 
             window.open(parseUrl, '_blank');

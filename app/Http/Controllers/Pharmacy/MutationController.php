@@ -25,14 +25,10 @@ class MutationController extends Controller
     {
         $validation = Validator::make($request->all(), [
             'item_id' => 'required',
-            'date_start' => 'required|before_or_equal:date_end',
-            'date_end' => 'required|after_or_equal:date_start'
+            'date' => 'required'
         ], [
             'item_id.required' => 'mohon memilih item',
-            'date_start.required' => 'tanggal awal tidak boleh kosong',
-            'date_start.before_or_equal' => 'tanggal awal tidak boleh lebih dari tanggal akhir',
-            'date_end.required' => 'tanggal akhir tidak boleh kosong',
-            'date_end.after_or_equal' => 'tanggal akhir tidak boleh kurang dari tanggal awal'
+            'date.required' => 'tanggal tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -44,8 +40,10 @@ class MutationController extends Controller
             try {
                 $data = [];
                 $itemId = $request->item_id;
-                $startDate = $request->date_start;
-                $endDate = $request->date_end;
+                $explodeDate = explode(' - ', $request->date);
+                $startDate = date('Y-m-d', strtotime($explodeDate[0]));
+                $endDate = date('Y-m-d', strtotime($explodeDate[1]));
+                $columnFilterDate = $request->column_date;
                 $diff = Carbon::parse($startDate)->diffInDays($endDate);
 
                 for ($i = 0; $i <= $diff; $i++) {
@@ -53,22 +51,22 @@ class MutationController extends Controller
 
                     $beforeIn = ItemStock::where('type', 1)
                         ->where('item_id', $itemId)
-                        ->whereDate('created_at', '<', $date)
+                        ->whereDate($columnFilterDate, '<', $date)
                         ->sum('qty');
 
                     $beforeOut = ItemStock::where('type', 2)
                         ->where('item_id', $itemId)
-                        ->whereDate('created_at', '<', $date)
+                        ->whereDate($columnFilterDate, '<', $date)
                         ->sum('qty');
 
                     $currentIn = ItemStock::where('type', 1)
                         ->where('item_id', $itemId)
-                        ->whereDate('created_at', $date)
+                        ->whereDate($columnFilterDate, $date)
                         ->sum('qty');
 
                     $currentOut = ItemStock::where('type', 2)
                         ->where('item_id', $itemId)
-                        ->whereDate('created_at', $date)
+                        ->whereDate($columnFilterDate, $date)
                         ->sum('qty');
 
                     $data[] = [
@@ -99,14 +97,10 @@ class MutationController extends Controller
         $item = Item::findOrFail($request->item_id);
         $validation = Validator::make($request->all(), [
             'item_id' => 'required',
-            'date_start' => 'required|before_or_equal:date_end',
-            'date_end' => 'required|after_or_equal:date_start'
+            'date' => 'required'
         ], [
             'item_id.required' => 'mohon memilih item',
-            'date_start.required' => 'tanggal awal tidak boleh kosong',
-            'date_start.before_or_equal' => 'tanggal awal tidak boleh lebih dari tanggal akhir',
-            'date_end.required' => 'tanggal akhir tidak boleh kosong',
-            'date_end.after_or_equal' => 'tanggal akhir tidak boleh kurang dari tanggal awal'
+            'date.required' => 'tanggal tidak boleh kosong'
         ]);
 
         if ($validation->fails()) {
@@ -114,8 +108,10 @@ class MutationController extends Controller
         } else {
             $data = [];
             $itemId = $request->item_id;
-            $startDate = $request->date_start;
-            $endDate = $request->date_end;
+            $explodeDate = explode(' - ', $request->date);
+            $startDate = date('Y-m-d', strtotime($explodeDate[0]));
+            $endDate = date('Y-m-d', strtotime($explodeDate[1]));
+            $columnFilterDate = $request->column_date;
             $diff = Carbon::parse($startDate)->diffInDays($endDate);
 
             for ($i = 0; $i <= $diff; $i++) {
@@ -123,22 +119,22 @@ class MutationController extends Controller
 
                 $beforeIn = ItemStock::where('type', 1)
                     ->where('item_id', $itemId)
-                    ->whereDate('created_at', '<', $date)
+                    ->whereDate($columnFilterDate, '<', $date)
                     ->sum('qty');
 
                 $beforeOut = ItemStock::where('type', 2)
                     ->where('item_id', $itemId)
-                    ->whereDate('created_at', '<', $date)
+                    ->whereDate($columnFilterDate, '<', $date)
                     ->sum('qty');
 
                 $currentIn = ItemStock::where('type', 1)
                     ->where('item_id', $itemId)
-                    ->whereDate('created_at', $date)
+                    ->whereDate($columnFilterDate, $date)
                     ->sum('qty');
 
                 $currentOut = ItemStock::where('type', 2)
                     ->where('item_id', $itemId)
-                    ->whereDate('created_at', $date)
+                    ->whereDate($columnFilterDate, $date)
                     ->sum('qty');
 
                 $data[] = [
@@ -149,6 +145,14 @@ class MutationController extends Controller
                 ];
             }
 
+            if ($columnFilterDate == 'created_at') {
+                $columnDate = 'Tanggal Masuk';
+            } else if ($columnFilterDate == 'expired_date') {
+                $columnDate = 'Tanggal Kadaluwarsa';
+            } else {
+                $columnDate = 'Invalid';
+            }
+
             $pdf = Pdf::setOptions([
                 'adminUsername' => auth()->user()->username
             ])->loadView('pdf.mutation-pharmacy', [
@@ -157,6 +161,7 @@ class MutationController extends Controller
                 'data' => $data,
                 'startDate' => $startDate,
                 'endDate' => $endDate,
+                'columnDate' => $columnDate,
                 'diff' => $diff
             ]);
 
