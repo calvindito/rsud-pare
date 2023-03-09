@@ -763,6 +763,21 @@ return [
                 'sub' => null
             ],
             [
+                'name' => 'lab',
+                'menu' => 'Laboratorium',
+                'icon' => null,
+                'link' => 'javascript:void(0);',
+                'sub' => [
+                    [
+                        'name' => 'data',
+                        'menu' => 'Data',
+                        'icon' => null,
+                        'link' => 'report/lab/data',
+                        'sub' => null
+                    ],
+                ]
+            ],
+            [
                 'name' => 'finance',
                 'menu' => 'Keuangan',
                 'icon' => null,

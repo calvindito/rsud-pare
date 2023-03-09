@@ -781,6 +781,14 @@ Route::middleware('auth')->group(function () {
                 Route::get('detail', 'RoomController@detail');
             });
 
+            Route::prefix('lab')->namespace('Lab')->group(function () {
+                Route::prefix('data')->group(function () {
+                    Route::get('/', 'DataController@index');
+                    Route::get('datatable', 'DataController@datatable');
+                    Route::get('detail', 'DataController@detail');
+                });
+            });
+
             Route::prefix('finance')->namespace('Finance')->group(function () {
                 Route::prefix('budget')->group(function () {
                     Route::get('/', 'BudgetController@index');
