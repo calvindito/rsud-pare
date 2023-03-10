@@ -98,7 +98,7 @@
                                 </tr>
                                 <tr>
                                     <th class="bg-light" width="25%">Poli</th>
-                                    <td>{{ $outpatient->unit->name ?? '-' }}</td>
+                                    <td>{{ $outpatient->refName($outpatient->id) }}</td>
                                 </tr>
                                 <tr>
                                     <th class="bg-light" width="25%">Apotek</th>

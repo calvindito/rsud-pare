@@ -63,7 +63,7 @@ class OutpatientController extends Controller
                 return $patientGender;
             })
             ->addColumn('unit_name', function (Outpatient $query) {
-                $unitName = $query->unit->name ?? null;
+                $unitName = $query->refName($query->id);
 
                 return $unitName;
             })

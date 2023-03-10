@@ -267,7 +267,7 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <th class="bg-light" width="25%">Poli</th>
-                                                                                <td>{{ $o->unit->name ?? '-' }}</td>
+                                                                                <td>{{ $o->refName($o->id) ?? '-' }}</td>
                                                                             </tr>
                                                                             <tr>
                                                                                 <th class="bg-light" width="25%">Apotek</th>

@@ -411,4 +411,32 @@ class Outpatient extends Model
     {
         return $this->hasMany(OutpatientNursing::class);
     }
+
+    /**
+     * refName
+     *
+     * @param  mixed $id
+     * @param  mixed $text
+     * @return void
+     */
+    public function refName($id = null, $text = [])
+    {
+        $data = Outpatient::find($id);
+
+        if ($data) {
+            $text[] = $data->unit->name;
+
+            if ($data->parent && isset($data->parent_id)) {
+                return $this->refName($data->parent->id, $text);
+            }
+        }
+
+        if (count($text) > 0) {
+            $sequence = collect(array_reverse($text))->implode(' -> ');
+        } else {
+            $sequence = null;
+        }
+
+        return $sequence;
+    }
 }
