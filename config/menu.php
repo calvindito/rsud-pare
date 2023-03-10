@@ -576,6 +576,20 @@ return [
                 'link' => 'nutrient/food',
                 'sub' => null
             ],
+            [
+                'name' => 'eating-time',
+                'menu' => 'Waktu Makan',
+                'icon' => null,
+                'link' => 'nutrient/eating-time',
+                'sub' => null
+            ],
+            [
+                'name' => 'eating-schedule',
+                'menu' => 'Jadwal Makan',
+                'icon' => null,
+                'link' => 'nutrient/eating-schedule',
+                'sub' => null
+            ],
         ]
     ],
     [

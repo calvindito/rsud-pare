@@ -609,6 +609,11 @@ Route::middleware('auth')->group(function () {
                 Route::post('update-data', 'FoodController@updateData');
                 Route::delete('destroy-data', 'FoodController@destroyData');
             });
+
+            Route::prefix('eating-time')->group(function () {
+                Route::get('/', 'EatingTimeController@index');
+                Route::post('set', 'EatingTimeController@set');
+            });
         });
 
         Route::prefix('bill')->namespace('Bill')->group(function () {
