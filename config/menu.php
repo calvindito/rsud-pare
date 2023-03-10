@@ -564,6 +564,21 @@ return [
         ]
     ],
     [
+        'name' => 'nutrient',
+        'menu' => 'Gizi',
+        'icon' => 'ph-heartbeat',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'food',
+                'menu' => 'Makanan',
+                'icon' => null,
+                'link' => 'nutrient/food',
+                'sub' => null
+            ],
+        ]
+    ],
+    [
         'name' => 'bill',
         'menu' => 'Tagihan',
         'icon' => 'ph-scroll',

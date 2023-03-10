@@ -600,6 +600,17 @@ Route::middleware('auth')->group(function () {
             });
         });
 
+        Route::prefix('nutrient')->namespace('Nutrient')->group(function () {
+            Route::prefix('food')->group(function () {
+                Route::get('/', 'FoodController@index');
+                Route::get('datatable', 'FoodController@datatable');
+                Route::post('create-data', 'FoodController@createData');
+                Route::get('show-data', 'FoodController@showData');
+                Route::post('update-data', 'FoodController@updateData');
+                Route::delete('destroy-data', 'FoodController@destroyData');
+            });
+        });
+
         Route::prefix('bill')->namespace('Bill')->group(function () {
             Route::prefix('whole')->group(function () {
                 Route::match(['get', 'post'], '/', 'WholeController@index');
