@@ -449,6 +449,35 @@ return [
         ]
     ],
     [
+        'name' => 'nursing',
+        'menu' => 'Keperawatan',
+        'icon' => 'ph-first-aid-kit',
+        'link' => 'javascript:void(0);',
+        'sub' => [
+            [
+                'name' => 'outpatient',
+                'menu' => 'Rawat Jalan',
+                'icon' => null,
+                'link' => 'nursing/outpatient',
+                'sub' => null
+            ],
+            [
+                'name' => 'inpatient',
+                'menu' => 'Rawat Inap',
+                'icon' => null,
+                'link' => 'nursing/inpatient',
+                'sub' => null
+            ],
+            [
+                'name' => 'emergency-department',
+                'menu' => 'IGD',
+                'icon' => null,
+                'link' => 'nursing/emergency-department',
+                'sub' => null
+            ],
+        ]
+    ],
+    [
         'name' => 'operation',
         'menu' => 'Operasi',
         'icon' => 'ph-bed',

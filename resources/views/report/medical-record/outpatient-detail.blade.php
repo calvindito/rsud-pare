@@ -152,35 +152,80 @@
             <div class="tab-pane fade" id="tabs-2">
                 <div class="card">
                     <div class="card-body">
-                        <div class="table-fix-header">
-                            <table class="table table-bordered">
-                                <thead class="bg-light">
-                                    <tr>
-                                        <th class="text-center">No</th>
-                                        <th>Dokter</th>
-                                        <th>Tindakan</th>
-                                        <th>Nominal</th>
-                                        <th class="text-center">Pembayaran</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if($outpatient->outpatientAction->count() > 0)
-                                        @foreach($outpatient->outpatientAction as $key => $oa)
+                        <ul class="nav nav-pills nav-pills-outline nav-justified overflow-auto mb-3">
+                            <li class="nav-item">
+                                <a href="#stacked-left-pill1" class="nav-link active" data-bs-toggle="tab">Dokter</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#stacked-left-pill2" class="nav-link" data-bs-toggle="tab">Perawat</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content flex-1">
+                            <div class="tab-pane fade show active" id="stacked-left-pill1">
+                                <div class="table-fix-header">
+                                    <table class="table table-bordered">
+                                        <thead class="bg-light">
                                             <tr>
-                                                <td class="text-center align-middle">{{ $key + 1 }}</td>
-                                                <td class="align-middle">{{ $oa->doctor->name ?? '-' }}</td>
-                                                <td class="align-middle">{{ $oa->unitAction->action->name ?? '-' }}</td>
-                                                <td class="align-middle">{{ Simrs::formatRupiah($oa->total()) }}</td>
-                                                <td class="text-center align-middle">{!! $oa->status() !!}</td>
+                                                <th class="text-center">No</th>
+                                                <th>Dokter</th>
+                                                <th>Tindakan</th>
+                                                <th>Nominal</th>
+                                                <th class="text-center">Pembayaran</th>
                                             </tr>
-                                        @endforeach
-                                    @else
-                                        <tr class="text-center">
-                                            <td colspan="5">Tidak ada tindakan</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody>
+                                            @if($outpatient->outpatientAction->count() > 0)
+                                                @foreach($outpatient->outpatientAction as $key => $oa)
+                                                    <tr>
+                                                        <td class="text-center align-middle">{{ $key + 1 }}</td>
+                                                        <td class="align-middle">{{ $oa->doctor->name ?? '-' }}</td>
+                                                        <td class="align-middle">{{ $oa->unitAction->action->name ?? '-' }}</td>
+                                                        <td class="align-middle">{{ Simrs::formatRupiah($oa->total()) }}</td>
+                                                        <td class="text-center align-middle">{!! $oa->status() !!}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr class="text-center">
+                                                    <td colspan="5">Tidak ada tindakan</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="stacked-left-pill2">
+                                <div class="table-fix-header">
+                                    <table class="table table-bordered">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th class="text-center">No</th>
+                                                <th>User</th>
+                                                <th>Tindakan</th>
+                                                <th>Nominal</th>
+                                                <th>Waktu</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if($outpatient->outpatientNursing->count() > 0)
+                                                @foreach($outpatient->outpatientNursing as $key => $on)
+                                                    @php $subtotal = $on->consumables + $on->hospital_service + $on->service + $on->fee; @endphp
+                                                    <tr>
+                                                        <td class="text-center">{{ $key + 1 }}</td>
+                                                        <td>{{ $on->user->employee->name }}</td>
+                                                        <td>{{ $on->unitAction->action->name }}</td>
+                                                        <td>{{ Simrs::formatRupiah($subtotal) }}</td>
+                                                        <td>{{ $on->created_at->format('Y-m-d H:i:s') }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                <tr>
+                                                    <td colspan="4" class="text-center">Belum ada tindakan</td>
+                                                </tr>
+                                            @endif
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

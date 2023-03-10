@@ -189,6 +189,10 @@
                                 <th>Paket</th>
                                 <td>{{ Simrs::formatRupiah($inpatient->costBreakdown()->actionPackage) }}</td>
                             </tr>
+                            <tr>
+                                <th>Perawat</th>
+                                <td>{{ Simrs::formatRupiah($inpatient->inpatientNursing->sum('fee')) }}</td>
+                            </tr>
                         </table>
                         <div class="form-group mt-2">
                             <button type="button" class="btn btn-primary col-12" data-bs-toggle="modal" data-bs-target="#modal-detail-action">Lihat Rincian</button>
@@ -220,6 +224,9 @@
                                                 </li>
                                                 <li class="nav-item">
                                                     <a href="#stacked-left-pill6" class="nav-link" data-bs-toggle="tab">Lainnya</a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a href="#stacked-left-pill7" class="nav-link" data-bs-toggle="tab">Perawat</a>
                                                 </li>
                                             </ul>
                                             <div class="tab-content flex-1">
@@ -534,6 +541,36 @@
                                                             @else
                                                                 <tr>
                                                                     <td class="text-center" colspan="3">Tidak Ada Data</td>
+                                                                </tr>
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="tab-pane fade" id="stacked-left-pill7">
+                                                    <table class="table table-bordered">
+                                                        <thead class="bg-light">
+                                                            <tr>
+                                                                <th class="text-center">No</th>
+                                                                <th>User</th>
+                                                                <th>Tindakan</th>
+                                                                <th>Nominal</th>
+                                                                <th>Waktu</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if($inpatient->inpatientNursing->count() > 0)
+                                                                @foreach($inpatient->inpatientNursing as $key => $in)
+                                                                    <tr>
+                                                                        <td class="text-center">{{ $key + 1 }}</td>
+                                                                        <td>{{ $in->user->employee->name }}</td>
+                                                                        <td>{{ $in->action->name }}</td>
+                                                                        <td>{{ Simrs::formatRupiah($in->fee) }}</td>
+                                                                        <td>{{ $in->created_at->format('Y-m-d H:i:s') }}</td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @else
+                                                                <tr>
+                                                                    <td colspan="5" class="text-center">Belum ada tindakan</td>
                                                                 </tr>
                                                             @endif
                                                         </tbody>

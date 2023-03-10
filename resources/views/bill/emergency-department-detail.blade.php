@@ -84,6 +84,9 @@
                     <li class="nav-item">
                         <a href="#stacked-left-pill5" class="nav-link" data-bs-toggle="tab">Lainnya</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#stacked-left-pill6" class="nav-link" data-bs-toggle="tab">Perawat</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -317,6 +320,36 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="tab-pane fade" id="stacked-left-pill6">
+                        <table class="table table-bordered">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th>User</th>
+                                    <th>Tindakan</th>
+                                    <th>Nominal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php $totalActionNursing = 0; @endphp
+                                @if($emergencyDepartment->emergencyDepartmentNursing->count() > 0)
+                                    @foreach($emergencyDepartment->emergencyDepartmentNursing as $key => $edn)
+                                        @php $totalActionNursing += $edn->fee @endphp
+                                        <tr>
+                                            <td class="text-center">{{ $key + 1 }}</td>
+                                            <td>{{ $edn->user->employee->name }}</td>
+                                            <td>{{ $edn->action->name }}</td>
+                                            <td>{{ Simrs::formatRupiah($edn->fee) }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="4" class="text-center">Belum ada tindakan</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -408,10 +441,11 @@
     });
 
     function total() {
+        var totalActionNursing = parseFloat('{{ $totalActionNursing }}');
         var observationNominal = numberable(parseFloat($('input[name="observation_nominal"]').val()));
         var supervisionDoctorNominal = numberable(parseFloat($('input[name="supervision_doctor_nominal"]').val()));
 
-        var calculateEmergencyDepartmentFirst = parseFloat(observationNominal + supervisionDoctorNominal);
+        var calculateEmergencyDepartmentFirst = parseFloat(observationNominal + supervisionDoctorNominal + totalActionNursing);
         var calculateEmergencyDepartmentFirstFixNumber = numberable(calculateEmergencyDepartmentFirst);
         var subtotalEmergencyDepartment = calculateEmergencyDepartmentFirstFixNumber;
         var subtotalPackage = 0;

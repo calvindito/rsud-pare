@@ -508,6 +508,26 @@ Route::middleware('auth')->group(function () {
             });
         });
 
+        Route::prefix('nursing')->namespace('Nursing')->group(function () {
+            Route::prefix('outpatient')->group(function () {
+                Route::get('/', 'OutpatientController@index');
+                Route::get('datatable', 'OutpatientController@datatable');
+                Route::match(['get', 'post'], 'action/{id}', 'OutpatientController@action');
+            });
+
+            Route::prefix('inpatient')->group(function () {
+                Route::get('/', 'InpatientController@index');
+                Route::get('datatable', 'InpatientController@datatable');
+                Route::match(['get', 'post'], 'action/{id}', 'InpatientController@action');
+            });
+
+            Route::prefix('emergency-department')->group(function () {
+                Route::get('/', 'EmergencyDepartmentController@index');
+                Route::get('datatable', 'EmergencyDepartmentController@datatable');
+                Route::match(['get', 'post'], 'action/{id}', 'EmergencyDepartmentController@action');
+            });
+        });
+
         Route::prefix('operation')->namespace('Operation')->group(function () {
             Route::prefix('data')->group(function () {
                 Route::get('/', 'DataController@index');

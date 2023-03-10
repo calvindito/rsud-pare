@@ -303,6 +303,7 @@ class EmergencyDepartment extends Model
         $total += $this->emergencyDepartmentPackage->sum('nominal');
         $total += $this->emergencyDepartmentSupporting->sum('nominal');
         $total += $this->emergencyDepartmentOther->sum('nominal');
+        $total += $this->emergencyDepartmentNursing->sum('fee');
         $total += $this->radiologyRequest->sum('consumables');
         $total += $this->radiologyRequest->sum('hospital_service');
         $total += $this->radiologyRequest->sum('service');
@@ -350,6 +351,7 @@ class EmergencyDepartment extends Model
         $actionHealth = 0;
         $actionOther = 0;
         $actionPackage = 0;
+        $nursing = 0;
         $dispensaryRequest = 0;
         $lab = 0;
         $radiology = 0;
@@ -362,6 +364,7 @@ class EmergencyDepartment extends Model
         $actionPackage += $this->emergencyDepartmentPackage->sum('nominal');
         $actionSupporting += $this->emergencyDepartmentSupporting->sum('nominal');
         $actionOther += $this->emergencyDepartmentOther->sum('nominal');
+        $nursing += $this->emergencyDepartmentNursing->sum('fee');
         $radiology += $this->radiologyRequest->sum('consumables');
         $radiology += $this->radiologyRequest->sum('hospital_service');
         $radiology += $this->radiologyRequest->sum('service');
@@ -409,6 +412,7 @@ class EmergencyDepartment extends Model
             'actionHealth' => $actionHealth,
             'actionOther' => $actionOther,
             'actionPackage' => $actionPackage,
+            'nursing' => $nursing,
             'dispensaryRequest' => $dispensaryRequest,
             'lab' => $lab,
             'radiology' => $radiology,
@@ -483,10 +487,11 @@ class EmergencyDepartment extends Model
         $total += $this->emergencyDepartmentPackage->sum('nominal');
         $total += $this->emergencyDepartmentSupporting->sum('nominal');
         $total += $this->emergencyDepartmentOther->sum('nominal');
+        $total += $this->emergencyDepartmentNursing->sum('fee');
 
-        foreach ($this->emergencyDepartmentService as $is) {
-            $qty = $is->qty ?? 0;
-            $nominal = $is->nominal ?? 0;
+        foreach ($this->emergencyDepartmentService as $eds) {
+            $qty = $eds->qty ?? 0;
+            $nominal = $eds->nominal ?? 0;
             $total += $nominal * $qty;
         }
 
@@ -511,5 +516,15 @@ class EmergencyDepartment extends Model
     public function emergencyDepartmentSoap()
     {
         return $this->hasMany(EmergencyDepartmentSoap::class);
+    }
+
+    /**
+     * emergencyDepartmentNursing
+     *
+     * @return void
+     */
+    public function emergencyDepartmentNursing()
+    {
+        return $this->hasMany(EmergencyDepartmentNursing::class);
     }
 }

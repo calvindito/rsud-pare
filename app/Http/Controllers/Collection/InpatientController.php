@@ -1142,6 +1142,7 @@ class InpatientController extends Controller
                 'date_of_entry' => 'required',
                 'functional_service_id' => 'required',
                 'doctor_id' => 'required',
+                'limit_action' => 'required|min:1',
                 'dispensary_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -1154,6 +1155,8 @@ class InpatientController extends Controller
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'functional_service_id.required' => 'mohon memilih upf',
                 'doctor_id.required' => 'mohon memilih dokter',
+                'limit_action.required' => 'batas tindakan tidak boleh kosong',
+                'limit_action.min' => 'batas tindakan minimal 1',
                 'dispensary_id.required' => 'mohon memilih apotek'
             ]);
 
@@ -1180,7 +1183,8 @@ class InpatientController extends Controller
                             'doctor_id' => $request->doctor_id,
                             'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
-                            'date_of_entry' => $request->date_of_entry
+                            'date_of_entry' => $request->date_of_entry,
+                            'limit_action' => $request->limit_action
                         ]);
                     });
 

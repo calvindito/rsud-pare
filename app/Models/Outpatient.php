@@ -269,11 +269,17 @@ class Outpatient extends Model
         $outpatientAction = $this->outpatientAction;
         $total = 0;
 
+        $total += $this->outpatientNursing->sum('consumables');
+        $total += $this->outpatientNursing->sum('hospital_service');
+        $total += $this->outpatientNursing->sum('service');
+        $total += $this->outpatientNursing->sum('fee');
+
         if ($outpatientAction->count() > 0) {
             foreach ($outpatientAction as $oa) {
                 $total += $oa->consumables;
                 $total += $oa->hospital_service;
                 $total += $oa->service;
+                $total += $oa->fee;
             }
         }
 
@@ -298,6 +304,7 @@ class Outpatient extends Model
     public function costBreakdown()
     {
         $action = $this->totalAction();
+        $nursing = 0;
         $dispensaryRequest = 0;
         $lab = 0;
         $radiology = 0;
@@ -338,7 +345,7 @@ class Outpatient extends Model
         }
 
         $result = (object) [
-            'action' => $action,
+            'action' => $action + $nursing,
             'dispensaryRequest' => $dispensaryRequest,
             'lab' => $lab,
             'radiology' => $radiology,
@@ -393,5 +400,15 @@ class Outpatient extends Model
         }
 
         return $total;
+    }
+
+    /**
+     * outpatientNursing
+     *
+     * @return void
+     */
+    public function outpatientNursing()
+    {
+        return $this->hasMany(OutpatientNursing::class);
     }
 }

@@ -67,81 +67,121 @@
             <h6 class="hstack gap-2 mb-0">Data Tindakan</h6>
         </div>
         <div class="card-body">
-            @if(in_array($outpatient->status, [1, 3]))
-                <div class="alert alert-warning">
-                    Harap klik <b>Simpan Data</b> terlebih dahulu setelah mengisi semua field agar semua aksi yang dibutuhkan muncul dan data tercatat dalam sistem
-                </div>
-            @endif
-            <form id="form-data" class="plus-destroy-item">
-                @foreach($outpatientAction as $oa)
-                    <div id="item">
-                        <input type="hidden" name="item[]" value="{{ true }}">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <select class="form-select" name="doctor_id[]">
-                                        <option value="">-- Pilih Dokter --</option>
-                                        @foreach($doctor as $d)
-                                            <option value="{{ $d->id }}" {{ $oa->doctor_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <select class="form-select" name="unit_action_id[]">
-                                        <option value="">-- Pilih Tindakan --</option>
-                                        @foreach($unitAction as $ua)
-                                            <option value="{{ $ua->id }}" {{ $oa->unit_action_id == $ua->id ? 'selected' : '' }}>{{ $ua->action->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <select class="form-select" name="status[]">
-                                        <option value="0" {{ $oa->status == 0 ? 'selected' : '' }}>Belum Terbayar</option>
-                                        @if($oa->status == false)
-                                            <option value="1" {{ $oa->status == 1 ? 'selected' : '' }}>Terbayar</option>
-                                        @endif
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <div class="row">
-                                        @if($oa->status == true)
-                                            <div class="col-md-12">
-                                                <a href="{{ url('collection/outpatient/action/print/' . $oa->id . '?slug=proof-of-payment') }}" target="_blank" class="btn btn-teal btn-sm col-12">
-                                                    <i class="ph-printer me-1"></i>
-                                                    Bukti Bayar
-                                                </a>
+            <ul class="nav nav-pills nav-pills-outline nav-justified overflow-auto mb-3">
+                <li class="nav-item">
+                    <a href="#stacked-left-pill1" class="nav-link active" data-bs-toggle="tab">Dokter</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#stacked-left-pill2" class="nav-link" data-bs-toggle="tab">Perawat</a>
+                </li>
+            </ul>
+            <div class="tab-content flex-1">
+                <div class="tab-pane fade show active" id="stacked-left-pill1">
+                    @if(in_array($outpatient->status, [1, 3]))
+                        <div class="alert alert-warning">
+                            Harap klik <b>Simpan Data</b> terlebih dahulu setelah mengisi semua field agar semua aksi yang dibutuhkan muncul dan data tercatat dalam sistem
+                        </div>
+                    @endif
+                    <form id="form-data" class="plus-destroy-item">
+                        @foreach($outpatientAction as $oa)
+                            <div id="item">
+                                <input type="hidden" name="item[]" value="{{ true }}">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select class="form-select" name="doctor_id[]">
+                                                <option value="">-- Pilih Dokter --</option>
+                                                @foreach($doctor as $d)
+                                                    <option value="{{ $d->id }}" {{ $oa->doctor_id == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select class="form-select" name="unit_action_id[]">
+                                                <option value="">-- Pilih Tindakan --</option>
+                                                @foreach($unitAction as $ua)
+                                                    <option value="{{ $ua->id }}" {{ $oa->unit_action_id == $ua->id ? 'selected' : '' }}>{{ $ua->action->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <select class="form-select" name="status[]">
+                                                <option value="0" {{ $oa->status == 0 ? 'selected' : '' }}>Belum Terbayar</option>
+                                                @if($oa->status == false)
+                                                    <option value="1" {{ $oa->status == 1 ? 'selected' : '' }}>Terbayar</option>
+                                                @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                @if($oa->status == true)
+                                                    <div class="col-md-12">
+                                                        <a href="{{ url('collection/outpatient/action/print/' . $oa->id . '?slug=proof-of-payment') }}" target="_blank" class="btn btn-teal btn-sm col-12">
+                                                            <i class="ph-printer me-1"></i>
+                                                            Bukti Bayar
+                                                        </a>
+                                                    </div>
+                                                @else
+                                                    <div class="{{ in_array($outpatient->status, [1, 3]) ? 'col-md-6' : 'col-md-12' }}">
+                                                        <a href="{{ url('collection/outpatient/action/print/' . $oa->id . '?slug=payment-letter') }}" target="_blank" class="btn btn-primary btn-sm col-12">
+                                                            <i class="ph-printer me-1"></i>
+                                                            Surat Bayar
+                                                        </a>
+                                                    </div>
+                                                    @if(in_array($outpatient->status, [1, 3]))
+                                                        <div class="col-md-6">
+                                                            <button type="button" class="btn btn-danger btn-sm col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
+                                                        </div>
+                                                    @endif
+                                                @endif
                                             </div>
-                                        @else
-                                            <div class="{{ in_array($outpatient->status, [1, 3]) ? 'col-md-6' : 'col-md-12' }}">
-                                                <a href="{{ url('collection/outpatient/action/print/' . $oa->id . '?slug=payment-letter') }}" target="_blank" class="btn btn-primary btn-sm col-12">
-                                                    <i class="ph-printer me-1"></i>
-                                                    Surat Bayar
-                                                </a>
-                                            </div>
-                                            @if(in_array($outpatient->status, [1, 3]))
-                                                <div class="col-md-6">
-                                                    <button type="button" class="btn btn-danger btn-sm col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
-                                                </div>
-                                            @endif
-                                        @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                        @endforeach
+                    </form>
+                    @if(in_array($outpatient->status, [1, 3]))
+                        <div class="form-group mb-0">
+                            <button type="button" class="btn btn-success col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Data</button>
                         </div>
-                    </div>
-                @endforeach
-            </form>
-            @if(in_array($outpatient->status, [1, 3]))
-                <div class="form-group mb-0">
-                    <button type="button" class="btn btn-success col-12" onclick="addItem()"><i class="ph-plus me-2"></i> Tambah Data</button>
+                    @endif
                 </div>
-            @endif
+                <div class="tab-pane fade" id="stacked-left-pill2">
+                    <table class="table table-bordered">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th>User</th>
+                                <th>Tindakan</th>
+                                <th>Waktu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if($outpatient->outpatientNursing->count() > 0)
+                                @foreach($outpatient->outpatientNursing as $key => $on)
+                                    <tr>
+                                        <td class="text-center">{{ $key + 1 }}</td>
+                                        <td>{{ $on->user->employee->name }}</td>
+                                        <td>{{ $on->unitAction->action->name }}</td>
+                                        <td>{{ $on->created_at->format('Y-m-d H:i:s') }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="4" class="text-center">Belum ada tindakan</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     @if(in_array($outpatient->status, [1, 3]))

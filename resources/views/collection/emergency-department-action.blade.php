@@ -84,6 +84,9 @@
                     <li class="nav-item">
                         <a href="#stacked-left-pill5" class="nav-link" data-bs-toggle="tab">Lainnya</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#stacked-left-pill6" class="nav-link" data-bs-toggle="tab">Perawat</a>
+                    </li>
                 </ul>
             </div>
             <div class="card-body">
@@ -109,7 +112,7 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control number-format" name="observation_nominal" id="observation_nominal" value="{{ $emergencyDepartment->observation->nominal ?? (App\Models\ActionEmergencyCare::find(2)->fee ?? 0) }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="observation_nominal" id="observation_nominal" value="{{ $emergencyDepartment->observation->nominal ?? (App\Models\ActionEmergencyCare::find(2)->fee ?? 0) }}" placeholder="0">
                                         </div>
                                     </td>
                                 </tr>
@@ -128,7 +131,7 @@
                                     <td class="align-middle">
                                         <div class="input-group">
                                             <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control number-format" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $emergencyDepartment->supervision_doctor->nominal ?? (App\Models\ActionEmergencyCare::find(4)->fee ?? 0) }}" onkeyup="total()" placeholder="0">
+                                            <input type="text" class="form-control number-format" name="supervision_doctor_nominal" id="supervision_doctor_nominal" value="{{ $emergencyDepartment->supervision_doctor->nominal ?? (App\Models\ActionEmergencyCare::find(4)->fee ?? 0) }}" placeholder="0">
                                         </div>
                                     </td>
                                 </tr>
@@ -154,8 +157,8 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="eds_nominal[]" value="{{ $check->nominal ?? $ms->emergency_care }}" onkeyup="total()" placeholder="0">
-                                                    <select class="form-select w-auto flex-grow-0" name="eds_qty[]" onchange="total()">
+                                                    <input type="text" class="form-control number-format" name="eds_nominal[]" value="{{ $check->nominal ?? $ms->emergency_care }}" placeholder="0">
+                                                    <select class="form-select w-auto flex-grow-0" name="eds_qty[]">
                                                         @for($i = 1; $i <= 100; $i++)
                                                             <option value="{{ $i }}" {{ ($check->qty ?? 1) == $i ? 'selected' : '' }}>{{ $i }}</option>
                                                         @endfor
@@ -193,7 +196,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="edno_nominal[]" value="{{ $check->nominal ?? $ano->emergency_care }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edno_nominal[]" value="{{ $check->nominal ?? $ano->emergency_care }}" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -236,7 +239,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="edss_nominal[]" value="{{ $check->nominal ?? $as->emergency_care }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edss_nominal[]" value="{{ $check->nominal ?? $as->emergency_care }}" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -270,7 +273,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="edh_nominal[]" value="{{ $check->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edh_nominal[]" value="{{ $check->nominal ?? '' }}" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -304,7 +307,7 @@
                                             <td class="align-middle">
                                                 <div class="input-group">
                                                     <span class="input-group-text">Rp</span>
-                                                    <input type="text" class="form-control number-format" name="edo_nominal[]" value="{{ $check->nominal ?? $ao->emergency_care }}" onkeyup="total()" placeholder="0">
+                                                    <input type="text" class="form-control number-format" name="edo_nominal[]" value="{{ $check->nominal ?? $ao->emergency_care }}" placeholder="0">
                                                 </div>
                                             </td>
                                         </tr>
@@ -312,6 +315,36 @@
                                 @else
                                     <tr>
                                         <td class="text-center" colspan="2">Tidak Ada Data</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="stacked-left-pill6">
+                        <table class="table table-bordered">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th>User</th>
+                                    <th>Tindakan</th>
+                                    <th>Nominal</th>
+                                    <th>Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if($emergencyDepartment->emergencyDepartmentNursing->count() > 0)
+                                    @foreach($emergencyDepartment->emergencyDepartmentNursing as $key => $edn)
+                                        <tr>
+                                            <td class="text-center">{{ $key + 1 }}</td>
+                                            <td>{{ $edn->user->employee->name }}</td>
+                                            <td>{{ $edn->action->name }}</td>
+                                            <td>{{ Simrs::formatRupiah($edn->fee) }}</td>
+                                            <td>{{ $edn->created_at->format('Y-m-d H:i:s') }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="5" class="text-center">Belum ada tindakan</td>
                                     </tr>
                                 @endif
                             </tbody>
@@ -332,46 +365,23 @@
                                 <div class="input-group">
                                     <span class="input-group-text">1</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[0]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[0]->nominal ?? '' }}" placeholder="0">
                                 </div>
                             </td>
                             <td class="align-middle">
                                 <div class="input-group">
                                     <span class="input-group-text">2</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[1]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[1]->nominal ?? '' }}" placeholder="0">
                                 </div>
                             </td>
                             <td class="align-middle">
                                 <div class="input-group">
                                     <span class="input-group-text">3</span>
                                     <span class="input-group-text">Rp</span>
-                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[2]->nominal ?? '' }}" onkeyup="total()" placeholder="0">
+                                    <input type="text" class="form-control number-format" name="emergency_department_package[]" value="{{ $emergencyDepartmentPackage[2]->nominal ?? '' }}" placeholder="0">
                                 </div>
                             </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h6 class="hstack gap-2 mb-0">Ringkasan</h6>
-            </div>
-            <div class="card-body">
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <th class="align-middle">Subtotal</th>
-                            <td class="align-middle" id="subtotal-emergency-department"></td>
-                            <th class="text-center align-middle" rowspan="2" nowrap>
-                                <h6 class="text-uppercase">Total Yang Harus Dibayar</h6>
-                                <h3 class="fw-bold text-primary" id="grandtotal"></h3>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th class="align-middle">Total Paket</th>
-                            <td class="align-middle" id="subtotal-package"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -396,7 +406,6 @@
     $(function() {
         sidebarMini();
         fullWidthAllDevice();
-        total();
         checkStatus();
     });
 
@@ -409,78 +418,6 @@
         } else {
             $('.form-control').attr('disabled', true);
             $('.form-select').attr('disabled', true);
-        }
-    }
-
-    function total() {
-        var observationNominal = numberable(parseFloat($('input[name="observation_nominal"]').val()));
-        var supervisionDoctorNominal = numberable(parseFloat($('input[name="supervision_doctor_nominal"]').val()));
-
-        var calculateEmergencyDepartmentFirst = parseFloat(observationNominal + supervisionDoctorNominal);
-        var calculateEmergencyDepartmentFirstFixNumber = numberable(calculateEmergencyDepartmentFirst);
-        var subtotalEmergencyDepartment = calculateEmergencyDepartmentFirstFixNumber;
-        var subtotalPackage = 0;
-
-        var emergencyDepartmentService = $('input[name="emergency_department_service[]"]');
-        var emergencyDepartmentNonOperative = $('input[name="emergency_department_non_operative[]"]');
-        var emergencyDepartmentSupporting = $('input[name="emergency_department_supporting[]"]');
-        var emergencyDepartmentHealth = $('input[name="emergency_department_health[]"]');
-        var emergencyDepartmentOther = $('input[name="emergency_department_other[]"]');
-        var emergencyDepartmentPackage = $('input[name="emergency_department_package[]"]');
-
-        $.each(emergencyDepartmentService, function(i, val) {
-            var init1 = parseValueArrayHtml('input[name="eds_nominal[]');
-            var init2 = parseValueArrayHtml('select[name="eds_qty[]');
-
-            subtotalEmergencyDepartment += numberable(parseFloat(init1[i])) * numberable(parseInt(init2[i]));
-        });
-
-        $.each(emergencyDepartmentNonOperative, function(i, val) {
-            var init1 = parseValueArrayHtml('input[name="edno_nominal[]');
-
-            subtotalEmergencyDepartment += numberable(parseFloat(init1[i]));
-        });
-
-        $.each(emergencyDepartmentSupporting, function(i, val) {
-            var init1 = parseValueArrayHtml('input[name="edss_nominal[]');
-
-            subtotalEmergencyDepartment += numberable(parseFloat(init1[i]));
-        });
-
-        $.each(emergencyDepartmentHealth, function(i, val) {
-            var init1 = parseValueArrayHtml('input[name="edh_nominal[]');
-
-            subtotalEmergencyDepartment += numberable(parseFloat(init1[i]));
-        });
-
-        $.each(emergencyDepartmentOther, function(i, val) {
-            var init1 = parseValueArrayHtml('input[name="edo_nominal[]');
-
-            subtotalEmergencyDepartment += numberable(parseFloat(init1[i]));
-        });
-
-        $.each(emergencyDepartmentPackage, function(i, val) {
-            var init1 = parseValueArrayHtml(emergencyDepartmentPackage);
-
-            subtotalPackage += numberable(parseFloat(init1[i]));
-        });
-
-        $('#subtotal-emergency-department').html('Rp ' + $.number(subtotalEmergencyDepartment, 0, '.', '.'));
-        $('#subtotal-package').html('Rp ' + $.number(subtotalPackage, 0, '.', '.'));
-        $('#grandtotal').html('Rp ' + $.number(subtotalEmergencyDepartment + subtotalPackage, 0, '.', '.'));
-    }
-
-    function parseValueArrayHtml(selector) {
-        return $(selector).map(function () {
-            return $(this).val();
-        }).get();
-    }
-
-    function numberable(value) {
-        if(value) {
-            return value;
-        } else {
-            return 0;
         }
     }
 

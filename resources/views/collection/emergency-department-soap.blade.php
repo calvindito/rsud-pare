@@ -39,9 +39,9 @@
                         <th class="align-middle">UPF</th>
                         <th class="align-middle" width="1%">:</th>
                         <td class="align-middle" width="30%">{{ $emergencyDepartment->functionalService->name }}</td>
-                        <th class="align-middle">Kehadiran</th>
+                        <th class="align-middle">Dokter</th>
                         <th class="align-middle" width="1%">:</th>
-                        <td class="align-middle" width="30%">{{ $emergencyDepartment->presence_format_result }}</td>
+                        <td class="align-middle" width="30%">{{ $emergencyDepartment->doctor->name ?? '-' }}</td>
                     </tr>
                     <tr>
                         <th class="align-middle">Alamat</th>

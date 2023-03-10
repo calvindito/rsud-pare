@@ -1080,8 +1080,8 @@ class EmergencyDepartmentController extends Controller
                 'religion_id' => 'required',
                 'type' => 'required',
                 'date_of_entry' => 'required',
-                'functional_service_id' => 'required',
                 'doctor_id' => 'required',
+                'limit_action' => 'required|min:1',
                 'dispensary_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -1094,8 +1094,9 @@ class EmergencyDepartmentController extends Controller
                 'religion_id.required' => 'mohon memilih agama',
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
-                'functional_service_id.required' => 'mohon memilih upf',
                 'doctor_id.required' => 'mohon memilih dokter',
+                'limit_action.required' => 'batas tindakan tidak boleh kosong',
+                'limit_action.min' => 'batas tindakan minimal 1',
                 'dispensary_id.required' => 'mohon memilih apotek'
             ]);
 
@@ -1129,11 +1130,11 @@ class EmergencyDepartmentController extends Controller
 
                         $emergencyDepartment->update([
                             'user_id' => auth()->id(),
-                            'functional_service_id' => $request->functional_service_id,
                             'doctor_id' => $request->doctor_id,
                             'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
-                            'date_of_entry' => $request->date_of_entry
+                            'date_of_entry' => $request->date_of_entry,
+                            'limit_action' => $request->limit_action
                         ]);
                     });
 
@@ -1156,7 +1157,6 @@ class EmergencyDepartmentController extends Controller
             'emergencyDepartment' => $emergencyDepartment,
             'patient' => $emergencyDepartment->patient,
             'doctor' => Doctor::all(),
-            'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
             'dispensary' => Dispensary::all(),
             'content' => 'collection.emergency-department-update'

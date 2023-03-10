@@ -335,12 +335,14 @@ class OutpatientController extends Controller
                             $consumables = 0;
                             $hostpitalSevice = 0;
                             $service = 0;
+                            $fee = 0;
 
                             if ($unitActionId) {
                                 $unitAction = UnitAction::find($unitActionId);
                                 $consumables = $unitAction->consumables ?? null;
                                 $hostpitalSevice = $unitAction->hospital_service ?? null;
                                 $service = $unitAction->service ?? null;
+                                $fee = $unitAction->action->fee ?? null;
                             }
 
                             $outpatient->outpatientAction()->create([
@@ -349,6 +351,7 @@ class OutpatientController extends Controller
                                 'consumables' => $consumables,
                                 'hospital_service' => $hostpitalSevice,
                                 'service' => $service,
+                                'fee' => $fee,
                                 'status' => $status
                             ]);
                         }
@@ -895,6 +898,7 @@ class OutpatientController extends Controller
                 'date_of_entry' => 'required',
                 'presence' => 'required',
                 'dispensary_id' => 'required',
+                'limit_action' => 'required|min:1',
                 'doctor_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -912,6 +916,8 @@ class OutpatientController extends Controller
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'presence.required' => 'mohon memilih kehadiran',
                 'dispensary_id.required' => 'mohon memilih apotek',
+                'limit_action.required' => 'batas tindakan tidak boleh kosong',
+                'limit_action.min' => 'batas tindakan minimal 1',
                 'doctor_id.required' => 'mohon memilih dokter'
             ]);
 
@@ -961,7 +967,8 @@ class OutpatientController extends Controller
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry,
                             'presence' => $request->presence,
-                            'description' => $request->description
+                            'description' => $request->description,
+                            'limit_action' => $request->limit_action
                         ];
 
                         $outpatient->patient()->update($fillPatient);

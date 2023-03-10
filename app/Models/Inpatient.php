@@ -331,6 +331,7 @@ class Inpatient extends Model
         $total += $this->inpatientPackage->sum('nominal');
         $total += $this->inpatientSupporting->sum('emergency_care');
         $total += $this->inpatientSupporting->sum('hospitalization');
+        $total += $this->inpatientNursing->sum('fee');
         $total += $this->radiologyRequest->sum('consumables');
         $total += $this->radiologyRequest->sum('hospital_service');
         $total += $this->radiologyRequest->sum('service');
@@ -397,6 +398,7 @@ class Inpatient extends Model
         $actionHealth = 0;
         $actionOther = 0;
         $actionPackage = 0;
+        $nursing = 0;
         $dispensaryRequest = 0;
         $lab = 0;
         $radiology = 0;
@@ -420,6 +422,8 @@ class Inpatient extends Model
 
         $actionSupporting += $this->inpatientSupporting->sum('emergency_care');
         $actionSupporting += $this->inpatientSupporting->sum('hospitalization');
+
+        $nursing += $this->inpatientNursing->sum('fee');
 
         $radiology += $this->radiologyRequest->sum('consumables');
         $radiology += $this->radiologyRequest->sum('hospital_service');
@@ -477,6 +481,7 @@ class Inpatient extends Model
         $action += $actionHealth;
         $action += $actionOther;
         $action += $actionPackage;
+        $action += $nursing;
 
         $result = (object) [
             'action' => $action,
@@ -487,6 +492,7 @@ class Inpatient extends Model
             'actionHealth' => $actionHealth,
             'actionOther' => $actionOther,
             'actionPackage' => $actionPackage,
+            'nursing' => $nursing,
             'dispensaryRequest' => $dispensaryRequest,
             'lab' => $lab,
             'radiology' => $radiology,
@@ -557,6 +563,7 @@ class Inpatient extends Model
         $total += $this->inpatientPackage->sum('nominal');
         $total += $this->inpatientSupporting->sum('emergency_care');
         $total += $this->inpatientSupporting->sum('hospitalization');
+        $total += $this->inpatientNursing->sum('fee');
 
         foreach ($this->inpatientOther as $io) {
             $emergencyCare = !empty($io->emergency_care) ? $io->emergency_care : 0;
@@ -594,5 +601,15 @@ class Inpatient extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * inpatientNursing
+     *
+     * @return void
+     */
+    public function inpatientNursing()
+    {
+        return $this->hasMany(InpatientNursing::class);
     }
 }

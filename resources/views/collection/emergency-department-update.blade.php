@@ -169,19 +169,6 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-form-label col-lg-3">UPF <span class="text-danger fw-bold">*</span></label>
-                    <div class="col-md-9">
-                        <select class="form-select" name="functional_service_id" id="functional_service_id">
-                            <option value="">-- Pilih --</option>
-                            @foreach($functionalService as $fs)
-                                <option value="{{ $fs->id }}" {{ $emergencyDepartment->functional_service_id == $fs->id ? 'selected' : '' }}>
-                                    {{ $fs->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group row">
                     <label class="col-form-label col-lg-3">Apotek <span class="text-danger fw-bold">*</span></label>
                     <div class="col-md-9">
                         <select class="form-select" name="dispensary_id" id="dispensary_id">
