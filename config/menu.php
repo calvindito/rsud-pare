@@ -584,10 +584,10 @@ return [
                 'sub' => null
             ],
             [
-                'name' => 'eating-schedule',
-                'menu' => 'Jadwal Makan',
+                'name' => 'scheduling',
+                'menu' => 'Penjadwalan',
                 'icon' => null,
-                'link' => 'nutrient/eating-schedule',
+                'link' => 'nutrient/scheduling',
                 'sub' => null
             ],
         ]

@@ -614,6 +614,11 @@ Route::middleware('auth')->group(function () {
                 Route::get('/', 'EatingTimeController@index');
                 Route::post('set', 'EatingTimeController@set');
             });
+
+            Route::prefix('scheduling')->group(function () {
+                Route::get('/', 'SchedulingController@index');
+                Route::post('set', 'SchedulingController@set');
+            });
         });
 
         Route::prefix('bill')->namespace('Bill')->group(function () {
