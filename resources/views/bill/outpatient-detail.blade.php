@@ -170,11 +170,6 @@
 </div>
 
 <script>
-    $(function() {
-        sidebarMini();
-        fullWidthAllDevice();
-    });
-
     function submitted() {
         $.ajax({
             url: '{{ url("bill/outpatient/detail/" . $outpatient->id) }}',

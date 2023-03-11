@@ -159,10 +159,3 @@
         </div>
     </form>
 </div>
-
-<script>
-    $(function() {
-        sidebarMini();
-        fullWidthAllDevice();
-    });
-</script>

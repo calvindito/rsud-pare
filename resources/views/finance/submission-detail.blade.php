@@ -229,11 +229,6 @@
 </div>
 
 <script>
-    $(function() {
-        sidebarMini();
-        fullWidthAllDevice();
-    });
-
     function changeStatus() {
         var status = $('input[name="status"]:checked').val();
 

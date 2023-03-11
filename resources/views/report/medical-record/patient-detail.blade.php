@@ -1116,9 +1116,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(function() {
-        sidebarMini();
-    });
-</script>

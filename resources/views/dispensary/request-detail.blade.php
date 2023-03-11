@@ -127,8 +127,6 @@
 
 <script>
     $(function() {
-        fullWidthAllDevice();
-        sidebarMini();
         checkStatus();
     });
 

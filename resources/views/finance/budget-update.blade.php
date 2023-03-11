@@ -141,11 +141,6 @@
 </div>
 
 <script>
-    $(function() {
-        sidebarMini();
-        fullWidthAllDevice();
-    });
-
     function clearValidation() {
         $('#validation-element').addClass('d-none');
         $('#validation-data').html('');

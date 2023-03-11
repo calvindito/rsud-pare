@@ -174,9 +174,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(function() {
-        fullWidthAllDevice();
-    });
-</script>

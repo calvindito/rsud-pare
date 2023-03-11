@@ -126,11 +126,6 @@
 </div>
 
 <script>
-    $(function() {
-        fullWidthAllDevice();
-        sidebarMini();
-    });
-
     function submitted() {
         $.ajax({
             url: '{{ url("bill/radiology/detail/" . $radiologyRequest->id) }}',

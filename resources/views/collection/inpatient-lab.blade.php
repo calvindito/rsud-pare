@@ -270,10 +270,6 @@
 @endif
 
 <script>
-    $(function() {
-        fullWidthAllDevice();
-    });
-
     function onReset() {
         clearValidation();
         $('#form-data').trigger('reset');

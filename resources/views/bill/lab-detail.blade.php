@@ -174,11 +174,6 @@
 </div>
 
 <script>
-    $(function() {
-        fullWidthAllDevice();
-        sidebarMini();
-    });
-
     function submitted(param) {
         $.ajax({
             url: '{{ url("bill/lab/detail/" . $labRequest->id) }}',

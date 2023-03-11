@@ -81,8 +81,6 @@
 
 <script>
     $(function() {
-        sidebarMini();
-        fullWidthAllDevice();
         loadAllChart();
     });
 

@@ -79,9 +79,3 @@
         </div>
     </form>
 </div>
-
-<script>
-    $(function() {
-        sidebarMini();
-    });
-</script>

@@ -666,8 +666,6 @@
 
 <script>
     $(function() {
-        sidebarMini();
-        fullWidthAllDevice();
         select2Ajax('#patient_id', 'patient', false);
     });
 </script>

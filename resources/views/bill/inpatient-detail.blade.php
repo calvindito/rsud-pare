@@ -556,8 +556,6 @@
 
 <script>
     $(function() {
-        sidebarMini();
-        fullWidthAllDevice();
         total();
     });
 

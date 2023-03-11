@@ -209,11 +209,6 @@
 </div>
 
 <script>
-    $(function() {
-        sidebarMini();
-        fullWidthAllDevice();
-    });
-
     function submitted() {
         $.ajax({
             url: '{{ url("bill/operation/detail/" . $operation->id) }}',

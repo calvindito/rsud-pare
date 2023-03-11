@@ -150,8 +150,6 @@
 <script>
     $(function() {
         checkStatus();
-        sidebarMini();
-        fullWidthAllDevice();
 
         $('.select2').select2();
     });

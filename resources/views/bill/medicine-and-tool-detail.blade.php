@@ -123,11 +123,6 @@
 </div>
 
 <script>
-    $(function() {
-        fullWidthAllDevice();
-        sidebarMini();
-    });
-
     function submitted(param) {
         $.ajax({
             url: '{{ url("bill/medicine-and-tool/detail/" . $dispensaryRequest->id) }}',

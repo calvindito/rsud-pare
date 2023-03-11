@@ -188,8 +188,6 @@
 
 <script>
     $(function() {
-        sidebarMini();
-        fullWidthAllDevice();
         loadItem();
         total();
         keyUpQty();

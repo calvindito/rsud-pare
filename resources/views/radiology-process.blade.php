@@ -145,8 +145,6 @@
 
 <script>
     $(function() {
-        fullWidthAllDevice();
-        sidebarMini();
         imageable();
         textEditor('#expertise', 'Masukan expertise ...');
     });

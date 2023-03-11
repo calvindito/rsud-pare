@@ -131,7 +131,6 @@
 
 <script>
     $(function() {
-        fullWidthAllDevice();
         initFormStep();
         checkStatus();
         setValueAllSOAP();
