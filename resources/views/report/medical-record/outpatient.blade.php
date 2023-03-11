@@ -9,7 +9,7 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-flat-primary dropdown-toggle" data-bs-toggle="dropdown">Refresh</button>
                 <div class="dropdown-menu">
-                    <a href="javascript:void(0);" class="dropdown-item" onclick="onReloadTable()">Data</a>
+                    <a href="javascript:void(0);" class="dropdown-item" onclick="loadData()">Data</a>
                     <a href="{{ url()->full() }}" class="dropdown-item">Halaman</a>
                 </div>
             </div>
@@ -161,7 +161,6 @@
 <script>
     $(function() {
         loadData();
-        sidebarMini();
         datePickerable('.daterange-picker');
         select2Ajax('#patient_id', 'patient', false);
 

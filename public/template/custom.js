@@ -28,6 +28,8 @@ $(function() {
     select2Basic();
     setBaseUrl();
     initSwitcher();
+    fullWidthAllDevice();
+    sidebarMini();
 
     $('.sidebar-control').on('click', function() {
         if(window.gDataTable) {
@@ -155,7 +157,7 @@ function onPopover(selector, content, title = '') {
 }
 
 function fullWidthAllDevice() {
-    $('meta[name="viewport"]').attr('content', 'width=1920, initial-scale=1, shrink-to-fit=no');
+    $('meta[name="viewport"]').attr('content', 'width=1366');
 }
 
 function listBox(selector, config = {}) {

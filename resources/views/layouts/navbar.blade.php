@@ -1,12 +1,12 @@
 <body>
 	<div class="navbar bg-primary navbar-expand-xl navbar-static shadow navbar-dark">
 		<div class="container-fluid">
-			<div class="d-flex d-xl-none me-2">
+			<div class="d-flex d-lg-none me-2">
 				<button type="button" class="navbar-toggler sidebar-mobile-main-toggle rounded-pill">
 					<i class="ph-list"></i>
 				</button>
 			</div>
-			<div class="navbar-brand flex-1">
+			<div class="navbar-brand flex-1 flex-lg-0">
 				<a href="{{ url('index') }}" class="d-inline-flex align-items-center fw-bold text-white">
                     <i class="ph-leaf me-2"></i>
                     SIMRS KAB KEDIRI
