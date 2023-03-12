@@ -273,4 +273,24 @@ class Patient extends Model
     {
         return $this->hasMany(DispensaryRequest::class);
     }
+
+    /**
+     * inpatientActive
+     *
+     * @return void
+     */
+    public function inpatientActive()
+    {
+        return $this->hasOne(Inpatient::class)->orderByDesc('date_of_entry');
+    }
+
+    /**
+     * eating
+     *
+     * @return void
+     */
+    public function eating()
+    {
+        return $this->hasMany(Eating::class);
+    }
 }

@@ -161,20 +161,20 @@ class Inpatient extends Model
      *
      * @return void
      */
-    public function status()
+    public function status($addClass = '')
     {
         $status = $this->status;
 
         if ($status == 1) {
-            $html = '<span class="badge bg-indigo">Sedang Dirawat</span>';
+            $html = '<span class="badge bg-indigo ' . $addClass . '">Sedang Dirawat</span>';
         } else if ($status == 2) {
-            $html = '<span class="badge bg-primary">Pindah Kamar</span>';
+            $html = '<span class="badge bg-primary ' . $addClass . '">Pindah Kamar</span>';
         } else if ($status == 3) {
-            $html = '<span class="badge bg-success">Pulang</span>';
+            $html = '<span class="badge bg-success ' . $addClass . '">Pulang</span>';
         } else if ($status == 4) {
-            $html = '<span class="badge bg-teal">Keluar Kamar</span>';
+            $html = '<span class="badge bg-teal ' . $addClass . '">Keluar Kamar</span>';
         } else {
-            $html = '<span class="badge bg-warning">Invalid</span>';
+            $html = '<span class="badge bg-warning ' . $addClass . '">Invalid</span>';
         }
 
         return $html;

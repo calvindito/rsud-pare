@@ -27,7 +27,6 @@
                 <thead class="text-bg-light">
                     <tr>
                         <th class="text-center" nowrap>No</th>
-                        <th nowrap>Kode</th>
                         <th nowrap>Nama</th>
                         <th nowrap>Biaya</th>
                         <th class="text-center" nowrap><i class="ph-gear"></i></th>
@@ -53,12 +52,6 @@
                 </div>
                 <form id="form-data">
                     <input type="hidden" name="table_id" id="table_id">
-                    <div class="form-group row">
-                        <label class="col-form-label col-lg-3">Kode <span class="text-danger fw-bold">*</span></label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="code" id="code" placeholder="Masukan kode">
-                        </div>
-                    </div>
                     <div class="form-group row">
                         <label class="col-form-label col-lg-3">Nama <span class="text-danger fw-bold">*</span></label>
                         <div class="col-md-9">
@@ -176,7 +169,6 @@
             },
             columns: [
                 { data: 'DT_RowIndex', name: 'id', orderable: true, searchable: false, className: 'align-middle text-center' },
-                { data: 'code', name: 'code', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'name', name: 'name', orderable: true, searchable: true, className: 'align-middle' },
                 { data: 'fee', name: 'fee', orderable: true, searchable: false, className: 'align-middle' },
                 { data: 'action', name: 'action', orderable: false, searchable: false, className: 'align-middle text-center' },
@@ -243,7 +235,6 @@
                 onLoading('close', '.modal-content');
 
                 $('#table_id').val(response.id);
-                $('#code').val(response.code);
                 $('#name').val(response.name);
                 $('#fee').val(response.fee);
             },

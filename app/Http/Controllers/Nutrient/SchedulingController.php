@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Nutrient;
 
 use App\Models\Food;
 use App\Models\Eating;
+use App\Models\Patient;
 use App\Models\RoomType;
 use App\Models\EatingTime;
 use Illuminate\Http\Request;
@@ -14,17 +15,26 @@ class SchedulingController extends Controller
     public function index(Request $request)
     {
         $date = $request->has('date') ? $request->date : date('Y-m-d');
-        $eatingSingleData = Eating::whereDate('date', $date)
-            ->groupByRaw('eating_time_id, date')
-            ->first();
+
+        $patient = Patient::whereNotNull('verified_at')
+            ->where(function ($query) use ($date) {
+                $query->whereHas('eating', function ($query) use ($date) {
+                    $query->whereDate('date', $date);
+                });
+
+                if ($date == date('Y-m-d')) {
+                    $query->orWhereHas('inpatient', function ($query) {
+                        $query->where('status', 1);
+                    });
+                }
+            })
+            ->get();
 
         $data = [
-            'eatingSingleData' => $eatingSingleData,
             'eatingTime' => EatingTime::all(),
-            'roomType' => RoomType::where('status', 1)->orderByRaw('room_id, class_type_id ASC')->get(),
+            'patient' => $patient,
             'food' => Food::all(),
             'date' => $date,
-            'eatingTimeId',
             'content' => 'nutrient.scheduling'
         ];
 
@@ -37,22 +47,22 @@ class SchedulingController extends Controller
             $count = EatingTime::count();
             $date = $request->date;
 
-            if ($request->has('room_type_id')) {
-                foreach ($request->room_type_id as $rti) {
+            if ($request->has('patient_id')) {
+                foreach ($request->patient_id as $pi) {
                     for ($i = 0; $i < $count; $i++) {
-                        $eatingTimeId = $request->input("eating_time_$rti.$i");
-                        $foodId = $request->input("food_$rti.$i");
-                        $portion = $request->input("portion_$rti.$i");
+                        $eatingTimeId = $request->input("eating_time_$pi.$i");
+                        $foodId = $request->input("food_$pi.$i");
+                        $code = $request->input("code_$pi.$i");
                         $food = Food::find($foodId);
 
                         Eating::updateOrCreate([
-                            'room_type_id' => $rti,
+                            'patient_id' => $pi,
                             'eating_time_id' => $eatingTimeId,
                             'date' => $date
                         ], [
                             'food_id' => $foodId,
                             'fee' => $food->fee ?? 0,
-                            'portion' => $portion
+                            'code' => $code
                         ]);
                     }
                 }

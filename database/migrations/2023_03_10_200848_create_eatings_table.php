@@ -15,11 +15,11 @@ class CreateEatingsTable extends Migration
     {
         Schema::create('eatings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('room_type_id')->nullable();
+            $table->unsignedBigInteger('patient_id')->nullable();
             $table->unsignedBigInteger('eating_time_id')->nullable();
             $table->unsignedBigInteger('food_id')->nullable();
+            $table->string('code')->nullable();
             $table->double('fee')->nullable();
-            $table->integer('portion')->nullable();
             $table->date('date')->nullable();
             $table->timestamps();
         });

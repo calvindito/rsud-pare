@@ -29,4 +29,14 @@ class Eating extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * food
+     *
+     * @return void
+     */
+    public function food()
+    {
+        return $this->belongsTo(Food::class);
+    }
 }

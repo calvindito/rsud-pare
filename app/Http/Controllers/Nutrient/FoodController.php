@@ -28,8 +28,7 @@ class FoodController extends Controller
         return DataTables::eloquent($data)
             ->filter(function ($query) use ($search) {
                 if ($search) {
-                    $query->where('code', 'like', "%$search%")
-                        ->orWhere('name', 'like', "%$search%");
+                    $query->where('name', 'like', "%$search%");
                 }
             })
             ->editColumn('fee', '{{ Simrs::formatRupiah($fee) }}')
@@ -59,12 +58,9 @@ class FoodController extends Controller
     public function createData(Request $request)
     {
         $validation = Validator::make($request->all(), [
-            'code' => 'required|unique:food,code',
             'name' => 'required',
             'fee' => 'required|numeric'
         ], [
-            'code.required' => 'kode tidak boleh kosong',
-            'code.unique' => 'kode telah digunakan',
             'name.required' => 'nama tidak boleh kosong',
             'fee.required' => 'biaya tidak boleh kosong',
             'fee.numeric' => 'biaya harus angka yang valid'
@@ -78,7 +74,6 @@ class FoodController extends Controller
         } else {
             try {
                 $createData = Food::create([
-                    'code' => $request->code,
                     'name' => $request->name,
                     'fee' => $request->fee
                 ]);
@@ -110,12 +105,9 @@ class FoodController extends Controller
     {
         $id = $request->table_id;
         $validation = Validator::make($request->all(), [
-            'code' => 'required|unique:food,code,' . $id,
             'name' => 'required',
             'fee' => 'required|numeric'
         ], [
-            'code.required' => 'kode tidak boleh kosong',
-            'code.unique' => 'kode telah digunakan',
             'name.required' => 'nama tidak boleh kosong',
             'fee.required' => 'biaya tidak boleh kosong',
             'fee.numeric' => 'biaya harus angka yang valid'
@@ -129,7 +121,6 @@ class FoodController extends Controller
         } else {
             try {
                 $updateData = Food::findOrFail($id)->update([
-                    'code' => $request->code,
                     'name' => $request->name,
                     'fee' => $request->fee
                 ]);

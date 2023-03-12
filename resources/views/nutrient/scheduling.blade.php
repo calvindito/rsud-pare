@@ -48,44 +48,70 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-hover">
+                <table class="table table-bordered">
                     <thead class="table-primary sticky-top">
                         <tr>
+                            <th>Pasien</th>
                             <th>Kamar</th>
+                            <th>Kelas</th>
                             @foreach($eatingTime as $et)
                                 <th>{{ $et->type_format_result }}</th>
                             @endforeach
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($roomType as $rt)
+                        @if($patient->count() > 0)
+                            @foreach($patient as $p)
+                                <tr>
+                                    <input type="hidden" name="patient_id[]" value="{{ $p->id }}">
+                                    <td rowspan="2">{{ $p->name }}</td>
+                                    <td rowspan="2">{{ $p->inpatientActive->bed->roomSpace->roomType->room->name }}</td>
+                                    <td rowspan="2" nowrap>{{ $p->inpatientActive->bed->roomSpace->roomType->classType->name }}</td>
+                                    @foreach($eatingTime as $key => $et)
+                                        @php
+                                            $hasData = App\Models\Eating::whereDate('date', $date)->where('eating_time_id', $et->id)->where('patient_id', $p->id)->first();
+                                            $timeNow = strtotime(date('H:i:s'));
+                                            $timeStart = strtotime($et->time_start);
+                                        @endphp
+                                        <input type="hidden" name="eating_time_{{ $p->id }}[]" value="{{ $et->id }}">
+                                        <td nowrap>
+                                            @if($timeNow >= $timeStart || $date != date('Y-m-d') || $p->inpatientActive->status != 1)
+                                                <input type="hidden" name="code_{{ $p->id }}[]" value="{{ isset($hasData->code) ? $hasData->code : null }}">
+                                                <input type="hidden" name="food_{{ $p->id }}[]" value="{{ isset($hasData->food) ? $hasData->food->id : null }}">
+                                                <div class="mb-1">
+                                                    <input type="text" class="form-control form-control-sm" value="{{ isset($hasData->code) ? $hasData->code : 'Tidak ada kode' }}" disabled>
+                                                </div>
+                                                <input type="text" class="form-control form-control-sm" value="{{ isset($hasData->food) ? $hasData->food->name : 'Tidak ada makanan' }}" disabled>
+                                            @else
+                                                <div class="mb-1">
+                                                    <input type="text" class="form-control form-control-sm" name="code_{{ $p->id }}[]" value="{{ old("code_$p->id.$key", $hasData->code ?? '') }}" placeholder="Kode">
+                                                </div>
+                                                <select class="form-select form-select-sm" name="food_{{ $p->id }}[]">
+                                                    <option value="">Tidak Ada</option>
+                                                    @foreach($food as $f)
+                                                        <option value="{{ $f->id }}" {{ old("food_$p->id.$key", $hasData->food_id ?? '') == $f->id ? 'selected' : '' }}>
+                                                            {{ $f->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            @endif
+                                        </td>
+                                    @endforeach
+                                </tr>
+                                <tr>
+                                    <td colspan="{{ $eatingTime->count() }}" nowrap>{!! $p->inpatientActive->status('d-block') !!}</td>
+                                </tr>
+                            @endforeach
+                        @else
                             <tr>
-                                <input type="hidden" name="room_type_id[]" value="{{ $rt->id }}">
-                                <td nowrap>{{ $rt->name . ' | ' . $rt->classType->name }}</td>
-                                @foreach($eatingTime as $key => $et)
-                                    @php $hasData = App\Models\Eating::whereDate('date', $date)->where('eating_time_id', $et->id)->where('room_type_id', $rt->id)->first(); @endphp
-                                    <input type="hidden" name="eating_time_{{ $rt->id }}[]" value="{{ $et->id }}">
-                                    <td>
-                                        <div class="form-group">
-                                            <input type="number" class="form-control" name="portion_{{ $rt->id }}[]" value="{{ old("portion_$rt->id.$key", $hasData->portion ?? '') }}" placeholder="Porsi">
-                                        </div>
-                                        <select class="form-select" name="food_{{ $rt->id }}[]">
-                                            <option value="">Tidak Ada</option>
-                                            @foreach($food as $f)
-                                                <option value="{{ $f->id }}" {{ old("food_$rt->id.$key", $hasData->food_id ?? '') == $f->id ? 'selected' : '' }}>
-                                                    {{ $f->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                @endforeach
+                                <td colspan="{{ 3 + $eatingTime->count() }}" class="text-center">Tidak ada pasien</td>
                             </tr>
-                        @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
-        @if($date == date('Y-m-d'))
+        @if($date == date('Y-m-d') && $patient->count() > 0)
             <div class="card">
                 <div class="card-body">
                     <div class="text-end">
