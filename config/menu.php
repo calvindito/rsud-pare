@@ -865,6 +865,28 @@ return [
                 ]
             ],
             [
+                'name' => 'service',
+                'menu' => 'Jasa Pelayanan',
+                'icon' => null,
+                'link' => 'javascript:void(0);',
+                'sub' => [
+                    [
+                        'name' => 'nursing',
+                        'menu' => 'Perawat',
+                        'icon' => null,
+                        'link' => 'report/service/nursing',
+                        'sub' => null
+                    ],
+                    [
+                        'name' => 'doctor',
+                        'menu' => 'Dokter',
+                        'icon' => null,
+                        'link' => 'report/service/doctor',
+                        'sub' => null
+                    ],
+                ]
+            ],
+            [
                 'name' => 'finance',
                 'menu' => 'Keuangan',
                 'icon' => null,

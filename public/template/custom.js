@@ -243,8 +243,8 @@ function textEditor(selector = '.text-editor', placeholder = 'Masukan sesuatu ..
     });
 }
 
-function datePickerable(selector) {
-    $(selector).daterangepicker({
+function datePickerable(selector, addNewConfig = {}) {
+    var configuration = $.extend({
         parentEl: '.content-inner',
         autoUpdateInput: false,
         showDropdowns: true,
@@ -266,8 +266,10 @@ function datePickerable(selector) {
             monthNames: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
             firstDay: 1,
             format: 'YYYY/MM/DD'
-        }
-    }).on('apply.daterangepicker', function (e, picker) {
+        },
+    }, addNewConfig);
+
+    $(selector).daterangepicker(configuration).on('apply.daterangepicker', function (e, picker) {
         picker.element.val(picker.startDate.format(picker.locale.format) + ' - ' + picker.endDate.format(picker.locale.format));
     });
 }

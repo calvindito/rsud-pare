@@ -294,4 +294,23 @@ class Operation extends Model
 
         return $html;
     }
+
+    /**
+     * totalServiceNursing
+     *
+     * @return int
+     */
+    public function totalServiceNursing()
+    {
+        $subtotal = 0;
+        $nursing = $this->operationDoctorAssistant->count() + 1;
+
+        $subtotal += $this->nurse_operating_room;
+        $subtotal += $this->nurse_anesthetist;
+        $subtotal += $this->nursing_care;
+
+        $total = $subtotal / $nursing;
+
+        return round($total);
+    }
 }

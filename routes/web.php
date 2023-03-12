@@ -848,6 +848,12 @@ Route::middleware('auth')->group(function () {
                 });
             });
 
+            Route::prefix('service')->namespace('Service')->group(function () {
+                Route::prefix('nursing')->group(function () {
+                    Route::get('/', 'NursingController@index');
+                });
+            });
+
             Route::prefix('finance')->namespace('Finance')->group(function () {
                 Route::prefix('budget')->group(function () {
                     Route::get('/', 'BudgetController@index');
