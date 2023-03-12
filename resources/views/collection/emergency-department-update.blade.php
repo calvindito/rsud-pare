@@ -184,6 +184,42 @@
             </div>
         </div>
         <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Tindakan</h5>
+            </div>
+            <div class="card-body border-top">
+                <table class="table table-bordered table-hover table-xs">
+                    <thead>
+                        <tr>
+                            <th class="text-center" nowrap>No</th>
+                            <th nowrap>Nama</th>
+                            <th nowrap>Batas Per Hari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if($action->count() > 0)
+                            @foreach($action as $key => $a)
+                                <tr>
+                                    <td class="text-center" width="10%">{{ $key + 1 }}</td>
+                                    <td>
+                                        <input type="hidden" name="edal_action_id[]" value="{{ $a->id }}">
+                                        {{ $a->name }}
+                                    </td>
+                                    <td width="20%">
+                                        <input type="number" class="form-control" name="edal_limit[]" value="{{ $emergencyDepartment->emergencyDepartmentActionLimit()->firstWhere('action_id', $a->id)->limit ?? 2 }}">
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="3" class="text-center">Tidak ada tindakan</td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
             <div class="card-body">
                 <div class="text-end">
                     <button type="button" class="btn btn-warning" onclick="updateData()">

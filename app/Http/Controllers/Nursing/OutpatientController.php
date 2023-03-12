@@ -84,7 +84,6 @@ class OutpatientController extends Controller
     public function action(Request $request, $id)
     {
         $outpatient = Outpatient::findOrFail($id);
-        $limitAction = $outpatient->limit_action;
 
         if ($request->has('date')) {
             $date = $request->date;
@@ -98,29 +97,23 @@ class OutpatientController extends Controller
 
         if ($request->ajax()) {
             try {
-                DB::transaction(function () use ($request, $outpatient, $limitAction) {
-                    $outpatient->outpatientNursing()->delete();
+                DB::transaction(function () use ($request, $outpatient, $date) {
+                    $outpatient->outpatientNursing()->whereDate('created_at', $date)->where('user_id', auth()->id())->delete();
 
-                    if ($request->has('item')) {
-                        foreach ($request->item as $key => $i) {
-                            $num = $key + 1;
+                    if ($request->has('unit_action_id')) {
+                        foreach ($request->unit_action_id as $uai) {
+                            $explodeId = explode('_', $uai);
+                            $unitActionId = end($explodeId);
+                            $unitAction = UnitAction::find($unitActionId);
 
-                            if ($num <= $limitAction) {
-                                $unitActionId = $request->unit_action_id[$key];
-                                $userId = $request->user_id[$key];
-                                $unitAction = UnitAction::find($unitActionId);
-
-                                if ($unitAction) {
-                                    $outpatient->outpatientNursing()->create([
-                                        'unit_action_id' => $unitActionId,
-                                        'user_id' => $userId,
-                                        'consumables' => $unitAction->consumables,
-                                        'hospital_service' => $unitAction->hospital_service,
-                                        'service' => $unitAction->service,
-                                        'fee' => $unitAction->action->fee
-                                    ]);
-                                }
-                            }
+                            $outpatient->outpatientNursing()->create([
+                                'unit_action_id' => $unitActionId,
+                                'user_id' => auth()->id(),
+                                'consumables' => $unitAction->consumables ?? 0,
+                                'hospital_service' => $unitAction->hospital_service ?? 0,
+                                'service' => $unitAction->service ?? 0,
+                                'fee' => $unitAction->action->fee ?? 0
+                            ]);
                         }
                     }
                 });
@@ -139,13 +132,16 @@ class OutpatientController extends Controller
             return response()->json($response);
         }
 
+        $unitAction = UnitAction::whereHas('outpatientActionLimit', function ($query) use ($outpatient) {
+            $query->where('outpatient_id', $outpatient->id);
+        })->get();
+
         $data = [
             'outpatient' => $outpatient,
             'outpatientNursing' => $outpatient->outpatientNursing()->whereDate('created_at', $date)->get(),
             'patient' => $outpatient->patient,
-            'unitAction' => UnitAction::all(),
+            'unitAction' => $unitAction,
             'date' => $date,
-            'limitAction' => $limitAction,
             'content' => 'nursing.outpatient-action'
         ];
 

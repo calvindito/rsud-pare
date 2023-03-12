@@ -73,7 +73,6 @@ class EmergencyDepartmentController extends Controller
     public function action(Request $request, $id)
     {
         $emergencyDepartment = EmergencyDepartment::findOrFail($id);
-        $limitAction = $emergencyDepartment->limit_action;
 
         if ($request->has('date')) {
             $date = $request->date;
@@ -87,26 +86,20 @@ class EmergencyDepartmentController extends Controller
 
         if ($request->ajax()) {
             try {
-                DB::transaction(function () use ($request, $emergencyDepartment, $limitAction) {
-                    $emergencyDepartment->emergencyDepartmentNursing()->delete();
+                DB::transaction(function () use ($request, $emergencyDepartment, $date) {
+                    $emergencyDepartment->emergencyDepartmentNursing()->whereDate('created_at', $date)->where('user_id', auth()->id())->delete();
 
-                    if ($request->has('item')) {
-                        foreach ($request->item as $key => $i) {
-                            $num = $key + 1;
+                    if ($request->has('action_id')) {
+                        foreach ($request->action_id as $ai) {
+                            $explodeId = explode('_', $ai);
+                            $actionId = end($explodeId);
+                            $action = Action::find($actionId);
 
-                            if ($num <= $limitAction) {
-                                $actionId = $request->action_id[$key];
-                                $userId = $request->user_id[$key];
-                                $action = Action::find($actionId);
-
-                                if ($action) {
-                                    $emergencyDepartment->emergencyDepartmentNursing()->create([
-                                        'action_id' => $actionId,
-                                        'user_id' => $userId,
-                                        'fee' => $action->fee
-                                    ]);
-                                }
-                            }
+                            $emergencyDepartment->emergencyDepartmentNursing()->create([
+                                'action_id' => $actionId,
+                                'user_id' => auth()->id(),
+                                'fee' => $action->fee ?? 0
+                            ]);
                         }
                     }
                 });
@@ -125,13 +118,16 @@ class EmergencyDepartmentController extends Controller
             return response()->json($response);
         }
 
+        $action = Action::whereHas('emergencyDepartmentActionLimit', function ($query) use ($emergencyDepartment) {
+            $query->where('emergency_department_id', $emergencyDepartment->id);
+        })->get();
+
         $data = [
             'emergencyDepartment' => $emergencyDepartment,
             'emergencyDepartmentNursing' => $emergencyDepartment->emergencyDepartmentNursing()->whereDate('created_at', $date)->get(),
             'patient' => $emergencyDepartment->patient,
-            'action' => Action::all(),
+            'action' => $action,
             'date' => $date,
-            'limitAction' => $limitAction,
             'content' => 'nursing.emergency-department-action'
         ];
 

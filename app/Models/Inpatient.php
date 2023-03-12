@@ -612,4 +612,14 @@ class Inpatient extends Model
     {
         return $this->hasMany(InpatientNursing::class);
     }
+
+    /**
+     * inpatientActionLimit
+     *
+     * @return void
+     */
+    public function inpatientActionLimit()
+    {
+        return $this->hasMany(InpatientActionLimit::class);
+    }
 }

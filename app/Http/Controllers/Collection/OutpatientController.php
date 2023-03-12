@@ -277,7 +277,7 @@ class OutpatientController extends Controller
                             $patientId = $createPatient->id;
                         }
 
-                        Outpatient::create([
+                        $outpatient = Outpatient::create([
                             'user_id' => $userId,
                             'patient_id' => $patientId,
                             'unit_id' => $request->unit_id,
@@ -288,6 +288,14 @@ class OutpatientController extends Controller
                             'presence' => $request->presence,
                             'description' => $request->description
                         ]);
+
+                        if ($outpatient->unit->unitAction->count() > 0) {
+                            foreach ($outpatient->unit->unitAction as $ua) {
+                                $outpatient->outpatientActionLimit()->create([
+                                    'unit_action_id' => $ua->id
+                                ]);
+                            }
+                        }
                     });
 
                     $response = [
@@ -898,7 +906,6 @@ class OutpatientController extends Controller
                 'date_of_entry' => 'required',
                 'presence' => 'required',
                 'dispensary_id' => 'required',
-                'limit_action' => 'required|min:1',
                 'doctor_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -916,8 +923,6 @@ class OutpatientController extends Controller
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'presence.required' => 'mohon memilih kehadiran',
                 'dispensary_id.required' => 'mohon memilih apotek',
-                'limit_action.required' => 'batas tindakan tidak boleh kosong',
-                'limit_action.min' => 'batas tindakan minimal 1',
                 'doctor_id.required' => 'mohon memilih dokter'
             ]);
 
@@ -967,12 +972,24 @@ class OutpatientController extends Controller
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry,
                             'presence' => $request->presence,
-                            'description' => $request->description,
-                            'limit_action' => $request->limit_action
+                            'description' => $request->description
                         ];
 
                         $outpatient->patient()->update($fillPatient);
                         $outpatient->fill($fillOutpatient)->save();
+
+                        $outpatient->outpatientActionLimit()->delete();
+
+                        if ($request->has('oal_unit_action_id')) {
+                            foreach ($request->oal_unit_action_id as $key => $uai) {
+                                $limit = isset($request->oal_limit[$key]) ? $request->oal_limit[$key] : null;
+
+                                $outpatient->outpatientActionLimit()->create([
+                                    'unit_action_id' => $uai,
+                                    'limit' => $limit
+                                ]);
+                            }
+                        }
                     });
 
                     $response = [

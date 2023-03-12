@@ -26,7 +26,6 @@ class CreateEmergencyDepartmentsTable extends Migration
             $table->json('supervision_doctor')->nullable();
             $table->timestamp('date_of_entry')->nullable();
             $table->timestamp('date_of_out')->nullable();
-            $table->integer('limit_action')->default(2);
             $table->boolean('paid')->default(0);
             $table->char('status', 1)->default(1);
             $table->char('ending', 1)->nullable();

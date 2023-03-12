@@ -439,4 +439,14 @@ class Outpatient extends Model
 
         return $sequence;
     }
+
+    /**
+     * outpatientActionLimit
+     *
+     * @return void
+     */
+    public function outpatientActionLimit()
+    {
+        return $this->hasMany(OutpatientActionLimit::class);
+    }
 }

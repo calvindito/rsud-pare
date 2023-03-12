@@ -319,6 +319,42 @@
                 </div>
             </div>
         </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Tindakan</h5>
+            </div>
+            <div class="card-body border-top">
+                <table class="table table-bordered table-hover table-xs">
+                    <thead>
+                        <tr>
+                            <th class="text-center" nowrap>No</th>
+                            <th nowrap>Nama</th>
+                            <th nowrap>Batas Per Hari</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if($outpatient->unit->unitAction->count() > 0)
+                            @foreach($outpatient->unit->unitAction as $key => $ua)
+                                <tr>
+                                    <td class="text-center" width="10%">{{ $key + 1 }}</td>
+                                    <td>
+                                        <input type="hidden" name="oal_unit_action_id[]" value="{{ $ua->id }}">
+                                        {{ $ua->action->name }}
+                                    </td>
+                                    <td width="20%">
+                                        <input type="number" class="form-control" name="oal_limit[]" value="{{ $outpatient->outpatientActionLimit()->firstWhere('unit_action_id', $ua->id)->limit ?? 2 }}">
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @else
+                            <tr>
+                                <td colspan="3" class="text-center">Tidak ada tindakan</td>
+                            </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+        </div>
         @if(in_array($outpatient->status, [1, 3]))
             <div class="card">
                 <div class="card-body">

@@ -26,7 +26,6 @@ class CreateOutpatientsTable extends Migration
             $table->timestamp('date_of_out')->nullable();
             $table->string('presence', 2)->nullable();
             $table->text('description')->nullable();
-            $table->integer('limit_action')->default(2);
             $table->boolean('paid')->default(0);
             $table->char('status', 1)->default(1);
             $table->timestamps();

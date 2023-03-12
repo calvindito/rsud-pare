@@ -79,4 +79,14 @@ class Unit extends Model
     {
         return $this->hasMany(Operation::class);
     }
+
+    /**
+     * unitAction
+     *
+     * @return void
+     */
+    public function unitAction()
+    {
+        return $this->hasMany(UnitAction::class);
+    }
 }

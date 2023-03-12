@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Collection;
 use App\Models\Bed;
 use App\Models\Unit;
 use App\Helpers\Simrs;
+use App\Models\Action;
 use App\Models\Doctor;
 use App\Models\LabItem;
 use App\Models\Patient;
@@ -291,7 +292,7 @@ class InpatientController extends Controller
                             $patientId = $createPatient->id;
                         }
 
-                        Inpatient::create([
+                        $inpatient = Inpatient::create([
                             'user_id' => $userId,
                             'patient_id' => $patientId,
                             'bed_id' => $request->bed_id,
@@ -301,6 +302,15 @@ class InpatientController extends Controller
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry
                         ]);
+
+                        if ($request->has('ial_action_id')) {
+                            foreach ($request->ial_action_id as $key => $ai) {
+                                $inpatient->inpatientActionLimit()->create([
+                                    'action_id' => $ai,
+                                    'limit' => $request->ial_limit[$key] ?? 0
+                                ]);
+                            }
+                        }
                     });
 
                     $response = [
@@ -323,6 +333,7 @@ class InpatientController extends Controller
             'religion' => Religion::all(),
             'doctor' => Doctor::all(),
             'dispensary' => Dispensary::all(),
+            'action' => Action::all(),
             'content' => 'collection.inpatient-register-patient'
         ];
 
@@ -1142,7 +1153,6 @@ class InpatientController extends Controller
                 'date_of_entry' => 'required',
                 'functional_service_id' => 'required',
                 'doctor_id' => 'required',
-                'limit_action' => 'required|min:1',
                 'dispensary_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -1155,8 +1165,6 @@ class InpatientController extends Controller
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'functional_service_id.required' => 'mohon memilih upf',
                 'doctor_id.required' => 'mohon memilih dokter',
-                'limit_action.required' => 'batas tindakan tidak boleh kosong',
-                'limit_action.min' => 'batas tindakan minimal 1',
                 'dispensary_id.required' => 'mohon memilih apotek'
             ]);
 
@@ -1183,9 +1191,19 @@ class InpatientController extends Controller
                             'doctor_id' => $request->doctor_id,
                             'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
-                            'date_of_entry' => $request->date_of_entry,
-                            'limit_action' => $request->limit_action
+                            'date_of_entry' => $request->date_of_entry
                         ]);
+
+                        $inpatient->inpatientActionLimit()->delete();
+
+                        if ($request->has('ial_action_id')) {
+                            foreach ($request->ial_action_id as $key => $ai) {
+                                $inpatient->inpatientActionLimit()->create([
+                                    'action_id' => $ai,
+                                    'limit' => $request->ial_limit[$key] ?? 0
+                                ]);
+                            }
+                        }
                     });
 
                     $response = [
@@ -1210,6 +1228,7 @@ class InpatientController extends Controller
             'religion' => Religion::all(),
             'doctor' => Doctor::all(),
             'dispensary' => Dispensary::all(),
+            'action' => Action::all(),
             'content' => 'collection.inpatient-update'
         ];
 

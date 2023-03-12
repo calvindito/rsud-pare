@@ -50,4 +50,14 @@ class UnitAction extends Model
     {
         return $this->belongsTo(Action::class);
     }
+
+    /**
+     * outpatientActionLimit
+     *
+     * @return void
+     */
+    public function outpatientActionLimit()
+    {
+        return $this->hasMany(OutpatientActionLimit::class);
+    }
 }

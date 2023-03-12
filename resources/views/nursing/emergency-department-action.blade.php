@@ -80,50 +80,22 @@
         </div>
         <div class="card-body">
             <form id="form-data">
-                <div id="plus-destroy-item">
-                    @if($emergencyDepartmentNursing->count() > 0)
-                        @foreach($emergencyDepartmentNursing as $edn)
-                            <div class="row item-content">
-                                <input type="hidden" name="item[]" value="{{ true }}">
-                                <div class="{{ ($date != date('Y-m-d') || $edn->user_id != auth()->id() || $emergencyDepartment->status != 1) ? 'col-md-6' : 'col-md-5' }}">
-                                    <div class="form-group">
-                                        @if($date != date('Y-m-d') || $edn->user_id != auth()->id() || $emergencyDepartment->status != 1)
-                                            <input type="hidden" name="action_id[]" value="{{ $edn->action_id }}">
-                                            <input type="text" class="form-control" value="{{ $edn->action->name }}" disabled>
-                                        @else
-                                            <select class="form-select" name="action_id[]">
-                                                <option value="">-- Pilih Tindakan --</option>
-                                                @foreach($action as $a)
-                                                    <option value="{{ $a->id }}" {{ $edn->action_id == $a->id ? 'selected' : '' }}>{{ $a->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="{{ ($date != date('Y-m-d') || $edn->user_id != auth()->id() || $emergencyDepartment->status != 1) ? 'col-md-6' : 'col-md-5' }}">
-                                    <div class="form-group">
-                                        <input type="hidden" name="user_id[]" value="{{ $edn->user_id }}">
-                                        <input type="text" class="form-control" value="{{ $edn->user->employee->name }}" disabled>
-                                    </div>
-                                </div>
-                                @if($date == date('Y-m-d') && $edn->user_id == auth()->id() && $emergencyDepartment->status == 1)
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-danger col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        @endforeach
-                    @else
-                        @if($date != date('Y-m-d'))
-                            <div class="alert alert-info text-center fw-semibold mb-0">Tidak ada tindakan</div>
-                        @endif
-                    @endif
-                </div>
-                <div class="form-group mb-0 {{ $date == date('Y-m-d') && $emergencyDepartmentNursing->count() < $limitAction && $emergencyDepartment->status == 1 ? '' : 'd-none' }}" id="btn-add-item">
-                    <button type="button" class="btn btn-teal col-12" onclick="addItem('action')"><i class="ph-plus me-2"></i> Tambah Tindakan</button>
-                </div>
+                <select class="form-select form-select-picker" name="action_id[]" multiple>
+                    @foreach($action as $a)
+                        @php
+                            $limit = $emergencyDepartment->emergencyDepartmentActionLimit()->where('action_id', $a->id)->first()->limit ?? 0;
+                            $used = $emergencyDepartment->emergencyDepartmentNursing()->whereDate('created_at', $date)->where('action_id', $a->id)->count();
+                            $available = $limit - $used;
+                        @endphp
+
+                        @for($i = 1; $i <= $available; $i++)
+                            <option value="{{ Str::random(3) }}_{{ $a->id }}">{{ $a->name }}</option>
+                        @endfor
+                    @endforeach
+                    @foreach($emergencyDepartment->emergencyDepartmentNursing()->whereDate('created_at', $date)->where('user_id', auth()->id())->get() as $edn)
+                        <option value="{{ Str::random(3) }}_{{ $edn->action_id }}" selected>{{ $edn->action->name }}</option>
+                    @endforeach
+                </select>
             </form>
         </div>
     </div>
@@ -142,59 +114,17 @@
 </div>
 
 <script>
-    function checkLimitable() {
-        var limit = parseInt('{{ $limitAction }}');
-        var length = $('.item-content').length + 1;
-    }
+    $(function() {
+        listBox('.form-select-picker');
 
-    function addItem(param) {
-        var limit = parseInt('{{ $limitAction }}');
-        var length = $('.item-content').length + 1;
-
-        var formElement = $(`
-            <div class="row item-content">
-                <input type="hidden" name="item[]" value="{{ true }}">
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <select class="form-select" name="action_id[]">
-                            <option value="">-- Pilih Tindakan --</option>
-                            @foreach($action as $a)
-                                <option value="{{ $a->id }}">{{ $a->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <input type="hidden" name="user_id[]" value="{{ auth()->id() }}">
-                        <input type="text" class="form-control" value="{{ auth()->user()->employee->name }}" disabled>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <button type="button" class="btn btn-danger col-12" onclick="removeItem(this)"><i class="ph-trash"></i></button>
-                    </div>
-                </div>
-            </div>
-        `).hide().fadeIn(500);
-
-        if(length >= limit) {
-            swalInit.fire({
-                title: 'Informasi',
-                text: 'Anda telah mencapai batas maksimal tindakan dalam sehari yang hanya diperbolehkan sebanyak ' + limit + 'x tindakan'
-            });
-
-            $('#btn-add-item').addClass('d-none');
-        }
-
-        $('#plus-destroy-item').append(formElement);
-    }
-
-    function removeItem(paramObj) {
-        $(paramObj).parents('.item-content').remove();
-
-        $('#btn-add-item').removeClass('d-none');
-    }
+        $('.dual-listbox__container .dual-listbox__search').attr('placeholder', 'Cari ...');
+        $('.dual-listbox__container .dual-listbox__title:eq(0)').html('Tindakan Tersedia');
+        $('.dual-listbox__container .dual-listbox__title:eq(1)').html('Tindakan Yang Telah Dilakukan');
+        $('.dual-listbox__container .dual-listbox__buttons button:eq(0)').text('Tambah Semua');
+        $('.dual-listbox__container .dual-listbox__buttons button:eq(1)').text('Tambah');
+        $('.dual-listbox__container .dual-listbox__buttons button:eq(2)').text('Hapus');
+        $('.dual-listbox__container .dual-listbox__buttons button:eq(3)').text('Hapus Semua');
+    });
 
     function submitted() {
         $.ajax({

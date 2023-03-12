@@ -527,4 +527,14 @@ class EmergencyDepartment extends Model
     {
         return $this->hasMany(EmergencyDepartmentNursing::class);
     }
+
+    /**
+     * emergencyDepartmentActionLimit
+     *
+     * @return void
+     */
+    public function emergencyDepartmentActionLimit()
+    {
+        return $this->hasMany(EmergencyDepartmentActionLimit::class);
+    }
 }

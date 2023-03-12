@@ -3,19 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Action extends Model
+class OutpatientActionLimit extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'actions';
+    protected $table = 'outpatient_action_limits';
 
     /**
      * The primary key associated with the table.
@@ -32,22 +31,12 @@ class Action extends Model
     protected $guarded = ['id'];
 
     /**
-     * inpatientActionLimit
+     * unitAction
      *
      * @return void
      */
-    public function inpatientActionLimit()
+    public function unitAction()
     {
-        return $this->hasMany(InpatientActionLimit::class);
-    }
-
-    /**
-     * emergencyDepartmentActionLimit
-     *
-     * @return void
-     */
-    public function emergencyDepartmentActionLimit()
-    {
-        return $this->hasMany(EmergencyDepartmentActionLimit::class);
+        return $this->belongsTo(UnitAction::class);
     }
 }

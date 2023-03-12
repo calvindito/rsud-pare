@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Collection;
 
 use App\Models\Unit;
 use App\Helpers\Simrs;
+use App\Models\Action;
 use App\Models\Doctor;
 use App\Models\LabItem;
 use App\Models\Patient;
@@ -257,7 +258,7 @@ class EmergencyDepartmentController extends Controller
                             $patientId = $createPatient->id;
                         }
 
-                        EmergencyDepartment::create([
+                        $emergencyDepartment = EmergencyDepartment::create([
                             'user_id' => $userId,
                             'patient_id' => $patientId,
                             'functional_service_id' => $request->functional_service_id,
@@ -266,6 +267,15 @@ class EmergencyDepartmentController extends Controller
                             'type' => $request->type,
                             'date_of_entry' => $dateOfEntry
                         ]);
+
+                        if ($request->has('edal_action_id')) {
+                            foreach ($request->edal_action_id as $key => $ai) {
+                                $emergencyDepartment->emergencyDepartmentActionLimit()->create([
+                                    'action_id' => $ai,
+                                    'limit' => $request->edal_limit[$key] ?? 0
+                                ]);
+                            }
+                        }
                     });
 
                     $response = [
@@ -288,6 +298,7 @@ class EmergencyDepartmentController extends Controller
             'functionalService' => FunctionalService::where('status', true)->orderBy('name')->get(),
             'religion' => Religion::all(),
             'dispensary' => Dispensary::all(),
+            'action' => Action::all(),
             'content' => 'collection.emergency-department-register-patient'
         ];
 
@@ -1081,7 +1092,6 @@ class EmergencyDepartmentController extends Controller
                 'type' => 'required',
                 'date_of_entry' => 'required',
                 'doctor_id' => 'required',
-                'limit_action' => 'required|min:1',
                 'dispensary_id' => 'required'
             ], [
                 'identity_number.digits' => 'no identitas harus 16 karakter',
@@ -1095,8 +1105,6 @@ class EmergencyDepartmentController extends Controller
                 'type.required' => 'mohon memilih golongan pasien',
                 'date_of_entry.required' => 'tanggal masuk tidak boleh kosong',
                 'doctor_id.required' => 'mohon memilih dokter',
-                'limit_action.required' => 'batas tindakan tidak boleh kosong',
-                'limit_action.min' => 'batas tindakan minimal 1',
                 'dispensary_id.required' => 'mohon memilih apotek'
             ]);
 
@@ -1133,9 +1141,19 @@ class EmergencyDepartmentController extends Controller
                             'doctor_id' => $request->doctor_id,
                             'dispensary_id' => $request->dispensary_id,
                             'type' => $request->type,
-                            'date_of_entry' => $request->date_of_entry,
-                            'limit_action' => $request->limit_action
+                            'date_of_entry' => $request->date_of_entry
                         ]);
+
+                        $emergencyDepartment->emergencyDepartmentActionLimit()->delete();
+
+                        if ($request->has('edal_action_id')) {
+                            foreach ($request->edal_action_id as $key => $ai) {
+                                $emergencyDepartment->emergencyDepartmentActionLimit()->create([
+                                    'action_id' => $ai,
+                                    'limit' => $request->edal_limit[$key] ?? 0
+                                ]);
+                            }
+                        }
                     });
 
                     $response = [
@@ -1159,6 +1177,7 @@ class EmergencyDepartmentController extends Controller
             'doctor' => Doctor::all(),
             'religion' => Religion::all(),
             'dispensary' => Dispensary::all(),
+            'action' => Action::all(),
             'content' => 'collection.emergency-department-update'
         ];
 

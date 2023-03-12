@@ -94,7 +94,6 @@ class InpatientController extends Controller
     public function action(Request $request, $id)
     {
         $inpatient = Inpatient::findOrFail($id);
-        $limitAction = $inpatient->limit_action;
 
         if ($request->has('date')) {
             $date = $request->date;
@@ -108,26 +107,20 @@ class InpatientController extends Controller
 
         if ($request->ajax()) {
             try {
-                DB::transaction(function () use ($request, $inpatient, $limitAction) {
-                    $inpatient->inpatientNursing()->delete();
+                DB::transaction(function () use ($request, $inpatient, $date) {
+                    $inpatient->inpatientNursing()->whereDate('created_at', $date)->where('user_id', auth()->id())->delete();
 
-                    if ($request->has('item')) {
-                        foreach ($request->item as $key => $i) {
-                            $num = $key + 1;
+                    if ($request->has('action_id')) {
+                        foreach ($request->action_id as $ai) {
+                            $explodeId = explode('_', $ai);
+                            $actionId = end($explodeId);
+                            $action = Action::find($actionId);
 
-                            if ($num <= $limitAction) {
-                                $actionId = $request->action_id[$key];
-                                $userId = $request->user_id[$key];
-                                $action = Action::find($actionId);
-
-                                if ($action) {
-                                    $inpatient->inpatientNursing()->create([
-                                        'action_id' => $actionId,
-                                        'user_id' => $userId,
-                                        'fee' => $action->fee
-                                    ]);
-                                }
-                            }
+                            $inpatient->inpatientNursing()->create([
+                                'action_id' => $actionId,
+                                'user_id' => auth()->id(),
+                                'fee' => $action->fee ?? 0
+                            ]);
                         }
                     }
                 });
@@ -146,13 +139,16 @@ class InpatientController extends Controller
             return response()->json($response);
         }
 
+        $action = Action::whereHas('inpatientActionLimit', function ($query) use ($inpatient) {
+            $query->where('inpatient_id', $inpatient->id);
+        })->get();
+
         $data = [
             'inpatient' => $inpatient,
             'inpatientNursing' => $inpatient->inpatientNursing()->whereDate('created_at', $date)->get(),
             'patient' => $inpatient->patient,
-            'action' => Action::all(),
+            'action' => $action,
             'date' => $date,
-            'limitAction' => $limitAction,
             'content' => 'nursing.inpatient-action'
         ];
 
