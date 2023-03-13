@@ -55,10 +55,11 @@ class NursingController extends Controller
             })->where(function ($query) use ($startDate, $endDate) {
                 $query->where('created_at', '>=', $startDate)
                     ->where('created_at', '<=', $endDate);
-            })->where('paid', 1)->where('status', 3)->get();
+            })->where('status', 3)->get();
 
             foreach ($dataOperation as $do) {
-                $operation += $do->totalServiceNursing();
+                $totalNursing = $do->operationDoctorAssistant->count();
+                $operation += $do->totalServiceNursing() / ($totalNursing == 0 ? 1 : $totalNursing);
             }
 
             $dataLab = LabRequest::whereHas('user', function ($query) use ($employeeId) {
@@ -68,7 +69,7 @@ class NursingController extends Controller
             })->where(function ($query) use ($startDate, $endDate) {
                 $query->where('created_at', '>=', $startDate)
                     ->where('created_at', '<=', $endDate);
-            })->where('paid', 1)->where('status', 3)->get();
+            })->where('status', 3)->get();
 
             foreach ($dataLab as $dl) {
                 $lab += $dl->labRequestDetail->sum('service');
@@ -81,7 +82,7 @@ class NursingController extends Controller
             })->where(function ($query) use ($startDate, $endDate) {
                 $query->where('created_at', '>=', $startDate)
                     ->where('created_at', '<=', $endDate);
-            })->where('paid', 1)->where('status', 3)->get();
+            })->where('status', 3)->get();
 
             foreach ($dataRadiology as $dr) {
                 $radiology += $dr->service;
