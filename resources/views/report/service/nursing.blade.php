@@ -28,10 +28,10 @@
                         <div class="form-group row">
                             <label class="col-form-label col-lg-1">Perawat</label>
                             <div class="col-md-11">
-                                <select class="form-select select2-form" name="user_id" id="user_id" required>
+                                <select class="form-select select2-form" name="employee_id" id="employee_id" required>
                                     <option value=""></option>
-                                    @foreach($user as $u)
-                                        <option value="{{ $u->id }}" {{ old('user_id') == $u->id ? 'selected' : '' }}>{{ $u->employee->name }}</option>
+                                    @foreach($employee as $e)
+                                        <option value="{{ $e->id }}" {{ $employeeId == $e->id ? 'selected' : '' }}>{{ $e->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -39,7 +39,7 @@
                         <div class="form-group row">
                             <label class="col-form-label col-lg-1">Tanggal</label>
                             <div class="col-md-11">
-                                <input type="text" class="form-control daterange-picker" name="date" id="date" value="{{ old('date') }}" placeholder="Pilih Tanggal" readonly required>
+                                <input type="text" class="form-control daterange-picker" name="date" id="date" value="{{ $date }}" placeholder="Pilih Tanggal" readonly required>
                             </div>
                         </div>
                         <div class="form-group"><hr></div>

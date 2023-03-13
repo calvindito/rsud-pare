@@ -309,7 +309,7 @@ class Operation extends Model
         $subtotal += $this->nurse_anesthetist;
         $subtotal += $this->nursing_care;
 
-        $total = $subtotal / $nursing;
+        $total = $subtotal / ($nursing == 0 ? 1 : $nursing);
 
         return round($total);
     }

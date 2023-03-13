@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Report\Service;
 
 use Carbon\Carbon;
-use App\Models\User;
+use App\Models\Employee;
 use App\Models\Operation;
 use App\Models\LabRequest;
 use Illuminate\Http\Request;
@@ -18,16 +18,16 @@ class NursingController extends Controller
     public function index(Request $request)
     {
         $contentable = false;
-        $userId = $request->user_id;
+        $employeeId = $request->employee_id;
         $date = $request->date;
-        $user = User::where('status', 1)->get();
+        $employee = Employee::where('status', 1)->get();
         $operation = 0;
         $lab = 0;
         $radiology = 0;
         $action = 0;
 
         if ($request->_token == csrf_token()) {
-            if (empty($userId)) {
+            if (empty($employeeId)) {
                 return redirect()->back()->withInput()->with(['validation' => 'mohon memilih perawat']);
             }
 
@@ -44,88 +44,97 @@ class NursingController extends Controller
                 return redirect()->back()->withInput()->with(['validation' => 'jarak tanggal maksimal 31 hari']);
             }
 
-            $dataOperation = Operation::where('user_id', $userId)
-                ->orWhereHas('operationDoctorAssistant', function ($query) use ($userId) {
-                    $query->whereHas('employee', function ($query) use ($userId) {
-                        $query->whereHas('user', function ($query) use ($userId) {
-                            $query->where('id', $userId);
-                        });
-                    });
-                })
-                ->where(function ($query) use ($startDate, $endDate) {
-                    $query->where('created_at', '>=', $startDate)
-                        ->where('created_at', '<=', $endDate);
-                })
-                ->where('paid', 1)
-                ->where('status', 3)
-                ->get();
+            $dataOperation = Operation::whereHas('user', function ($query) use ($employeeId) {
+                $query->whereHas('employee', function ($query) use ($employeeId) {
+                    $query->where('id', $employeeId);
+                });
+            })->orWhereHas('operationDoctorAssistant', function ($query) use ($employeeId) {
+                $query->whereHas('employee', function ($query) use ($employeeId) {
+                    $query->where('id', $employeeId);
+                });
+            })->where(function ($query) use ($startDate, $endDate) {
+                $query->where('created_at', '>=', $startDate)
+                    ->where('created_at', '<=', $endDate);
+            })->where('paid', 1)->where('status', 3)->get();
 
             foreach ($dataOperation as $do) {
                 $operation += $do->totalServiceNursing();
             }
 
-            $dataLab = LabRequest::where('user_id', $userId)
-                ->where(function ($query) use ($startDate, $endDate) {
-                    $query->where('created_at', '>=', $startDate)
-                        ->where('created_at', '<=', $endDate);
-                })
-                ->where('paid', 1)
-                ->where('status', 3)
-                ->get();
+            $dataLab = LabRequest::whereHas('user', function ($query) use ($employeeId) {
+                $query->whereHas('employee', function ($query) use ($employeeId) {
+                    $query->where('id', $employeeId);
+                });
+            })->where(function ($query) use ($startDate, $endDate) {
+                $query->where('created_at', '>=', $startDate)
+                    ->where('created_at', '<=', $endDate);
+            })->where('paid', 1)->where('status', 3)->get();
 
             foreach ($dataLab as $dl) {
                 $lab += $dl->labRequestDetail->sum('service');
             }
 
-            $dataRadiology = RadiologyRequest::where('user_id', $userId)
-                ->where(function ($query) use ($startDate, $endDate) {
-                    $query->where('created_at', '>=', $startDate)
-                        ->where('created_at', '<=', $endDate);
-                })
-                ->where('paid', 1)
-                ->where('status', 3)
-                ->get();
+            $dataRadiology = RadiologyRequest::whereHas('user', function ($query) use ($employeeId) {
+                $query->whereHas('employee', function ($query) use ($employeeId) {
+                    $query->where('id', $employeeId);
+                });
+            })->where(function ($query) use ($startDate, $endDate) {
+                $query->where('created_at', '>=', $startDate)
+                    ->where('created_at', '<=', $endDate);
+            })->where('paid', 1)->where('status', 3)->get();
 
             foreach ($dataRadiology as $dr) {
                 $radiology += $dr->service;
             }
 
-            $outpatientAction = OutpatientNursing::where('user_id', $userId)
-                ->where(function ($query) use ($startDate, $endDate) {
-                    $query->where('created_at', '>=', $startDate)
-                        ->where('created_at', '<=', $endDate);
-                })
-                ->get();
+            $outpatientAction = OutpatientNursing::whereHas('user', function ($query) use ($employeeId) {
+                $query->whereHas('employee', function ($query) use ($employeeId) {
+                    $query->where('id', $employeeId);
+                });
+            })->get();
 
             foreach ($outpatientAction as $oa) {
-                $totalNursing = OutpatientNursing::where('outpatient_id', $oa->id)->groupBy('user_id')->count();
-                $fee = $oa->service / $totalNursing;
+                $totalNursing = OutpatientNursing::selectRaw('COUNT(DISTINCT(user_id)) as total')
+                    ->where('outpatient_id', $oa->outpatient_id)
+                    ->first();
+
+                $fee = $oa->service / ($totalNursing->total == 0 ? 1 : $totalNursing->total);
                 $action += ceil($fee);
             }
 
-            $inpatientAction = InpatientNursing::where('user_id', $userId)
-                ->where(function ($query) use ($startDate, $endDate) {
-                    $query->where('created_at', '>=', $startDate)
-                        ->where('created_at', '<=', $endDate);
-                })
-                ->get();
+            $inpatientAction = InpatientNursing::whereHas('user', function ($query) use ($employeeId) {
+                $query->whereHas('employee', function ($query) use ($employeeId) {
+                    $query->where('id', $employeeId);
+                });
+            })->where(function ($query) use ($startDate, $endDate) {
+                $query->where('created_at', '>=', $startDate)
+                    ->where('created_at', '<=', $endDate);
+            })->get();
 
-            foreach ($inpatientAction as $ia) {
-                $totalNursing = InpatientNursing::where('inpatient_id', $ia->id)->groupBy('user_id')->count();
-                $fee = $ia->fee / $totalNursing;
+            foreach ($inpatientAction as $in) {
+                $totalNursing = InpatientNursing::selectRaw('COUNT(DISTINCT(user_id)) as total')
+                    ->where('inpatient_id', $in->inpatient_id)
+                    ->first();
+
+                $fee = $in->service / ($totalNursing->total == 0 ? 1 : $totalNursing->total);
                 $action += ceil($fee);
             }
 
-            $emergencyDepartmentAction = EmergencyDepartmentNursing::where('user_id', $userId)
-                ->where(function ($query) use ($startDate, $endDate) {
-                    $query->where('created_at', '>=', $startDate)
-                        ->where('created_at', '<=', $endDate);
-                })
-                ->get();
+            $emergencyDepartmentAction = EmergencyDepartmentNursing::whereHas('user', function ($query) use ($employeeId) {
+                $query->whereHas('employee', function ($query) use ($employeeId) {
+                    $query->where('id', $employeeId);
+                });
+            })->where(function ($query) use ($startDate, $endDate) {
+                $query->where('created_at', '>=', $startDate)
+                    ->where('created_at', '<=', $endDate);
+            })->get();
 
-            foreach ($emergencyDepartmentAction as $eda) {
-                $totalNursing = EmergencyDepartmentNursing::where('emergency_department_id', $ia->id)->groupBy('user_id')->count();
-                $fee = $ia->fee / $totalNursing;
+            foreach ($emergencyDepartmentAction as $edn) {
+                $totalNursing = EmergencyDepartmentNursing::selectRaw('COUNT(DISTINCT(user_id)) as total')
+                    ->where('emergency_department_id', $edn->emergency_department_id)
+                    ->first();
+
+                $fee = $edn->service / ($totalNursing->total == 0 ? 1 : $totalNursing->total);
                 $action += ceil($fee);
             }
 
@@ -134,13 +143,14 @@ class NursingController extends Controller
 
         $data = [
             'token' => $request->_token,
-            'user' => User::has('employee')->where('status', 1)->get(),
             'contentable' => $contentable,
-            'user' => $user,
+            'employee' => $employee,
             'operation' => $operation,
             'lab' => $lab,
             'radiology' => $radiology,
             'action' => $action,
+            'employeeId' => $employeeId,
+            'date' => $date,
             'content' => 'report.service.nursing'
         ];
 
